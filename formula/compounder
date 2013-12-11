@@ -1,0 +1,19 @@
+:- set_prolog_flag(double_quotes,chars).
+
+% Translates facts about about elements and polyatomic ions to DCG rules
+:- include('fact_dcg_translate.pl').
+
+% Converts human-readable formulas to internal format (required for fact_dcg_translate).
+:- include('formula_normalize.pl').
+
+% Parses names for chemical compounds into internal format
+:- include('name_parse/main.pl').
+
+
+name_2_formula(Name,Formula) :-
+	name(_,_,Internal,Name,[]),
+	formula(_,_,Internal,Formula,[]).
+
+formula_2_name(Formula,Name) :-
+	formula(_,_,Internal,Formula,[]),
+	name(_,_,Internal,Name,[]).

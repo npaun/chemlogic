@@ -1,0 +1,46 @@
+
+% Rules for handling compounds
+:- include('../formula/compounder').
+
+% The grammar for symbolic equations
+:- include('equation.pl').
+
+% The grammar for word equations
+:- include('word_equation.pl').
+
+% Rebase procedure (creates lookup tables, merges re-occurences of elements in a formula, flattens polyatomic groups)
+:- include('rebase.pl').
+
+% The solver (converts the coefficient set to a system of linear equations and solves it).
+:- include('solver.pl').
+
+balance_equation(Equation,Solution) :- balance_equation(symbolic,Equation,symbolic,Solution).
+
+balance_equation(Type,Equation,Type2,Solution) :-
+	call(Type,_,[],Elements,[],MoleculeSet,[],SideSet,Equation,[]),
+	!,
+	rebase(SideSet),
+	sort(Elements,ElementSet),
+	coefficient_set(MoleculeSet,ElementSet,CoeffSet),
+	equation_evaluate(CoeffSet,Vars),
+	call(Type2,Vars,[],Elements,[],MoleculeSet,[],SideSet,Solution,[]),
+	!,
+	retractall(balance(_,_,_)).
+
+
+	
+
+coefficient_set(_,[],[]).
+
+coefficient_set(MolSet,[Elem|ElemS],[CoeffSet|CoeffSetS]) :-
+	element_coefficients(MolSet,Elem,CoeffSet),
+	coefficient_set(MolSet,ElemS,CoeffSetS).
+
+
+element_coefficients([],_,[]).
+
+element_coefficients([Mol|MolS],Elem,[Coeff|CoeffS]) :-
+      (balance(Mol,Elem,Coeff) ; Coeff = 0),
+        element_coefficients(MolS,Elem,CoeffS),
+        !.
+
