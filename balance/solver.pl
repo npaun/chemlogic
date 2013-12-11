@@ -36,8 +36,9 @@ equation_evaluate(CoeffS,Values) :-
 	FirstVar #> 0,
 	FirstVar #=< 10,
 	equation_system(CoeffS,Values,System),
+	writeln(System),
 	equation_system_eval(System,Values),
-	finite_domain(TestVar) -> label_minimize(FirstVar,Values); pad_out(Values).
+(	finite_domain(TestVar) -> label_minimize(FirstVar,Values); pad_out(Values)).
 
 label_minimize(FirstVar,Vars) :-
 Options = [min(FirstVar)],

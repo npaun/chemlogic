@@ -32,9 +32,11 @@ single_element([Sym|Rest],Rest,[[Sym,1]]) --> element(Sym,_).
 
 /* Parse it up! */
 
+name(Sym,Rest,F) --> retained(Sym,Rest,F).
 name(Sym,Rest,F) --> ionic(Sym,Rest,F).
 name(Sym,Rest,F) --> covalent(Sym,Rest,F).
 name(Sym,Rest,F) --> pure(Sym,Rest,F).
+name(Sym,Rest,F) --> common(Sym,Rest,F).
 
 /** TODO:
 

@@ -94,6 +94,7 @@ acid(["H"|Contents],Rest,["H",1,ASym,ACharge]) --> acid_anion(Contents,Rest,ASym
 
 acid_anion(Contents,Rest,ASym,ACharge) --> oxyanion_acid(Contents,Rest,ASym,ACharge).
 acid_anion(Contents,Rest,ASym,ACharge) --> hydro_acid(Contents,Rest,ASym,ACharge).
+acid_anion(Contents,Rest,ASym,ACharge) --> polyatomic_acid(Contents,Rest,ASym,ACharge).
 
 hydro_acid([ASym|Rest],Rest,ASym,ACharge) --> "hydro", acid_base(ASym), "ic", {charge_check(nonmetal,ASym,ACharge)}.
 
@@ -101,3 +102,5 @@ acid_base("S") --> "sulfur".
 acid_base("P") --> "phosphor".
 
 acid_base(Sym) --> element_base(Sym,_).
+
+polyatomic_acid(Contents,Rest,ASym,ACharge) --> group_base(Contents,Rest,ASym,Base), "ic", {\+ Base = "", charge_check(nonmetal,ASym,ACharge)}.

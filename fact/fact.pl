@@ -95,3 +95,6 @@ Symbol	string	The symbol of the element
 :- include('nonmetal.pl').
 :- include('polyatomic.pl').
 
+% Retained and common names for compounds
+:- include('retained.pl').
+
