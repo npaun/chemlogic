@@ -1,5 +1,10 @@
 :- set_prolog_flag(double_quotes,chars).
 
+% Output Formatting
+
+:- include('../io/formats.pl').
+
+
 % Translates facts about about elements and polyatomic ions to DCG rules
 :- include('fact_dcg_translate.pl').
 
