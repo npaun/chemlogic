@@ -22,8 +22,9 @@ equation_system_eval([H|T],Vars) :-
 % Specify the base condition
 equation_evaluate(CoeffS,Solution) :-
 	Values = [FirstVar|_],
-{	FirstVar > 0, FirstVar =< 10},
 	equation_system(CoeffS,Values,System),
+	positive(Values),
+	writeln(System),
 	equation_system_eval(System,Values),
 	bb_inf(Values,FirstVar,Inf,Solution),
 	writeln(Inf),
@@ -37,6 +38,12 @@ equation_terms([H|T],Out) :-
 	Out = H + Rest.
 
 % Assign a variable to each coefficient
+
+positive([]).
+
+positive([Var|VarS]) :-
+	{Var > 0},
+	positive(VarS).
 
 equation_coefficients([],[],[]).
 
