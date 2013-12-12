@@ -5,6 +5,9 @@ cl(element("Na","sodium","natr")).
         charge("Na",1).
 	atomic("Na",11).
 
+cl(element("K","potassium","kall")).
+	charge("K",1).
+	atomic("K",19).
 
 
 
@@ -20,6 +23,10 @@ cl(element("Cr","chromium","chrom")).
         oxyanions("Cr",-1,[0,0,2,0]).
 	atomic("Cr",24).
 
+cl(element("Mn","manganese","mangan")).
+	charge("Mn",[2,4]).
+	oxyanions("Mn",-1,[4,0,0,0]).
+	atomic("Mn",25).
 
 cl(element("Cu","copper","cupr")).
         charge("Cu",[1,2]).
