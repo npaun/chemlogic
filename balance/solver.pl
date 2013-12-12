@@ -1,23 +1,12 @@
-:- use_module(library(clpfd)).
+:- use_module(library(clpq)).
 
-% Equate each term to zero to create a system of linear equations
-equation_system_live_eval([],_).
-
-equation_system_live_eval([H|T],Vars) :-
-	equation_coefficients(H,Vars,LTerms),
-	equation_terms_pretty(LTerms,LHS),
-	!,
-	LHS #= 0,
-	equation_system_eval(T,Vars).
-
-% System only
 equation_system([],_,[]).
 
 equation_system([H|T],Vars,[Equation|EquationS]) :-
         equation_coefficients(H,Vars,LTerms),
         equation_terms_pretty(LTerms,LHS),
         !,
-        Equation =.. [#=,LHS,0],
+        Equation =.. [=,LHS,0],
         equation_system(T,Vars,EquationS).
 
 % Evaluator
@@ -25,39 +14,20 @@ equation_system([H|T],Vars,[Equation|EquationS]) :-
 equation_system_eval([],_).
 
 equation_system_eval([H|T],Vars) :-
-	H,
+	{H},
 	equation_system_eval(T,Vars).
 
 
 
 % Specify the base condition
-equation_evaluate(CoeffS,Values) :-
-	Values = [FirstVar,TestVar|_],
-	FirstVar #> 0,
-	FirstVar #=< 10,
+equation_evaluate(CoeffS,Solution) :-
+	Values = [FirstVar|_],
+{	FirstVar > 0, FirstVar =< 10},
 	equation_system(CoeffS,Values,System),
-	writeln(System),
 	equation_system_eval(System,Values),
-(	finite_domain(TestVar) -> label_minimize(FirstVar,Values); pad_out(Values)).
-
-label_minimize(FirstVar,Vars) :-
-Options = [min(FirstVar)],
-clpfd:label(Options, Options, default(leftmost), default(up), default(step), [], upto_ground, Vars).
-
-finite_domain(Var) :-
-        (   clpfd:fd_get(Var, Dom, _) ->
-            (   clpfd:domain_infimum(Dom, n(_)), clpfd:domain_supremum(Dom, n(_)) -> true
-            ;   false
-            )
-        ;   integer(Var) -> true
-        ;   true
-        ).
-
-
-
-pad_out([]).
-pad_out([1|T]) :- pad_out(T).
-	
+	bb_inf(Values,FirstVar,Inf,Solution),
+	writeln(Inf),
+	!.
 
 % Add terms together
 equation_terms([],0).

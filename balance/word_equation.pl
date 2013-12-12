@@ -18,7 +18,8 @@ word_expression(Coeff,CoeffRest,Elems,ElemRest,Formula,FormulaRest,[RAW]) -->
 
 word_balanced_formula([Coeff|CoeffRest],CoeffRest,Elems,ElemRest,[Formula|FormulaRest],FormulaRest,Formula) --> 
 	word_coefficient(Coeff),
-	name(Elems,ElemRest,Formula).
+	name(Elems,ElemRest,Formula),
+	{writeln(Formula)}.
 
 word_coefficient(X) --> {nonvar(X), X = 1}, "". 
 word_coefficient(2) --> "2 ".
@@ -32,5 +33,5 @@ word_coefficient(9) --> "9 ".
 word_coefficient(10) --> "10 ".
 word_coefficient(11) --> "11 ".
 word_coefficient(12) --> "12 ".
-word_coefficient(_) --> "". 
+ word_coefficient(_) --> "". 
 
