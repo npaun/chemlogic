@@ -33,8 +33,6 @@ num_decimal(X) --> { \+ var(X), X = 1 }, [].
 
 num_decimal(10) --> "10".
 
-% num_decimal(0) --> "0".
-% num_decimal(1) --> "1".
 num_decimal(2) --> "2".
 num_decimal(3) --> "3".
 num_decimal(4) --> "4".
