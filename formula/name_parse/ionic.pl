@@ -29,13 +29,15 @@ CrN2
 ionic(E,R,L) --> {var(L)}, ionic_fwd(E,R,L), {!}.
 ionic(_,_,L) --> {nonvar(L)}, ionic_rev(L).
 
-ionic_rev([[MSym,_],[NMSym,NMSub]]) --> 
+ionic_rev([[MSym,MSub],[NMSym,NMSub]]) --> 
 	{ 
-	%^ Just look up the non-metal charge
+	%  TODO: If the metal is monovalent, don't bother conjuring it up! Just use it.
+	%  Also, no need to actually check these charges, is there?
+
 (	 charge(NMSym,NMCharge) ; oxyanion(_,_,NMSym,NMCharge,_,[]), !),
 	!,
-	 %^ Swap the non-metal subcript, to create the metal charge. Multiply it with the GCD of the other charge, to preserve the proportions
-	 MCharge is NMSub * gcd(NMSub,NMCharge)
+	 NMTotal is abs(NMSub * NMCharge),
+	 MCharge is NMTotal / MSub
 	},
 	ionic_calcdata(_,_,[MSym,MCharge,NMSym,NMCharge]).
 
