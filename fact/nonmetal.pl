@@ -1,3 +1,9 @@
+cl(element("Cl","chlorine","chlor")).
+        charge("Cl",-1).
+        oxyanions("Cl",-1,[4,3,2,1]).
+        diatomic("Cl").
+        atomic("Cl",17).
+
 %%%%% Hydrogen %%%%%
 
 cl(element("H","hydrogen","hydr")).
@@ -43,13 +49,6 @@ cl(element("S","sulphur","sulph")).
 
 
 %%%%% Halogens %%%%%
-
-cl(element("Cl","chlorine","chlor")).
-        charge("Cl",-1).
-        oxyanions("Cl",-1,[4,3,2,1]).
-        diatomic("Cl").
-	atomic("Cl",17).
-
 cl(element("Br","bromine","brom")).
         charge("Br",-1).
         oxyanions("Br",-1,[4,3,2,1]).
