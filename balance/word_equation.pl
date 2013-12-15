@@ -19,6 +19,7 @@ word_expression(Coeff,CoeffRest,Elems,ElemRest,Formula,FormulaRest,[RAW]) -->
 word_balanced_formula([Coeff|CoeffRest],CoeffRest,Elems,ElemRest,[Formula|FormulaRest],FormulaRest,Formula) --> 
 	word_coefficient(Coeff),
 	name(Elems,ElemRest,Formula),
+	!,
 	{writeln(Formula)}.
 
 word_coefficient(X) --> {nonvar(X), X = 1}, "". 

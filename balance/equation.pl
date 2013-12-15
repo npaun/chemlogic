@@ -21,7 +21,7 @@ expression(Coeff,CoeffRest,Elems,ElemRest,Formula,FormulaRest,[RAWH|RAWT]) -->
 balanced_formula([Coeff|CoeffRest],CoeffRest,Elems,ElemRest,[Formula|FormulaRest],FormulaRest,Formula) --> 
 	coefficient(Coeff), 
 	{writeln('Process')},
-	formula(Elems,ElemRest,Formula).
+	formula(Elems,ElemRest,Formula), !.
 
 coefficient(X) --> {nonvar(X), X = 1}, "".
 coefficient(2) --> "2".
