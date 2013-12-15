@@ -56,8 +56,15 @@ ionic_calcdata(MElems,FinalRest,[MSym,MCharge,NMSym,NMCharge]) --> cation(MElems
 metal(S,C) --> metal_multivalent(S,C).
 metal(S,C) --> metal_monovalent(S,C).
 
-metal_multivalent(Sym,Charge) -->  element(Sym,_),{charge(Sym,Charges), is_list(Charges)},multivalent_charge(Sym,Charge), {member(Charge,Charges)}.
-metal_monovalent(Sym,Charge) --> element(Sym,_), {charge_check(metal,Sym,Charge)}.
+metal_multivalent(Sym,Charge) -->  element(Sym,_),{charge(Sym,Charges), is_list(Charges)
+	},
+	multivalent_charge(Sym,Charge), {member(Charge,Charges); 
+(
+	atom_codes(Atom,Sym),
+	atom_concat('ionic charge for ',Atom,Message),
+	existence_error(Message,Charge)
+)}.
+metal_monovalent(Sym,Charge) --> element(Sym,_), {charge_check(metal,Sym,Charge)}; {existence_error(metal,Sym)}.
 
 
 cation(Elems,Rest,Formula,Charge) --> group(Elems,Rest,Formula,_), 
@@ -77,7 +84,8 @@ anion(Contents,Rest,Formula,Charge) --> oxyanion(Contents,Rest,Formula,Charge).
 anion([Sym|Rest],Rest,Sym,Charge) --> non_metal_ide(Sym,_),
 	{
 	  charge(Sym,Charge)
-	}.
+	};
+	{existence_error(nonmetal,Sym)}.
 
 multivalent_charge(Sym,Charge) --> "(", num_roman(Charge), ")".
 
