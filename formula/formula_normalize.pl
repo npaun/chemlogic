@@ -1,13 +1,15 @@
 :- set_prolog_flag(double_quotes,chars).
 
-formula([],[],[],[],[]) :- !.
+formula(Elems,Rest,Formula) --> formula_real(Elems,Rest,Formula), !; {
+	var(Elems) -> syntax_error('Formula.');
+	throw('Logic Error: Formula.')
+	}.
 
-formula(Elems,Rest,[[Sym1,Num1]|Res]) --> (mol_species(Elems,Rest0,Sym1,Num1), formula(Rest0,Rest,Res), !); {
-	var(Elems) ->
-	syntax_error('Formula. Verify that the formula is correct. This error could also be raised by an element missing from the database.');
-	throw('Logic Error: Formula. An internal structure could not be converted into a human readable formula.')}.
+formula_real([],[],[],[],[]) :- !.
 
-formula(Elems,Rest,[[Sym,Num]]) --> mol_species(Elems,Rest,Sym,Num).
+formula_real(Elems,Rest,[[Sym1,Num1]|Res]) --> mol_species(Elems,Rest0,Sym1,Num1), formula_real(Rest0,Rest,Res), !.
+
+formula_real(Elems,Rest,[[Sym,Num]]) --> mol_species(Elems,Rest,Sym,Num).
 
 
 mol_species(Elems,Rest,Sym,Num) --> "(",poly_part(Elems,Rest,Sym), ")", subscript(Num),

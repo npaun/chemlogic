@@ -1,7 +1,7 @@
 
 symbolic(Coeff,CoeffRest,Elems,ElemRest,Formula,FormulaRest,[RAWL,RAWR]) -->
-	expression(Coeff,CoeffRest0,Elems,ElemRest0,Formula,FormulaRest0,RAWL),
-	output_arrow,
+	expression(Coeff,CoeffRest0,Elems,ElemRest0,Formula,FormulaRest0,RAWL),	
+	" --> ",
 	{writeln('Right')},
 	expression(CoeffRest0,CoeffRest,ElemRest0,ElemRest,FormulaRest0,FormulaRest,RAWR).
 

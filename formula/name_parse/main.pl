@@ -32,7 +32,7 @@ single_element([Sym|Rest],Rest,[[Sym,1]]) --> element(Sym,_).
 
 /* Parse it up! */
 
-name(Sym,Rest,F) --> name_real(Sym,Rest,F); {var(F) -->
+name(Sym,Rest,F) --> (name_real(Sym,Rest,F), !) ; {var(F) ->
 	syntax_error('Name. The given compound name could not be parsed. Please verify that you have entered the name correctly. This error could also be triggered by a missing element name in the database.');
 	throw('Logic Error: Name. The internal formula could not be converted into a compound name.')}.
 
