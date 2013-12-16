@@ -1,7 +1,7 @@
 
-word(Coeff,CoeffRest,Elems,ElemRest,Formula,FormulaRest,[RAWL,RAWR]) -->
+word(Mode,Coeff,CoeffRest,Elems,ElemRest,Formula,FormulaRest,[RAWL,RAWR]) -->
 	word_expression(Coeff,CoeffRest0,Elems,ElemRest0,Formula,FormulaRest0,RAWL),
-	" --> ",
+	output(Mode,arrow),
 %	{writeln('Right')},
 	word_expression(CoeffRest0,CoeffRest,ElemRest0,ElemRest,FormulaRest0,FormulaRest,RAWR).
 

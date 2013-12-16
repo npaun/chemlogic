@@ -1,18 +1,16 @@
-format(Test,Symbol) --> {var(Test), !}, output(Symbol,plain).
-format(_,Symbol) --> output(Symbol).
-
-output(Symbol) --> output(Symbol,html).
-
-output(subscript_before,plain) --> "".
-output(subscript_after,plain) --> "".
 
 
-output(subscript_before,html) --> "<sub>". 
-output(subscript_after,html) --> "</sub>".
+output(output,Type) --> output(html,Type).
 
-output(subscript_before,latex) --> "_{". 
-output(subscript_after,latex) --> "}". 
+output(user,arrow) --> " --> ".
+output(html,arrow) --> " &rarr; ".
+output(latex,arrow) --> " \\rightarrow ".
 
-output(arrow,plain) --> " --> ".
-output(arrow,html) --> " &rarr; ".
-output(arrow,latex) --> " \rightarrow ".
+output(user,sub_start) --> "".
+output(user,sub_end) --> "".
+
+output(html,sub_start) --> "<sub>".
+output(html,sub_end) --> "</sub>".
+
+output(latex,sub_start) --> "_{".
+output(latex,sub_end) --> "}".
