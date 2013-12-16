@@ -18,7 +18,7 @@ select, option, input
 	{
 		display: inline-block;
 		list-style-type: none;
-		width: 100%;
+		width: 60%;
 	}
 
 
@@ -31,7 +31,7 @@ select, option, input
 
 #menu li h1
 	{
-		margin-left: -4%;
+		margin-left: -6%;
 		color: white;
 		display: inline;
 	}
