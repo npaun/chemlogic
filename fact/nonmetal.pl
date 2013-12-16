@@ -20,7 +20,7 @@ cl(element("C","carbon","carbon")).
 	%% NOTE: Carbon must be given a charge less than 0 for it to be treated as a non-metal, despite not forming ions. A charge of -1000 is used to prevent its use as an anion in an ionic compound.
         charge("C",-1000).
 	%% TODO: This rule causes CO2 to be tested for being a carbonite ion. There needs to be some way to stop wasting time here.
-        oxyanions("C",-2,[0,3,2,0]).
+        oxyanions("C",-2,[0,3,0,0]).
 	atomic("C",6).
 
 cl(element("N","nitrogen","nitr")).
