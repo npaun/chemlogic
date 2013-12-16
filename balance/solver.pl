@@ -24,10 +24,10 @@ equation_evaluate(CoeffS,Solution) :-
 	Values = [FirstVar|_],
 	equation_system(CoeffS,Values,System),
 	positive(Values),
-	writeln(System),
+%	writeln(System),
 	equation_system_eval(System,Values),
 	bb_inf(Values,FirstVar,Inf,Solution),
-	writeln(Inf),
+%	writeln(Inf),
 	!.
 
 % Add terms together

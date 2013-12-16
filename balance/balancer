@@ -18,7 +18,7 @@ balance_equation(Equation,Solution) :- balance_equation(symbolic,Equation,symbol
 
 balance_equation_2(Type,Equation,Type2,Solution) :-
 	call(Type,_,[],Elements,[],MoleculeSet,[],SideSet,Equation,[]),
-	writeln('--- MARK ---'),
+%	writeln('--- MARK ---'),
 	rebase(SideSet),
 	sort(Elements,ElementSet),
 	coefficient_set(MoleculeSet,ElementSet,CoeffSet),
