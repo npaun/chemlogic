@@ -18,15 +18,28 @@ select, option, input
 	{
 		display: inline-block;
 		list-style-type: none;
+		width: 100%;
 	}
 
-#menu li, #menu li h1
+
+
+#menu li
+ {
+  display: inline;
+  margin: 1%;
+ }
+
+#menu li h1
 	{
+		margin-left: -4%;
+		color: white;
 		display: inline;
 	}
 
 #menu li a
 	{
+	font-size: 150%;
+	color: white;
 	text-decoration: none;
 	}
 
@@ -46,4 +59,25 @@ select, option, input
 #solution
  {
   font-size: 200%;
+ }
+
+#top
+ {
+  background-color: darkgreen;
+  margin-bottom: 10%;
+ }
+
+body
+ { 
+  margin: 0;
+ }
+
+.todo
+ {
+  opacity: 0.4;
+ }
+
+.failed
+ {
+  color: red;
  }
