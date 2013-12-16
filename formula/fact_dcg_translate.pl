@@ -14,7 +14,7 @@ cl_to_dcg(Clause) :-
 
 cl_poly_to_dcg(Clause) :-
 	Clause =.. [_,Symbol,Name,Base],
-	(formula(Contents,[],Symbol,Formula,[]), !),
+	(formula(user,Contents,[],Symbol,Formula,[]), !),
 
 	append(Contents,Rest,Comb),
 

@@ -40,13 +40,13 @@ compounder_process(Type,Input,Solution) :-
 compounder_do_process(name,Name,Formula) :-
 	name(Elements,[],Internal,Name,[]) -> 
 		(
-			formula(Elements,[],Internal,Formula,[]) -> true;
+			formula(output,Elements,[],Internal,Formula,[]) -> true;
 			Formula = "<span class='failed'>FAILED: Conversion of processed name to a formula.</span> This is a bug in the program."
 		);
 	Formula = "<span class='failed'>FAILED: Processing of compound name.</span> The program may not have information on the elements/groups used in your compound. But, please verify that you have not misentered anything.".
 
 compounder_do_process(formula,Formula,Name) :-
-        formula(Elements,[],Internal,Formula,[]) -> 
+        formula(user,Elements,[],Internal,Formula,[]) -> 
                 (
                         name(Elements,[],Internal,Name,[]) -> true;
                         Name = "<span class='failed'>LOGIC ERROR: Conversion of processed formula to name.</span> This probably a bug in the program, but may reflect a missing polyatomic ion in the database."
