@@ -2,8 +2,8 @@
 
 % Output Formatting
 
-:- include('../io/format-in.pl').
-:- include('../io/format-out.pl').
+:- include('../io/formats.pl').
+
 
 % Translates facts about about elements and polyatomic ions to DCG rules
 :- include('fact_dcg_translate.pl').
