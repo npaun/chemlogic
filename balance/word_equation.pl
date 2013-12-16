@@ -23,16 +23,6 @@ word_balanced_formula([Coeff|CoeffRest],CoeffRest,Elems,ElemRest,[Formula|Formul
 %	{writeln(Formula)}.
 
 word_coefficient(X) --> {nonvar(X), X = 1}, "". 
-word_coefficient(2) --> "2 ".
-word_coefficient(3) --> "3 ".
-word_coefficient(4) --> "4 ".
-word_coefficient(5) --> "5 ".
-word_coefficient(6) --> "6 ".
-word_coefficient(7) --> "7 ".
-word_coefficient(8) --> "8 ".
-word_coefficient(9) --> "9 ".
-word_coefficient(10) --> "10 ".
-word_coefficient(11) --> "11 ".
-word_coefficient(12) --> "12 ".
- word_coefficient(_) --> "". 
+word_coefficient(X) --> num_decimal(X), " ".
+word_coefficient(_) --> "". 
 

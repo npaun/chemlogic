@@ -15,11 +15,6 @@ mol_species(Elems,Rest,Sym,Num) --> "(",poly_part(Elems,Rest,Sym), ")", subscrip
 
 mol_species(Elems,Rest,Sym,Num) --> any_part(Elems,Rest,Sym), subscript(Num).
 
-/*
-formula_symbol_TMP([Sym,"O"],[Sym,1,"O",Num]) --> element_symbol(Sym), "O", num_decimal(Num).
-formula_symbol_TMP(Sym,Sym) --> element_symbol(Sym).
-*/
-
 
 poly_part(Elems,Rest,Formula) --> oxyanion_symbol(Elems,Rest,Formula).
 poly_part(Elems,Rest,Formula) --> group_symbol(Elems,Rest,Formula).
@@ -36,20 +31,3 @@ subscript(X) --> { \+ var(X), X = 1 }, [].
 subscript(X) --> num_decimal(X).
 subscript(1) --> [].
 
-/*
-num_decimal(X) --> { \+ var(X), X = 1 }, [].
-
-num_decimal(10) --> "10".
-
-num_decimal(2) --> "2".
-num_decimal(3) --> "3".
-num_decimal(4) --> "4".
-num_decimal(5) --> "5".
-num_decimal(6) --> "6".
-num_decimal(7) --> "7".
-num_decimal(8) --> "8".
-num_decimal(9) --> "9".
-
-
-num_decimal(1) --> [].
-*/
