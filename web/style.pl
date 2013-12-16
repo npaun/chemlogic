@@ -25,5 +25,7 @@ cl_menu --> html(
 	[
 	li(h1(id(title),'Chemlogic')),
 	li(a(href(compounder),'Compounder')),
-	li(a(href(balancer),'Balancer'))
+	li(a(href(balancer),'Balancer')),
+	li(a([class(todo),href(products)],'Products')),
+	li(a([class(todo),href(cplx_redox)],'Complex Redox'))
 	])).

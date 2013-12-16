@@ -22,14 +22,14 @@ compounder_html(Type,Input,Solution) :-
 			h1(id(feature),'Compounder'),
 			form([
 				select(name(type),SelectList),
-				input([name(input),id(input),type(text),value(Input)])
+				input([name(input),id(input),type(text),size(60),value(Input)])
 			]),
 			p(id(solution),\[Solution])
 		]
 		).
 
 compounder_nop(Solution) :-
-	Solution = 'Welcome. Please select what you are inputting (a name or a formula) and enter it into the text box'.	
+	Solution = 'Please select Name or Formula, depending on what you are entering, and then enter it into the textbox.'.	
 
 
 compounder_process(Type,Input,Solution) :-
@@ -41,17 +41,17 @@ compounder_do_process(name,Name,Formula) :-
 	name(Elements,[],Internal,Name,[]) -> 
 		(
 			formula(Elements,[],Internal,Formula,[]) -> true;
-			Formula = "FAILED: Conversion of processed name to a formula. This is a bug in the program."
+			Formula = "<span class='failed'>FAILED: Conversion of processed name to a formula.</span> This is a bug in the program."
 		);
-	Formula = "FAILED: Processing of compound name. The program may not have information on the elements/ggroups used in your compound. But, please verify that you have not misentered anything.".
+	Formula = "<span class='failed'>FAILED: Processing of compound name.</span> The program may not have information on the elements/groups used in your compound. But, please verify that you have not misentered anything.".
 
 compounder_do_process(formula,Formula,Name) :-
         formula(Elements,[],Internal,Formula,[]) -> 
                 (
                         name(Elements,[],Internal,Name,[]) -> true;
-                        Name = "FAILED: Conversion of processed formula to name. This probably a bug in the program, but may reflect a missing polyatomic ion in the database."
+                        Name = "<span class='failed'>LOGIC ERROR: Conversion of processed formula to name.</span> This probably a bug in the program, but may reflect a missing polyatomic ion in the database."
                 );
-        Name = "FAILED: Processing of formula . The program may not have information on the elements/groups used in your compound. But, please verify that you have not misentered anything.".
+        Name = "<span class='failed'>FAILED: Processing of formula.</span> The program may not have information on the elements/groups used in your compound. But, please verify that you have not misentered anything.".
 	
 
 compounder_page(Request) :-

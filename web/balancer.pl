@@ -36,7 +36,7 @@ balancer_html(Type,Input,OutputType,Solution) :-
 		).
 
 balancer_nop(Solution) :-
-	Solution = 'Welcome. Please select what you are inputting (a symbolic equation or a word equation) and enter it into the text box, then select your output mode.'.	
+	Solution = 'Please select Symbolic or Word equation, depending on what you are entering, then enter it into the textbox. You can also select how the equation will be output.'.	
 
 
 balancer_process(Type,Input,OutputType,Solution) :-
@@ -46,7 +46,7 @@ balancer_process(Type,Input,OutputType,Solution) :-
 
 balancer_do_process(Type,StringInput,OutputType,StringSolution) :-
 	balance_equation(Type,StringInput,OutputType,StringSolution);
-	StringSolution = "ERROR. This equation could not be balanced. I can't give you a detailed reason, yet.".
+	StringSolution = "<span class='failed'>FAILED: Balancing of equation.</span> Unfortunately, a detailed reason is not yet available.".
 
 balancer_page(Request) :-
 	balancer_input(Request,Type,Input,OutputType),
