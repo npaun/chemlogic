@@ -1,0 +1,49 @@
+
+      @font-face {
+    font-family: "Computer Modern";
+    src: url('computer-modern.otf');
+  }
+
+*
+ {
+	font-family: "Computer Modern";
+ } 
+
+select, option, input
+ { 
+	font-family: sans-serif !important;
+ } 
+
+#menu
+	{
+		display: inline-block;
+		list-style-type: none;
+	}
+
+#menu li, #menu li h1
+	{
+		display: inline;
+	}
+
+#menu li a
+	{
+	text-decoration: none;
+	}
+
+
+#content
+ {
+  margin: auto;
+  width: 75%;
+  text-align: center;
+ }
+
+#feature
+  {
+   font-size: 300%;
+  }
+
+#solution
+ {
+  font-size: 200%;
+ }
