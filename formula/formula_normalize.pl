@@ -1,15 +1,11 @@
 :- set_prolog_flag(double_quotes,chars).
 
-formula(Elems,Rest,Formula) --> formula_real(Elems,Rest,Formula), !; {
-	var(Elems) -> syntax_error('Formula.');
-	throw('Logic Error: Formula.')
-	}.
 
-formula_real([],[],[],[],[]) :- !.
+formula([],[],[],[],[]) :- !.
 
-formula_real(Elems,Rest,[[Sym1,Num1]|Res]) --> mol_species(Elems,Rest0,Sym1,Num1), formula_real(Rest0,Rest,Res), !.
+formula(Elems,Rest,[[Sym1,Num1]|Res]) --> mol_species(Elems,Rest0,Sym1,Num1), formula(Rest0,Rest,Res), !.
 
-formula_real(Elems,Rest,[[Sym,Num]]) --> mol_species(Elems,Rest,Sym,Num).
+formula(Elems,Rest,[[Sym,Num]]) --> mol_species(Elems,Rest,Sym,Num).
 
 
 mol_species(Elems,Rest,Sym,Num) --> "(",poly_part(Elems,Rest,Sym), ")", subscript(Num),
