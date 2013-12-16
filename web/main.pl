@@ -16,6 +16,7 @@ server(Port, Options) :-
 :- http_handler('/chemlogic/compounder', compounder_page, []).
 
 compounder_input(Request,Type,Input) :-
+	
 	http_parameters(Request,
 		[   
 			type(Type, [ optional(true), oneof([name,formula]) ]),
@@ -23,10 +24,20 @@ compounder_input(Request,Type,Input) :-
 		]).
 
 compounder_html(Type,Input,Solution) :-
+( var(Input) -> Input = []; true),
+(Type = name -> 
+	SelectList = [option([value(name),selected],'Name'),option([value(formula)],'Formula')];
+	SelectList = [option([value(name)],'Name'),option([value(formula),selected],'Formula')] 
+	),
+
+
 	reply_html_page(title('Compounder'),
 		[
 			h1('Compounder'),
-			p(Input),
+			form([
+				select(name(type),SelectList),
+				input([name(input),id(input),type(text),value(Input)])
+			]),
 			p(\[Solution])
 		]
 		).
