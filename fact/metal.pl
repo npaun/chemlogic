@@ -29,6 +29,24 @@ cl(element("Ca","calcium","calc")).
 	charge("Ca",2).
 	atomic("Ca",20).
 
+%%%%% Actinides %%%%%
+
+cl(element("U","uranium","uran")).
+	charge("U",[6,4,5]).
+	atomic("U",92).
+
+cl(element("Np","neptunium","neptun")).
+	charge("Np",[5,3,4,6]).
+	atomic("Np",93).
+
+cl(element("Pu","plutonium","pluton")).
+	charge("Pu",[4,6,3,5]).
+	atomic("Pu",94).
+	
+
+cl(element("Am","americium","americ")).
+	charge("Am",[3,4,5,6]).
+	atomic("Am",95).
 
 %%%%% Transition Metals %%%%%
 
@@ -57,9 +75,21 @@ cl(element("Zn","zinc","zinc")).
 	charge("Zn",2).
 	atomic("Zn",30).
 
+cl(element("Tc","technetium","technetium")).
+	charge("Tc",7).
+	atomic("Tc",43).
+
 cl(element("Ag","silver","argent")).
 	charge("Ag",1).
 	atomic("Ag",47).
+
+cl(element("W","tungsten","wolfram")).
+	charge("W",6).
+	atomic("W",74).
+
+cl(element("Re","rhenium","rhen")).
+	charge("Re",[4,7]).
+	atomic("Re",75).
 
 cl(element("Au","gold","aurum")).
 	charge("Au",[3,1]).
