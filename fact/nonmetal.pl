@@ -50,11 +50,22 @@ cl(element("S","sulphur","sulph")).
 
 
 %%%%% Halogens %%%%%
+
+cl(element("F","fluorine","fluo")).
+	charge("Fl",-1).
+	diatomic("F").
+	atomic("F",9).
+
 cl(element("Br","bromine","brom")).
         charge("Br",-1).
         oxyanions("Br",-1,[4,3,2,1]).
         diatomic("Br").
 	atomic("Br",35).
+
+cl(element("I","iodine","iod")).
+	charge("I",-1).
+	oxyanions("I",-1,[4,3,2,1]).
+	atomic("I",53).
 
 %%%%% Noble Gases %%%%%
 
