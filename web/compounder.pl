@@ -1,3 +1,5 @@
+% IDEA:
+% Different input fields for names, formulas, symbolic equations and word equations. This would make auto-complete more useful, perhaps.
 
 :- http_handler('/chemlogic/compounder', compounder_page, []).
 
