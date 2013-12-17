@@ -3,7 +3,7 @@
 % Output Formatting
 
 :- include('../io/format-in.pl').
-:- include('../io/format-out.pl').
+:- ensure_loaded('../io/format-out.pl').
 
 
 % Translates facts about about elements and polyatomic ions to DCG rules

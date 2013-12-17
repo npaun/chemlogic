@@ -17,7 +17,9 @@ mol_species(Mode,Elems,Rest,Sym,Num) --> any_part(Mode,Elems,Rest,Sym), subscrip
 
 
 poly_part(Mode,Elems,Rest,Formula) --> oxyanion_symbol(Mode,Elems,Rest,Formula).
-poly_part(_,Elems,Rest,Formula) --> group_symbol(Elems,Rest,Formula).
+
+poly_part(user,Elems,Rest,Formula) --> group_symbol(Elems,Rest,Formula).
+poly_part(output,Elems,Rest,Formula) --> group_symbol_output(Elems,Rest,Formula).
 
 any_part(Mode,Elems,Rest,Formula) --> poly_part(Mode,Elems,Rest,Formula), !.
 any_part(_,[Sym|Rest],Rest,Sym) --> element_symbol(Sym).

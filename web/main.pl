@@ -19,6 +19,8 @@ set_html_format :-
 
 :- include('style.pl').
 
+:- ensure_loaded('../io/format-out.pl').
+:- initialization set_output_format(html).
 
 :- include('../balance/balancer').
 
@@ -26,4 +28,3 @@ set_html_format :-
 :- include('balancer.pl').
 
 
-:- initialization set_output_format(html).
