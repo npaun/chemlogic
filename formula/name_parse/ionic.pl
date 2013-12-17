@@ -58,7 +58,7 @@ metal(S,C) --> metal_monovalent(S,C).
 
 metal_multivalent(Sym,Charge) -->  element(Sym,_),{charge(Sym,Charges), is_list(Charges)
 	},
-	multivalent_charge(Sym,Charge), {member(Charge,Charges)}.
+	multivalent_charge(Charge), {member(Charge,Charges)}.
 
 metal_monovalent(Sym,Charge) --> element(Sym,_), {charge_check(metal,Sym,Charge)}.
 
@@ -82,7 +82,7 @@ anion([Sym|Rest],Rest,Sym,Charge) --> non_metal_ide(Sym,_),
 	  charge(Sym,Charge)
 	}.
 
-multivalent_charge(Sym,Charge) --> "(", num_roman(Charge), ")".
+multivalent_charge(Charge) --> "(", num_roman(Charge), ")".
 
 num_roman(8) --> "VIII".
 num_roman(8) --> "IIX".

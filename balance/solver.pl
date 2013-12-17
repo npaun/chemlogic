@@ -26,7 +26,7 @@ equation_evaluate(CoeffS,Solution) :-
 	positive(Values),
 %	writeln(System),
 	equation_system_eval(System,Values),
-	bb_inf(Values,FirstVar,Inf,Solution),
+	bb_inf(Values,FirstVar,_,Solution),
 %	writeln(Inf),
 	!.
 
