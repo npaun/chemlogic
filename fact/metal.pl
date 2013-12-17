@@ -13,6 +13,15 @@ cl(element("K","potassium","kall")).
 
 %%%%% Alkaline Earth Metals %%%%%
 
+cl(element("Mg","magnesium","magna")).
+	charge("Mg",2).
+	atomic("Mg",12).
+
+cl(element("Ca","calcium","calc")).
+	charge("Ca",2).
+	atomic("Ca",20).
+
+
 %%%%% Transition Metals %%%%%
 
 
@@ -44,3 +53,5 @@ cl(element("Pb","lead","plumb")).
         charge("Pb",[2,4]).
 	atomic("Pb",82).
 
+cl(element("Hg","mercury","mercur")).
+	charge("Hg",[2]).

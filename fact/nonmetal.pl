@@ -1,3 +1,4 @@
+% Longest match first. Unfortunately, the database must be stored out of order!
 cl(element("Cl","chlorine","chlor")).
         charge("Cl",-1).
         oxyanions("Cl",-1,[4,3,2,1]).

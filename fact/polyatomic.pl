@@ -38,3 +38,6 @@ cl_poly(group([["H",1],["S",1]],"hydrogen sulphide","")).
 
 cl_poly(group([["C",1],["H",3],["C",1],["O",1],["O",1]],"acetate","acet")).
 	charge([["C",1],["H",3],["C",1],["O",1],["O",1]],-1).
+
+cl_poly(group([["Hg",2]],"mercury(I)","mercury(I)")).
+	charge([["Hg",2]],2).
