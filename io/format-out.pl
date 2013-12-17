@@ -1,16 +1,24 @@
+:- dynamic output//2.
 
 
-output(output,Type) --> output(html,Type).
+symbol(user,arrow) --> " --> ".
+symbol(html,arrow) --> " &rarr; ".
+symbol(latex,arrow) --> " \\rightarrow ".
 
-output(user,arrow) --> " --> ".
-output(html,arrow) --> " &rarr; ".
-output(latex,arrow) --> " \\rightarrow ".
+symbol(user,sub_start) --> "".
+symbol(user,sub_end) --> "".
 
-output(user,sub_start) --> "".
-output(user,sub_end) --> "".
+symbol(html,sub_start) --> "<sub>".
+symbol(html,sub_end) --> "</sub>".
 
-output(html,sub_start) --> "<sub>".
-output(html,sub_end) --> "</sub>".
+symbol(latex,sub_start) --> "_{".
+symbol(latex,sub_end) --> "}".
 
-output(latex,sub_start) --> "_{".
-output(latex,sub_end) --> "}".
+set_output_format(Format) :- 
+	retractall(output(_,_,_,_)),
+	dcg_translate_rule(output(output,Symbol) --> symbol(Format,Symbol),DefaultRule),
+	assertz(DefaultRule),
+	dcg_translate_rule(output(Other,Symbol) --> symbol(Other,Symbol),OtherRule),
+	assertz(OtherRule).
+
+:- initialization set_output_format(user).
