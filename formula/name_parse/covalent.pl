@@ -15,10 +15,10 @@ covalent(F) --> systematic_covalent(F).
 systematic_covalent([[Sym,Num],[Sym2,Num2]]) --> covalent_part(non_metal,Sym,Num)," ", covalent_part(non_metal_ide,Sym2,Num2).
 
 
-covalent_part(Goal,Sym,Num) --> num_sub(Num,Letter), call(Goal,Sym,Matched), 
+covalent_part(Goal,Sym,Num) --> num_sub(Num,Letter), call(Goal,Sym,Matched),
 	{
 	 Letter = [] -> true;
-	 Matched = [H|_], 
+	 Matched = [H|_],
 	 	(H = 'a'; H = 'o')
 	}.
 
@@ -36,24 +36,24 @@ num_sub(8,"a") --> "oct".
 num_sub(9,"a") --> "non".
 num_sub(10,"a") --> "dec".
 
-num_sub(1,[]) --> []. 
+num_sub(1,[]) --> [].
 num_sub(1,"o") --> "mon".
 
 %%% Alkanes, Alkenes and Alcohols %%%
 
 
-alkane([["C",Num],["H",HydroNum]]) --> num_alk(Num), "ane", 
+alkane([["C",Num],["H",HydroNum]]) --> num_alk(Num), "ane",
 	{
 	 HydroNum is 2 * Num + 2
 	}.
 
 
-alkene([["C",Num],["H",HydroNum]]) --> num_alk(Num), "ene", 
+alkene([["C",Num],["H",HydroNum]]) --> num_alk(Num), "ene",
 	{
 	 HydroNum is 2 * Num
 	}.
 
-alcohol([["C",Num],["H",HydroNum],["O",1]]) --> num_alk(Num), "anol", 
+alcohol([["C",Num],["H",HydroNum],["O",1]]) --> num_alk(Num), "anol",
 	{
 	 HydroNum is 2 * Num + 2
 	}.

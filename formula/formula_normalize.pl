@@ -24,7 +24,7 @@ poly_part(output,Elems,Rest,Formula) --> group_symbol_output(Elems,Rest,Formula)
 any_part(Mode,Elems,Rest,Formula) --> poly_part(Mode,Elems,Rest,Formula), !.
 any_part(_,[Sym|Rest],Rest,Sym) --> element_symbol(Sym).
 
- oxyanion_symbol(Mode,[Sym,"O"|Rest],Rest,[[Sym,1],["O",Num]]) -->  element_symbol(Sym), "O", subscript(Mode,Num), 
+ oxyanion_symbol(Mode,[Sym,"O"|Rest],Rest,[[Sym,1],["O",Num]]) -->  element_symbol(Sym), "O", subscript(Mode,Num),
 	{oxyanion([Sym,"O"],[],[[Sym,1],["O",Num]],_,_,[]), !}.
 
 

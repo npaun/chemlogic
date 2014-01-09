@@ -15,7 +15,7 @@ charge_check(nonmetal,Sym,Charge) :-
 charge_check(metal,Sym,Charge) :-
         charge(Sym,Charge),
 	!,
-        (\+ is_list(Charge) -> 
+        (\+ is_list(Charge) ->
         Charge > 0),
         !.
 

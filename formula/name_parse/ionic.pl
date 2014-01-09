@@ -1,7 +1,7 @@
 :- include('oxyanion.pl').
 
 % Inefficiencies to eliminate %
-	% Oxyacids require a stupid test to determine the oxyanion 
+	% Oxyacids require a stupid test to determine the oxyanion
 	% Stop the madness when testing multivalent metals
 		% Does the issue come from ionic main or from something else?
 
@@ -29,8 +29,8 @@ CrN2
 ionic(E,R,L) --> {var(L)}, ionic_fwd(E,R,L), {!}.
 ionic(_,_,L) --> {nonvar(L)}, ionic_rev(L).
 
-ionic_rev([[MSym,MSub],[NMSym,NMSub]]) --> 
-	{ 
+ionic_rev([[MSym,MSub],[NMSym,NMSub]]) -->
+	{
 	%  TODO: If the metal is monovalent, don't bother conjuring it up! Just use it.
 	%  Also, no need to actually check these charges, is there?
 
@@ -48,7 +48,7 @@ ionic_fwd(MElems,FinalRest,[[MSym,MSub],[NMSym,NMSub]]) --> ionic_calcdata(MElem
 	 NMSub is abs(MCharge / GCD)
 	}.
 
-ionic_calcdata(Contents,Rest,F) --> acid(Contents,Rest,F). 
+ionic_calcdata(Contents,Rest,F) --> acid(Contents,Rest,F).
 ionic_calcdata(MElems,FinalRest,[MSym,MCharge,NMSym,NMCharge]) --> cation(MElems,MRest,MSym,MCharge), " ", anion(MRest,FinalRest,NMSym,NMCharge).
 
 
@@ -63,7 +63,7 @@ metal_multivalent(Sym,Charge) -->  element(Sym,_),{charge(Sym,Charges), is_list(
 metal_monovalent(Sym,Charge) --> element(Sym,_), {charge_check(metal,Sym,Charge)}.
 
 
-cation(Elems,Rest,Formula,Charge) --> group(Elems,Rest,Formula,_), 
+cation(Elems,Rest,Formula,Charge) --> group(Elems,Rest,Formula,_),
 	{
 	 charge_check(metal,Formula,Charge)
 	}.
@@ -71,7 +71,7 @@ cation(Elems,Rest,Formula,Charge) --> group(Elems,Rest,Formula,_),
 
 cation([S|Rest],Rest,S,C) --> metal(S,C).
 
-anion(Elems,Rest,Formula,Charge) --> group(Elems,Rest,Formula,_), 
+anion(Elems,Rest,Formula,Charge) --> group(Elems,Rest,Formula,_),
 	{
 	 charge_check(nonmetal,Formula,Charge)
 	}.

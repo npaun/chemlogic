@@ -21,7 +21,7 @@ store_subpart(_,[],_,_).
 store_subpart(Original,[[Sym,Sub]|PairS],PolySub,ExprSign) :-
 %	SignedSub is Sub * PolySub * ExprSign,
 	balance_store(Original,Sym,Sub * PolySub * ExprSign),
-	store_subpart(Original,PairS,PolySub,ExprSign). 
+	store_subpart(Original,PairS,PolySub,ExprSign).
 
 % Just a pair (H2 or C4, etc, etc.)
 
