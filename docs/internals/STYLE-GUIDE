@@ -1,0 +1,121 @@
+## File naming
+
+ALL CAPS = human-readable, plain-text
+lowercase, executable = user interface, these are the programs that a user will run
+\*.pl = Prolog code files, libraries
+\*.db = Database, prolog files
+
+## Variable and Function Naming
+
+* Prefix internal variables and functions (used for doing formatting, debugging, workarounds, etc.) with \_.
+* Use __Var__ for special variables
+	* Like what?
+* Keep variable names consistent
+	Use:
+	* `Sym` for symbol
+	* `Formula` for formula
+	* `Elem` for element
+	* `Mol` for molecule
+	* `Coeff` for coefficient
+	* `Subs` for subscript
+* No singletons (Use \_)
+* When processing a list, try to use the pattern X, Xs where possible
+	* If it is difficult use H, T (with a prefix like OutH, OutT)
+* Never call a function `x`\_2, or other meaningless names --- make it clear what it does
+* Use what naming convention?
+
+### Web
+
+* `x`\_page  routes the request.
+* `x`\_input defines input parameters.
+* `x`\_process does the call-out to the generic code, converts it to web-usable format.
+	*  We need to rename all of the `x`_do_process functions to `x`_execute (runs the program, does error-handling)
+* `x`\_nop shows the prompt message instructing the user what to enter
+* `x`\_html generates the page
+
+* Avoid styling, menus, etc. in the `x`\_html pages (use a hook).
+* Avoid using raw HTML (except for the formatting functions), use Prolog-y HTML --- much simpler.
+
+
+## Documentation and Commenting
+
+## Error handling, Determinism, Backtracking
+
+1. There is a lot I do not understand.
+
+* Exceptions seem like a good way of raising errors
+	* They are clear and systematic.
+	* They can be handled at the right level, and formatted for output
+
+1. Current parsing triggers several exceptions during the course of normal operation.
+	* This should never happen.
+	* Avoid triggering redos. It results in a huge pile of parsing being repeated, which slows everything down.
+	BAD: CH4 + O2
+	1. Expression
+	1.1 Formula CH4
+	1.2 +
+	1.3 Expression O2
+	2. Expression
+	2.1 Formula O2
+	2.2 + FAIL
+	3. REDO Expression
+	3.1 Formula O2
+
+	GOOD: CH4 + O2
+	1. Expression
+	1.1 Formula CH4
+	1.2 Expression Tail
+	2. Expression Tail
+	2.1 +
+	2.2 Formula O2
+	2.3 Expression Tail
+	3. Expression Tail
+	3.1 + FAIL
+	4. REDO Expression Tail
+	4.1 NIL
+
+	* We've got problems when we allow the user to enter any old sort of compound.
+	- Ionic expects a metal followed by a non-metal. If it's actually covalent, we cannot raise an error.
+	- We've got issues in the Formula case, as well.
+
+## Indentation, Prolog
+
+### General
+
+* One space between different clauses for the same function
+* Two spaces after a function
+* Spaces around all operators
+	* Spaces after ',' ';', except when used in function definitions
+	* Spaces around ' -> '
+* No trailing spaces
+
+* Clause body is indented with a tab
+* One line per call.
+	* Excluding '!', 'fail', etc.
+	* One ';' or '->' is acceptable
+* Parentheses, Braces, etc, containing more than one line:
+	* Space before
+	* Bodies are indented with tab
+	* One line per call
+
+
+### DCGs
+
+* Avoid mixing DCGs and normal clauses in the same file
+* All of the product rules should be on one-line, unless it wraps
+	* Then, use the General rules
+
+* Grouping should be done based on grammatical logic
+	* No spaces between very closely related rules
+	* One space between rules for the same predicate
+	* Two spaces between unrelated rules
+
+## Indentation, CSS
+
+* Braces are indented with a single space
+* Rule are indented with a tab
+* Always use semi-colons
+* One line per statement
+* Space after each rule
+
+% vim: syntax=markdown
