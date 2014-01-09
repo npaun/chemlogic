@@ -27,4 +27,4 @@ set_html_format :-
 :- include('compounder.pl').
 :- include('balancer.pl').
 
-
+% vi: syntax=prolog

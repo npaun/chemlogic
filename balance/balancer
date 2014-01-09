@@ -32,7 +32,7 @@ balance_equation(Type,Equation,Type2,Solution) :-
 	(retractall(balance(_,_,_)), fail).
 
 
-	
+
 
 coefficient_set(_,[],[]) :- !.
 
@@ -48,3 +48,5 @@ element_coefficients([Mol|MolS],Elem,[Coeff|CoeffS]) :-
         element_coefficients(MolS,Elem,CoeffS),
         !.
 
+
+% vi: syntax=prolog
