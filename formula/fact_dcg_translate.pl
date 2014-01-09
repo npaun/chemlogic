@@ -45,8 +45,8 @@ cl_parse_all :-
 	_),
 	findall(_,
 		(
-		 cl_poly(X),
-		 cl_poly_to_dcg(X)
+		cl_poly(X),
+		cl_poly_to_dcg(X)
 		),
 	_).
 

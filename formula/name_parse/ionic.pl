@@ -34,18 +34,18 @@ ionic_rev([[MSym,MSub],[NMSym,NMSub]]) -->
 	%  TODO: If the metal is monovalent, don't bother conjuring it up! Just use it.
 	%  Also, no need to actually check these charges, is there?
 
-(	 charge(NMSym,NMCharge) ; oxyanion(_,_,NMSym,NMCharge,_,[]), !),
+(	charge(NMSym,NMCharge) ; oxyanion(_,_,NMSym,NMCharge,_,[]), !),
 	!,
-	 NMTotal is abs(NMSub * NMCharge),
-	 MCharge is NMTotal / MSub
+	NMTotal is abs(NMSub * NMCharge),
+	MCharge is NMTotal / MSub
 	},
 	ionic_calcdata(_,_,[MSym,MCharge,NMSym,NMCharge]).
 
 ionic_fwd(MElems,FinalRest,[[MSym,MSub],[NMSym,NMSub]]) --> ionic_calcdata(MElems,FinalRest,[MSym,MCharge,NMSym,NMCharge]),
 	{
-	 GCD is gcd(MCharge,NMCharge),
-	 MSub is abs(NMCharge / GCD),
-	 NMSub is abs(MCharge / GCD)
+	GCD is gcd(MCharge,NMCharge),
+	MSub is abs(NMCharge / GCD),
+	NMSub is abs(MCharge / GCD)
 	}.
 
 ionic_calcdata(Contents,Rest,F) --> acid(Contents,Rest,F).
@@ -65,7 +65,7 @@ metal_monovalent(Sym,Charge) --> element(Sym,_), {charge_check(metal,Sym,Charge)
 
 cation(Elems,Rest,Formula,Charge) --> group(Elems,Rest,Formula,_),
 	{
-	 charge_check(metal,Formula,Charge)
+	charge_check(metal,Formula,Charge)
 	}.
 
 
@@ -73,13 +73,13 @@ cation([S|Rest],Rest,S,C) --> metal(S,C).
 
 anion(Elems,Rest,Formula,Charge) --> group(Elems,Rest,Formula,_),
 	{
-	 charge_check(nonmetal,Formula,Charge)
+	charge_check(nonmetal,Formula,Charge)
 	}.
 anion(Contents,Rest,Formula,Charge) --> oxyanion(Contents,Rest,Formula,Charge).
 
 anion([Sym|Rest],Rest,Sym,Charge) --> non_metal_ide(Sym,_),
 	{
-	  charge(Sym,Charge)
+	charge(Sym,Charge)
 	}.
 
 multivalent_charge(Charge) --> "(", num_roman(Charge), ")".

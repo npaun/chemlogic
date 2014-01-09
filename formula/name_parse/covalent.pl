@@ -17,9 +17,9 @@ systematic_covalent([[Sym,Num],[Sym2,Num2]]) --> covalent_part(non_metal,Sym,Num
 
 covalent_part(Goal,Sym,Num) --> num_sub(Num,Letter), call(Goal,Sym,Matched),
 	{
-	 Letter = [] -> true;
-	 Matched = [H|_],
-	 	(H = 'a'; H = 'o')
+	Letter = [] -> true;
+	Matched = [H|_],
+		(H = 'a'; H = 'o')
 	}.
 
 covalent_part(Goal,Sym,Num) --> num_sub(Num,Letter), Letter, call(Goal,Sym,_).
@@ -44,18 +44,18 @@ num_sub(1,"o") --> "mon".
 
 alkane([["C",Num],["H",HydroNum]]) --> num_alk(Num), "ane",
 	{
-	 HydroNum is 2 * Num + 2
+	HydroNum is 2 * Num + 2
 	}.
 
 
 alkene([["C",Num],["H",HydroNum]]) --> num_alk(Num), "ene",
 	{
-	 HydroNum is 2 * Num
+	HydroNum is 2 * Num
 	}.
 
 alcohol([["C",Num],["H",HydroNum],["O",1]]) --> num_alk(Num), "anol",
 	{
-	 HydroNum is 2 * Num + 2
+	HydroNum is 2 * Num + 2
 	}.
 
 num_alk(1) --> "meth".

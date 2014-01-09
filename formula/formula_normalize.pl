@@ -10,7 +10,7 @@ formula(Mode,Elems,Rest,[[Sym,Num]]) --> mol_species(Mode,Elems,Rest,Sym,Num).
 
 mol_species(Mode,Elems,Rest,Sym,Num) --> "(",poly_part(Mode,Elems,Rest,Sym), ")", subscript(Mode,Num),
 	{
-	 Num > 1
+	Num > 1
 	}.
 
 mol_species(Mode,Elems,Rest,Sym,Num) --> any_part(Mode,Elems,Rest,Sym), subscript(Mode,Num).
