@@ -1,0 +1,83 @@
+
+      @font-face {
+    font-family: "Computer Modern";
+    src: url('computer-modern.otf');
+  }
+
+*
+ {
+	font-family: "Computer Modern";
+ } 
+
+select, option, input
+ { 
+	font-family: sans-serif !important;
+ } 
+
+#menu
+	{
+		display: inline-block;
+		list-style-type: none;
+		width: 60%;
+	}
+
+
+
+#menu li
+ {
+  display: inline;
+  margin: 1%;
+ }
+
+#menu li h1
+	{
+		margin-left: -6%;
+		color: white;
+		display: inline;
+	}
+
+#menu li a
+	{
+	font-size: 150%;
+	color: white;
+	text-decoration: none;
+	}
+
+
+#content
+ {
+  margin: auto;
+  width: 75%;
+  text-align: center;
+ }
+
+#feature
+  {
+   font-size: 300%;
+  }
+
+#solution
+ {
+  font-size: 200%;
+ }
+
+#top
+ {
+  background-color: darkgreen;
+  margin-bottom: 10%;
+ }
+
+body
+ { 
+  margin: 0;
+ }
+
+.todo
+ {
+  opacity: 0.4;
+ }
+
+.failed
+ {
+  color: red;
+ }

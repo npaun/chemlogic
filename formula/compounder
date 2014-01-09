@@ -1,5 +1,11 @@
 :- set_prolog_flag(double_quotes,chars).
 
+% Output Formatting
+
+:- include('../io/format-in.pl').
+:- ensure_loaded('../io/format-out.pl').
+
+
 % Translates facts about about elements and polyatomic ions to DCG rules
 :- include('fact_dcg_translate.pl').
 
@@ -12,8 +18,8 @@
 
 name_2_formula(Name,Formula) :-
 	name(_,_,Internal,Name,[]),
-	formula(_,_,Internal,Formula,[]).
+	formula(output,_,_,Internal,Formula,[]).
 
 formula_2_name(Formula,Name) :-
-	formula(_,_,Internal,Formula,[]),
+	formula(user,_,_,Internal,Formula,[]),
 	name(_,_,Internal,Name,[]).

@@ -17,15 +17,15 @@
 balance_equation(Equation,Solution) :- balance_equation(symbolic,Equation,symbolic,Solution).
 
 balance_equation_2(Type,Equation,Type2,Solution) :-
-	call(Type,_,[],Elements,[],MoleculeSet,[],SideSet,Equation,[]),
-	writeln('--- MARK ---'),
+	call(Type,user,_,[],Elements,[],MoleculeSet,[],SideSet,Equation,[]),
+%	writeln('--- MARK ---'),
 	rebase(SideSet),
 	sort(Elements,ElementSet),
 	coefficient_set(MoleculeSet,ElementSet,CoeffSet),
 	!,
 	equation_evaluate(CoeffSet,Vars),
 	!,
-	call(Type2,Vars,[],Elements,[],MoleculeSet,[],SideSet,Solution,[]).
+	call(Type2,output,Vars,[],Elements,[],MoleculeSet,[],SideSet,Solution,[]).
 
 balance_equation(Type,Equation,Type2,Solution) :-
 	balance_equation_2(Type,Equation,Type2,Solution) -> retractall(balance(_,_,_));
