@@ -26,6 +26,24 @@ lowercase, executable = user interface, these are the programs that a user will 
 * Never call a function `x`\_2, or other meaningless names --- make it clear what it does
 * Use what naming convention?
 
+* Some confusing terms: Result, Output, Value, Coeff, Vars
+Make it clear what they mean:
+
+Are these coefficients:
+
+xH2O --> yH2 + zO2
+
+or these:
+
+2 * x - 2 * y
+x - 2 * z
+
+
+Maybe we should call the first case Vars and the second case Coeffs.
+
+Also: All of the Rs and R0s and FinalRests. What does that even mean!!!???!!!
+
+
 ### Web
 
 * `x`\_page  routes the request.
