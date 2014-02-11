@@ -78,6 +78,15 @@ lowercase, executable = user interface, these are the programs that a user will 
 	- Ionic expects a metal followed by a non-metal. If it's actually covalent, we cannot raise an error.
 	- We've got issues in the Formula case, as well.
 
+2. Take a look at LEMON.
+	1. It's C. It could be very hard to understand the actual actions.
+	* Make it just produce a struct, suck that into prolog.
+	* We've got an API.
+	2. It's unnecessary to use C.
+	* Perhaps a good parser is simpler to implement?
+	* Performance might be better
+	* Use it just to learn something.
+
 ## Indentation, Prolog
 
 ### General
