@@ -16,21 +16,24 @@
 
 balance_equation(Equation,Solution) :- balance_equation(symbolic,Equation,symbolic,Solution).
 
-balance_equation_2(Type,Equation,Type2,Solution) :-
-	call(Type,user,_,[],Elements,[],MoleculeSet,[],SideSet,Equation,[]),
-%	writeln('--- MARK ---'),
+balance_equation_real(InGrammar,Equation,OutGrammar,Solution) :-
+	call(InGrammar,user,_,[],Elems,[],MoleculeSet,[],SideSet,Equation,[]),
+
 	rebase(SideSet),
-	sort(Elements,ElementSet),
+	sort(Elems,ElementSet),
+
 	coefficient_set(MoleculeSet,ElementSet,CoeffSet),
 	!,
-	equation_evaluate(CoeffSet,Vars),
+
+	equation_evaluate(CoeffSet,Values),
 	!,
-	call(Type2,output,Vars,[],Elements,[],MoleculeSet,[],SideSet,Solution,[]).
 
-balance_equation(Type,Equation,Type2,Solution) :-
-	balance_equation_2(Type,Equation,Type2,Solution) -> retractall(balance(_,_,_));
+	call(OutGrammar,output,Values,[],Elems,[],MoleculeSet,[],SideSet,Solution,[]).
+
+/* This function just performs a cleanup */
+balance_equation(InGrammar,Equation,OutGrammar,Solution) :-
+	balance_equation_real(InGrammar,Equation,OutGrammar,Solution) -> retractall(balance(_,_,_));
 	(retractall(balance(_,_,_)), fail).
-
 
 
 

@@ -49,7 +49,7 @@ equation_coefficients([],[],[]).
 
 equation_coefficients([Coeff|CoeffS],[Var|VarS],[Term|TermS]) :-
 	Term =.. [*,Coeff,Var],
-	equation_coefficients(CoeffS,VarS,TermS).	
+	equation_coefficients(CoeffS,VarS,TermS).
 
 
 %%% Eval %%%

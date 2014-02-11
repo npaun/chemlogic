@@ -1,28 +1,24 @@
 
-symbolic(Mode,Coeff,CoeffRest,Elems,ElemRest,Formula,FormulaRest,[RAWL,RAWR]) -->
-	expression(Mode,Coeff,CoeffRest0,Elems,ElemRest0,Formula,FormulaRest0,RAWL),
-	output(Mode,arrow),
-%	{writeln('Right')},
-	expression(Mode,CoeffRest0,CoeffRest,ElemRest0,ElemRest,FormulaRest0,FormulaRest,RAWR).
+symbolic(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideLeft,SideRight]) -->
+	expression(Fmt,Coeff,CoeffR0,Elems,ElemR0,Formula,FormulaR0,SideLeft),
+	output(Fmt,arrow),
+	expression(Fmt,CoeffR0,CoeffR,ElemR0,ElemR,FormulaR0,FormulaR,SideRight).
 
 
-expression(Mode,Coeff,CoeffRest,Elems,ElemRest,Formula,FormulaRest,[RAWH|RAWT]) -->
-	balanced_formula(Mode,Coeff,CoeffRest0,Elems,ElemRest0,Formula,FormulaRest0,RAWH),
+expression(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideH|SideT]) -->
+	balanced_formula(Fmt,Coeff,CoeffR0,Elems,ElemR0,Formula,FormulaR0,SideH),
 	" + ",
-%	{writeln('Add')},
-	expression(Mode,CoeffRest0,CoeffRest,ElemRest0,ElemRest,FormulaRest0,FormulaRest,RAWT), !.
+	expression(Fmt,CoeffR0,CoeffR,ElemR0,ElemR,FormulaR0,FormulaR,SideT), !.
 
+expression(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[Side]) -->
+	balanced_formula(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,Side).
 
-
-
- expression(Mode,Coeff,CoeffRest,Elems,ElemRest,Formula,FormulaRest,[RAW]) -->
-	balanced_formula(Mode,Coeff,CoeffRest,Elems,ElemRest,Formula,FormulaRest,RAW).
-
-balanced_formula(Mode,[Coeff|CoeffRest],CoeffRest,Elems,ElemRest,[Formula|FormulaRest],FormulaRest,Formula) -->
+balanced_formula(Fmt,[Coeff|CoeffR],CoeffR,Elems,ElemR,[Formula|FormulaR],FormulaR,Formula) -->
 	coefficient(Coeff),
-%	{writeln('Process')},
-	formula(Mode,Elems,ElemRest,Formula), !.
+	formula(Fmt,Elems,ElemR,Formula), !.
 
 coefficient(X) --> {nonvar(X), X = 1}, "".
 coefficient(X) --> num_decimal(X).
 coefficient(_) --> "".
+
+% vi: syntax=prolog
