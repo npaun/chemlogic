@@ -12,15 +12,10 @@ server(Port, Options) :-
                     | Options
                     ]).
 
-set_html_format :-
-	retractall(output(output,_,_,_)),
-	dcg_translate_rule(output(output,X) --> symbol(html,X),Rule),
-	assertz(Rule).
-
 :- consult('style.pl').
 
 :- ensure_loaded('../io/format-out.pl').
-:- initialization set_output_format(html).
+:- initialization(set_output_format(html),now).
 
 :- consult('../balance/balancer').
 

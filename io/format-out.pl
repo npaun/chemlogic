@@ -14,7 +14,9 @@ symbol(html,sub_end) --> "</sub>".
 symbol(latex,sub_start) --> "_{".
 symbol(latex,sub_end) --> "}".
 
-set_output_format(Format) :- 
+set_output_format(Format) :-
+	write('Set '),
+	writeln(Format),
 	retractall(output(_,_,_,_)),
 	dcg_translate_rule(output(output,Symbol) --> symbol(Format,Symbol),DefaultRule),
 	assertz(DefaultRule),

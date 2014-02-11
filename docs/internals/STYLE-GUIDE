@@ -18,6 +18,8 @@ lowercase, executable = user interface, these are the programs that a user will 
 	* `Mol` for molecule
 	* `Coeff` for coefficient
 	* `Subs` for subscript
+	* or `Num` if unambigous
+	* `Fmt` for format
 * No singletons (Use \_)
 * When processing a list, try to use the pattern X, Xs where possible
 	* If it is difficult use H, T (with a prefix like OutH, OutT)

@@ -6,34 +6,36 @@
 
 
 cl_to_dcg(Clause) :-
-	Clause =.. [_,Symbol,Name,Base],
-	dcg_translate_rule(element(Symbol,Name) --> Name,FullRule),
+	Clause =.. [_,Sym,Name,Base],
+
+	dcg_translate_rule(element(Sym,Name) --> Name,FullRule),
 	assertz(FullRule),
-	dcg_translate_rule(element_base(Symbol,Base) --> Base,BaseRule),
+
+	dcg_translate_rule(element_base(Sym,Base) --> Base,BaseRule),
 	assertz(BaseRule),
-	% (formula(Symbol,Formula,[]), !),
-	dcg_translate_rule(element_symbol(Symbol) --> Symbol,SymbolRule),
+
+	dcg_translate_rule(element_symbol(Sym) --> Sym,SymbolRule),
 	assertz(SymbolRule).
 
 
 cl_poly_to_dcg(Clause) :-
-	Clause =.. [_,Symbol,Name,Base],
-	(formula(user,Contents,[],Symbol,Formula,[]), !),
+	Clause =.. [_Functor,Sym,Name,Base],
+	(formula(user,Contents,[],Sym,Formula,[]), !),
 
-	append(Contents,Rest,Comb),
+	append(Contents,ElemsR,Elems),
 
-        dcg_translate_rule(group(Comb,Rest,Symbol,Name) --> Name,FullRule),
+        dcg_translate_rule(group(Elems,ElemsR,Sym,Name) --> Name,FullRule),
         assertz(FullRule),
 
-        dcg_translate_rule(group_base(Comb,Rest,Symbol,Base) --> Base,BaseRule),
+        dcg_translate_rule(group_base(Elems,ElemsR,Sym,Base) --> Base,BaseRule),
         assertz(BaseRule),
 
-	dcg_translate_rule(group_symbol(Comb,Rest,Symbol) --> Formula,SymbolRule),
+	dcg_translate_rule(group_symbol(Elems,ElemsR,Sym) --> Formula,SymbolRule),
 	asserta(SymbolRule),
 
-	(formula(output,Contents,[],Symbol,OutputFormula,[]), !),
+	(formula(output,Contents,[],Sym,OutputFormula,[]), !),
 
-	dcg_translate_rule(group_symbol_output(Comb,Rest,Symbol) --> OutputFormula,OutputSymbolRule),
+	dcg_translate_rule(group_symbol_output(Elems,ElemsR,Sym) --> OutputFormula,OutputSymbolRule),
 	asserta(OutputSymbolRule).
 
 cl_parse_all :-
@@ -42,7 +44,7 @@ cl_parse_all :-
 	cl(X),
 	cl_to_dcg(X)
 	),
-	_),
+	_), %? Does not produce a result; causes side-efects instead
 	findall(_,
 	(
 	cl_poly(X),

@@ -1,25 +1,25 @@
 %%% Covalent Compounds %%%%
 
-covalent([Sym,Sym2|Rest],Rest,F) --> covalent(F), {F = [[Sym,_],[Sym2,_]]}.
-covalent([Sym,Sym2,Sym3|Rest],Rest,F) --> covalent(F), {F = [[Sym,_],[Sym2,_],[Sym3,_]]}.
+covalent([Sym1,Sym2|Rest],Rest,Formula) --> covalent(Formula), {Formula = [[Sym1,_],[Sym2,_]]}.
+covalent([Sym1,Sym2,Sym3|Rest],Rest,Formula) --> covalent(Formula), {Formula = [[Sym1,_],[Sym2,_],[Sym3,_]]}.
 
-covalent(F) --> alkane(F).
-covalent(F) --> alkene(F).
-covalent(F) --> alcohol(F).
+covalent(Formula) --> alkane(Formula).
+covalent(Formula) --> alkene(Formula).
+covalent(Formula) --> alcohol(Formula).
 
-covalent(F) --> systematic_covalent(F).
+covalent(Formula) --> systematic_covalent(Formula).
 
 
-%%% Systematic Naming for Covalent %%%	
+%%% Systematic Naming for Covalent %%%
 
-systematic_covalent([[Sym,Num],[Sym2,Num2]]) --> covalent_part(non_metal,Sym,Num)," ", covalent_part(non_metal_ide,Sym2,Num2).
+systematic_covalent([[Sym1,Num1],[Sym2,Num2]]) --> covalent_part(non_metal,Sym1,Num1)," ", covalent_part(non_metal_ide,Sym2,Num2).
 
 
 covalent_part(Goal,Sym,Num) --> num_sub(Num,Letter), call(Goal,Sym,Matched),
 	{
 	Letter = [] -> true;
 	Matched = [H|_],
-		(H = 'a'; H = 'o')
+	(H = 'a'; H = 'o')
 	}.
 
 covalent_part(Goal,Sym,Num) --> num_sub(Num,Letter), Letter, call(Goal,Sym,_).

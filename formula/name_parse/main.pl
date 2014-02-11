@@ -23,8 +23,8 @@ charge_check(metal,Sym,Charge) :-
 charge_check(Type,Sym) :- charge_check(Type,Sym,_).
 
 /* Some simple rules for pure substances */
-pure(Sym,Rest,F) --> diatomic(Sym,Rest,F).
-pure(Sym,Rest,F) --> single_element(Sym,Rest,F).
+pure(Sym,Rest,Formula) --> diatomic(Sym,Rest,Formula).
+pure(Sym,Rest,Formula) --> single_element(Sym,Rest,Formula).
 
 
 diatomic([Sym|Rest],Rest,[[Sym,2]]) --> element(Sym,_), {diatomic(Sym)}.
@@ -32,11 +32,11 @@ single_element([Sym|Rest],Rest,[[Sym,1]]) --> element(Sym,_).
 
 /* Parse it up! */
 
-name(Sym,Rest,F) --> retained(Sym,Rest,F).
-name(Sym,Rest,F) --> ionic(Sym,Rest,F).
-name(Sym,Rest,F) --> covalent(Sym,Rest,F).
-name(Sym,Rest,F) --> pure(Sym,Rest,F).
-name(Sym,Rest,F) --> common(Sym,Rest,F).
+name(Sym,Rest,Formula) --> retained(Sym,Rest,Formula).
+name(Sym,Rest,Formula) --> ionic(Sym,Rest,Formula).
+name(Sym,Rest,Formula) --> covalent(Sym,Rest,Formula).
+name(Sym,Rest,Formula) --> pure(Sym,Rest,Formula).
+name(Sym,Rest,Formula) --> common(Sym,Rest,Formula).
 
 /** TODO:
 
