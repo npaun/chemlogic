@@ -17,14 +17,14 @@ set_html_format :-
 	dcg_translate_rule(output(output,X) --> symbol(html,X),Rule),
 	assertz(Rule).
 
-:- include('style.pl').
+:- consult('style.pl').
 
 :- ensure_loaded('../io/format-out.pl').
 :- initialization set_output_format(html).
 
-:- include('../balance/balancer').
+:- consult('../balance/balancer').
 
-:- include('compounder.pl').
-:- include('balancer.pl').
+:- consult('compounder.pl').
+:- consult('balancer.pl').
 
 % vi: syntax=prolog

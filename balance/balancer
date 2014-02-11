@@ -1,18 +1,18 @@
 
 % Rules for handling compounds
-:- include('../formula/compounder').
+:- consult('../formula/compounder').
 
 % The grammar for symbolic equations
-:- include('equation.pl').
+:- consult('equation.pl').
 
 % The grammar for word equations
-:- include('word_equation.pl').
+:- consult('word_equation.pl').
 
 % Rebase procedure (creates lookup tables, merges re-occurences of elements in a formula, flattens polyatomic groups)
-:- include('rebase.pl').
+:- consult('rebase.pl').
 
 % The solver (converts the coefficient set to a system of linear equations and solves it).
-:- include('solver.pl').
+:- consult('solver.pl').
 
 balance_equation(Equation,Solution) :- balance_equation(symbolic,Equation,symbolic,Solution).
 

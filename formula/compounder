@@ -2,18 +2,19 @@
 
 % Output Formatting
 
-:- include('../io/format-in.pl').
+:- consult('../io/format-in.pl').
 :- ensure_loaded('../io/format-out.pl').
 
 
-% Translates facts about about elements and polyatomic ions to DCG rules
-:- include('fact_dcg_translate.pl').
-
 % Converts human-readable formulas to internal format (required for fact_dcg_translate).
-:- include('formula_normalize.pl').
+:- consult('formula_normalize.pl').
+
+% Translates facts about about elements and polyatomic ions to DCG rules
+:- consult('fact_dcg_translate.pl').
+
 
 % Parses names for chemical compounds into internal format
-:- include('name_parse/main.pl').
+:- consult('name_parse/main.pl').
 
 
 name_2_formula(Name,Formula) :-

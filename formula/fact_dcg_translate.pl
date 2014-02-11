@@ -1,4 +1,4 @@
-:- include('../fact/fact.pl').
+:- consult('../fact/fact.pl').
 :- initialization(cl_parse_all).
 
 :- dynamic [element//2,element_base//2,element_symbol//1]. % The resulting DCG rules for elements.
@@ -30,24 +30,24 @@ cl_poly_to_dcg(Clause) :-
 
 	dcg_translate_rule(group_symbol(Comb,Rest,Symbol) --> Formula,SymbolRule),
 	asserta(SymbolRule),
-	
+
 	(formula(output,Contents,[],Symbol,OutputFormula,[]), !),
-	
+
 	dcg_translate_rule(group_symbol_output(Comb,Rest,Symbol) --> OutputFormula,OutputSymbolRule),
 	asserta(OutputSymbolRule).
 
 cl_parse_all :-
 	findall(_,
-		(
-		cl(X),
-		cl_to_dcg(X)
-		),
+	(
+	cl(X),
+	cl_to_dcg(X)
+	),
 	_),
 	findall(_,
-		(
-		cl_poly(X),
-		cl_poly_to_dcg(X)
-		),
+	(
+	cl_poly(X),
+	cl_poly_to_dcg(X)
+	),
 	_).
 
 
