@@ -1,5 +1,6 @@
 :- use_module(library(clpq)).
 
+
 equation_system([],_,[]).
 
 equation_system([H|T],Vars,[Equation|EquationS]) :-
@@ -9,51 +10,38 @@ equation_system([H|T],Vars,[Equation|EquationS]) :-
         Equation =.. [=,LHS,0],
         equation_system(T,Vars,EquationS).
 
-% Evaluator
+% Evaluate
 
 equation_system_eval([],_).
 
-equation_system_eval([H|T],Vars) :-
-	{H},
-	equation_system_eval(T,Vars).
+equation_system_eval([Equation|EquationS],VarS) :-
+	{Equation},
+	equation_system_eval(EquationS,VarS).
 
 
 
 % Specify the base condition
-equation_evaluate(CoeffS,Solution) :-
-	Values = [FirstVar|_],
-	equation_system(CoeffS,Values,System),
-	positive(Values),
-%	writeln(System),
-	equation_system_eval(System,Values),
-	bb_inf(Values,FirstVar,_,Solution),
-%	writeln(Inf),
+equation_evaluate(Matrix,Solution) :-
+	VarS = [FirstVar|_],
+	equation_system(Matrix,VarS,System),
+	require_positive(VarS),
+	equation_system_eval(System,VarS),
+	bb_inf(VarS,FirstVar,_,Solution),
 	!.
-
-% Add terms together
-equation_terms([],0).
-
-equation_terms([H|T],Out) :-
-	equation_terms(T,Rest),
-	Out = H + Rest.
 
 % Assign a variable to each coefficient
 
-positive([]).
+require_positive([]).
 
-positive([Var|VarS]) :-
+require_positive([Var|VarS]) :-
 	{Var > 0},
-	positive(VarS).
+	require_positive(VarS).
 
 equation_coefficients([],[],[]).
 
 equation_coefficients([Coeff|CoeffS],[Var|VarS],[Term|TermS]) :-
 	Term =.. [*,Coeff,Var],
 	equation_coefficients(CoeffS,VarS,TermS).
-
-
-%%% Eval %%%
-
 
 %%% Test Case %%%
 

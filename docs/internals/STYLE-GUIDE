@@ -147,4 +147,36 @@ Also: All of the Rs and R0s and FinalRests. What does that even mean!!!???!!!
 * One line per statement
 * Space after each rule
 
+
+## Some cool metaprogamming tricks:
+
+1. Quick aliases
+
+name(Sym,Rest,Formula) --> ionic(Sym,Rest,Formula).
+name(Sym,Rest,Formula) --> covalent(Sym,Rest,Formula).
+
+name" --> ionic".
+name" --> covalent".
+
+2. Quick maplist type functions
+
+double([],[],\_).
+
+double([InH|InT],[OutH|OuT],Factor) :-
+ OutH is Factor * InH,
+ double(InT,OutT,Factor).
+
+double([In],[Out],Facor) :[]
+ Out is Factor * In.
+
+3. An improved metaprogram for double dcgs, etc.
+
+expression(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideH|SideT]) -->
+        balanced_formula(Fmt,Coeff,CoeffR0,Elems,ElemR0,Formula,FormulaR0,SideH),
+        " + ",
+        expression(Fmt,CoeffR0,CoeffR,ElemR0,ElemR,FormulaR0,FormulaR,SideT), !.
+
+
+etc. etc.
+
 % vim: syntax=markdown

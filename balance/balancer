@@ -22,13 +22,13 @@ balance_equation_real(InGrammar,Equation,OutGrammar,Solution) :-
 	rebase(SideSet),
 	sort(Elems,ElementSet),
 
-	coefficient_set(MoleculeSet,ElementSet,CoeffSet),
+	matrix(MoleculeSet,ElementSet,Matrix),
 	!,
 
-	equation_evaluate(CoeffSet,Values),
+	equation_evaluate(Matrix,Coeffs),
 	!,
 
-	call(OutGrammar,output,Values,[],Elems,[],MoleculeSet,[],SideSet,Solution,[]).
+	call(OutGrammar,output,Coeffs,[],Elems,[],MoleculeSet,[],SideSet,Solution,[]).
 
 /* This function just performs a cleanup */
 balance_equation(InGrammar,Equation,OutGrammar,Solution) :-
@@ -37,18 +37,18 @@ balance_equation(InGrammar,Equation,OutGrammar,Solution) :-
 
 
 
-coefficient_set(_,[],[]) :- !.
+matrix(_,[],[]) :- !.
 
-coefficient_set(MolSet,[Elem|ElemS],[CoeffSet|CoeffSetS]) :-
-	element_coefficients(MolSet,Elem,CoeffSet),
-	coefficient_set(MolSet,ElemS,CoeffSetS).
+matrix(MolSet,[Elem|ElemS],[Row|RowS]) :-
+	element_count(MolSet,Elem,Row),
+	matrix(MolSet,ElemS,RowS).
 
 
-element_coefficients([],_,[]).
+element_count([],_,[]).
 
-element_coefficients([Mol|MolS],Elem,[Coeff|CoeffS]) :-
-      (balance(Mol,Elem,Coeff) ; Coeff = 0),
-        element_coefficients(MolS,Elem,CoeffS),
+element_count([Mol|MolS],Elem,[Count|CountS]) :-
+      (balance(Mol,Elem,Count) ; Count = 0),
+        element_count(MolS,Elem,CountS),
         !.
 
 
