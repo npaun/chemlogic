@@ -9,23 +9,23 @@
 :- consult('word_equation.pl').
 
 % Rebase procedure (creates lookup tables, merges re-occurences of elements in a formula, flattens polyatomic groups)
-:- consult('rebase.pl').
+:- use_module(tabulate).
 
 % The solver (converts the coefficient set to a system of linear equations and solves it).
-:- consult('solver.pl').
+:- use_module(solve).
 
 balance_equation(Equation,Solution) :- balance_equation(symbolic,Equation,symbolic,Solution).
 
 balance_equation_real(InGrammar,Equation,OutGrammar,Solution) :-
 	call(InGrammar,user,_,[],Elems,[],MoleculeSet,[],SideSet,Equation,[]),
 
-	rebase(SideSet),
+	tabulate(SideSet),
 	sort(Elems,ElementSet),
 
 	matrix(MoleculeSet,ElementSet,Matrix),
 	!,
 
-	equation_evaluate(Matrix,Coeffs),
+	solve(Matrix,Coeffs),
 	!,
 
 	call(OutGrammar,output,Coeffs,[],Elems,[],MoleculeSet,[],SideSet,Solution,[]).
