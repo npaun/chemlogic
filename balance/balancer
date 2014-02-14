@@ -11,7 +11,7 @@
 :- use_module(tabulate).
 
 % The solver (converts the coefficient set to a system of linear equations and solves it).
-:- use_module(solve).
+:- use_module(newsolve).
 
 balance_equation(Equation,Solution) :- balance_equation(symbolic,Equation,symbolic,Solution).
 
@@ -21,10 +21,7 @@ balance_equation_real(InGrammar,Equation,OutGrammar,Solution) :-
 	tabulate(SideSet),
 	sort(Elems,ElementSet),
 
-	matrix(MoleculeSet,ElementSet,Matrix),
-	!,
-
-	solve(Matrix,Coeffs),
+	nsolve(MoleculeSet,ElementSet,Coeffs),
 	!,
 
 	call(OutGrammar,output,Coeffs,[],Elems,[],MoleculeSet,[],SideSet,Solution,[]).
@@ -50,5 +47,8 @@ element_count([Mol|MolS],Elem,[Count|CountS]) :-
         element_count(MolS,Elem,CountS),
         !.
 
+get_element_count(Mol,Elem,Count) :-
+	balance(Mol,Elem,Count);
+	Count = 0.
 
 % vi: syntax=prolog
