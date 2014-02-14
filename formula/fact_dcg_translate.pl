@@ -32,9 +32,8 @@ Converts a polyatomic group definition (Clause), to grammar rules for its name, 
 The external formula may simply be a textual representation: NH4
 or it could be HTML: NH<sub>4</sub>.
 
+@vague	Contents
 @todo Make group_symbol_output include the output format in use, so that its results can be cached.
-
-
 @arg	Clause	A list of the group internal formula, name and base name	([[C,1],[N,1]], cyanide, cyan)
 */
 
@@ -66,14 +65,14 @@ Causes side-effects. Parses element and polyatomic group facts to create various
 cl_parse_all :-
 	findall(_,
 	(
-	cl(X),
-	cl_to_dcg(X)
+	cl(Clause),
+	cl_to_dcg(Clause)
 	),
 	_), %? Does not produce a result; causes side-efects instead
 	findall(_,
 	(
-	cl_poly(X),
-	cl_poly_to_dcg(X)
+	cl_poly(Clause),
+	cl_poly_to_dcg(Clouse)
 	),
 	_).
 

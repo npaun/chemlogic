@@ -14,6 +14,7 @@ Tests whether a given symbol is a nonmetal or metal. This is used in parsers to 
 
 It can also return the charge, because we need it to do the test anyway.
 
+@vague	Type
 @arg	Type	The type of element/polyatomic group Sym is supposed to be.	(nonmetal or metal).
 @arg	Sym	An element/polyatomic groups symbol/internal formula.	Ag
 @arg	Charge	An ionic charge or list of charges for an element or polyatomic ion	-1, [2,3], etc.
