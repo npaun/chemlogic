@@ -18,9 +18,9 @@ set_output_format(Format) :-
 	write('Set '),
 	writeln(Format),
 	retractall(output(_,_,_,_)),
-	dcg_translate_rule(output(output,Symbol) --> symbol(Format,Symbol),DefaultRule),
+	dcg_translate_rule((output(output,Symbol) --> symbol(Format,Symbol), !),DefaultRule),
 	assertz(DefaultRule),
-	dcg_translate_rule(output(Other,Symbol) --> symbol(Other,Symbol),OtherRule),
+	dcg_translate_rule((output(Other,Symbol) --> symbol(Other,Symbol),!),OtherRule),
 	assertz(OtherRule).
 
 :- initialization set_output_format(user).

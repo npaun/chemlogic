@@ -3,10 +3,9 @@
 :- consult('../formula/compounder').
 
 % The grammar for symbolic equations
-:- consult('equation.pl').
-
+:- use_module(equation).
 % The grammar for word equations
-:- consult('word_equation.pl').
+:- use_module(word_equation).
 
 % Rebase procedure (creates lookup tables, merges re-occurences of elements in a formula, flattens polyatomic groups)
 :- use_module(tabulate).

@@ -1,3 +1,5 @@
+:- module(equation,[symbolic//8]).
+:- set_prolog_flag(double_quotes,chars).
 
 symbolic(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideLeft,SideRight]) -->
 	expression(Fmt,Coeff,CoeffR0,Elems,ElemR0,Formula,FormulaR0,SideLeft),
