@@ -7,6 +7,20 @@ non_metal(Sym,Name) --> element(Sym,Name), {charge_check(nonmetal,Sym)}.
 
 non_metal_ide(Sym,Base) --> element_base(Sym,Base), "ide", {charge_check(nonmetal,Sym)}.
 
+/** charge_check(+Type,+Sym,?Charge) is semidet.
+ ** charge_check(+Type,+Sym) is semidet.
+
+Tests whether a given symbol is a nonmetal or metal. This is used in parsers to ensure that the user supplies a two nonmetals in the systematic_covalent parser or that a compound consists of a metal and a nonmetal in the ionic parser, for example.
+
+It can also return the charge, because we need it to do the test anyway.
+
+@arg	Type	The type of element/polyatomic group Sym is supposed to be.	(nonmetal or metal).
+@arg	Sym	An element/polyatomic groups symbol/internal formula.	Ag
+@arg	Charge	An ionic charge or list of charges for an element or polyatomic ion	-1, [2,3], etc.
+@todo	Include a test that verifies that Charge is really a Charge of a polyatomic group.
+
+ */
+
 charge_check(nonmetal,Sym,Charge) :-
         charge(Sym,Charge),
 	\+ is_list(Charge),
@@ -18,7 +32,6 @@ charge_check(metal,Sym,Charge) :-
         (\+ is_list(Charge) ->
         Charge > 0),
         !.
-
 
 charge_check(Type,Sym) :- charge_check(Type,Sym,_).
 
