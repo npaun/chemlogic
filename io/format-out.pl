@@ -14,6 +14,10 @@ symbol(html,sub_end) --> "</sub>".
 symbol(latex,sub_start) --> "_{".
 symbol(latex,sub_end) --> "}".
 
+/** set_output_format(+Format) is det.
+
+Causes side-effects. Causes all output from parsers to be in Format, unless overriden elsewhere.
+*/
 set_output_format(Format) :-
 	write('Set '),
 	writeln(Format),
