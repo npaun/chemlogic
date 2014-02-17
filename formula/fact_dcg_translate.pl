@@ -71,7 +71,7 @@ cl_parse_all :-
 	findall(_,
 	(
 	cl_poly(Clause),
-	cl_poly_to_dcg(Clouse)
+	cl_poly_to_dcg(Clause)
 	),
 	_).
 
