@@ -32,29 +32,28 @@ Converts a polyatomic group definition (Clause), to grammar rules for its name, 
 The external formula may simply be a textual representation: NH4
 or it could be HTML: NH<sub>4</sub>.
 
-@vague	Contents
 @todo Make group_symbol_output include the output format in use, so that its results can be cached.
 @arg	Clause	A list of the group internal formula, name and base name	([[C,1],[N,1]], cyanide, cyan)
 */
 
 cl_poly_to_dcg(Clause) :-
 	Clause =.. [_Functor,Sym,Name,Base],
-	(formula(user,Contents,[],Sym,Formula,[]), !),
+	(formula(user,Elems,[],Sym,Formula,[]), !),
 
-	append(Contents,ElemsR,Elems),
+	append(Elems,ElemsR,ElemsL),
 
-        dcg_translate_rule(group(Elems,ElemsR,Sym,Name) --> Name,FullRule),
+        dcg_translate_rule(group(ElemsL,ElemsR,Sym,Name) --> Name,FullRule),
         assertz(FullRule),
 
-        dcg_translate_rule(group_base(Elems,ElemsR,Sym,Base) --> Base,BaseRule),
+        dcg_translate_rule(group_base(ElemsL,ElemsR,Sym,Base) --> Base,BaseRule),
         assertz(BaseRule),
 
-	dcg_translate_rule(group_symbol(Elems,ElemsR,Sym) --> Formula,SymbolRule),
+	dcg_translate_rule(group_symbol(ElemsL,ElemsR,Sym) --> Formula,SymbolRule),
 	asserta(SymbolRule),
 
-	(formula(output,Contents,[],Sym,OutputFormula,[]), !),
+	(formula(output,Elems,[],Sym,OutputFormula,[]), !),
 
-	dcg_translate_rule(group_symbol_output(Elems,ElemsR,Sym) --> OutputFormula,OutputSymbolRule),
+	dcg_translate_rule(group_symbol_output(ElemsL,ElemsR,Sym) --> OutputFormula,OutputSymbolRule),
 	asserta(OutputSymbolRule).
 
 /** cl_parse_all is det.
