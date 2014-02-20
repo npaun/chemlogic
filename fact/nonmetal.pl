@@ -14,6 +14,12 @@ cl(element("H","hydrogen","hydr")).
         diatomic("H").
 	atomic("H",1).
 
+%%%%% Metalloids %%%%%
+
+cl(element("Si","silicon","silic")).
+	charge("Si",-2).
+	atomic("Si",14).
+
 
 %%%%% Other Non-Metals %%%%%
 
@@ -51,8 +57,8 @@ cl(element("S","sulphur","sulph")).
 
 %%%%% Halogens %%%%%
 
-cl(element("F","fluorine","fluo")).
-	charge("Fl",-1).
+cl(element("F","fluorine","fluor")).
+	charge("F",-1).
 	diatomic("F").
 	atomic("F",9).
 
@@ -69,4 +75,8 @@ cl(element("I","iodine","iod")).
 
 %%%%% Noble Gases %%%%%
 
+
+cl(element("Xe","xenon","xen")).
+	charge("Xe",0).
+	atomic("Xe",54).
 

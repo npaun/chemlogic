@@ -25,7 +25,7 @@ It can also return the charge, because we need it to do the test anyway.
 charge_check(nonmetal,Sym,Charge) :-
         charge(Sym,Charge),
 	\+ is_list(Charge),
-        Charge < 0.
+        Charge =< 0.
 
 charge_check(metal,Sym,Charge) :-
         charge(Sym,Charge),
