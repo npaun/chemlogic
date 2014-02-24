@@ -15,6 +15,11 @@ mol_species(Fmt,Elems,ElemsR,Sym,Num) --> "(",poly_part(Fmt,Elems,ElemsR,Sym), "
 
 mol_species(Fmt,Elems,ElemsR,Sym,Num) --> any_part(Fmt,Elems,ElemsR,Sym), subscript(Fmt,Num).
 
+mol_species(Fmt,Elems,ElemsR,Sym,Num) --> " . ", num_decimal(Num), hydrate(Fmt,Elems,ElemsR,Sym).
+
+hydrate(_,["H","O"|ElemsR],ElemsR,[["H",2],["O",1]]) --> "H2O".
+
+
 
 poly_part(Fmt,Elems,ElemsR,Formula) --> oxyanion_symbol(Fmt,Elems,ElemsR,Formula).
 

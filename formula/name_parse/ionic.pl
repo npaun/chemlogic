@@ -29,7 +29,7 @@ CrN2
 ionic(Elems,ElemsR,Formula) --> {var(Formula)}, ionic_fwd(Elems,ElemsR,Formula), {!}.
 ionic(_,_,Formula) --> {nonvar(Formula)}, ionic_rev(Formula).
 
-ionic_rev([[MSym,MSub],[NMSym,NMSub]]) -->
+ionic_rev([[MSym,MSub],[NMSym,NMSub]|Tail]) -->
 	{
 	%  TODO: If the metal is monovalent, don't bother conjuring it up! Just use it.
 	%  Also, no need to actually check these charges, is there?
@@ -39,17 +39,22 @@ ionic_rev([[MSym,MSub],[NMSym,NMSub]]) -->
 	NMTotal is abs(NMSub * NMCharge),
 	MCharge is NMTotal / MSub
 	},
-	ionic_calcdata(_,_,[MSym,MCharge,NMSym,NMCharge]).
+	ionic_calcdata(_,_,[MSym,MCharge,NMSym,NMCharge],Tail).
 
-ionic_fwd(MElems,FinalRest,[[MSym,MSub],[NMSym,NMSub]]) --> ionic_calcdata(MElems,FinalRest,[MSym,MCharge,NMSym,NMCharge]),
+ionic_fwd(MElems,FinalRest,[[MSym,MSub],[NMSym,NMSub]|Tail]) --> ionic_calcdata(MElems,FinalRest,[MSym,MCharge,NMSym,NMCharge],Tail),
 	{
 	GCD is gcd(MCharge,NMCharge),
 	MSub is abs(NMCharge / GCD),
 	NMSub is abs(MCharge / GCD)
 	}.
 
-ionic_calcdata(Elems,Rest,Formula) --> acid(Elems,Rest,Formula).
-ionic_calcdata(MElems,FinalRest,[MSym,MCharge,NMSym,NMCharge]) --> cation(MElems,MRest,MSym,MCharge), " ", anion(MRest,FinalRest,NMSym,NMCharge).
+ionic_calcdata(Elems,Rest,Formula,[]) --> acid(Elems,Rest,Formula).
+ionic_calcdata(MElems,FinalRest,[MSym,MCharge,NMSym,NMCharge],Hydrate) --> cation(MElems,MRest,MSym,MCharge), " ", anion(MRest,NMRest,NMSym,NMCharge), optional_hydrate(NMRest,FinalRest,Hydrate).
+
+optional_hydrate(["H","O"|ElemR],ElemR,[[[["H",2],["O",1]],Num]]) --> " ", num_sub(Num,Suffix), Suffix, "hydrate".
+
+optional_hydrate(Pass,Pass,[]) --> [].
+
 
 
 
