@@ -1,41 +1,26 @@
+:- module(equation,[symbolic//8]).
+:- set_prolog_flag(double_quotes,chars).
 
-symbolic(Coeff,CoeffRest,Elems,ElemRest,Formula,FormulaRest,[RAWL,RAWR]) -->
-	expression(Coeff,CoeffRest0,Elems,ElemRest0,Formula,FormulaRest0,RAWL),
-	" --> ",
-	{writeln('Right')},
-	expression(CoeffRest0,CoeffRest,ElemRest0,ElemRest,FormulaRest0,FormulaRest,RAWR).
-
-
-expression(Coeff,CoeffRest,Elems,ElemRest,Formula,FormulaRest,[RAWH|RAWT]) --> 
-		balanced_formula(Coeff,CoeffRest0,Elems,ElemRest0,Formula,FormulaRest0,RAWH), 
-		" + ", 
-		{writeln('Add')},
-		expression(CoeffRest0,CoeffRest,ElemRest0,ElemRest,FormulaRest0,FormulaRest,RAWT), !. 
+symbolic(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideLeft,SideRight]) -->
+	expression(Fmt,Coeff,CoeffR0,Elems,ElemR0,Formula,FormulaR0,SideLeft),
+	output(Fmt,arrow),
+	expression(Fmt,CoeffR0,CoeffR,ElemR0,ElemR,FormulaR0,FormulaR,SideRight).
 
 
+expression(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideH|SideT]) -->
+	balanced_formula(Fmt,Coeff,CoeffR0,Elems,ElemR0,Formula,FormulaR0,SideH),
+	" + ",
+	expression(Fmt,CoeffR0,CoeffR,ElemR0,ElemR,FormulaR0,FormulaR,SideT), !.
 
+expression(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[Side]) -->
+	balanced_formula(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,Side).
 
- expression(Coeff,CoeffRest,Elems,ElemRest,Formula,FormulaRest,[RAW]) --> 
-	balanced_formula(Coeff,CoeffRest,Elems,ElemRest,Formula,FormulaRest,RAW).
-
-balanced_formula([Coeff|CoeffRest],CoeffRest,Elems,ElemRest,[Formula|FormulaRest],FormulaRest,Formula) --> 
-	coefficient(Coeff), 
-	{writeln('Process')},
-	formula(Elems,ElemRest,Formula).
+balanced_formula(Fmt,[Coeff|CoeffR],CoeffR,Elems,ElemR,[Formula|FormulaR],FormulaR,Formula) -->
+	coefficient(Coeff),
+	formula(Fmt,Elems,ElemR,Formula), !.
 
 coefficient(X) --> {nonvar(X), X = 1}, "".
-coefficient(2) --> "2".
-coefficient(3) --> "3".
-coefficient(4) --> "4".
-coefficient(5) --> "5".
-coefficient(6) --> "6".
-coefficient(7) --> "7".
-coefficient(8) --> "8".
-coefficient(9) --> "9".
-coefficient(10) --> "10".
-coefficient(11) --> "11".
-coefficient(12) --> "12".
-coefficient(13) --> "13".
-coefficient(14) --> "14".
-
+coefficient(X) --> num_decimal(X).
 coefficient(_) --> "".
+
+% vi: syntax=prolog

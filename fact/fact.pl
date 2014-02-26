@@ -1,4 +1,4 @@
-/** 
+/**
 NOTE: Quick description of Prolog notation.
 
 Predicates (like a subroutine or function) are referred to by their name and arity (number of arguments or parameters).
@@ -18,7 +18,7 @@ The definition of element/3 is:
 element(+Symbol,+Name,+Base)
 **/
 
-/** 
+/**
 REFERENCE: chemlogic fact database
 
 Each element is defined by an element/3 fact:
@@ -31,7 +31,7 @@ Base	string		The base of the element, used when the name is combined with a modi
 This fact must be given as an argument to cl/1, which converts the fact into grammatical rules.
 
 For example:
-cl(element("H","hydrogen","hydr"). 
+cl(element("H","hydrogen","hydr").
 
 ***
 
@@ -88,8 +88,6 @@ Symbol	string	The symbol of the element
 :- discontiguous [cl/1,cl_poly/1]. % The chemlogic DCG translating rules.
 :- discontiguous [charge/2,oxyanions/3,atomic/2,diatomic/1]. % Facts about an element or group
 
-:- dynamic [element//2,element_base//2,element_symbol//1]. % The resulting DCG rules for elements.
-:- dynamic [group//4,group_base//4,group_symbol//3]. % The resulting DCG rules for groups
 
 :- include('metal.pl').
 :- include('nonmetal.pl').

@@ -1,3 +1,4 @@
+% Longest match first. Unfortunately, the database must be stored out of order!
 cl(element("Cl","chlorine","chlor")).
         charge("Cl",-1).
         oxyanions("Cl",-1,[4,3,2,1]).
@@ -13,6 +14,12 @@ cl(element("H","hydrogen","hydr")).
         diatomic("H").
 	atomic("H",1).
 
+%%%%% Metalloids %%%%%
+
+cl(element("Si","silicon","silic")).
+	charge("Si",-2).
+	atomic("Si",14).
+
 
 %%%%% Other Non-Metals %%%%%
 
@@ -20,7 +27,7 @@ cl(element("C","carbon","carbon")).
 	%% NOTE: Carbon must be given a charge less than 0 for it to be treated as a non-metal, despite not forming ions. A charge of -1000 is used to prevent its use as an anion in an ionic compound.
         charge("C",-1000).
 	%% TODO: This rule causes CO2 to be tested for being a carbonite ion. There needs to be some way to stop wasting time here.
-        oxyanions("C",-2,[0,3,2,0]).
+        oxyanions("C",-2,[0,3,0,0]).
 	atomic("C",6).
 
 cl(element("N","nitrogen","nitr")).
@@ -49,12 +56,27 @@ cl(element("S","sulphur","sulph")).
 
 
 %%%%% Halogens %%%%%
+
+cl(element("F","fluorine","fluor")).
+	charge("F",-1).
+	diatomic("F").
+	atomic("F",9).
+
 cl(element("Br","bromine","brom")).
         charge("Br",-1).
         oxyanions("Br",-1,[4,3,2,1]).
         diatomic("Br").
 	atomic("Br",35).
 
+cl(element("I","iodine","iod")).
+	charge("I",-1).
+	oxyanions("I",-1,[4,3,2,1]).
+	atomic("I",53).
+
 %%%%% Noble Gases %%%%%
 
+
+cl(element("Xe","xenon","xen")).
+	charge("Xe",0).
+	atomic("Xe",54).
 
