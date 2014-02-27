@@ -38,7 +38,7 @@ or it could be HTML: NH<sub>4</sub>.
 
 cl_poly_to_dcg(Clause) :-
 	Clause =.. [_Functor,Sym,Name,Base],
-	(formula(user,Elems,[],Sym,Formula,[]), !),
+	(formula(user,Elems,[],Sym,[],Formula,[]), !),
 
 	append(Elems,ElemsR,ElemsL),
 
@@ -51,7 +51,7 @@ cl_poly_to_dcg(Clause) :-
 	dcg_translate_rule(group_symbol(ElemsL,ElemsR,Sym) --> Formula,SymbolRule),
 	asserta(SymbolRule),
 
-	(formula(output,Elems,[],Sym,OutputFormula,[]), !),
+	(formula(output,Elems,[],Sym,[],OutputFormula,[]), !),
 
 	dcg_translate_rule(group_symbol_output(ElemsL,ElemsR,Sym) --> OutputFormula,OutputSymbolRule),
 	asserta(OutputSymbolRule).

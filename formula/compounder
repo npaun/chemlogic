@@ -7,7 +7,7 @@
 
 
 % Converts human-readable formulas to internal format (required for fact_dcg_translate).
-:- consult('formula_normalize.pl').
+:- consult('formula_normalize2.pl').
 
 % Translates facts about about elements and polyatomic ions to DCG rules
 :- consult('fact_dcg_translate.pl').
