@@ -27,12 +27,8 @@ poly_part_1(Fmt,Elems,ElemsR,[Sym,1]) --> poly_symbol(Fmt,Elems,ElemsR,Sym).
 poly_part_multi(Fmt,Elems,ElemsR,[Sym,Num]) --> "(", poly_symbol(Fmt,Elems,ElemsR,Sym), ")", num_decimal(Num).
 
 /* Dumb Name */
-poly_symbol(Fmt,Elems,ElemsR,Sym) --> poly_group_symbol(Fmt,Elems,ElemsR,Sym).
+poly_symbol(Fmt,Elems,ElemsR,Sym) --> group_symbol(Fmt,Elems,ElemsR,Sym).
 poly_symbol(Fmt,Elems,ElemsR,Sym) --> oxyanion_symbol(Fmt,Elems,ElemsR,Sym).
-
-/* Dumb Name */
-poly_group_symbol(user,Elems,ElemsR,Sym) --> group_symbol(Elems,ElemsR,Sym).
-poly_group_symbol(output,Elems,ElemsR,Sym) --> group_symbol_output(Elems,ElemsR,Sym).
 
 oxyanion_symbol(Fmt,[Sym,"O"|ElemsR],ElemsR,[[Sym,1],["O",Num]]) -->
 	element_symbol(Sym),

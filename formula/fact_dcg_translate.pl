@@ -2,7 +2,19 @@
 :- initialization(cl_parse_all).
 
 :- dynamic [element//2,element_base//2,element_symbol//1]. % The resulting DCG rules for elements.
-:- dynamic [group//4,group_base//4,group_symbol//3,group_symbol_output//3]. % The resulting DCG rules for groups
+:- dynamic [group//4,group_base//4,group_symbol//4]. % The resulting DCG rules for groups
+
+
+/** group_symbol(?Elems,?ElemsR,?Sym) is semidet.
+
+A rule that abstracts away the caching of polyatomic group formulas in different output formats. This rule simply processes the group symbol unformatted, like all of the other rules.
+
+@arg	Elems	The elememnts contained in the polyatomic group	[O,H]
+@arg	ElemsR	Difference list tail
+@arg	Sym	The internal representation of the group formula	[[O,1],[H,1]]
+**/
+
+group_symbol(Elems,ElemsR,Sym) --> group_symbol(user,Elems,ElemsR,Sym).
 
 
 /** cl_to_dcg(+Clause) is det.
@@ -48,12 +60,13 @@ cl_poly_to_dcg(Clause) :-
         dcg_translate_rule(group_base(ElemsL,ElemsR,Sym,Base) --> Base,BaseRule),
         assertz(BaseRule),
 
-	dcg_translate_rule(group_symbol(ElemsL,ElemsR,Sym) --> Formula,SymbolRule),
+	% Because polyatomic groups have formulas, like NH4, we need to store it formatted in various ways. Perhaps we should re-format it on the fly???
+	dcg_translate_rule(group_symbol(user,ElemsL,ElemsR,Sym) --> Formula,SymbolRule),
 	asserta(SymbolRule),
 
 	(formula(output,Elems,[],Sym,[],OutputFormula,[]), !),
 
-	dcg_translate_rule(group_symbol_output(ElemsL,ElemsR,Sym) --> OutputFormula,OutputSymbolRule),
+	dcg_translate_rule(group_symbol(output,ElemsL,ElemsR,Sym) --> OutputFormula,OutputSymbolRule),
 	asserta(OutputSymbolRule).
 
 /** cl_parse_all is det.
