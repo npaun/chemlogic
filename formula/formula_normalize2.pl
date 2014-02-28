@@ -10,13 +10,12 @@ formula_tail(Fmt,one_or_more,Elems,ElemsR,Formula,FormulaR) -->
 	formula_tail(Fmt,_,ElemsR0,ElemsR,FormulaR0,FormulaR), !.
 formula_tail(_,none,Elems,Elems,Formula,Formula) --> [].
 
-formula_final(Fmt,Elems,ElemsR,Formula,FormulaR) --> hydrate(Fmt,Elems,ElemsR,Formula,FormulaR).
+formula_final(Fmt,Elems,ElemsR,[Formula|FormulaR],FormulaR) --> hydrate_part(Fmt,Elems,ElemsR,Formula).
 formula_final(_,Elems,Elems,Formula,Formula) --> [].
 
-hydrate(Fmt,["H","O"|Rest],Rest,[[[["H",2],["O",1]],Num]|R],R) --> " . ", num_decimal(Num),!, water(Fmt,Elems,ElemsR,Sym).
+hydrate_part(Fmt,Elems,ElemsR,[Sym,Num]) --> " . ", num_decimal(Num),!, water_symbol(Fmt,Elems,ElemsR,Sym).
 
-/* Dumb name */
-water(Fmt,["H","O"|ElemsR],ElemsR,[["H",2],["O",1]]) --> "H", subscript(Fmt,2), "O".
+water_symbol(Fmt,["H","O"|ElemsR],ElemsR,[["H",2],["O",1]]) --> "H", subscript(Fmt,2), "O".
 
 
 part(Fmt,one_or_more,Elems,ElemsR,[Sym|SymR],SymR) --> poly_part_1(Fmt,Elems,ElemsR,Sym).
