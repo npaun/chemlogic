@@ -2,13 +2,24 @@
 
 formula(Fmt,Elems,ElemsR,Formula,FormulaR) -->
 	part(Fmt,Type,Elems,ElemsR0,Formula,FormulaR0),
-	formula_tail(Fmt,Type,ElemsR0,ElemsR1,FormulaR0,FormulaR1), !,
+	formula_tail_special(Fmt,Type,ElemsR0,ElemsR1,FormulaR0,FormulaR1), !,
 	formula_final(Fmt,ElemsR1,ElemsR,FormulaR1,FormulaR), !.
 
-formula_tail(Fmt,one_or_more,Elems,ElemsR,Formula,FormulaR) -->
+formula_tail_special(Fmt,one_or_more,Elems,ElemsR,Formula,FormulaR) -->
 	part(Fmt,_,Elems,ElemsR0,Formula,FormulaR0),
-	formula_tail(Fmt,_,ElemsR0,ElemsR,FormulaR0,FormulaR), !.
-formula_tail(_,none,Elems,Elems,Formula,Formula) --> [].
+	formula_tail(Fmt,ElemsR0,ElemsR,FormulaR0,FormulaR), !.
+formula_tail_special(_,none,Elems,Elems,Formula,Formula) --> [].
+
+
+
+formula_tail(_,[],[],[],[],[],[]).
+
+formula_tail(Fmt,Elems,ElemsR,Formula,FormulaR) -->
+	part(Fmt,_,Elems,ElemsR0,Formula,FormulaR0),
+	formula_tail(Fmt,ElemsR0,ElemsR,FormulaR0,FormulaR), !.
+
+
+formula_tail(_,Elems,Elems,Formula,Formula) --> [].
 
 formula_final(Fmt,Elems,ElemsR,[Formula|FormulaR],FormulaR) --> hydrate_part(Fmt,Elems,ElemsR,Formula).
 formula_final(_,Elems,Elems,Formula,Formula) --> [].
