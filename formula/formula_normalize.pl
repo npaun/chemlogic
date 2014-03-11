@@ -40,7 +40,7 @@ poly_part_multi(Fmt,Elems,ElemsR,[Sym,Num]) --> "(", poly_symbol(Fmt,Elems,Elems
 
 /* Dumb Name */
 poly_symbol(Fmt,Elems,ElemsR,Sym) --> group_symbol(Fmt,Elems,ElemsR,Sym).
-% poly_symbol(Fmt,Elems,ElemsR,Sym) --> oxyanion_symbol(Fmt,Elems,ElemsR,Sym).
+ poly_symbol(Fmt,Elems,ElemsR,Sym) --> oxyanion_symbol(Fmt,Elems,ElemsR,Sym).
 
 oxyanion_symbol(Fmt,[Sym,"O"|ElemsR],ElemsR,[[Sym,1],["O",Num]]) -->
 	element_symbol(Sym),
