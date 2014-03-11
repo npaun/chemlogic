@@ -7,8 +7,9 @@ water_output(Fmt,[["H",2],["O",1]]) --> "H", output(Fmt,sub_start), "2", output(
 
 formula_part_first(Fmt,Elems,ElemsR,Part,PartR) --> part(Fmt,Type,Elems,ElemsR0,Part,PartR0), (formula_part(Fmt,Type,ElemsR0,ElemsR,PartR0,PartR), !).
 
-formula_part(Fmt,multi,Elems,ElemsR,Part,PartR) --> part(Fmt,_,Elems,ElemsR0,Part,PartR0), (formula_part(Fmt,_,ElemsR0,ElemsR,PartR0,PartR), !).
+
 formula_part(_,none,Elems,Elems,Part,Part) --> [].
+formula_part(Fmt,multi,Elems,ElemsR,Part,PartR) --> part(Fmt,_,Elems,ElemsR0,Part,PartR0), (formula_part(Fmt,_,ElemsR0,ElemsR,PartR0,PartR), !).
 
 %part(Elems,ElemsR,Part,R) --> poly_part(Elems,ElemsR,Part,R).
 %part(Elems,ElemsR,Part,R) --> simple_part(Elems,ElemsR,Part,R).
