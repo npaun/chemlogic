@@ -1,60 +1,24 @@
-:- set_prolog_flag(double_quotes,chars).
+formula(Fmt,Elems,ElemsR,Formula,FormulaR) --> formula_part_first(Fmt,Elems,ElemsR0,Formula,FormulaR0), (hydrate_part(Fmt,ElemsR0,ElemsR,FormulaR0,FormulaR), !).
 
-formula(Fmt,Elems,ElemsR,Formula,FormulaR) -->
-	part(Fmt,Type,Elems,ElemsR0,Formula,FormulaR0),
-	formula_tail_special(Fmt,Type,ElemsR0,ElemsR1,FormulaR0,FormulaR1),
-	formula_final(Fmt,ElemsR1,ElemsR,FormulaR1,FormulaR).
+hydrate_part(Fmt,["H","O"|ElemsR],ElemsR,[[Formula,Coeff]|SymR],SymR) --> output(Fmt,dot), num_decimal(Coeff), water_output(Fmt,Formula).
+hydrate_part(_,Elems,Elems,Part,Part) --> [].
 
-formula_tail_special(Fmt,one_or_more,Elems,ElemsR,Formula,FormulaR) -->
-	part(Fmt,_,Elems,ElemsR0,Formula,FormulaR0),
-	formula_tail(Fmt,ElemsR0,ElemsR,FormulaR0,FormulaR).
-formula_tail_special(_,none,Elems,Elems,Formula,Formula) --> [].
+water_output(Fmt,[["H",2],["O",1]]) --> "H", output(Fmt,sub_start), "2", output(Fmt,sub_end),"O".
 
+formula_part_first(Fmt,Elems,ElemsR,Part,PartR) --> part(Fmt,Type,Elems,ElemsR0,Part,PartR0), (formula_part(Fmt,Type,ElemsR0,ElemsR,PartR0,PartR), !).
 
+formula_part(Fmt,multi,Elems,ElemsR,Part,PartR) --> part(Fmt,_,Elems,ElemsR0,Part,PartR0), (formula_part(Fmt,_,ElemsR0,ElemsR,PartR0,PartR), !).
+formula_part(_,none,Elems,Elems,Part,Part) --> [].
 
-formula_tail(_,[],[],[],[],[],[]).
+%part(Elems,ElemsR,Part,R) --> poly_part(Elems,ElemsR,Part,R).
+%part(Elems,ElemsR,Part,R) --> simple_part(Elems,ElemsR,Part,R).
 
-formula_tail(Fmt,Elems,ElemsR,Formula,FormulaR) -->
-	part(Fmt,_,Elems,ElemsR0,Formula,FormulaR0),
-	formula_tail(Fmt,ElemsR0,ElemsR,FormulaR0,FormulaR).
-
-
-formula_tail(_,Elems,Elems,Formula,Formula) --> [].
-
-formula_final(Fmt,Elems,ElemsR,[Formula|FormulaR],FormulaR) --> hydrate_part(Fmt,Elems,ElemsR,Formula).
-formula_final(_,Elems,Elems,Formula,Formula) --> [].
-
-hydrate_part(Fmt,Elems,ElemsR,[Sym,Num]) --> " . ", num_decimal(Num), water_symbol(Fmt,Elems,ElemsR,Sym).
-
-water_symbol(Fmt,["H","O"|ElemsR],ElemsR,[["H",2],["O",1]]) --> "H", subscript(Fmt,2), "O".
-
-part(_,_,[],[],[],[],[],[]).
-
-part(Fmt,one_or_more,Elems,ElemsR,[Sym|SymR],SymR) --> poly_part_1(Fmt,Elems,ElemsR,Sym).
-part(Fmt,one_or_more,Elems,ElemsR,[Sym|SymR],SymR) --> poly_part_multi(Fmt,Elems,ElemsR,Sym).
-part(Fmt,_,[Elem|ElemR],ElemR,[[Elem,Num]|PairR],PairR) --> element_symbol(Elem), subscript(Fmt,Num).
+part(Fmt,multi,Elems,ElemsR,[[Sym,Num]|PartR],PartR) --> "(",group_symbol(Fmt,Elems,ElemsR,Sym),")",num_decimal(Num).
+part(Fmt,multi,Elems,ElemsR,[[Sym,1]|PartR],PartR) --> group_symbol(Fmt,Elems,ElemsR,Sym).
+part(Fmt,_,[Elem|ElemsR],ElemsR,[[Elem,Num]|PartR],PartR) --> element_symbol(Elem), (subscript(Fmt,Num), !).
 
 
-poly_part_1(Fmt,Elems,ElemsR,[Sym,1]) --> poly_symbol(Fmt,Elems,ElemsR,Sym).
-poly_part_multi(Fmt,Elems,ElemsR,[Sym,Num]) --> "(", poly_symbol(Fmt,Elems,ElemsR,Sym), ")", num_decimal(Num).
-
-/* Dumb Name */
-poly_symbol(Fmt,Elems,ElemsR,Sym) --> group_symbol(Fmt,Elems,ElemsR,Sym).
- poly_symbol(Fmt,Elems,ElemsR,Sym) --> oxyanion_symbol(Fmt,Elems,ElemsR,Sym).
-
-oxyanion_symbol(Fmt,[Sym,"O"|ElemsR],ElemsR,[[Sym,1],["O",Num]]) -->
-	element_symbol(Sym),
-	"O", subscript(Fmt,Num),
-	{oxyanion([Sym,"O"],[],[[Sym,1],["O",Num]],_,_,[])}.
-
-
-% Subscripts
-
-% subscript(X,Y) --> rubscript(X,Y).
-
-subscript(_,X) --> { nonvar(X) -> X = 1}, [].
-subscript(Fmt,X) --> output(Fmt,sub_start), num_decimal(X), output(Fmt,sub_end).
+subscript(Fmt,X) --> output(Fmt,sub_start),num_decimal(X),output(Fmt,sub_end).
 subscript(_,1) --> [].
 
-mubscript(_,X) --> num_decimal(X).
-mubscript(_,1) --> [].
+
