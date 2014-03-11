@@ -17,7 +17,7 @@ part(Fmt,multi,Elems,ElemsR,[[Sym,Num]|PartR],PartR) --> "(",group_symbol(Fmt,El
 part(Fmt,multi,Elems,ElemsR,[[Sym,1]|PartR],PartR) --> group_symbol(Fmt,Elems,ElemsR,Sym).
 part(Fmt,_,[Elem|ElemsR],ElemsR,[[Elem,Num]|PartR],PartR) --> element_symbol(Elem), (subscript(Fmt,Num), !).
 
-
+subscript(_,X) --> { nonvar(X) -> X = 1}, [].
 subscript(Fmt,X) --> output(Fmt,sub_start),num_decimal(X),output(Fmt,sub_end).
 subscript(_,1) --> [].
 
