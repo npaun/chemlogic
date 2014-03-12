@@ -17,11 +17,10 @@ formula_part_first(Fmt,Elems,ElemsR,Part,PartR) -->
 	part(Fmt,Type,Elems,ElemsR0,Part,PartR0), 
 	(formula_part(Fmt,Type,ElemsR0,ElemsR,PartR0,PartR), !).
 
+	formula_part(_,none,[],[],[],[],[],[]).
 
+formula_part(Fmt,multi,Elems,ElemsR,Part,PartR) --> part(Fmt,_,Elems,ElemsR0,Part,PartR0), (formula_part(Fmt,_,ElemsR0,ElemsR,PartR0,PartR), !).
 formula_part(_,none,Elems,Elems,Part,Part) --> [].
-formula_part(Fmt,multi,Elems,ElemsR,Part,PartR) --> 
-	part(Fmt,_,Elems,ElemsR0,Part,PartR0),
-       	(formula_part(Fmt,_,ElemsR0,ElemsR,PartR0,PartR), !).
 
 part(Fmt,multi,Elems,ElemsR,[[Sym,Num]|PartR],PartR) --> 
 	"(", group_symbol(Fmt,Elems,ElemsR,Sym), ")",
