@@ -4,6 +4,7 @@ formula(Fmt,Elems,ElemsR,Formula,FormulaR) -->
 	formula_part_first(Fmt,Elems,ElemsR0,Formula,FormulaR0),
 	(hydrate_part(Fmt,ElemsR0,ElemsR,FormulaR0,FormulaR), !).
 
+% hydrate_part(_,[],[],[],[],[],[]) :- !.
 hydrate_part(Fmt,["H","O"|ElemsR],ElemsR,[[Formula,Coeff]|SymR],SymR) --> 
 	output(Fmt,dot), 
 	num_decimal(Coeff),
@@ -17,8 +18,7 @@ formula_part_first(Fmt,Elems,ElemsR,Part,PartR) -->
 	part(Fmt,Type,Elems,ElemsR0,Part,PartR0), 
 	(formula_part(Fmt,Type,ElemsR0,ElemsR,PartR0,PartR), !).
 
-	formula_part(_,none,[],[],[],[],[],[]).
-
+formula_part(_,none,[],[],[],[],[],[]).
 formula_part(Fmt,multi,Elems,ElemsR,Part,PartR) --> part(Fmt,_,Elems,ElemsR0,Part,PartR0), (formula_part(Fmt,_,ElemsR0,ElemsR,PartR0,PartR), !).
 formula_part(_,none,Elems,Elems,Part,Part) --> [].
 
