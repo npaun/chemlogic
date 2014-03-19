@@ -6,6 +6,14 @@ scan_rule_r(alpha,[C|T]) -->
 	{\+ (char_type(C,digit); char_type(C,upper))}, !,
 	scan_rule_r(alpha,T).
 
+
+
+scan_rule(punct,[C|T]) --> 
+	        [C],
+		        {\+ char_type(C,alnum)}, !,
+			        scan_rule(punct,T).
+
+
 scan_rule(digit,[C|T]) -->
 	[C],
 	{\+ char_type(C,alpha)}, !,
@@ -26,8 +34,9 @@ find_token(Unparsed,Token,Type,Rest) :-
 	Unparsed = [First|_],
 	(
 	char_type(First,alpha) -> Type = alpha;
+	char_type(First,punct) -> Type = punct;
 	char_type(First,digit) -> Type = digit;
-	char_type(First,white) -> Type = digit
+	char_type(First,white) -> Type = punct
 	), !,
 
 	scan_rule(Type,Token,Unparsed,Rest).
