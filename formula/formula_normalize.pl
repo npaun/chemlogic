@@ -23,11 +23,11 @@ formula_part(Fmt,multi,Elems,ElemsR,Part,PartR) --> part(Fmt,_,Elems,ElemsR0,Par
 formula_part(_,none,Elems,Elems,Part,Part) --> [].
 
 part(Fmt,multi,Elems,ElemsR,[[Sym,Num]|PartR],PartR) --> 
-	"(", group_symbol(Fmt,Elems,ElemsR,Sym), ")",
-	num_decimal(Num).
+	"(", (group_symbol(Fmt,Elems,ElemsR,Sym); ({var(Sym)} -> syntax_stop(group))), ")",
+	(num_decimal(Num); syntax_stop(number)).
 
 part(Fmt,multi,Elems,ElemsR,[[Sym,1]|PartR],PartR) --> group_symbol(Fmt,Elems,ElemsR,Sym).
-part(Fmt,_,[Elem|ElemsR],ElemsR,[[Elem,Num]|PartR],PartR) --> element_symbol(Elem), (subscript(Fmt,Num), !).
+part(Fmt,_,[Elem|ElemsR],ElemsR,[[Elem,Num]|PartR],PartR) --> (element_symbol(Elem); syntax_stop(element)), ((subscript(Fmt,Num); syntax_stop(number)), !).
 
 subscript(_,Num) --> { nonvar(Num) -> Num = 1}, [].
 subscript(Fmt,Num) --> output(Fmt,sub_start), num_decimal(Num), output(Fmt,sub_end).
