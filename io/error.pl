@@ -1,13 +1,17 @@
-scan_rule(alpha,[C|T]) -->
+scan_rule(alpha,[C|T]) --> [C], scan_rule_r(alpha,T).
+
+scan_rule_r(alpha,[C|T]) -->
 	[C],
 	({char_type(C,white)} -> \+ punct_check; {true}),
-	{\+ char_type(C,digit)}, !,
-	scan_rule(alpha,T).
+	{\+ (char_type(C,digit); char_type(C,upper))}, !,
+	scan_rule_r(alpha,T).
 
 scan_rule(digit,[C|T]) -->
 	[C],
 	{\+ char_type(C,alpha)}, !,
 	scan_rule(digit,T).
+
+scan_rule_r(_,[]) --> [].
 
 scan_rule(_,[]) -->
 	[].
@@ -29,12 +33,12 @@ find_token(Unparsed,Token,Type,Rest) :-
 	scan_rule(Type,Token,Unparsed,Rest).
 
 
-parse_error_debug(Token,ErrCode,TokenType) :- write(ErrCode), write(': '), write(Token), write(' is '), writeln(TokenType).
+parse_error_debug(Unparsed,Token,ErrCode,TokenType) :- write('Scan '), writeln(Unparsed), write(ErrCode), write(': '), write(Token), write(' is '), writeln(TokenType).
 
 explain_error(Input,ErrCode,Unparsed) :-
 	find_token(Unparsed,Token,TokenType,Rest),
 	append(Start,Unparsed,Input), !,
-	parse_error_debug(Token,ErrCode,TokenType),
+	parse_error_debug(Unparsed,Token,ErrCode,TokenType),
 	highlight_error(Start,Token,Rest),
 
 	(guidance_errcode(ErrCode,TokenType,MessageErrCode) -> writeln(MessageErrCode); true),
