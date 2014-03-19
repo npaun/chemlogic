@@ -13,9 +13,6 @@ cl_poly(group([["Hg",2]],"mercury(I)","mercury(I)")).
 cl_poly(group([["H",3],["O",1]],"hydronium","hydronium")).
 	charge([["H",3],["O",1]],1).
 
-cl_poly(group([["C",1],[[["N",1],["H",2]],3]],"guanidinium","guanidinium")).
-	charge([["C",1],[[["N",1],["H",2]],3]],1).
-
 %%%%% Cations %%%%%
 cl_poly(group([["O",1],["H",1]],"hydroxide","hydrox")).
         charge([["O",1],["H",1]],-1).
