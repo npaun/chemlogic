@@ -69,6 +69,33 @@ cl_poly_to_dcg(Clause) :-
 	dcg_translate_rule(group_symbol(output,ElemsL,ElemsR,Sym) --> OutputFormula,OutputSymbolRule),
 	asserta(OutputSymbolRule).
 
+
+cl_oxy_to_dcg(Elem,Charge,OxygenS) :- oxy_to_dcg(Elem,Charge,OxygenS,["per","","","hypo"],["ate","ate","ite","ite"]).
+
+oxy_to_dcg(_,_,[],[],[]).
+
+oxy_to_dcg(Elem,Charge,[Oxygen|OxygenS],[Prefix|PrefixS],[Suffix|SuffixS]) :-
+	(Oxygen > 0 -> 
+		(
+			oxy_formula(Elem,Charge,Oxygen,Formula),
+			oxy_name(Prefix,Elem,Suffix,Name,Base),
+			cl_poly_to_dcg(auto(Formula,Name,Base))
+		);
+		true),
+	oxy_to_dcg(Elem,Charge,OxygenS,PrefixS,SuffixS).
+
+oxy_formula(Elem,Charge,Oxygens,Formula) :-
+	Formula = [[Elem,1],["O",Oxygens]],
+	writeln(Formula),
+	assertz(charge(Formula,Charge)).
+
+oxy_name(Prefix,Elem,Suffix,Name,Base) :-
+	cl(element(Elem,_,ElemBase)),
+	append(Prefix,ElemBase,Base),
+	append(Base,Suffix,Name).
+
+
+
 /** cl_parse_all is det.
 
 Causes side-effects. Parses element and polyatomic group facts to create various grammatical rules needed by various parsers. Output is cachable.
@@ -77,15 +104,21 @@ Causes side-effects. Parses element and polyatomic group facts to create various
 cl_parse_all :-
 	findall(_,
 	(
-	cl(Clause),
-	cl_to_dcg(Clause)
+		cl(Clause),
+		cl_to_dcg(Clause)
 	),
 	_), %? Does not produce a result; causes side-efects instead
+
 	findall(_,
 	(
-	cl_poly(Clause),
-	cl_poly_to_dcg(Clause)
+		cl_poly(Clause),
+		cl_poly_to_dcg(Clause)
+	),
+	_),
+
+	findall(_,
+	(
+		oxyanions(Elem,Charge,Oxygens),
+		cl_oxy_to_dcg(Elem,Charge,Oxygens)
 	),
 	_).
-
-
