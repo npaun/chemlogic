@@ -80,7 +80,7 @@ oxy_to_dcg(Elem,Charge,[Oxygen|OxygenS],[Prefix|PrefixS],[Suffix|SuffixS],[AcidS
 			oxy_formula(Elem,Charge,Oxygen,Formula),
 			oxy_name(Prefix,Elem,Suffix,Name,Base),
 			cl_poly_to_dcg(auto(Formula,Name,Base)),
-			assertz(acid_suffix(Formula,AcidSuffix))
+			acid_suffix_to_dcg(Formula,AcidSuffix)
 		);
 		true),
 	oxy_to_dcg(Elem,Charge,OxygenS,PrefixS,SuffixS,AcidSuffixS).
@@ -90,11 +90,14 @@ oxy_formula(Elem,Charge,Oxygens,Formula) :-
 	assertz(charge(Formula,Charge)).
 
 oxy_name(Prefix,Elem,Suffix,Name,Base) :-
-	cl(element(Elem,_,ElemBase)),
+	acid_base(Elem,ElemBase,_,[]),
 	append(Prefix,ElemBase,Base),
 	append(Base,Suffix,Name).
 
 
+acid_suffix_to_dcg(Formula,Suffix) :-
+	dcg_translate_rule(acid_suffix(Formula) --> Suffix,Rule),
+	assertz(Rule).
 
 /** cl_parse_all is det.
 

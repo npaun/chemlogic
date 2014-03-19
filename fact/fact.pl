@@ -96,3 +96,5 @@ Symbol	string	The symbol of the element
 % Retained and common names for compounds
 :- include('retained.pl').
 
+% A different base name is used for sulfur and phosphorus when forming acids
+:- include('acid.pl').
