@@ -1,12 +1,5 @@
 scan_rule(alpha,[C|T]) --> [C], scan_rule_r(alpha,T).
 
-scan_rule_r(alpha,[C|T]) -->
-	[C],
-	({char_type(C,white)} -> \+ punct_check; {true}),
-	{\+ (char_type(C,digit); char_type(C,upper))}, !,
-	scan_rule_r(alpha,T).
-
-
 
 scan_rule(punct,[C|T]) --> 
 	        [C],
@@ -19,12 +12,21 @@ scan_rule(digit,[C|T]) -->
 	{\+ char_type(C,alpha)}, !,
 	scan_rule(digit,T).
 
-scan_rule_r(_,[]) --> [].
 
 scan_rule(_,[]) -->
 	[].
 
 punct_check, [T] --> [T], {char_type(T,punct)}.
+
+
+scan_rule_r(alpha,[C|T]) -->
+	[C],
+	({char_type(C,white)} -> \+ punct_check; {true}),
+	{\+ (char_type(C,digit); char_type(C,upper))}, !,
+	scan_rule_r(alpha,T).
+
+
+scan_rule_r(_,[]) --> [].
 
 
 highlight_error(Start,Token,Rest) :-
