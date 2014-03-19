@@ -86,7 +86,6 @@ oxy_to_dcg(Elem,Charge,[Oxygen|OxygenS],[Prefix|PrefixS],[Suffix|SuffixS]) :-
 
 oxy_formula(Elem,Charge,Oxygens,Formula) :-
 	Formula = [[Elem,1],["O",Oxygens]],
-	writeln(Formula),
 	assertz(charge(Formula,Charge)).
 
 oxy_name(Prefix,Elem,Suffix,Name,Base) :-

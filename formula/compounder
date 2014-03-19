@@ -16,7 +16,6 @@
 % Parses names for chemical compounds into internal format
 :- consult('name_parse/main.pl').
 
-:- ['oxytestanion.pl'].
 
 name_2_formula(Name,Formula) :-
 	name(_,_,Internal,Name,[]),
