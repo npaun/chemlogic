@@ -1,4 +1,3 @@
-:- include('oxyanion.pl').
 
 % Inefficiencies to eliminate %
 	% Oxyacids require a stupid test to determine the oxyanion
@@ -6,30 +5,10 @@
 	% Does the issue come from ionic main or from something else?
 
 
-% The algo in reverse:
-/*
-	Pb1O2
-	Pb2O1
-	Pb4O1
-
-Pb2O4
-Pb 2 O 1
-
-Al6N3
-chromium(VI) nitride
-Cr3N6
-CrN2
-
-
-
-
-*/
-
-
 ionic(Elems,ElemsR,Formula) --> {var(Formula)}, ionic_fwd(Elems,ElemsR,Formula), {!}.
 ionic(_,_,Formula) --> {nonvar(Formula)}, ionic_rev(Formula).
 
-ionic_rev([[MSym,MSub],[NMSym,NMSub]|Tail]) -->
+ionic_rev([[MSym,MSub],[NMSym,NMSub]|Appended]) -->
 	{
 	%  TODO: If the metal is monovalent, don't bother conjuring it up! Just use it.
 	%  Also, no need to actually check these charges, is there?
@@ -39,9 +18,9 @@ ionic_rev([[MSym,MSub],[NMSym,NMSub]|Tail]) -->
 	NMTotal is abs(NMSub * NMCharge),
 	MCharge is NMTotal / MSub
 	},
-	ionic_calcdata(_,_,[MSym,MCharge,NMSym,NMCharge],Tail).
+	ionic_calcdata(_,_,[MSym,MCharge,NMSym,NMCharge],Appended).
 
-ionic_fwd(MElems,FinalRest,[[MSym,MSub],[NMSym,NMSub]|Tail]) --> ionic_calcdata(MElems,FinalRest,[MSym,MCharge,NMSym,NMCharge],Tail),
+ionic_fwd(MElems,FinalRest,[[MSym,MSub],[NMSym,NMSub]|Appended]) --> ionic_calcdata(MElems,FinalRest,[MSym,MCharge,NMSym,NMCharge],Appended),
 	{
 	GCD is gcd(MCharge,NMCharge),
 	MSub is abs(NMCharge / GCD),
@@ -49,10 +28,13 @@ ionic_fwd(MElems,FinalRest,[[MSym,MSub],[NMSym,NMSub]|Tail]) --> ionic_calcdata(
 	}.
 
 ionic_calcdata(Elems,Rest,Formula,[]) --> acid(Elems,Rest,Formula).
-ionic_calcdata(MElems,FinalRest,[MSym,MCharge,NMSym,NMCharge],Hydrate) --> cation(MElems,MRest,MSym,MCharge), " ", anion(MRest,NMRest,NMSym,NMCharge), optional_hydrate(NMRest,FinalRest,Hydrate).
+ionic_calcdata(MElems,FinalRest,[MSym,MCharge,NMSym,NMCharge],Hydrate) --> 
+	cation(MElems,MRest,MSym,MCharge), 
+	" ", 
+	anion(MRest,NMRest,NMSym,NMCharge), 
+	optional_hydrate(NMRest,FinalRest,Hydrate).
 
 optional_hydrate(["H","O"|ElemR],ElemR,[[[["H",2],["O",1]],Num]]) --> " ", num_sub(Num,Suffix), Suffix, "hydrate".
-
 optional_hydrate(Pass,Pass,[]) --> [].
 
 
@@ -80,8 +62,6 @@ anion(Elems,Rest,Formula,Charge) --> group(Elems,Rest,Formula,_),
 	{
 	charge_check(nonmetal,Formula,Charge)
 	}.
-
-anion(Elems,Rest,Formula,Charge) --> oxyanion(Elems,Rest,Formula,Charge).
 
 anion([Sym|Rest],Rest,Sym,Charge) --> non_metal_ide(Sym,_),
 	{
@@ -114,6 +94,8 @@ acid_base("S") --> "sulfur".
 acid_base("P") --> "phosphor".
 
 acid_base(Sym) --> element_base(Sym,_).
+
+oxyanion_acid(Elems,Rest,ASym,ACharge) --> group_base(Elems,Rest,ASym,_), {charge(ASym,ACharge)}, {acid_suffix(ASym,Suffix)}, Suffix.
 
 polyatomic_oxy_acid(Elems,Rest,ASym,ACharge) --> group_base(Elems,Rest,ASym,Base), "ic", {\+ Base = "", member(["O",_],ASym), !, charge_check(nonmetal,ASym,ACharge)}.
 
