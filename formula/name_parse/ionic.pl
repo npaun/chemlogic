@@ -93,12 +93,20 @@ hydro_acid([ASym|Rest],Rest,ASym,ACharge) --> "hydro", acid_base(ASym,_), "ic", 
 
 oxyanion_acid(Elems,Rest,ASym,ACharge) --> group_base(Elems,Rest,ASym,_), {charge(ASym,ACharge)}, acid_suffix(ASym).
 
-polyatomic_oxy_acid(Elems,Rest,ASym,ACharge) --> group_base(Elems,Rest,ASym,Base), "ic", {\+ Base = "", member(["O",_],ASym), !, charge_check(nonmetal,ASym,ACharge)}.
+polyatomic_oxy_acid(Elems,Rest,ASym,ACharge) --> group_base(Elems,Rest,ASym,Base), "ic", 
+	{
+		\+ Base = n/a, 
+		member(["O",_],ASym), !, 
+		charge_check(nonmetal,ASym,ACharge)
+	}.
 
 /*
-polyatomic_hydro_acid fails to prevent hydroacetic acid.
-
 Also, perhaps the performance might be better if we put in group base, to avoid wasting our time recognizing "hydro".
 */
 
-polyatomic_hydro_acid(Elems,Rest,ASym,ACharge) --> "hydro", group_base(Elems,Rest,ASym,Base), "ic", {\+ Base = "", \+ member(["O",_],ASym), !, charge_check(nonmetal,ASym,ACharge)}.
+polyatomic_hydro_acid(Elems,Rest,ASym,ACharge) --> "hydro", group_base(Elems,Rest,ASym,Base), "ic", 
+	{
+		\+ Base = n/a, 
+		\+ member(["O",_],ASym), !, 
+		charge_check(nonmetal,ASym,ACharge)
+	}.
