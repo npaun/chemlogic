@@ -24,7 +24,7 @@ formula_part(Fmt,multi,Elems,ElemsR,Part,PartR) --> part(Fmt,_,Elems,ElemsR0,Par
 formula_part(_,none,Elems,Elems,Part,Part) --> [].
 
 part(Fmt,multi,Elems,ElemsR,[[Sym,Num]|PartR],PartR) --> 
-	"(", (group_symbol(Fmt,Elems,ElemsR,Sym); ({var(Sym)} -> syntax_stop(group))), ")",
+	"(", (group_symbol(Fmt,Elems,ElemsR,Sym); ({var(Sym)} -> syntax_stop(group,paren))), ")",
 	(num_decimal(Num), !; syntax_stop(number)).
 
 part(Fmt,multi,Elems,ElemsR,[[Sym,1]|PartR],PartR) --> group_symbol(Fmt,Elems,ElemsR,Sym).

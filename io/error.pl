@@ -13,6 +13,11 @@ scan_rule(digit,[C|T]) -->
 	scan_rule(digit,T).
 
 
+scan_rule(paren,[C|T]) -->
+	[C],
+	{\+ C = ')'}, !,
+	scan_rule(paren,T).
+
 scan_rule(_,[]) -->
 	[].
 
@@ -44,10 +49,18 @@ find_token(Unparsed,Token,Type,Rest) :-
 	scan_rule(Type,Token,Unparsed,Rest).
 
 
+find_token_special(Type,Unparsed,Token,Type,Rest) :-
+	scan_rule(Type,Token,Unparsed,Rest).
+
 parse_error_debug(Unparsed,Token,ErrCode,TokenType) :- write('Scan '), writeln(Unparsed), write(ErrCode), write(': '), write(Token), write(' is '), writeln(TokenType).
 
-explain_error(Input,ErrCode,Unparsed) :-
-	find_token(Unparsed,Token,TokenType,Rest),
+
+explain_error(Input,ErrCode,Flags,Unparsed) :-
+	(Flags = [] -> 
+		find_token(Unparsed,Token,TokenType,Rest); 
+		find_token_special(Flags,Unparsed,Token,TokenType,Rest)
+	),
+
 	append(Start,Unparsed,Input), !,
 	parse_error_debug(Unparsed,Token,ErrCode,TokenType),
 	highlight_error(Start,Token,Rest),
@@ -66,10 +79,12 @@ phrase_fluff_check(Clause,Input,Output) :-
 parse(Clause,Input,Output) :-
 	catch(
 	phrase_fluff_check(Clause,Input,Output),
-	error(syntax_error(ErrCode),Unparsed),
-	explain_error(Input,ErrCode,Unparsed)
-	).
+	error(syntax_error(ErrCode,Flags),Unparsed),
+	explain_error(Input,ErrCode,Flags,Unparsed)
+	). 
 
-syntax_stop(Expected,Unprocessed,_) :-
-	throw(error(syntax_error(Expected),Unprocessed)).
+syntax_stop(Expected,Unprocessed,_) :- syntax_stop(Expected,[],Unprocessed,_).
+
+syntax_stop(Expected,Flags,Unprocessed,_) :-
+	throw(error(syntax_error(Expected,Flags),Unprocessed)).
 % vi: filetype=prolog
