@@ -103,10 +103,7 @@ hydro_acid([ASym|Rest],Rest,ASym,ACharge) --> "hydro", element_base(ASym,_), aci
 	({charge_check(nonmetal,ASym,ACharge)}; syntax_stop(nonmetal_acid)).
 
 
-oxyanion_acid(Elems,Rest,ASym,ACharge) --> group_base(Elems,Rest,ASym,_), 
-	{ASym = [[ElemSym,_],_]}, (acid_ion_suffix(ElemSym), !; syntax_stop(acid_ion_suffix)), 
-	{charge(ASym,ACharge)}, 
-	(acid_oxyanion_suffix(ASym) /*xxx*/).
+oxyanion_acid(Elems,Rest,ASym,ACharge) --> group_base(Elems,Rest,ASym,_), {charge(ASym,ACharge)}.
 
 polyatomic_oxy_acid(Elems,Rest,ASym,ACharge) --> group_base(Elems,Rest,ASym,Base), "ic", 
 	{
