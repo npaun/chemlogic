@@ -27,7 +27,7 @@ punct_check, [T] --> [T], {char_type(T,punct)}.
 scan_rule_r(alpha,[C|T]) -->
 	[C],
 	({char_type(C,white)} -> \+ punct_check; {true}),
-	{\+ (char_type(C,digit); char_type(C,upper))}, !,
+	{\+ (char_type(C,digit); char_type(C,upper); char_type(C,punct))}, !,
 	scan_rule_r(alpha,T).
 
 
@@ -48,6 +48,7 @@ find_token(Unparsed,Token,Type,Rest) :-
 
 	scan_rule(Type,Token,Unparsed,Rest).
 
+find_token([],[],nil,[]).
 
 find_token_special(Type,Unparsed,Token,Type,Rest) :-
 	scan_rule(Type,Token,Unparsed,Rest).
