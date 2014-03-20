@@ -90,13 +90,13 @@ oxy_formula(Elem,Charge,Oxygens,Formula) :-
 	assertz(charge(Formula,Charge)).
 
 oxy_name(Prefix,Elem,Suffix,Name,Base) :-
-	acid_base(Elem,ElemBase,_,[]),
+	element_base(Elem,ElemBase,_,[]),
 	append(Prefix,ElemBase,Base),
 	append(Base,Suffix,Name).
 
 
 acid_suffix_to_dcg(Formula,Suffix) :-
-	dcg_translate_rule(acid_suffix(Formula) --> Suffix,Rule),
+	dcg_translate_rule(acid_oxyanion_suffix(Formula) --> Suffix,Rule),
 	assertz(Rule).
 
 /** cl_parse_all is det.

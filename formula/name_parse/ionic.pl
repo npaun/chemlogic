@@ -40,9 +40,6 @@ optional_hydrate(["H","O"|ElemR],ElemR,[[[["H",2],["O",1]],Num]]) -->
 	("hydrate"; syntax_stop(hydrate_h2o)).
 optional_hydrate(Pass,Pass,[]) --> [].
 
-
-
-
 metal(Sym,Charge) --> metal_multivalent(Sym,Charge).
 metal(Sym,Charge) --> metal_monovalent(Sym,Charge).
 
@@ -101,10 +98,15 @@ acid_anion(Elems,Rest,ASym,ACharge) --> hydro_acid(Elems,Rest,ASym,ACharge).
 acid_anion(Elems,Rest,ASym,ACharge) --> polyatomic_oxy_acid(Elems,Rest,ASym,ACharge).
 acid_anion(Elems,Rest,ASym,ACharge) --> polyatomic_hydro_acid(Elems,Rest,ASym,ACharge).
 
-hydro_acid([ASym|Rest],Rest,ASym,ACharge) --> "hydro", acid_base(ASym,_), "ic", {charge_check(nonmetal,ASym,ACharge)}.
+hydro_acid([ASym|Rest],Rest,ASym,ACharge) --> "hydro", element_base(ASym,_), acid_ion_suffix(ASym), 
+	("ic"; syntax_stop(hydro_acid_suffix)), 
+	({charge_check(nonmetal,ASym,ACharge)}; syntax_stop(nonmetal_acid)).
 
 
-oxyanion_acid(Elems,Rest,ASym,ACharge) --> group_base(Elems,Rest,ASym,_), {charge(ASym,ACharge)}, acid_suffix(ASym).
+oxyanion_acid(Elems,Rest,ASym,ACharge) --> group_base(Elems,Rest,ASym,_), 
+	{ASym = [[ElemSym,_],_]}, (acid_ion_suffix(ElemSym), !; syntax_stop(acid_ion_suffix)), 
+	{charge(ASym,ACharge)}, 
+	(acid_oxyanion_suffix(ASym) /*xxx*/).
 
 polyatomic_oxy_acid(Elems,Rest,ASym,ACharge) --> group_base(Elems,Rest,ASym,Base), "ic", 
 	{
