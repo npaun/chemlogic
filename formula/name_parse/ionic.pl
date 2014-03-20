@@ -34,7 +34,10 @@ ionic_calcdata(MElems,FinalRest,[MSym,MCharge,NMSym,NMCharge],Hydrate) -->
 	anion(MRest,NMRest,NMSym,NMCharge), 
 	optional_hydrate(NMRest,FinalRest,Hydrate).
 
-optional_hydrate(["H","O"|ElemR],ElemR,[[[["H",2],["O",1]],Num]]) --> " ", num_sub(Num,Suffix), Suffix, "hydrate".
+optional_hydrate(["H","O"|ElemR],ElemR,[[[["H",2],["O",1]],Num]]) --> 
+	" ", 
+	((sub_general(Num,Suffix), Suffix); syntax_stop(hydrate_number)), 
+	("hydrate"; syntax_stop(hydrate_h2o)).
 optional_hydrate(Pass,Pass,[]) --> [].
 
 

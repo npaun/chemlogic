@@ -12,19 +12,25 @@ covalent(Formula) --> systematic_covalent(Formula).
 
 %%% Systematic Naming for Covalent %%%
 
-systematic_covalent([[Sym1,Num1],[Sym2,Num2]]) --> covalent_part(non_metal,Sym1,Num1)," ", covalent_part(non_metal_ide,Sym2,Num2).
+systematic_covalent([[Sym1,Num1],[Sym2,Num2]]) --> covalent_part(non_metal,Sym1,sub_first,Num1)," ", covalent_part(non_metal_ide,Sym2,sub_general,Num2).
 
 
-covalent_part(Goal,Sym,Num) --> num_sub(Num,Letter), call(Goal,Sym,Matched),
+covalent_part(SymGoal,Sym,NumGoal,Num) --> call(NumGoal,Num,Letter), call(SymGoal,Sym,Matched),
 	{
 	Letter = [] -> true;
 	Matched = [H|_],
 	(H = 'a'; H = 'o')
 	}.
 
-covalent_part(Goal,Sym,Num) --> num_sub(Num,Letter), Letter, call(Goal,Sym,_).
+covalent_part(SymGoal,Sym,NumGoal,Num) --> call(NumGoal,Num,Letter), Letter, call(SymGoal,Sym,_).
 
 covalent_part(non_metal_ide,"O",2) --> "per", non_metal_ide("O",_).
+
+sub_first(Num,Letter) --> num_sub(Num,Letter).
+sub_first(1,"") --> "".
+
+sub_general(Num,Letter) --> num_sub(Num,Letter).
+sub_general(1,"o") --> "mon".
 
 num_sub(2,[]) --> "di".
 num_sub(3,[]) --> "tri".
@@ -35,9 +41,6 @@ num_sub(7,"a") --> "sept".
 num_sub(8,"a") --> "oct".
 num_sub(9,"a") --> "non".
 num_sub(10,"a") --> "dec".
-
-num_sub(1,[]) --> [].
-num_sub(1,"o") --> "mon".
 
 %%% Alkanes, Alkenes and Alcohols %%%
 
