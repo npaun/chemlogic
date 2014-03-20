@@ -7,8 +7,8 @@ formula(Fmt,Elems,ElemsR,Formula,FormulaR) -->
 % hydrate_part(_,[],[],[],[],[],[]) :- !.
 hydrate_part(Fmt,["H","O"|ElemsR],ElemsR,[[Formula,Coeff]|SymR],SymR) --> 
 	output(Fmt,dot), 
-	num_decimal(Coeff),
-       	water_output(Fmt,Formula).
+	(num_decimal(Coeff); syntax_stop(number)),
+       	(water_output(Fmt,Formula); syntax_stop(hydrate_h2o,group)).
 
 hydrate_part(_,Elems,Elems,Part,Part) --> [].
 
@@ -28,11 +28,100 @@ part(Fmt,multi,Elems,ElemsR,[[Sym,Num]|PartR],PartR) -->
 	(num_decimal(Num), !; syntax_stop(number)).
 
 part(Fmt,multi,Elems,ElemsR,[[Sym,1]|PartR],PartR) --> group_symbol(Fmt,Elems,ElemsR,Sym).
-part(Fmt,_,[Elem|ElemsR],ElemsR,[[Elem,Num]|PartR],PartR) --> ( element_symbol(Elem); syntax_stop(element)), (subscript(Fmt,Num), !).
-
+part(Fmt,_,[Elem|ElemsR],ElemsR,[[Elem,Num]|PartR],PartR) --> element_symbol(Elem), (subscript(Fmt,Num), !).
 
 subscript(_,Num) --> { nonvar(Num) -> Num = 1}, [].
 subscript(Fmt,Num) --> output(Fmt,sub_start), num_decimal(Num), output(Fmt,sub_end).
 subscript(_,1) --> [].
 
+%%%% ERROR GUIDANCE %%%%
+
+guidance_unparsed([],
+	'Your entire formula has been processed, but you are missing a required component of a formula. Check to ensure nothing is missing.
+	 The first thing the program could not find was a '
+ ).
+
+
+guidance_errcode(part_first,punct,
+	'Polyatomic ions (starting at the highlighted parenthesis) may not be left by themselves; they must form a compound.
+	 (Or be indicated correctly as such, but the program does not support that)
+
+	 e.g. (NH4)2<SO4>, not just (NH4)2'
+ ).
+
+guidance_errcode(part_first,Type,Message) :- guidance_errcode(none,Type,Message).
+
+
+guidance_errcode(number,digit,
+	'The highlighted digits are not valid as a subscript or coefficient in a chemical formula.
+	 Do not use an explicit 1; it is implied. Do not use a 0; you should omit that part of the formula in that case.
+ 	 Also, the program has a limitation on the maximum number allowed. Sorry.
+
+ 	 e.g. CH4, not C<1>H4'
+ ).
+
+
+guidance_errcode(number,nil,
+	'A number greater than 1 is required at this point.
+	 Only parenthesize polyatomic groups if there is more than one of the group.
+
+ 	e.g. (NH4)<2>, but NH4 instead of (NH4)<1>'
+).
+
+guidance_errcode(number,white,
+	'A number greater than 1 is required at this point.
+	 If you are entering a polyatomic group, only parenthesize it if there is more than one.
+
+ 	e.g. (NH4)<2>, but NH4 instead of (NH4)<1>'
+).
+
+guidance_errcode(number,alpha,
+	'The highlighted characters are not a number.'
+).
+
+
+guidance_errcode(number,punct,
+	'The highlighted characters are not a number.
+	 (Did you accidentally press SHIFT?)'
+	 ).
+
+
+guidance_errcode(group,paren,
+	'The highlighted string is not a valid polyatomic group. 
+	 Please check that you have entered it correctly. (The program may also simply not have it in its database).
+ 	 Also, parentheses are not necessary for single elements.
+
+ 	 e.g. (NH4)2, but not (Cl)2'
+ ).
+
+guidance_errcode(hydrate_h2o,group,
+	'This program only supports hydrates: Make sure you are using water (H2O) in your hydrate part.
+
+	 e.g. Na2CO3 . 10<H2O>'
+ ).
+
+guidance_errcode(none,punct,
+	'Remove any extraneous characters from your formula.
+	 Also ensure that you are correctly spacing operators: one space before, one space after
+	 
+	 e.g CH4_._10H2O'
+).
+
+guidance_errcode(none,white,
+	'Remove any extraneous spaces from your formula.
+	 Also ensure that you are correctly spacing operators: one space before, one space after
+	 
+	 e.g CH4_._10H2O'
+).
+
+guidance_errcode(none,digit,
+	'The number you have entered exceeds the maximum limitation in the program. Sorry.'
+).
+
+guidance_errcode(none,alpha,
+	'Check that you have correctly entered the highlighted element. (The program may also simply not have it in its database).
+	 Also, the highlighted characters may, in fact, be extraneous.
+
+	 e.g. Nm2SO4 is actually Na2SO4'
+ ).
 % vi: filetype=prolog

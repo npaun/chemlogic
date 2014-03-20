@@ -1,6 +1,8 @@
 scan_rule(alpha,[C|T]) --> [C], scan_rule_r(alpha,T).
 
 
+scan_rule(white,C) --> scan_rule(punct,C).
+
 scan_rule(punct,[C|T]) --> 
 	        [C],
 		        {\+ char_type(C,alnum)}, !,
@@ -18,10 +20,19 @@ scan_rule(paren,[C|T]) -->
 	{\+ C = ')'}, !,
 	scan_rule(paren,T).
 
+
+scan_rule(group,[C|T]) -->
+	[C],
+	{\+ (char_type(C,punct); char_type(C,white))}, !,
+	scan_rule(group,T).
+
 scan_rule(_,[]) -->
 	[].
 
+
+
 punct_check, [T] --> [T], {char_type(T,punct)}.
+
 
 
 scan_rule_r(alpha,[C|T]) -->
@@ -29,7 +40,6 @@ scan_rule_r(alpha,[C|T]) -->
 	({char_type(C,white)} -> \+ punct_check; {true}),
 	{\+ (char_type(C,digit); char_type(C,upper); char_type(C,punct))}, !,
 	scan_rule_r(alpha,T).
-
 
 scan_rule_r(_,[]) --> [].
 
@@ -43,7 +53,7 @@ find_token(Unparsed,Token,Type,Rest) :-
 	char_type(First,alpha) -> Type = alpha;
 	char_type(First,punct) -> Type = punct;
 	char_type(First,digit) -> Type = digit;
-	char_type(First,white) -> Type = punct
+	char_type(First,white) -> Type = white
 	), !,
 
 	scan_rule(Type,Token,Unparsed,Rest).
@@ -67,7 +77,9 @@ explain_error(Input,ErrCode,Flags,Unparsed) :-
 	highlight_error(Start,Token,Rest),
 
 	(guidance_errcode(ErrCode,TokenType,MessageErrCode) -> writeln(MessageErrCode); true),
-	(guidance_unparsed(Unparsed,MessageUnparsed) -> (write(MessageUnparsed), writeln(ErrCode)); true).
+	nl,
+	(guidance_unparsed(Unparsed,MessageUnparsed) -> (write(MessageUnparsed), writeln(ErrCode)); true),
+	fail.
 
 
 phrase_fluff_check(Clause,Input,Output) :-
