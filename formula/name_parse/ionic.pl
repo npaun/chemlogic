@@ -43,9 +43,13 @@ optional_hydrate(Pass,Pass,[]) --> [].
 metal(Sym,Charge) --> metal_multivalent(Sym,Charge).
 metal(Sym,Charge) --> metal_monovalent(Sym,Charge).
 
-metal_multivalent(Sym,Charge) -->  element(Sym,_),{charge(Sym,Charges), is_list(Charges)
-	},
-	(multivalent_charge(Charge); syntax_stop(charge)), ({member(Charge,Charges)}; syntax_stop(charge_invalid)).
+metal_multivalent(Sym,Charge) --> 
+	element(Sym,_),
+	{charge(Sym,Charges), is_list(Charges)},
+       	(multivalent_charge(Charge); syntax_stop(charge)), 
+	({member(Charge,Charges)}; syntax_stop(charge_invalid)).
+
+
 
 metal_monovalent(Sym,Charge) --> element(Sym,_), {charge_check(metal,Sym,Charge)}.
 
@@ -63,10 +67,16 @@ anion(Elems,Rest,Formula,Charge) --> group(Elems,Rest,Formula,_),
 	charge_check(nonmetal,Formula,Charge)
 	}.
 
-anion([Sym|Rest],Rest,Sym,Charge) --> non_metal_ide(Sym,_),
+anion([Sym|Rest],Rest,Sym,Charge) --> ionic_non_metal_ide(Sym,_),
 	{
 	charge(Sym,Charge)
 	}.
+
+
+ionic_non_metal_ide(Sym,Base) --> 
+	(element_base(Sym,Base); syntax_stop(element_or_group)), 
+	({charge_check(nonmetal,Sym)}; syntax_stop(nonmetal)),
+	("ide"; syntax_stop(ide)).
 
 multivalent_charge(Charge) --> "(", num_roman(Charge), ")".
 
