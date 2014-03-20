@@ -13,7 +13,7 @@ ionic_rev([[MSym,MSub],[NMSym,NMSub]|Appended]) -->
 	%  TODO: If the metal is monovalent, don't bother conjuring it up! Just use it.
 	%  Also, no need to actually check these charges, is there?
 
-(	charge(NMSym,NMCharge) ; oxyanion(_,_,NMSym,NMCharge,_,[]), !),
+	(charge(NMSym,NMCharge), !),
 	!,
 	NMTotal is abs(NMSub * NMCharge),
 	MCharge is NMTotal / MSub
@@ -45,7 +45,7 @@ metal(Sym,Charge) --> metal_monovalent(Sym,Charge).
 
 metal_multivalent(Sym,Charge) -->  element(Sym,_),{charge(Sym,Charges), is_list(Charges)
 	},
-	multivalent_charge(Charge), {member(Charge,Charges)}.
+	(multivalent_charge(Charge); syntax_stop(charge)), ({member(Charge,Charges)}; syntax_stop(charge_invalid)).
 
 metal_monovalent(Sym,Charge) --> element(Sym,_), {charge_check(metal,Sym,Charge)}.
 
@@ -95,7 +95,7 @@ oxyanion_acid(Elems,Rest,ASym,ACharge) --> group_base(Elems,Rest,ASym,_), {charg
 
 polyatomic_oxy_acid(Elems,Rest,ASym,ACharge) --> group_base(Elems,Rest,ASym,Base), "ic", 
 	{
-		\+ Base = n/a, 
+		\+ Base = "n/a", 
 		member(["O",_],ASym), !, 
 		charge_check(nonmetal,ASym,ACharge)
 	}.
@@ -106,7 +106,7 @@ Also, perhaps the performance might be better if we put in group base, to avoid 
 
 polyatomic_hydro_acid(Elems,Rest,ASym,ACharge) --> "hydro", group_base(Elems,Rest,ASym,Base), "ic", 
 	{
-		\+ Base = n/a, 
+		\+ Base = "n/a", 
 		\+ member(["O",_],ASym), !, 
 		charge_check(nonmetal,ASym,ACharge)
 	}.
