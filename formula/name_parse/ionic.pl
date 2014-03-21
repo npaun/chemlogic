@@ -86,7 +86,7 @@ num_roman(3) --> "III".
 num_roman(2) --> "II".
 num_roman(1) --> "I".
 
-acid(["H"|Elems],Rest,["H",1,ASym,ACharge]) --> acid_anion(Elems,Rest,ASym,ACharge), " acid".
+acid(["H"|Elems],Rest,["H",1,ASym,ACharge]) --> acid_anion(Elems,Rest,ASym,ACharge), (" acid"; syntax_stop(acid)).
 
 acid_anion(Elems,Rest,ASym,ACharge) --> oxyanion_acid(Elems,Rest,ASym,ACharge).
 acid_anion(Elems,Rest,ASym,ACharge) --> hydro_acid(Elems,Rest,ASym,ACharge).
@@ -105,7 +105,7 @@ hydro_acid([ASym|Rest],Rest,ASym,ACharge) --> "hydro", acid_base(ASym), ic_suffi
 	%(acid_oxyanion_suffix(ASym) /*xxx*/).
 
 polyatomic_oxy_acid(Elems,Rest,ASym,ACharge) --> group_base(Elems,Rest,ASym,Base), ic_suffix, 
-	{	member(["O",_],ASym), !}, 
+(	{	member(["O",_],ASym), !} ; ({var(Elems)} -> syntax_stop(oxy_acid_rule))), 
 	({charge_check(nonmetal,ASym,ACharge)}; syntax_stop(nonmetal_acid)).
 
 /*
@@ -113,8 +113,8 @@ Also, perhaps the performance might be better if we put in group base, to avoid 
 */
 
 polyatomic_hydro_acid(Elems,Rest,ASym,ACharge) --> "hydro", group_base(Elems,Rest,ASym,Base), ic_suffix, 
-	{ \+ member(["O",_],ASym), ! }, 
+ (	{ \+ member(["O",_],ASym), ! }; syntax_stop(oxy_acid_rule)), 
 		({charge_check(nonmetal,ASym,ACharge)}; syntax_stop(nonnmetal_acid)).
 
 
-		ic_suffix --> ("ic" -> {true}; syntax_stop(ic_acid_suffix)).
+ic_suffix --> ("ic" -> {true}; syntax_stop(ic_acid_suffix)).
