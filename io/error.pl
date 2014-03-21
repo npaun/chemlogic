@@ -83,11 +83,11 @@ explain_error(Input,ErrCode,Flags,Unparsed) :-
 
 
 phrase_fluff_check(Clause,Input,Output) :-
-	phrase(Clause,Input,Rest), !,
+	((phrase(Clause,Input,Rest), !,
 	(
 	Output = Rest, !;
 	syntax_stop(none,Rest,[])
-	).
+	)); syntax_stop(fail,Input,[])).
 
 parse(Clause,Input,Output) :-
 	catch(

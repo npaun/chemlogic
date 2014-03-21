@@ -34,3 +34,8 @@ oxyanion_acid_name(Sym,Oxygens,Charge) --> acid_base(Sym), "ous",
 
 oxyanion_acid_name(Sym,Oxygens,Charge) --> "hypo", acid_base(Sym), "ous",
 		oxyanion_test(Sym,[_,_,_,Oxygens],Oxygens,Charge).
+
+
+
+/* CORRECTOR; remove if unecessary */
+oxyanion_acid_name(Sym,Oxygens,Charge) --> ("per"; "hypo"; {true}), acid_base(Sym), ("ate"; "ite"), syntax_stop(corrector_oxyanion_acid). 

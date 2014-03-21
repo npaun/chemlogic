@@ -50,7 +50,8 @@ metal_valence(Sym,Charge,Charges) -->
 
 
 
-metal_valence(Sym,Charge,Charges) --> {Charges > 0, Charge = Charges}.
+	metal_valence(Sym,Charge,Charges) --> {Charges > 0, Charge = Charges}, 
+		(multivalent_charge(_) -> syntax_stop(corrector_not_multivalent); {true}). /* CORRECTOR: remove if unecessary */
 
 
 cation(Elems,Rest,Formula,Charge) --> group(Elems,Rest,Formula,_),
@@ -63,13 +64,10 @@ cation([Sym|Rest],Rest,Sym,Charge) --> metal(Sym,Charge).
 
 anion(Elems,Rest,Formula,Charge) --> group(Elems,Rest,Formula,_), ({charge_check(nonmetal,Formula,Charge)}; syntax_stop(anion)).
 
-anion([Sym|Rest],Rest,Sym,Charge) --> ionic_non_metal_ide(Sym,_,Charge).
+anion([Sym|Rest],Rest,Sym,Charge) --> (nonmetal_ide(Sym,_,Charge); syntax_stop(nonmetal)).
 
 
-ionic_non_metal_ide(Sym,Base,Charge) --> 
-	(element_base(Sym,Base); syntax_stop(element_or_group)), 
-	({charge_check(nonmetal,Sym,Charge)}; syntax_stop(nonmetal)),
-	("ide"; syntax_stop(ide)).
+
 
 multivalent_charge(Charge) --> "(", num_roman(Charge), ")".
 
@@ -86,10 +84,10 @@ num_roman(1) --> "I".
 
 acid(["H"|Elems],Rest,["H",1,ASym,ACharge]) --> acid_anion(Elems,Rest,ASym,ACharge), (" acid"; syntax_stop(acid)).
 
-acid_anion(Elems,Rest,ASym,ACharge) --> oxyanion_acid(Elems,Rest,ASym,ACharge).
 acid_anion(Elems,Rest,ASym,ACharge) --> hydro_acid(Elems,Rest,ASym,ACharge).
 acid_anion(Elems,Rest,ASym,ACharge) --> polyatomic_oxy_acid(Elems,Rest,ASym,ACharge).
 acid_anion(Elems,Rest,ASym,ACharge) --> polyatomic_hydro_acid(Elems,Rest,ASym,ACharge).
+acid_anion(Elems,Rest,ASym,ACharge) --> oxyanion_acid(Elems,Rest,ASym,ACharge).
 
 hydro_acid([ASym|Rest],Rest,ASym,ACharge) --> "hydro", acid_base(ASym), ic_suffix,
 	({charge_check(nonmetal,ASym,ACharge)}; syntax_stop(nonmetal_acid)).

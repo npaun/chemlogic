@@ -3,9 +3,13 @@
 
 
 /* Common Subroutines */
-non_metal(Sym,Name) --> element(Sym,Name), {charge_check(nonmetal,Sym)}.
+nonmetal(Sym,Name,Charge) --> element(Sym,Name), {charge_check(nonmetal,Sym,Charge)}.
 
-non_metal_ide(Sym,Base) --> element_base(Sym,Base), "ide", {charge_check(nonmetal,Sym)}.
+
+nonmetal_ide(Sym,Base,Charge) --> 
+	element_base(Sym,Base), 
+	({charge_check(nonmetal,Sym,Charge)}; syntax_stop(nonmetal)),
+	("ide"; syntax_stop(ide)).
 
 /** charge_check(+Type,+Sym,?Charge) is semidet.
  ** charge_check(+Type,+Sym) is semidet.
@@ -46,10 +50,11 @@ single_element([Sym|Rest],Rest,[[Sym,1]]) --> element(Sym,_).
 
 /* Parse it up! */
 
+
+name(Sym,Rest,Formula,Name,[]) :- pure(Sym,Rest,Formula,Name,[]).
 name(Sym,Rest,Formula) --> retained(Sym,Rest,Formula).
 name(Sym,Rest,Formula) --> ionic(Sym,Rest,Formula).
 name(Sym,Rest,Formula) --> covalent(Sym,Rest,Formula).
-name(Sym,Rest,Formula) --> pure(Sym,Rest,Formula).
 name(Sym,Rest,Formula) --> common(Sym,Rest,Formula).
 
 /** TODO:
