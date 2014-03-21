@@ -41,18 +41,16 @@ optional_hydrate(["H","O"|ElemR],ElemR,[[[["H",2],["O",1]],Num]]) -->
 	("hydrate"; syntax_stop(hydrate_h2o)).
 optional_hydrate(Pass,Pass,[]) --> [].
 
-metal(Sym,Charge) --> metal_multivalent(Sym,Charge).
-metal(Sym,Charge) --> metal_monovalent(Sym,Charge).
+metal(Sym,Charge) --> element(Sym,_), {charge(Sym,Charges)}, metal_valence(Sym,Charge,Charges).
 
-metal_multivalent(Sym,Charge) --> 
-	element(Sym,_),
-	{charge(Sym,Charges), is_list(Charges)},
+metal_valence(Sym,Charge,Charges) --> 
+	{is_list(Charges)},
        	(multivalent_charge(Charge); syntax_stop(charge)), 
 	({member(Charge,Charges)}; syntax_stop(charge_invalid)).
 
 
 
-metal_monovalent(Sym,Charge) --> element(Sym,_), {charge_check(metal,Sym,Charge)}.
+metal_valence(Sym,Charge,Charges) --> {Charges > 0, Charge = Charges}.
 
 
 cation(Elems,Rest,Formula,Charge) --> group(Elems,Rest,Formula,_),

@@ -38,7 +38,7 @@ punct_check, [T] --> [T], {char_type(T,punct)}.
 scan_rule_r(alpha,[C|T]) -->
 	[C],
 	({char_type(C,white)} -> \+ punct_check; {true}),
-	{\+ (char_type(C,digit); char_type(C,upper); char_type(C,punct))}, !,
+	{\+ (char_type(C,digit); char_type(C,upper); char_type(C,punct); char_type(C,white))}, !,
 	scan_rule_r(alpha,T).
 
 scan_rule_r(_,[]) --> [].
