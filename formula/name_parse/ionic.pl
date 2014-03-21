@@ -1,3 +1,4 @@
+:- [oxyanion].
 
 % Inefficiencies to eliminate %
 	% Oxyacids require a stupid test to determine the oxyanion
@@ -62,20 +63,14 @@ cation(Elems,Rest,Formula,Charge) --> group(Elems,Rest,Formula,_),
 
 cation([Sym|Rest],Rest,Sym,Charge) --> metal(Sym,Charge).
 
-anion(Elems,Rest,Formula,Charge) --> group(Elems,Rest,Formula,_),
-	{
-	charge_check(nonmetal,Formula,Charge)
-	}.
+anion(Elems,Rest,Formula,Charge) --> group(Elems,Rest,Formula,_), ({charge_check(nonmetal,Formula,Charge)}; syntax_stop(anion)).
 
-anion([Sym|Rest],Rest,Sym,Charge) --> ionic_non_metal_ide(Sym,_),
-	{
-	charge(Sym,Charge)
-	}.
+anion([Sym|Rest],Rest,Sym,Charge) --> ionic_non_metal_ide(Sym,_,Charge).
 
 
-ionic_non_metal_ide(Sym,Base) --> 
+ionic_non_metal_ide(Sym,Base,Charge) --> 
 	(element_base(Sym,Base); syntax_stop(element_or_group)), 
-	({charge_check(nonmetal,Sym)}; syntax_stop(nonmetal)),
+	({charge_check(nonmetal,Sym,Charge)}; syntax_stop(nonmetal)),
 	("ide"; syntax_stop(ide)).
 
 multivalent_charge(Charge) --> "(", num_roman(Charge), ")".
@@ -98,30 +93,28 @@ acid_anion(Elems,Rest,ASym,ACharge) --> hydro_acid(Elems,Rest,ASym,ACharge).
 acid_anion(Elems,Rest,ASym,ACharge) --> polyatomic_oxy_acid(Elems,Rest,ASym,ACharge).
 acid_anion(Elems,Rest,ASym,ACharge) --> polyatomic_hydro_acid(Elems,Rest,ASym,ACharge).
 
-hydro_acid([ASym|Rest],Rest,ASym,ACharge) --> "hydro", element_base(ASym,_), acid_ion_suffix(ASym), 
-	("ic"; syntax_stop(hydro_acid_suffix)), 
+hydro_acid([ASym|Rest],Rest,ASym,ACharge) --> "hydro", acid_base(ASym), ic_suffix,
 	({charge_check(nonmetal,ASym,ACharge)}; syntax_stop(nonmetal_acid)).
 
+	%
+	%
+	%
+	%oxyanion_acid(Elems,Rest,ASym,ACharge) --> group_base(Elems,Rest,ASym,_), 
+	%{ASym = [[ElemSym,_],_]}, (acid_ion_suffix(ElemSym), !; syntax_stop(acid_ion_suffix)), 
+	%{charge(ASym,ACharge)}, 
+	%(acid_oxyanion_suffix(ASym) /*xxx*/).
 
-oxyanion_acid(Elems,Rest,ASym,ACharge) --> group_base(Elems,Rest,ASym,_), 
-	{ASym = [[ElemSym,_],_]}, (acid_ion_suffix(ElemSym), !; syntax_stop(acid_ion_suffix)), 
-	{charge(ASym,ACharge)}, 
-	(acid_oxyanion_suffix(ASym) /*xxx*/).
-
-polyatomic_oxy_acid(Elems,Rest,ASym,ACharge) --> group_base(Elems,Rest,ASym,Base), "ic", 
-	{
-		\+ Base = "n/a", 
-		member(["O",_],ASym), !, 
-		charge_check(nonmetal,ASym,ACharge)
-	}.
+polyatomic_oxy_acid(Elems,Rest,ASym,ACharge) --> group_base(Elems,Rest,ASym,Base), ic_suffix, 
+	{	member(["O",_],ASym), !}, 
+	({charge_check(nonmetal,ASym,ACharge)}; syntax_stop(nonmetal_acid)).
 
 /*
 Also, perhaps the performance might be better if we put in group base, to avoid wasting our time recognizing "hydro".
 */
 
-polyatomic_hydro_acid(Elems,Rest,ASym,ACharge) --> "hydro", group_base(Elems,Rest,ASym,Base), "ic", 
-	{
-		\+ Base = "n/a", 
-		\+ member(["O",_],ASym), !, 
-		charge_check(nonmetal,ASym,ACharge)
-	}.
+polyatomic_hydro_acid(Elems,Rest,ASym,ACharge) --> "hydro", group_base(Elems,Rest,ASym,Base), ic_suffix, 
+	{ \+ member(["O",_],ASym), ! }, 
+		({charge_check(nonmetal,ASym,ACharge)}; syntax_stop(nonnmetal_acid)).
+
+
+		ic_suffix --> ("ic" -> {true}; syntax_stop(ic_acid_suffix)).
