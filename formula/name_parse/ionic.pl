@@ -14,12 +14,16 @@ ionic_rev([[MSym,MSub],[NMSym,NMSub]|Appended]) -->
 	%  TODO: If the metal is monovalent, don't bother conjuring it up! Just use it.
 	%  Also, no need to actually check these charges, is there?
 
+
 	(charge(NMSym,NMCharge), !),
 	!,
 	NMTotal is abs(NMSub * NMCharge),
 	MCharge is NMTotal / MSub
 	},
-	ionic_calcdata(_,_,[MSym,MCharge,NMSym,NMCharge],Appended).
+	ionic_calcdata(_,_,[MSym,MCharge,NMSym,NMCharge],Appended),
+	!,
+	/* Corrector: remove if unecessary */
+	({GCD is gcd(MSub,NMSub)}, ({GCD = 1} -> {true}; syntax_stop(not_reduced))).
 
 ionic_fwd(MElems,FinalRest,[[MSym,MSub],[NMSym,NMSub]|Appended]) --> ionic_calcdata(MElems,FinalRest,[MSym,MCharge,NMSym,NMCharge],Appended),
 	{
@@ -50,9 +54,12 @@ metal_valence(Sym,Charge,Charges) -->
 
 
 
-	metal_valence(Sym,Charge,Charges) --> {Charges > 0, Charge = Charges}, 
-		(multivalent_charge(_) -> syntax_stop(corrector_not_multivalent); {true}). /* CORRECTOR: remove if unecessary */
+	metal_valence(Sym,Charge,Charges) --> {Charges > 0},
+       	({var(Charge)} -> multivalent_corrector; {true}), /* CORRECTOR: remove if unecessary */	
+	{Charge = Charges}.
 
+/* CORRECTOR: remove if unnecessary */
+multivalent_corrector --> (multivalent_charge(_) -> syntax_stop(corrector_not_multivalent); {true}).
 
 cation(Elems,Rest,Formula,Charge) --> group(Elems,Rest,Formula,_),
 	{
