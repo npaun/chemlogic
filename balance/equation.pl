@@ -3,7 +3,7 @@
 
 symbolic(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideLeft,SideRight]) -->
 	expr(Fmt,Coeff,CoeffR0,Elems,ElemR0,Formula,FormulaR0,SideLeft),
-	output(Fmt,arrow),
+	(output(Fmt,arrow), ! -> {true}; syntax_stop(arrow)),
 	expr(Fmt,CoeffR0,CoeffR,ElemR0,ElemR,FormulaR0,FormulaR,SideRight).
 
 
