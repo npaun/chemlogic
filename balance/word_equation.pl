@@ -2,21 +2,23 @@
 :- set_prolog_flag(double_quotes,chars).
 
 word(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideLeft,SideRight]) -->
-	expression(Coeff,CoeffR0,Elems,ElemR0,Formula,FormulaR0,SideLeft),
-	output(Fmt,arrow),
-	expression(CoeffR0,CoeffR,ElemR0,ElemR,FormulaR0,FormulaR,SideRight).
+	expr(Coeff,CoeffR0,Elems,ElemR0,Formula,FormulaR0,SideLeft),
+	(output(Fmt,arrow), !; syntax_stop(arrow)),
+	expr(CoeffR0,CoeffR,ElemR0,ElemR,FormulaR0,FormulaR,SideRight).
 
 
-expression(Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideH|SideT]) -->
-	balanced_formula(Coeff,CoeffR0,Elems,ElemR0,Formula,FormulaR0,SideH),
+expr(Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideH|SideT]) --> 
+	balanced_name(Coeff,CoeffR0,Elems,ElemR0,Formula,FormulaR0,SideH),
+	expr_tail(CoeffR0,CoeffR,ElemR0,ElemR,FormulaR0,FormulaR,SideT), !.
+
+expr_tail(Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[Side]) --> 
 	" + ",
-	expression(CoeffR0,CoeffR,ElemR0,ElemR,FormulaR0,FormulaR,SideT),
-	!.
+	balanced_name(Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,Side).
 
-expression(Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[Side]) -->
-	balanced_formula(Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,Side).
+expr_tail(Coeff,Coeff,Elems,Elems,Formula,Formula,[]) --> [].
 
-balanced_formula([Coeff|CoeffR],CoeffR,Elems,ElemR,[Formula|FormulaR],FormulaR,Formula) -->
+
+balanced_name([Coeff|CoeffR],CoeffR,Elems,ElemR,[Formula|FormulaR],FormulaR,Formula) -->
 	coefficient(Coeff),
 	name(Elems,ElemR,Formula),
 	!.
