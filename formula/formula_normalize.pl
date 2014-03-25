@@ -1,6 +1,8 @@
+:- module(formula,[formula//5]).
+%:- use_module('../io/error').
 :- set_prolog_flag(double_quotes,chars).
 
-formula(Fmt,Elems,ElemsR,Formula,FormulaR) --> 
+formula(Fmt,Elems,ElemsR,Formula,FormulaR) -->
 	(formula_part_first(Fmt,Elems,ElemsR0,Formula,FormulaR0); syntax_stop(part_first)),
 	(hydrate_part(Fmt,ElemsR0,ElemsR,FormulaR0,FormulaR), !).
 

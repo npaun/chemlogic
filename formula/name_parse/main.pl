@@ -1,5 +1,12 @@
-:- include('ionic.pl').
-:- include('covalent.pl').
+:- module(name_parse,[name//3,nonmetal//3,nonmetal_ide//3,charge_check/2,charge_check/3]).
+:- set_prolog_flag(double_quotes,chars). 
+
+:- use_module(ionic).
+%:- reexport(ionic,[guidance_errcode/3,guidance_unparsed/2]).
+:- use_module(covalent).
+%:- reexport(covalent,[guidance_errcode/3,guidance_unparsed/2]).
+
+%:- use_module('../io/error').
 
 
 /* Common Subroutines */
@@ -8,8 +15,104 @@ nonmetal(Sym,Name,Charge) --> element(Sym,Name), {charge_check(nonmetal,Sym,Char
 
 nonmetal_ide(Sym,Base,Charge) --> 
 	element_base(Sym,Base), 
-	({charge_check(nonmetal,Sym,Charge)}; syntax_stop(nonmetal)),
+	({charge_check(nonmetal,Sym,Charge)}; syntax_stop(nonmetal_charge)),
 	("ide"; syntax_stop(ide)).
+
+/* Common error messages */
+
+guidance_errcode(ErrCode,Type,Message) :- ionic:guidance_errcode(ErrCode,Type,Message).
+guidance_errcode(ErrCode,Type,Message) :- oxyanion:guidance_errcode(ErrCode,Type,Message).
+guidance_errcode(ErrCode,Type,Message) :- covalent:guidance_errcode(ErrCode,Type,Message).
+
+guidance_errcode(nonmetal,alpha,
+	'The highlighted component is not a valid non-metal ide.
+	 NOTE: It is possible that the non-metal is missing from the database.'
+ ).
+
+guidance_errcode(nonmetal,_,
+	'You have entered the highlighted extraneous characters instead of a valid non-metal ide.'
+).
+
+guidance_errcode(nonmetal_charge,alpha,
+	'You have entered a metal, but it does not make sense here. 
+	 Ionic compounds are formed from a metal and a non-metal (or a cation and anion).
+ 	 Covalent compounds are formed from two non-metals.'
+ ).
+
+guidance_errcode(ide,alpha,
+	'The non-metal you have entered must end in "ide". This error is easy to fix: just change the junk you have entered (highlighted) to ide!
+	 Ionic compounds are in the form: metal non-metalide
+	 e.g. sodium chlor<ide>
+	 NOTE: If the compound you are entering is ionic, you may have misspelled the name of a negative ion instead.
+
+	 Covalent compounds are in the form non-metal non-metalide
+	 e.g hydrogen monox<ide>'
+ ).
+
+guidance_errcode(fail,alpha,
+	'The chemical name you are entering (starting with the highlighted component) does not conform to any known naming rules.
+	 Please check that you are correctly following one of these rules:
+
+	 1. Ionic: metal non-metalide
+	 e.g sodium chloride
+
+	 2. Acid: hydro (if it does not contain oxygen) non-metal suffix acid
+	 e.g. hydrosulfuric acid
+
+	 3. Covalent: non-metal non-metalide
+	 e.g. dihydrogen monoxide
+
+	 4. Some hydrocarbons: prefix ane/ene/anol
+	 e.g. methane
+
+	 NOTE: The program does not support any other naming conventions, yet. Sorry.
+
+ 	 If you can get your input to follow one of these conventions, as briefly described, 
+	 the program will be able to give you more detailed help.
+ ').
+
+guidance_errcode(fail,nil,
+	'If you do not enter anything, what are we supposed to do, here?'
+).
+
+guidance_errcode(fail,_,
+ 	'Remove any extraneous characters from highlighted component.'
+).
+
+guidance_errcode(none,white,
+	'The program only supports compounds in two parts, with support for hydrates. Sorry.
+	 Here is a brief summary of the supported rules:
+
+	 1. Ionic: metal non-metalide
+	 e.g sodium chloride
+
+	 2. Acid: hydro (if it does not contain oxygen) non-metal suffix acid
+	 e.g. hydrosulfuric acid
+
+	 3. Covalent: non-metal non-metalide
+	 e.g. dihydrogen monoxide
+
+	 4. Some hydrocarbons: prefix ane/ene/anol
+	 e.g. methane').
+
+ guidance_errcode(none,alpha,
+ 	'Your input would be a valid chemical compound name if it was not for the highlighted characters on the end. 
+	 If they are spurious, please remove them.
+ 	 
+ 	 Otherwise, you may have to correct your formula, or the program may not support the naming convention you are using.'
+ ).
+
+guidance_errcode(_,_,
+	'You have probably entered some spurious characters. Remove them or correct them.'
+).
+
+guidance_unparsed([],
+	'The program has processed the entire chemical name you have entered but has not found a required component.
+	 Please check that you are not missing anything.
+
+ 	 The first missing component is '
+ ).
+
 
 /** charge_check(+Type,+Sym,?Charge) is semidet.
  ** charge_check(+Type,+Sym) is semidet.
@@ -34,8 +137,7 @@ charge_check(nonmetal,Sym,Charge) :-
 charge_check(metal,Sym,Charge) :-
         charge(Sym,Charge),
 	!,
-        (\+ is_list(Charge) ->
-        Charge > 0),
+        (is_list(Charge); Charge > 0),
         !.
 
 charge_check(Type,Sym) :- charge_check(Type,Sym,_).
@@ -53,9 +155,11 @@ single_element([Sym|Rest],Rest,[[Sym,1]]) --> element(Sym,_).
 
 name(Sym,Rest,Formula) --> retained(Sym,Rest,Formula).
 name(Sym,Rest,Formula) --> ionic(Sym,Rest,Formula).
-name(Sym,Rest,Formula) --> pure(Sym,Rest,Formula).
 name(Sym,Rest,Formula) --> covalent(Sym,Rest,Formula).
+name(Sym,Rest,Formula) --> pure(Sym,Rest,Formula).
 name(Sym,Rest,Formula) --> common(Sym,Rest,Formula).
+
+
 
 /** TODO:
 

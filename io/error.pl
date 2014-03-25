@@ -1,3 +1,5 @@
+%:- module(cl_error,[parse/3,syntax_stop/3,syntax_stop/4]).
+
 scan_rule(alpha,[C|T]) --> [C], scan_rule_r(alpha,T).
 
 
@@ -47,6 +49,8 @@ scan_rule_r(_,[]) --> [].
 highlight_error(Start,Token,Rest) :-
 	writef('%s\e[01;41;37m%s\e[00m%s\n',[Start,Token,Rest]).
 
+find_token([],[],nil,[]).
+
 find_token(Unparsed,Token,Type,Rest) :-
 	Unparsed = [First|_],
 	(
@@ -58,7 +62,6 @@ find_token(Unparsed,Token,Type,Rest) :-
 
 	scan_rule(Type,Token,Unparsed,Rest).
 
-find_token([],[],nil,[]).
 
 find_token_special(Type,Unparsed,Token,Type,Rest) :-
 	scan_rule(Type,Token,Unparsed,Rest).
@@ -66,7 +69,7 @@ find_token_special(Type,Unparsed,Token,Type,Rest) :-
 parse_error_debug(Unparsed,Token,ErrCode,TokenType) :- write('Scan '), writeln(Unparsed), write(ErrCode), write(': '), write(Token), write(' is '), writeln(TokenType).
 
 
-explain_error(Input,ErrCode,Flags,Unparsed) :-
+explain_error(Module,Input,ErrCode,Flags,Unparsed) :-
 	(Flags = [] -> 
 		find_token(Unparsed,Token,TokenType,Rest); 
 		find_token_special(Flags,Unparsed,Token,TokenType,Rest)
@@ -76,9 +79,9 @@ explain_error(Input,ErrCode,Flags,Unparsed) :-
 	parse_error_debug(Unparsed,Token,ErrCode,TokenType),
 	highlight_error(Start,Token,Rest),
 
-	(guidance_errcode(ErrCode,TokenType,MessageErrCode) -> writeln(MessageErrCode); true),
+	(Module:guidance_errcode(ErrCode,TokenType,MessageErrCode) -> writeln(MessageErrCode); true),
 	nl,
-	(guidance_unparsed(Unparsed,MessageUnparsed) -> (write(MessageUnparsed), writeln(ErrCode)); true),
+	(Module:guidance_unparsed(Unparsed,MessageUnparsed) -> (write(MessageUnparsed), writeln(ErrCode)); true),
 	fail.
 
 
@@ -89,15 +92,18 @@ phrase_fluff_check(Clause,Input,Output) :-
 	syntax_stop(none,Rest,[])
 	)); syntax_stop(fail,Input,[])).
 
-parse(Clause,Input,Output) :-
+:- meta_predicate parse(?,+,+).
+
+parse(Module:Clause,Input,Output) :-
 	catch(
 	phrase_fluff_check(Clause,Input,Output),
 	error(syntax_error(ErrCode,Flags),Unparsed),
-	explain_error(Input,ErrCode,Flags,Unparsed)
+	explain_error(Module,Input,ErrCode,Flags,Unparsed)
 	). 
 
 syntax_stop(Expected,Unprocessed,_) :- syntax_stop(Expected,[],Unprocessed,_).
 
 syntax_stop(Expected,Flags,Unprocessed,_) :-
 	throw(error(syntax_error(Expected,Flags),Unprocessed)).
+
 % vi: filetype=prolog

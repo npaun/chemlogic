@@ -1,4 +1,5 @@
 :- set_prolog_flag(double_quotes,chars).
+:- style_check(-atom).
 
 % Output Formatting
 
@@ -7,14 +8,14 @@
 :- ensure_loaded('../io/error.pl').
 
 % Converts human-readable formulas to internal format (required for fact_dcg_translate).
-:- consult('formula_normalize.pl').
+:- use_module(formula_normalize).
 
 % Translates facts about about elements and polyatomic ions to DCG rules
 :- consult('fact_dcg_translate.pl').
 
 
 % Parses names for chemical compounds into internal format
-:- consult('name_parse/main.pl').
+:- use_module(name_parse/main).
 
 
 name_2_formula(Name,Formula) :-

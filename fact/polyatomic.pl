@@ -33,6 +33,9 @@ cl_poly(group([["C",2],["O",4]],"oxalate","oxal")).
 cl_poly(group([["Cr",2],["O",7]],"dichromate","dichrom")).
 	charge([["Cr",2],["O",7]],-2).
 
+cl_poly(group([["O",2]],"peroxide","perox")).
+	charge([["O",2]],-2).
+
 %%%%% hydrogen <x> and bi<x> %%%%%
 
 cl_poly(group([["H",1],["C",1],["O",3]],"bicarbonate","n/a")).

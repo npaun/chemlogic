@@ -1,3 +1,6 @@
+:- module(covalent,[covalent//3,sub_general//2]).
+:- set_prolog_flag(double_quotes,chars).
+
 %%% Covalent Compounds %%%%
 
 covalent([Sym1,Sym2|Rest],Rest,Formula) --> covalent(Formula), {Formula = [[Sym1,_],[Sym2,_]]}.
@@ -15,7 +18,7 @@ systematic_covalent([[Sym1,Num1],[Sym2,Num2]]) --> covalent_part(nonmetal,Sym1,s
 
 
 
-covalent_part(nonmetal_ide,"O",sub_general,2) --> "per", (nonmetal_ide("O",_,_); syntax_stop(peroxide_only)).
+%covalent_part(nonmetal_ide,"O",sub_general,2) --> "per", (nonmetal_ide("O",_,_); syntax_stop(peroxide_only)).
 
 
 
@@ -45,6 +48,7 @@ sub_first(1,"") --> "".
 
 sub_general(Num,Letter) --> num_sub(Num,Letter).
 sub_general(1,"o") --> "mon".
+% sub_general(Num,_) --> {var(Num)}, "", syntax_stop(corrector_prefix_required).
 
 num_sub(2,[]) --> "di".
 num_sub(3,[]) --> "tri".
@@ -88,3 +92,40 @@ num_alk(7) --> "sept".
 num_alk(8) --> "oct".
 num_alk(9) --> "non".
 num_alk(10) --> "dec".
+
+%%%% GUIDANCE FOR ERROR CODES %%%%
+
+guidance_errcode(num_prefix,alpha,
+	'The number prefix you have entered is not valid. Therefore, the highlighted component cannot be processed.
+	 Using mono for 1 *is* required for the second part of a covalent compound name.
+ 	 
+ 	e.g <tetra>chloride, <mon>oxide but not just oxide or <5>oxide'
+).
+
+guidance_errcode(vowel_required,alpha,
+	'You must use the full number prefix, including the last vowel because the name of the element does not start with an a or o.
+	 
+	e.g. <tetra>chloride, <tri>iodide, not tet*rc*hloride or t*ri*odide.'
+).
+
+guidance_errcode(vowel_omit,alpha,
+	'You must skip the last vowel of the number prefix, because the name of the element starts with an a or o.
+
+	e.g. <pent>oxide, <mon>oxide, not pent*ao*xide and mon*oo*xide.'
+).
+
+%guidance_errcode(peroxide,alpha,
+%	'The only per- supported by the covalent parser is peroxide, meaning O2. Sorry.'
+%).
+
+guidance_errcode(corrector_no_first_mono,alpha,
+	'The number prefix mono-, for 1 is *not* used for the first part of the covalent compound name.
+	 Simply remove it.
+
+ 	 e.g. carbon <mono>xide, not <mono>carbon <mono>xide.'
+ ).
+
+guidance_errcode(unknown_organic,alpha,
+	'The system does not support the type of organic compound you are entering. Sorry.
+	 Hey, at least we figured out you were entering something organic, right!?'
+ ).
