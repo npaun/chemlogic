@@ -23,4 +23,4 @@ coefficient(X) --> {nonvar(X), X = 1}, "".
 coefficient(X) --> num_decimal(X).
 coefficient(_) --> "".
 
-% vi: syntax=prolog
+% vi: ft=prolog

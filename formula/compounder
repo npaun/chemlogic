@@ -26,4 +26,4 @@ formula_2_name(Formula,Name) :-
 	formula(user,_,_,Internal,Formula,[]),
 	name(_,_,Internal,Name,[]).
 
-% vi: syntax=prolog
+% vi: ft=prolog

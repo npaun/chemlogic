@@ -22,4 +22,4 @@ server(Port, Options) :-
 :- consult('compounder.pl').
 :- consult('balancer.pl').
 
-% vi: syntax=prolog
+% vi: ft=prolog

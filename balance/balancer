@@ -62,4 +62,4 @@ element_count([Mol|MolS],Elem,[Count|CountS]) :-
         !.
 
 
-% vi: syntax=prolog
+% vi: ft=prolog
