@@ -4,13 +4,14 @@
 :- use_module(covalent,[sub_general//2]).
 
 
-% Different algorithm is used depending on convertion from name to formula or from formula to name
+
+%%% Different algorithm is used depending on convertion from name to formula or from formula to name %%% 
 
 ionic(Elems,ElemsR,Formula) --> {var(Formula)}, fwd(Elems,ElemsR,Formula), !.
 ionic(_,_,Formula) --> {nonvar(Formula)}, rev(Formula).
 
 
-% The Algorithms
+%%% The Algorithms %%% 
 
 fwd(MElems,FinalRest,[[MSym,MSub],[NMSym,NMSub]|Appended]) --> compound(MElems,FinalRest,[MSym,MCharge,NMSym,NMCharge],Appended),
 	{
@@ -45,7 +46,7 @@ rev([[MSym,MSub],[NMSym,NMSub]|Appended]) -->
 	).
 
 
-% Ionic Compound Naming Rules
+%%% Ionic Compound Naming Rules %%% 
 
 compound(Elems,Rest,Formula,[]) --> acid(Elems,Rest,Formula).
 compound(MElems,FinalRest,[MSym,MCharge,NMSym,NMCharge],Hydrate) --> 
@@ -71,6 +72,9 @@ anion(Elems,Rest,Formula,Charge) --> group(Elems,Rest,Formula,_),
 anion([Sym|Rest],Rest,Sym,Charge) --> (nonmetal_ide(Sym,_,Charge); syntax_stop(nonmetal)), 
 	({Charge < 0}; syntax_stop(noble_gas_q)).
 
+
+%%% Hydrates %%%
+
 hydrate_part(["H","O"|ElemR],ElemR,[[[["H",2],["O",1]],Num]]) --> 
 	" ", 
 	(sub_general(Num,Suffix), Suffix), 
@@ -79,7 +83,7 @@ hydrate_part(["H","O"|ElemR],ElemR,[[[["H",2],["O",1]],Num]]) -->
 hydrate_part(Pass,Pass,[]) --> [].
 
 
-% Metals
+%%% Metals %%% 
 
 metal(Sym,Charge) --> element(Sym,_), {charge(Sym,Charges)}, metal_valence(Charge,Charges).
 
@@ -111,7 +115,7 @@ multivalent_corrector(Charge) --> {var(Charge)} ->
 	).
 
 
-% Multivalent Charges
+%%% Multivalent Charges %%% 
 
 multivalent_charge(Charge) --> "(", num_roman(Charge), ")".
 
@@ -126,7 +130,7 @@ num_roman(3) --> "III".
 num_roman(2) --> "II".
 num_roman(1) --> "I".
 
-% Acids
+%%% Acids %%% 
 
 acid(["H"|Elems],Rest,["H",1,ASym,ACharge]) --> acid_anion(Elems,Rest,ASym,ACharge), (" acid"; syntax_stop(acid)).
 
@@ -171,7 +175,7 @@ ic_suffix --> ("ic" -> {true}; syntax_stop(ic_acid_suffix)).
 
 
 
-%%%%% ERROR MESSAGE GUIDANCE %%%%%
+%%%%% ERROR MESSAGE GUIDANCE %%%%% 
 
 
 

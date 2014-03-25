@@ -1,7 +1,9 @@
 :- module(covalent,[covalent//3,sub_general//2]).
 :- set_prolog_flag(double_quotes,chars).
 
-%%% Covalent Compounds %%%%
+
+
+%%% Covalent Compounds %%%
 
 covalent([Sym1,Sym2|Rest],Rest,Formula) --> covalent(Formula), {Formula = [[Sym1,_],[Sym2,_]]}.
 covalent([Sym1,Sym2,Sym3|Rest],Rest,Formula) --> covalent(Formula), {Formula = [[Sym1,_],[Sym2,_],[Sym3,_]]}.
@@ -16,39 +18,42 @@ covalent(Formula) --> systematic_covalent(Formula).
 
 systematic_covalent([[Sym1,Num1],[Sym2,Num2]]) --> covalent_part(nonmetal,Sym1,sub_first,Num1)," ", (covalent_part(nonmetal_ide,Sym2,sub_general,Num2); syntax_stop(covalent_part)).
 
+%! covalent_part(nonmetal_ide,"O",sub_general,2) --> "per", (nonmetal_ide("O",_,_); syntax_stop(peroxide_only)).
+
+covalent_part(SymGoal,Sym,NumGoal,Num) --> call(NumGoal,Num,Letter), call(SymGoal,Sym,Matched,_), 
+	(	
+		{
+			Letter = [] -> true;
+			Matched = [H|_],
+			(H = 'a'; H = 'o')
+		} -> {true}; 
+		syntax_stop(vowel_required)
+	).
+
+covalent_part(SymGoal,Sym,NumGoal,Num) --> (call(NumGoal,Num,Letter) -> {true}; syntax_stop(num_prefix)), Letter, call(SymGoal,Sym,Matched,_),
+	(
+		{
+			Letter = [] -> true;
+			Matched = [H|_],
+			\+ (H = 'a'; H = 'o')
+		} -> {true}; 
+		syntax_stop(vowel_omit)
+	).
 
 
-%covalent_part(nonmetal_ide,"O",sub_general,2) --> "per", (nonmetal_ide("O",_,_); syntax_stop(peroxide_only)).
+covalent_nonmetal_ide(Sym,Base,Charge) --> (nonmetal_ide(Sym,Base,Charge) -> {true};  syntax_stop(nonmetal_ide)).
 
 
-
-covalent_part(SymGoal,Sym,NumGoal,Num) --> call(NumGoal,Num,Letter), call(SymGoal,Sym,Matched,_),
-(	{
-	Letter = [] -> true;
-	Matched = [H|_],
-	(H = 'a'; H = 'o')
-		} -> {true}; syntax_stop(vowel_required)).
-
-	covalent_part(SymGoal,Sym,NumGoal,Num) --> (call(NumGoal,Num,Letter) -> {true}; syntax_stop(num_prefix)), Letter, call(SymGoal,Sym,Matched,_),
-(	{
-	Letter = [] -> true;
-	Matched = [H|_],
-	\+ (H = 'a'; H = 'o')
-		} -> {true}; syntax_stop(vowel_omit)).
-
-
-	covalent_nonmetal_ide(Sym,Base,Charge) --> (nonmetal_ide(Sym,Base,Charge) -> {true};  syntax_stop(nonmetal_ide)).
-
+%%% Covalent numbering prefixes %%%
 
 sub_first(Num,Letter) --> num_sub(Num,Letter).
-
 /* CORRECTOR: remove if unecessary */
 sub_first(Num,_) --> {var(Num)}, ("mono"; "mon"), syntax_stop(corrector_first_no_mono).
 sub_first(1,"") --> "".
 
 sub_general(Num,Letter) --> num_sub(Num,Letter).
 sub_general(1,"o") --> "mon".
-% sub_general(Num,_) --> {var(Num)}, "", syntax_stop(corrector_prefix_required).
+%! sub_general(Num,_) --> {var(Num)}, "", syntax_stop(corrector_prefix_required).
 
 num_sub(2,[]) --> "di".
 num_sub(3,[]) --> "tri".
@@ -60,8 +65,8 @@ num_sub(8,"a") --> "oct".
 num_sub(9,"a") --> "non".
 num_sub(10,"a") --> "dec".
 
-%%% Alkanes, Alkenes and Alcohols %%%
 
+%%% Alkanes, Alkenes and Alcohols %%%
 
 alk([["C",Num],["H",HydroNum]]) --> num_alk(Num), (alk_type(Num,HydroNum); syntax_stop(unknown_organic)).
 
@@ -81,6 +86,9 @@ alcohol([["C",Num],["H",HydroNum],["O",1]]) --> num_alk(Num), "anol",
 	HydroNum is 2 * Num + 2
 	}.
 
+
+%%% Their numbering system %%%
+
 num_alk(1) --> "meth".
 num_alk(2) --> "eth".
 num_alk(3) --> "prop".
@@ -93,7 +101,11 @@ num_alk(8) --> "oct".
 num_alk(9) --> "non".
 num_alk(10) --> "dec".
 
-%%%% GUIDANCE FOR ERROR CODES %%%%
+
+
+%%%%% GUIDANCE FOR ERROR CODES %%%%%
+
+
 
 guidance_errcode(num_prefix,alpha,
 	'The number prefix you have entered is not valid. Therefore, the highlighted component cannot be processed.
@@ -114,9 +126,11 @@ guidance_errcode(vowel_omit,alpha,
 	e.g. <pent>oxide, <mon>oxide, not pent*ao*xide and mon*oo*xide.'
 ).
 
-%guidance_errcode(peroxide,alpha,
-%	'The only per- supported by the covalent parser is peroxide, meaning O2. Sorry.'
-%).
+/*!
+guidance_errcode(peroxide,alpha,
+	'The only per- supported by the covalent parser is peroxide, meaning O2. Sorry.'
+).
+*/
 
 guidance_errcode(corrector_no_first_mono,alpha,
 	'The number prefix mono-, for 1 is *not* used for the first part of the covalent compound name.
