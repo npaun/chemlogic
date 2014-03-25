@@ -66,6 +66,19 @@ name(Sym,Rest,Formula) --> common(Sym,Rest,Formula).
 
 
 
+%%%%% ERROR GUIDANCE - GENERAL %%%%%
+
+
+
+guidance_unparsed([],
+	'The program has processed the entire chemical name you have entered but has not found a required component.
+	 Please check that you are not missing anything.
+
+ 	 The first missing component is '
+ ).
+
+
+
 %%%%% LOAD ERROR GUIDANCE FROM SUB-MODULES %%%%%
 
 
@@ -109,14 +122,6 @@ guidance_errcode(ide,alpha,
 
 %%%%% ERROR GUIDANCE COMMON TO ALL NAME PARSERS %%%%%
 
-
-
-guidance_unparsed([],
-	'The program has processed the entire chemical name you have entered but has not found a required component.
-	 Please check that you are not missing anything.
-
- 	 The first missing component is '
- ).
 
 
 guidance_errcode(fail,alpha,
