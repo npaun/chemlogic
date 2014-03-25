@@ -3,41 +3,46 @@
 :- use_module(oxyanion).
 :- use_module(covalent,[sub_general//2]).
 
-% Inefficiencies to eliminate %
-	% Oxyacids require a stupid test to determine the oxyanion
-	% Stop the madness when testing multivalent metals
-	% Does the issue come from ionic main or from something else?
 
 % Different algorithm is used depending on convertion from name to formula or from formula to name
+
 ionic(Elems,ElemsR,Formula) --> {var(Formula)}, fwd(Elems,ElemsR,Formula), !.
 ionic(_,_,Formula) --> {nonvar(Formula)}, rev(Formula).
 
 
 % The Algorithms
-%
+
 fwd(MElems,FinalRest,[[MSym,MSub],[NMSym,NMSub]|Appended]) --> compound(MElems,FinalRest,[MSym,MCharge,NMSym,NMCharge],Appended),
 	{
-	GCD is gcd(MCharge,NMCharge),
-	MSub is abs(NMCharge / GCD),
-	NMSub is abs(MCharge / GCD)
+		GCD is gcd(MCharge,NMCharge),
+		MSub is abs(NMCharge / GCD),
+		NMSub is abs(MCharge / GCD)
 	}.
 
 rev([[MSym,MSub],[NMSym,NMSub]|Appended]) -->
 	{
-	%  TODO: If the metal is monovalent, don't bother conjuring it up! Just use it.
-	%  Also, no need to actually check these charges, is there?
+		%  TODO: If the metal is monovalent, don't bother conjuring it up! Just use it.
+		%  Also, no need to actually check these charges, is there?
 	
-	(charge_check(metal,MSym)),
+		charge_check(metal,MSym),
 
-	(charge(NMSym,NMCharge), !),
-	!,
-	NMTotal is abs(NMSub * NMCharge),
-	MCharge is NMTotal / MSub
+		(charge(NMSym,NMCharge), !),
+
+		NMTotal is abs(NMSub * NMCharge),
+		MCharge is NMTotal / MSub
 	},
+
 	compound(_,_,[MSym,MCharge,NMSym,NMCharge],Appended),
 	!,
+
 	/* Corrector: remove if unecessary */
-	({GCD is gcd(MSub,NMSub)}, ({GCD = 1} -> {true}; syntax_stop(corrector_not_reduced))).
+	(
+		{GCD is gcd(MSub,NMSub)}, 
+		(
+			{GCD = 1} -> {true}; 
+			syntax_stop(corrector_not_reduced)
+		)
+	).
 
 
 % Ionic Compound Naming Rules
@@ -49,25 +54,30 @@ compound(MElems,FinalRest,[MSym,MCharge,NMSym,NMCharge],Hydrate) -->
 	anion(MRest,NMRest,NMSym,NMCharge), 
 	hydrate_part(NMRest,FinalRest,Hydrate).
 
-
 cation(Elems,Rest,Formula,Charge) --> group(Elems,Rest,Formula,_),
-(	{
-	charge_check(metal,Formula,Charge)
-	}; syntax_stop(cation)).
-
+	(	
+		{charge_check(metal,Formula,Charge)}; 
+		syntax_stop(cation)
+	).
 
 cation([Sym|Rest],Rest,Sym,Charge) --> metal(Sym,Charge).
 
-anion(Elems,Rest,Formula,Charge) --> group(Elems,Rest,Formula,_), ({charge_check(nonmetal,Formula,Charge)}; syntax_stop(anion)).
+anion(Elems,Rest,Formula,Charge) --> group(Elems,Rest,Formula,_), 
+	(
+		{charge_check(nonmetal,Formula,Charge)}; 
+		syntax_stop(anion)
+	).
 
 anion([Sym|Rest],Rest,Sym,Charge) --> (nonmetal_ide(Sym,_,Charge); syntax_stop(nonmetal)), 
 	({Charge < 0}; syntax_stop(noble_gas_q)).
 
 hydrate_part(["H","O"|ElemR],ElemR,[[[["H",2],["O",1]],Num]]) --> 
 	" ", 
-	((sub_general(Num,Suffix), Suffix)), 
+	(sub_general(Num,Suffix), Suffix), 
 	("hydrate"; syntax_stop(hydrate_h2o)).
+
 hydrate_part(Pass,Pass,[]) --> [].
+
 
 % Metals
 
@@ -75,17 +85,30 @@ metal(Sym,Charge) --> element(Sym,_), {charge(Sym,Charges)}, metal_valence(Charg
 
 metal_valence(Charge,Charges) --> 
 	{is_list(Charges)},
-	( multivalent_charge(Charge) -> {true}; syntax_stop(charge)), 
-		({member(Charge,Charges)} ; syntax_stop(charge_invalid)).
+	(
+		multivalent_charge(Charge) -> {true}; 
+		syntax_stop(charge)
+	),
 
+	(
+		{member(Charge,Charges)};
+		syntax_stop(charge_invalid)
+	).
 
-
-metal_valence(Charge,Charges) --> {Charges > 0},
-       	({var(Charge)} -> multivalent_corrector), /* CORRECTOR: remove if unecessary */	
+metal_valence(Charge,Charges) --> 
+	{Charges > 0},
+       	multivalent_corrector(Charge), /* CORRECTOR: remove if unecessary */	
 	{Charge = Charges}.
 
 /* CORRECTOR: remove if unnecessary */
-multivalent_corrector --> (multivalent_charge(_), syntax_stop(corrector_not_multivalent)); {true}.
+multivalent_corrector(Charge) --> {var(Charge)} -> 
+	( 
+		(
+			multivalent_charge(_), 
+			syntax_stop(corrector_not_multivalent)
+		); 
+		{true}
+	).
 
 
 % Multivalent Charges
@@ -113,27 +136,45 @@ acid_anion(Elems,Rest,ASym,ACharge) --> polyatomic_oxy_acid(Elems,Rest,ASym,ACha
 acid_anion(Elems,Rest,ASym,ACharge) --> polyatomic_hydro_acid(Elems,Rest,ASym,ACharge).
 
 hydro_acid([ASym|Rest],Rest,ASym,ACharge) --> "hydro", acid_base(ASym), ic_suffix,
-	({charge_check(nonmetal,ASym,ACharge)}; syntax_stop(nonmetal_acid)).
+	(
+		{charge_check(nonmetal,ASym,ACharge)}; 
+		syntax_stop(nonmetal_acid)
+	).
 
-polyatomic_oxy_acid(Elems,Rest,ASym,ACharge) --> group_base(Elems,Rest,ASym,_), ic_suffix, 
-(	{	member(["O",_],ASym), !} ; ({var(Elems)} -> syntax_stop(oxy_acid_rule))), 
-	({charge_check(nonmetal,ASym,ACharge)}; syntax_stop(nonmetal_acid)).
+polyatomic_oxy_acid(Elems,Rest,ASym,ACharge) --> group_base(Elems,Rest,ASym,_), ic_suffix,
+	(
+	
+		{member(["O",_],ASym), !} ; 
+		({var(Elems)} -> syntax_stop(oxy_acid_rule))
+		
+	), 
+	(
+		{charge_check(nonmetal,ASym,ACharge)}; 
+		syntax_stop(nonmetal_acid)
+	).
 
-/*
-Also, perhaps the performance might be better if we put in group base, to avoid wasting our time recognizing "hydro".
-*/
 
 polyatomic_hydro_acid(Elems,Rest,ASym,ACharge) --> "hydro", group_base(Elems,Rest,ASym,_), ic_suffix, 
- (	{ \+ member(["O",_],ASym), ! }; syntax_stop(hydro_acid_rule)), 
-		({charge_check(nonmetal,ASym,ACharge)}; syntax_stop(nonnmetal_acid)).
+ 	(
+	 
+		{ \+ member(["O",_],ASym), ! }; syntax_stop(hydro_acid_rule)
+	), 
+	(
+		{charge_check(nonmetal,ASym,ACharge)}; 
+		syntax_stop(nonnmetal_acid)
+	).
 
 acid_base(Sym) --> element_base(Sym,_), 
 	(acid_ion_suffix(Sym) -> {true} ; syntax_stop(acid_suffix)).
 
-
 ic_suffix --> ("ic" -> {true}; syntax_stop(ic_acid_suffix)).
 
+
+
 %%%%% ERROR MESSAGE GUIDANCE %%%%%
+
+
+
 guidance_errcode(charge,punct,
 	'The ionic charge you have entered (starting at parenthesis) is malformed. You must use capital roman numerals in parentheses.
 
@@ -156,7 +197,6 @@ guidance_errcode(charge,white,
 
 	 e.g. (II)'
  ).
-
 
 guidance_errcode(charge_invalid,white,
  	'The ionic charge you have entered (left of highlighting) is not valid for the given element. Please re-check.
@@ -200,7 +240,6 @@ guidance_errcode(corrector_not_reduced,_,
  	 e.g Pb2O4 must be reduced to PbO2.'
  ).
 
-
 guidance_errcode(hydrate_h2o,alpha,
 	'Only hydrates (water; . nH2O; etc.) are supported by the program.').
 
@@ -212,7 +251,12 @@ guidance_errcode(noble_gas_q,_,
 	 Your chemistry is too fancy for us. Sorry.'
  ).
 
-%%%% ACID ERROR MESSAGE GUIDANCE %%%%
+
+
+
+%%%%% ACID ERROR MESSAGE GUIDANCE %%%%%
+
+
 
 guidance_errcode(acid_suffix,alpha,
 	'When naming acids, sulfur and phosphorus use a different name than their ion.
@@ -231,8 +275,6 @@ guidance_errcode(ic_acid_suffix,alpha,
 	 2. Acids containing oxygen, but not an oxyanion:
 	 e.g. acet<ic> acid, but not acet<ous> acid'
  ).
-
-
 
 guidance_errcode(nonmetal_acid,alpha,
 	'A non-metal (or a negative polyatomic ion) is expected here.
