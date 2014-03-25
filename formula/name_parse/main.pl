@@ -51,9 +51,9 @@ single_element([Sym|Rest],Rest,[[Sym,1]]) --> element(Sym,_).
 /* Parse it up! */
 
 
-name(Sym,Rest,Formula,Name,[]) :- pure(Sym,Rest,Formula,Name,[]).
 name(Sym,Rest,Formula) --> retained(Sym,Rest,Formula).
 name(Sym,Rest,Formula) --> ionic(Sym,Rest,Formula).
+name(Sym,Rest,Formula) --> pure(Sym,Rest,Formula).
 name(Sym,Rest,Formula) --> covalent(Sym,Rest,Formula).
 name(Sym,Rest,Formula) --> common(Sym,Rest,Formula).
 

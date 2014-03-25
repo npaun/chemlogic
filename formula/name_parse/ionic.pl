@@ -13,7 +13,8 @@ ionic_rev([[MSym,MSub],[NMSym,NMSub]|Appended]) -->
 	{
 	%  TODO: If the metal is monovalent, don't bother conjuring it up! Just use it.
 	%  Also, no need to actually check these charges, is there?
-
+	
+	(charge_check(MSym,metal)),
 
 	(charge(NMSym,NMCharge), !),
 	!,
@@ -41,7 +42,7 @@ ionic_calcdata(MElems,FinalRest,[MSym,MCharge,NMSym,NMCharge],Hydrate) -->
 
 optional_hydrate(["H","O"|ElemR],ElemR,[[[["H",2],["O",1]],Num]]) --> 
 	" ", 
-	((sub_general(Num,Suffix), Suffix); syntax_stop(hydrate_number)), 
+	((sub_general(Num,Suffix), Suffix)), 
 	("hydrate"; syntax_stop(hydrate_h2o)).
 optional_hydrate(Pass,Pass,[]) --> [].
 
