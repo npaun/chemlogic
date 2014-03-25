@@ -37,7 +37,10 @@ equation_expression([TermL,TermR|TermS],Expr) :-
         equation_expression([Sum|TermS],Expr).
 
 
-% Evaluate
+/** system_eval(+Equations,-VarS) is det.
+
+Adds an Equation to the constraint store.
+**/
 
 system_eval([],_).
 

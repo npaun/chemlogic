@@ -5,12 +5,6 @@
 
 
 
-%%%%% LOAD ERROR GUIDANCE FROM SUB-MODULES %%%%%
-
-guidance_errcode(ErrCode,Type,Message) :- ionic:guidance_errcode(ErrCode,Type,Message).
-guidance_errcode(ErrCode,Type,Message) :- oxyanion:guidance_errcode(ErrCode,Type,Message).
-guidance_errcode(ErrCode,Type,Message) :- covalent:guidance_errcode(ErrCode,Type,Message).
-
 
 %%% Common testing subroutines %%%
 
@@ -52,6 +46,36 @@ charge_check(Type,Sym) :- charge_check(Type,Sym,_).
 
 
 
+
+%%% Pure substances %%%
+
+pure(Sym,Rest,Formula) --> diatomic(Sym,Rest,Formula).
+pure(Sym,Rest,Formula) --> single_element(Sym,Rest,Formula).
+
+diatomic([Sym|Rest],Rest,[[Sym,2]]) --> element(Sym,_), {diatomic(Sym)}.
+single_element([Sym|Rest],Rest,[[Sym,1]]) --> element(Sym,_).
+
+
+%%% Combined parser %%%
+
+name(Sym,Rest,Formula) --> retained(Sym,Rest,Formula).
+name(Sym,Rest,Formula) --> ionic(Sym,Rest,Formula).
+name(Sym,Rest,Formula) --> covalent(Sym,Rest,Formula).
+name(Sym,Rest,Formula) --> pure(Sym,Rest,Formula).
+name(Sym,Rest,Formula) --> common(Sym,Rest,Formula).
+
+
+
+%%%%% LOAD ERROR GUIDANCE FROM SUB-MODULES %%%%%
+
+
+
+guidance_errcode(ErrCode,Type,Message) :- ionic:guidance_errcode(ErrCode,Type,Message).
+guidance_errcode(ErrCode,Type,Message) :- oxyanion:guidance_errcode(ErrCode,Type,Message).
+guidance_errcode(ErrCode,Type,Message) :- covalent:guidance_errcode(ErrCode,Type,Message).
+
+
+
 %%%%% ERROR GUIDANCE FOR COMMON ROUTINES %%%%%
 
 
@@ -81,23 +105,6 @@ guidance_errcode(ide,alpha,
 	 e.g hydrogen monox<ide>'
  ).
 
-
-%%% Pure substances %%%
-
-pure(Sym,Rest,Formula) --> diatomic(Sym,Rest,Formula).
-pure(Sym,Rest,Formula) --> single_element(Sym,Rest,Formula).
-
-diatomic([Sym|Rest],Rest,[[Sym,2]]) --> element(Sym,_), {diatomic(Sym)}.
-single_element([Sym|Rest],Rest,[[Sym,1]]) --> element(Sym,_).
-
-
-%%% Combined parser %%%
-
-name(Sym,Rest,Formula) --> retained(Sym,Rest,Formula).
-name(Sym,Rest,Formula) --> ionic(Sym,Rest,Formula).
-name(Sym,Rest,Formula) --> covalent(Sym,Rest,Formula).
-name(Sym,Rest,Formula) --> pure(Sym,Rest,Formula).
-name(Sym,Rest,Formula) --> common(Sym,Rest,Formula).
 
 
 %%%%% ERROR GUIDANCE COMMON TO ALL NAME PARSERS %%%%%

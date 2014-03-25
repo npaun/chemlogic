@@ -1,9 +1,9 @@
-
 % Rules for handling compounds
 :- consult('../formula/compounder').
 
 % The grammar for symbolic equations
 :- use_module(equation).
+
 % The grammar for word equations
 :- use_module(word_equation).
 
@@ -12,6 +12,7 @@
 
 % The solver (converts the coefficient set to a system of linear equations and solves it).
 :- use_module(solve).
+
 
 
 balance_equation_real(InGrammar,Equation,OutGrammar,Solution) :-
@@ -60,6 +61,7 @@ element_count([Mol|MolS],Elem,[Count|CountS]) :-
       (balance(Mol,Elem,Count) ; Count = 0),
         element_count(MolS,Elem,CountS),
         !.
+
 
 
 % vi: ft=prolog
