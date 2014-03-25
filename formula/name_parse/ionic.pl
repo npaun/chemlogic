@@ -300,5 +300,3 @@ guidance_errcode(hydro_acid_rule,alpha,
 
 	e.g. HCH3C<OO> is acetic acid, not <hydro>acetic acid.'
 ).
-
-

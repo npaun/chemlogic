@@ -104,6 +104,14 @@ name(Sym,Rest,Formula) --> common(Sym,Rest,Formula).
 
 
 
+guidance_unparsed([],
+	'The program has processed the entire chemical name you have entered but has not found a required component.
+	 Please check that you are not missing anything.
+
+ 	 The first missing component is '
+ ).
+
+
 guidance_errcode(fail,alpha,
 	'The chemical name you are entering (starting with the highlighted component) does not conform to any known naming rules.
 	 Please check that you are correctly following one of these rules:
@@ -160,11 +168,3 @@ guidance_errcode(none,white,
 guidance_errcode(_,_,
 	'You have probably entered some spurious characters. Remove them or correct them.'
 ).
-
-
-guidance_unparsed([],
-	'The program has processed the entire chemical name you have entered but has not found a required component.
-	 Please check that you are not missing anything.
-
- 	 The first missing component is '
- ).

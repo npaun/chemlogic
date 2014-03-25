@@ -1,12 +1,18 @@
 :- module(formula,[formula//5]).
-%:- use_module('../io/error').
 :- set_prolog_flag(double_quotes,chars).
+
+
+
+%%% Formula parser %%%
 
 formula(Fmt,Elems,ElemsR,Formula,FormulaR) -->
 	(formula_part_first(Fmt,Elems,ElemsR0,Formula,FormulaR0); syntax_stop(part_first)),
 	(hydrate_part(Fmt,ElemsR0,ElemsR,FormulaR0,FormulaR), !).
 
-% hydrate_part(_,[],[],[],[],[],[]) :- !.
+
+%%% Hydrates %%%
+
+%! hydrate_part(_,[],[],[],[],[],[]) :- !.
 hydrate_part(Fmt,["H","O"|ElemsR],ElemsR,[[Formula,Coeff]|SymR],SymR) --> 
 	output(Fmt,dot), 
 	(num_decimal(Coeff); {Coeff = 1}),
@@ -15,6 +21,9 @@ hydrate_part(Fmt,["H","O"|ElemsR],ElemsR,[[Formula,Coeff]|SymR],SymR) -->
 hydrate_part(_,Elems,Elems,Part,Part) --> [].
 
 water_output(Fmt,[["H",2],["O",1]]) --> "H", output(Fmt,sub_start), "2", output(Fmt,sub_end),"O".
+
+
+%%% Formula parts %%%
 
 formula_part_first(Fmt,Elems,ElemsR,Part,PartR) --> 
 	part(Fmt,Type,Elems,ElemsR0,Part,PartR0), 
@@ -25,18 +34,45 @@ formula_part(_,multi,[],[],[],[],[],[]) :- !, fail.
 formula_part(Fmt,multi,Elems,ElemsR,Part,PartR) --> part(Fmt,_,Elems,ElemsR0,Part,PartR0), (formula_part(Fmt,_,ElemsR0,ElemsR,PartR0,PartR), !).
 formula_part(_,none,Elems,Elems,Part,Part) --> [].
 
+
+%%% Polyatomic groups %%%
+
 part(Fmt,multi,Elems,ElemsR,[[Sym,Num]|PartR],PartR) --> 
-	"(", (group_symbol(Fmt,Elems,ElemsR,Sym); ({var(Sym)} -> syntax_stop(group,paren))), ")",
-	(num_decimal(Num), !; syntax_stop(number)).
+	"(",
+
+	(
+		group_symbol(Fmt,Elems,ElemsR,Sym); 
+		(
+			{var(Sym)} -> syntax_stop(group,paren)
+		)
+	), 
+
+	")",
+
+	(
+		num_decimal(Num), !; 
+		syntax_stop(number)
+	).
 
 part(Fmt,multi,Elems,ElemsR,[[Sym,1]|PartR],PartR) --> group_symbol(Fmt,Elems,ElemsR,Sym).
+
+
+%%% Simple element pairs %%%
+
 part(Fmt,_,[Elem|ElemsR],ElemsR,[[Elem,Num]|PartR],PartR) --> element_symbol(Elem), (subscript(Fmt,Num), !).
+
+
+%%% Subscripts %%%
 
 subscript(_,Num) --> { nonvar(Num) -> Num = 1}, [].
 subscript(Fmt,Num) --> output(Fmt,sub_start), num_decimal(Num), output(Fmt,sub_end).
 subscript(_,1) --> [].
 
-%%%% ERROR GUIDANCE %%%%
+
+
+%%%%% ERROR GUIDANCE %%%%%
+
+
 
 guidance_unparsed([],
 	'Your entire formula has been processed, but you are missing a required component of a formula. Check to ensure nothing is missing.
@@ -53,7 +89,6 @@ guidance_errcode(part_first,punct,
 
 guidance_errcode(part_first,Type,Message) :- guidance_errcode(none,Type,Message).
 
-
 guidance_errcode(number,digit,
 	'The highlighted digits are not valid as a subscript or coefficient in a chemical formula.
 	 Do not use an explicit 1; it is implied. Do not use a 0; you should omit that part of the formula in that case.
@@ -61,7 +96,6 @@ guidance_errcode(number,digit,
 
  	 e.g. CH4, not C<1>H4'
  ).
-
 
 guidance_errcode(number,nil,
 	'A number greater than 1 is required at this point.
@@ -81,12 +115,10 @@ guidance_errcode(number,alpha,
 	'The highlighted characters are not a number.'
 ).
 
-
 guidance_errcode(number,punct,
 	'The highlighted characters are not a number.
 	 (Did you accidentally press SHIFT?)'
 	 ).
-
 
 guidance_errcode(group,paren,
 	'The highlighted string is not a valid polyatomic group. 
@@ -126,4 +158,7 @@ guidance_errcode(none,alpha,
 
 	 e.g. Nm2SO4 is actually Na2SO4'
  ).
+
+
+
 % vi: filetype=prolog
