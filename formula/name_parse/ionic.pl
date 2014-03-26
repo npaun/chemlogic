@@ -25,7 +25,7 @@ rev([[MSym,MSub],[NMSym,NMSub]|Appended]) -->
 		%  TODO: If the metal is monovalent, don't bother conjuring it up! Just use it.
 		%  Also, no need to actually check these charges, is there?
 	
-		charge_check(metal,MSym),
+		(MSym = "H"; charge_check(metal,MSym)),
 
 		(charge(NMSym,NMCharge), !),
 
@@ -153,7 +153,8 @@ polyatomic_hydro_acid(Elems,Rest,ASym,ACharge) --> "hydro", group_base(Elems,Res
 		{charge_check(nonmetal,ASym,ACharge)} xx nonnmetal_acid.
 
 acid_base(Sym) --> element_base(Sym,_), 
-	(acid_ion_suffix(Sym) -> {true} ; syntax_stop(acid_suffix)).
+%(acid_ion_suffix(Sym) -> {true} ; syntax_stop(acid_suffix)).
+	acid_ion_suffix(Sym) xx acid_suffix.
 
 ic_suffix --> ("ic" -> {true}; syntax_stop(ic_acid_suffix)).
 

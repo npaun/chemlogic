@@ -7,50 +7,57 @@
 %%% Test to check if user-provided oxyanion really exists %%% 
 
 exists(Sym,List,Oxygens,Charge) --> 
-	(
-		{oxyanions(Sym,Charge,List)}; 
-		syntax_stop(no_oxyanions)
-	), 
+	{oxyanions(Sym,Charge,List)} xx no_oxyanions,
+	{Oxygens > 0} xx invalid_oxyanion. 
 
-	(
-		{Oxygens > 0}; 
-		syntax_stop(invalid_oxyanion)
-	).
+
+find(Sym,Oxygens,Charge,N) --> 
+	{oxyanions(Sym,Charge,List)} xx no_oxyanions, 
+	{nth0(N,List,Oxygens)} xx invalid_oxyanion.
 
 
 %%% Oxyanion names -- for purposes of explanation; rather slow for other uses %%% 
 
-oxyanion([Sym,"O"|Rest],Rest,[[Sym,1],["O",Oxygens]],Charge) --> oxyanion(Sym,Oxygens,Charge).
+oxyanion([Sym,"O"|Rest],Rest,[[Sym,1],["O",Oxygens]],Charge) --> {nonvar(Charge)}, !, 
+	find(Sym,Oxygens,Charge,N), 
+	oxyanion_(Sym,Oxygens,Charge,N).
+
+oxyanion([Sym,"O"|Rest],Rest,[[Sym,1],["O",Oxygens]],Charge) --> oxyanion_(Sym,Oxygens,Charge,_).
 
 
-oxyanion(Sym,Oxygens,Charge) --> "per", element_base(Sym,_), "ate",
+
+oxyanion_(Sym,Oxygens,Charge,0) --> "per", element_base(Sym,_), "ate",
 		exists(Sym,[Oxygens,_,_,_],Oxygens,Charge).
 
-oxyanion(Sym,Oxygens,Charge) --> element_base(Sym,_), "ate",
+oxyanion_(Sym,Oxygens,Charge,1) --> element_base(Sym,_), "ate",
 		exists(Sym,[_,Oxygens,_,_],Oxygens,Charge).
 
-oxyanion(Sym,Oxygens,Charge) --> element_base(Sym,_), "ite",
+oxyanion_(Sym,Oxygens,Charge,2) --> element_base(Sym,_), "ite",
 		exists(Sym,[_,_,Oxygens,_],Oxygens,Charge).
 
-oxyanion_(Sym,Oxygens,Charge) --> "hypo", element_base(Sym,_), "ite",
+oxyanion_(Sym,Oxygens,Charge,3) --> "hypo", element_base(Sym,_), "ite",
 		exists(Sym,[_,_,_,Oxygens],Oxygens,Charge).
 
 
 %%% Oxyanion acid names -- for purposes of explanation; rather slow for other uses %%% 
 
-oxyanion_acid([Sym,"O"|Rest],Rest,[[Sym,1],["O",Oxygens]],Charge) --> oxyanion_acid(Sym,Oxygens,Charge).
+oxyanion_acid([Sym,"O"|Rest],Rest,[[Sym,1],["O",Oxygens]],Charge) --> {nonvar(Charge)}, !,
+	find(Sym,Oxygens,Charge,N), 
+	oxyanion_acid_(Sym,Oxygens,Charge,N).
+
+oxyanion_acid([Sym,"O"|Rest],Rest,[[Sym,1],["O",Oxygens]],Charge) --> oxyanion_acid_(Sym,Oxygens,Charge,_).
 
 
-oxyanion_acid(Sym,Oxygens,Charge) --> "per",  acid_base(Sym), "ic",
+oxyanion_acid_(Sym,Oxygens,Charge,0) --> "per",  acid_base(Sym), "ic",
 		exists(Sym,[Oxygens,_,_,_],Oxygens,Charge).
 
-oxyanion_acid(Sym,Oxygens,Charge) --> acid_base(Sym) , "ic",
+oxyanion_acid_(Sym,Oxygens,Charge,1) --> acid_base(Sym) , "ic",
 		exists(Sym,[_,Oxygens,_,_],Oxygens,Charge).
 
-oxyanion_acid(Sym,Oxygens,Charge) --> acid_base(Sym), "ous",
+oxyanion_acid_(Sym,Oxygens,Charge,2) --> acid_base(Sym), "ous",
 		exists(Sym,[_,_,Oxygens,_],Oxygens,Charge).
 
-oxyanion_acid(Sym,Oxygens,Charge) --> "hypo", acid_base(Sym), "ous",
+oxyanion_acid_(Sym,Oxygens,Charge,3) --> "hypo", acid_base(Sym), "ous",
 		exists(Sym,[_,_,_,Oxygens],Oxygens,Charge).
 
 /* CORRECTOR; remove if unecessary */
