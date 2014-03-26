@@ -23,15 +23,14 @@ systematic_covalent([[Sym1,Num1],[Sym2,Num2]]) -->
 
 %! covalent_part(nonmetal_ide,"O",sub_general,2) --> "per", (nonmetal_ide("O",_,_); syntax_stop(peroxide_only)).
 
-covalent_part(SymGoal,Sym,NumGoal,Num) --> call(NumGoal,Num,Letter), call(SymGoal,Sym,Matched,_), 
-	(	
+covalent_part(SymGoal,Sym,NumGoal,Num) --> {var(Num) -> Hack = yes;Hack = no}, call(NumGoal,Num,Letter), call(SymGoal,Sym,Matched,_), 
+	((	
 		{
 			Letter = [] -> true;
 			Matched = [H|_],
 			(H = 'a'; H = 'o')
-		} -> {true}; 
-		syntax_stop(vowel_required)
-	).
+		}
+	); ({Hack = yes} -> syntax_stop(vowel_required))).
 
 covalent_part(SymGoal,Sym,NumGoal,Num) --> (call(NumGoal,Num,Letter) -> {true}; syntax_stop(num_prefix)), Letter, call(SymGoal,Sym,Matched,_),
 	(
@@ -49,10 +48,10 @@ covalent_part(SymGoal,Sym,NumGoal,Num) --> (call(NumGoal,Num,Letter) -> {true}; 
 
 %%% Covalent numbering prefixes %%%
 
-sub_first(Num,Letter) --> num_sub(Num,Letter).
+sub_first(Num,Letter) --> num_sub(Num,Letter), !.
 /* CORRECTOR: remove if unecessary */
-sub_first(Num,_) --> {var(Num)},  ("mono"; "mon"), syntax_stop(corrector_first_no_mono).
-sub_first(1,"") --> "".
+sub_first(Num,_) --> {var(Num)},  ("mono"; "mon"), syntax_stop(corrector_first_no_mono), !.
+sub_first(1,"") --> "", !.
 
 sub_general(Num,Letter) --> num_sub(Num,Letter).
 sub_general(1,"o") --> "mon".
