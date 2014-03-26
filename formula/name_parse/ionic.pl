@@ -40,8 +40,10 @@ rev([[MSym,MSub],[NMSym,NMSub]|Appended]) -->
 	(
 		{GCD is gcd(MSub,NMSub)}, 
 		(
-			{GCD = 1} -> {true}; 
-			syntax_stop(corrector_not_reduced)
+			%			{GCD = 1} -> {true}; 
+			%	syntax_stop(corrector_not_reduced)
+			%
+			{GCD = 1} xx corrector_not_reduced
 		)
 	).
 
@@ -103,7 +105,7 @@ multivalent_corrector(Charge) --> {var(Charge)} ->
 			syntax_stop(corrector_not_multivalent)
 		); 
 		{true}
-	).
+	); {true}.
 
 
 %%% Multivalent Charges %%% 
