@@ -19,7 +19,7 @@ covalent(Formula) --> systematic_covalent(Formula).
 systematic_covalent([[Sym1,Num1],[Sym2,Num2]]) --> 
 	covalent_part(nonmetal,Sym1,sub_first,Num1), 
 	" ", 
-	covalent_part(nonmetal_ide,Sym2,sub_general,Num2) xx syntax_stop(covalent_part_2).
+	covalent_part(nonmetal_ide,Sym2,sub_general,Num2) xx covalent_part_2.
 
 %! covalent_part(nonmetal_ide,"O",sub_general,2) --> "per", (nonmetal_ide("O",_,_); syntax_stop(peroxide_only)).
 
@@ -71,7 +71,7 @@ num_sub(10,"a") --> "dec".
 
 %%% Alkanes, Alkenes and Alcohols %%%
 
-alk([["C",Num],["H",HydroNum]]) --> num_alk(Num), (alk_type(Num,HydroNum); syntax_stop(unknown_organic)).
+alk([["C",Num],["H",HydroNum]]) --> num_alk(Num), alk_type(Num,HydroNum) xx unknown_organic.
 
 alk_type(Num,HydroNum) -->  "ane",
 	{
