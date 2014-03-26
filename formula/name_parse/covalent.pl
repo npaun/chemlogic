@@ -21,30 +21,26 @@ systematic_covalent([[Sym1,Num1],[Sym2,Num2]]) -->
 	" ", 
 	covalent_part(nonmetal_ide,Sym2,sub_general,Num2) xx covalent_part_2.
 
-%! covalent_part(nonmetal_ide,"O",sub_general,2) --> "per", (nonmetal_ide("O",_,_); syntax_stop(peroxide_only)).
+covalent_part(SymGoal,Sym,NumGoal,Num) --> 
+	{fwd_flag(Num,Hack)}, 
+	call(NumGoal,Num,Letter), call(SymGoal,Sym,Matched,_), 
+	({double_vowel_test(Letter,Matched)} ; fwd_stop(Hack,vowel_required)).
 
-covalent_part(SymGoal,Sym,NumGoal,Num) --> {var(Num) -> Hack = yes;Hack = no}, call(NumGoal,Num,Letter), call(SymGoal,Sym,Matched,_), 
-	((	
-		{
-			Letter = [] -> true;
-			Matched = [H|_],
-			(H = 'a'; H = 'o')
-		}
-	); ({Hack = yes} -> syntax_stop(vowel_required))).
+covalent_part(SymGoal,Sym,NumGoal,Num) --> 
+	{fwd_flag(Num,Hack)}, 
+	(call(NumGoal,Num,Letter) -> {true}; syntax_stop(num_prefix)), Letter, call(SymGoal,Sym,Matched,_),
+	(\+ {double_vowel_test(Letter,Matched)} ; fwd_stop(Hack,vowel_omit)).
 
-covalent_part(SymGoal,Sym,NumGoal,Num) --> (call(NumGoal,Num,Letter) -> {true}; syntax_stop(num_prefix)), Letter, call(SymGoal,Sym,Matched,_),
-	(
-		{
-			Letter = [] -> true;
-			Matched = [H|_],
-			\+ (H = 'a'; H = 'o')
-		} -> {true}; 
-		syntax_stop(vowel_omit)
-	).
+%%% Some unfortunately required common routines %%%
 
+fwd_flag(Num,Flag) :- var(Num) -> Flag = yes; Flag = no.
 
-%! covalent_nonmetal_ide(Sym,Base,Charge) --> (nonmetal_ide(Sym,Base,Charge) -> {true};  syntax_stop(nonmetal_ide)).
+double_vowel_test(Letter,Matched) :-
+	Letter = "" -> true;
+	Matched = [H|_],
+	(H = 'a'; H = 'o').
 
+fwd_stop(Flag,Error) --> {Flag = yes} -> syntax_stop(Error).
 
 %%% Covalent numbering prefixes %%%
 
