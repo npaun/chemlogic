@@ -69,7 +69,7 @@ find_token_special(Type,Unparsed,Token,Type,Rest) :-
 parse_error_debug(Unparsed,Token,ErrCode,TokenType) :- write('Scan '), writeln(Unparsed), write(ErrCode), write(': '), write(Token), write(' is '), writeln(TokenType).
 
 
-explain_error(Module,Input,ErrCode,Flags,Unparsed) :-
+explain_error(ParseModule,Input,ErrCode,Flags,Unparsed) :-
 	(Flags = [] -> 
 		find_token(Unparsed,Token,TokenType,Rest); 
 		find_token_special(Flags,Unparsed,Token,TokenType,Rest)
@@ -79,10 +79,12 @@ explain_error(Module,Input,ErrCode,Flags,Unparsed) :-
 	parse_error_debug(Unparsed,Token,ErrCode,TokenType),
 	highlight_error(Start,Token,Rest),
 
+	(ErrCode = Module:_; ParseModule = Module),
+
 	(Module:guidance_errcode(ErrCode,TokenType,MessageErrCode) -> writeln(MessageErrCode); true),
 	nl,
 	(Module:guidance_unparsed(Unparsed,MessageUnparsed) -> (write(MessageUnparsed), writeln(ErrCode)); true),
-	fail.
+	!,fail.
 
 
 phrase_fluff_check(Clause,Input,Output) :-

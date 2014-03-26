@@ -29,6 +29,15 @@ coefficient(_) --> "".
 
 %%%%% GUIDANCE FOR ERRORS --- WE HAVE TO PRETEND IT'S FROM THE FORMULA MODULE %%%%%
 
+
+
+guidance_unparsed([],
+	'The program has processed your entire equation but it is missing a required component.
+	  Please ensure you are not missing any required components.
+
+ 	 The first missing component is a: '
+ ).
+
 guidance_errcode(part_first,nil,
 	'You are missing a formula where it is required.
 
@@ -55,7 +64,10 @@ guidance_errcode(part_first,punct,
  ).
 
 
-guidance_errcode(arrow,nil,
+guidance_errcode(equation:arrow,alpha,Message) :- formula:guidance_errcode(none,alpha,Message).
+guidance_errcode(equation:arrow,digit,Message) :- formula:guidance_errcode(none,digit,Message).
+
+guidance_errcode(equation:arrow,nil,
 	'Chemical equations consist of reactants --> (the arrow) and products.
 	 
 	 1. You have forgotten to insert an arrow between the reactants and the products.
@@ -68,11 +80,12 @@ guidance_errcode(arrow,nil,
  	e.g. CH4 + O2 <-->> CO2 + H2O'
 ).
 
-guidance_errcode(arrow,punct,
+guidance_errcode(equation:arrow,_,
 	'All operators must be properly spaced: one space before, one space after.
 	 You have probably forgotten to do this for the highlighted arrow.
 
  	 Also, an arrow consists of: -->'
  ).
+
 
 % vi: ft=prolog
