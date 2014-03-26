@@ -127,4 +127,3 @@ guidance_errcode(corrector_oxyanion_missing,_,
  	 The acid will end in -ic.
 	 e.g. <hydro>sulfur<ic> acid
 	 '
- ).

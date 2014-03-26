@@ -39,12 +39,7 @@ rev([[MSym,MSub],[NMSym,NMSub]|Appended]) -->
 	/* Corrector: remove if unecessary */
 	(
 		{GCD is gcd(MSub,NMSub)}, 
-		(
-			%			{GCD = 1} -> {true}; 
-			%	syntax_stop(corrector_not_reduced)
-			%
-			{GCD = 1} xx corrector_not_reduced
-		)
+		{GCD = 1} xx corrector_not_reduced
 	).
 
 
@@ -85,11 +80,6 @@ metal(Sym,Charge) --> element(Sym,_), {charge(Sym,Charges)}, metal_valence(Charg
 
 metal_valence(Charge,Charges) --> 
 	{is_list(Charges)},
-	%	(
-	%	multivalent_charge(Charge) -> {true}; 
-	%	syntax_stop(charge)
-	%	),
-	
 	multivalent_charge(Charge) xx charge,
 
 	{member(Charge,Charges)} xx charge_invalid.
@@ -153,10 +143,8 @@ polyatomic_hydro_acid(Elems,Rest,ASym,ACharge) --> "hydro", group_base(Elems,Res
 		{charge_check(nonmetal,ASym,ACharge)} xx nonnmetal_acid.
 
 acid_base(Sym) --> element_base(Sym,_), 
-%(acid_ion_suffix(Sym) -> {true} ; syntax_stop(acid_suffix)).
 	acid_ion_suffix(Sym) xx acid_suffix.
 
-%ic_suffix --> ("ic" -> {true}; syntax_stop(ic_acid_suffix)).
 ic_suffix --> "ic" xx ic_acid_suffix.
 
 
