@@ -23,13 +23,21 @@ systematic_covalent([[Sym1,Num1],[Sym2,Num2]]) -->
 
 covalent_part(SymGoal,Sym,NumGoal,Num) --> 
 	{fwd_flag(Num,Hack)}, 
-	call(NumGoal,Num,Letter), call(SymGoal,Sym,Matched,_), 
-	({double_vowel_test(Letter,Matched)} ; fwd_stop(Hack,vowel_required)).
+	call(NumGoal,Num,Letter), 
+	call(SymGoal,Sym,Matched,_), 
+	(
+		{double_vowel_test(Letter,Matched)}; 
+		fwd_stop(Hack,vowel_required)
+	).
 
 covalent_part(SymGoal,Sym,NumGoal,Num) --> 
 	{fwd_flag(Num,Hack)}, 
-	(call(NumGoal,Num,Letter) -> {true}; syntax_stop(num_prefix)), Letter, call(SymGoal,Sym,Matched,_),
-	(\+ {double_vowel_test(Letter,Matched)} ; fwd_stop(Hack,vowel_omit)).
+	call(NumGoal,Num,Letter) xx num_prefix, Letter,
+       	call(SymGoal,Sym,Matched,_),
+	(
+		\+ {double_vowel_test(Letter,Matched)}; 
+		fwd_stop(Hack,vowel_omit)
+	).
 
 %%% Some unfortunately required common routines %%%
 
