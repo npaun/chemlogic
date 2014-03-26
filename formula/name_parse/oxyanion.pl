@@ -57,8 +57,17 @@ oxyanion_acid(Sym,Oxygens,Charge) --> "hypo", acid_base(Sym), "ous",
 oxyanion_acid(Sym,_,_) --> 
 	("per"; "hypo"; {true}), 
 	acid_base(Sym), 
-	("ate"; "ite"), 
-	syntax_stop(corrector_oxyanion_acid).
+	(
+		(
+			("ate"; "ite"), 
+			syntax_stop(corrector_oxyanion_acid)
+		);
+
+		(
+			" acid",
+			syntax_stop(corrector_oxyanion_missing)
+		)
+	).
 
 
 
@@ -90,4 +99,25 @@ guidance_errcode(corrector_oxyanion_acid,_,
 	 All ions ending in -ite (including hypo--ites) are changed to ous:
 	 e.g. hypochlor<ite> becomes hypochlor<ous>
 	 
-	 NOTE: Check that your prefixes correspond with your suffixes!'). 
+	 NOTE: Check that your prefixes correspond with your suffixes!').
+
+guidance_errcode(corrector_oxyanion_missing,_,
+	'BUSTED! All acids have a suffix depending on their type. You forgot to enter it.
+	 
+	 1. Oxyacids (probably what you were intending):
+
+	 All ions ending in -ate (including per--ates) are changed to ic:
+	 e.g perchlor<ate> becomes perchlor<ic>
+
+	 All ions ending in -ite (including hypo--ites) are changed to ous:
+	 e.g. hypochlor<ite> becomes hypochlor<ous>
+	 
+	 NOTE: Check that your prefixes correspond with your suffixes!
+
+	 2. Acids not containing oxygen:
+
+	 You also forgot the hydro- prefix, in that case.
+ 	 The acid will end in -ic.
+	 e.g. <hydro>sulfur<ic> acid
+	 '
+ ).

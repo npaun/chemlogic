@@ -17,10 +17,10 @@ scan_rule(digit,[C|T]) -->
 	scan_rule(digit,T).
 
 
-scan_rule(paren,[C|T]) -->
+scan_rule(inside_paren,[C|T]) -->
 	[C],
 	{\+ C = ')'}, !,
-	scan_rule(paren,T).
+	scan_rule(inside_paren,T).
 
 
 scan_rule(group,[C|T]) -->

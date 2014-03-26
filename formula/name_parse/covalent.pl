@@ -16,7 +16,10 @@ covalent(Formula) --> systematic_covalent(Formula).
 
 %%% Systematic Naming for Covalent %%%
 
-systematic_covalent([[Sym1,Num1],[Sym2,Num2]]) --> covalent_part(nonmetal,Sym1,sub_first,Num1)," ", (covalent_part(nonmetal_ide,Sym2,sub_general,Num2); syntax_stop(covalent_part)).
+systematic_covalent([[Sym1,Num1],[Sym2,Num2]]) --> 
+	covalent_part(nonmetal,Sym1,sub_first,Num1), 
+	" ", 
+	covalent_part(nonmetal_ide,Sym2,sub_general,Num2) xx syntax_stop(covalent_part_2).
 
 %! covalent_part(nonmetal_ide,"O",sub_general,2) --> "per", (nonmetal_ide("O",_,_); syntax_stop(peroxide_only)).
 
@@ -48,7 +51,7 @@ covalent_part(SymGoal,Sym,NumGoal,Num) --> (call(NumGoal,Num,Letter) -> {true}; 
 
 sub_first(Num,Letter) --> num_sub(Num,Letter).
 /* CORRECTOR: remove if unecessary */
-sub_first(Num,_) --> {var(Num)}, ("mono"; "mon"), syntax_stop(corrector_first_no_mono).
+sub_first(Num,_) --> {var(Num)},  ("mono"; "mon"), syntax_stop(corrector_first_no_mono).
 sub_first(1,"") --> "".
 
 sub_general(Num,Letter) --> num_sub(Num,Letter).
@@ -114,7 +117,7 @@ guidance_errcode(num_prefix,alpha,
  	e.g <tetra>chloride, <mon>oxide but not just oxide or <5>oxide'
 ).
 
-guidance_errcode(covalent_part,alpha,
+guidance_errcode(covalent_part_2,alpha,
 	'The highlighted component cannot be processed because the element name you have entered is not valid.
 	 Please re-check the spelling of the non-metal and ensure you are using the -ide ending.'
  ).

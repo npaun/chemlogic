@@ -6,6 +6,7 @@
 :- ensure_loaded('../io/format-out.pl').
 
 % Parse error handling
+:- ensure_loaded('../io/meta-error.pl').
 :- ensure_loaded('../io/error.pl').
 
 % Converts human-readable formulas to internal format (required for fact_dcg_translate).

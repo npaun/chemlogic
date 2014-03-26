@@ -6,7 +6,7 @@
 %%% Formula parser %%%
 
 formula(Fmt,Elems,ElemsR,Formula,FormulaR) -->
-	(formula_part_first(Fmt,Elems,ElemsR0,Formula,FormulaR0); syntax_stop(part_first)),
+	formula_part_first(Fmt,Elems,ElemsR0,Formula,FormulaR0) xx part_first,
 	(hydrate_part(Fmt,ElemsR0,ElemsR,FormulaR0,FormulaR), !).
 
 
@@ -16,7 +16,7 @@ formula(Fmt,Elems,ElemsR,Formula,FormulaR) -->
 hydrate_part(Fmt,["H","O"|ElemsR],ElemsR,[[Formula,Coeff]|SymR],SymR) --> 
 	output(Fmt,dot), 
 	(num_decimal(Coeff); {Coeff = 1}),
-       	(water_output(Fmt,Formula); syntax_stop(hydrate_h2o,group)).
+       	water_output(Fmt,Formula) xx (hydrate_h2o,group).
 
 hydrate_part(_,Elems,Elems,Part,Part) --> [].
 
@@ -41,18 +41,14 @@ part(Fmt,multi,Elems,ElemsR,[[Sym,Num]|PartR],PartR) -->
 	"(",
 
 	(
-		group_symbol(Fmt,Elems,ElemsR,Sym); 
+		group_symbol(Fmt,Elems,ElemsR,Sym), !; 
 		(
-			{var(Sym)} -> syntax_stop(group,paren)
+			{var(Sym)} -> syntax_stop(group,inside_paren)
 		)
 	), 
 
 	")",
-
-	(
-		num_decimal(Num), !; 
-		syntax_stop(number)
-	).
+	num_decimal(Num) xx number.
 
 part(Fmt,multi,Elems,ElemsR,[[Sym,1]|PartR],PartR) --> group_symbol(Fmt,Elems,ElemsR,Sym).
 
@@ -120,7 +116,7 @@ guidance_errcode(number,punct,
 	 (Did you accidentally press SHIFT?)'
 	 ).
 
-guidance_errcode(group,paren,
+guidance_errcode(group,inside_paren,
 	'The highlighted string is not a valid polyatomic group. 
 	 Please check that you have entered it correctly. (The program may also simply not have it in its database).
  	 Also, parentheses are not necessary for single elements.

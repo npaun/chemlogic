@@ -12,8 +12,8 @@ nonmetal(Sym,Name,Charge) --> element(Sym,Name), {charge_check(nonmetal,Sym,Char
 
 nonmetal_ide(Sym,Base,Charge) --> 
 	element_base(Sym,Base), 
-	({charge_check(nonmetal,Sym,Charge)}; syntax_stop(nonmetal_charge)),
-	("ide"; syntax_stop(ide)).
+	{charge_check(nonmetal,Sym,Charge)} xx nonmetal_charge,
+	"ide" xx syntax_stop(ide).
 
 	
 /** charge_check(+Type,+Sym,?Charge) is semidet.
