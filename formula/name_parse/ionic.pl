@@ -85,10 +85,12 @@ metal(Sym,Charge) --> element(Sym,_), {charge(Sym,Charges)}, metal_valence(Charg
 
 metal_valence(Charge,Charges) --> 
 	{is_list(Charges)},
-	(
-		multivalent_charge(Charge) -> {true}; 
-		syntax_stop(charge)
-	),
+	%	(
+	%	multivalent_charge(Charge) -> {true}; 
+	%	syntax_stop(charge)
+	%	),
+	
+	multivalent_charge(Charge) xx charge,
 
 	{member(Charge,Charges)} xx charge_invalid.
 
