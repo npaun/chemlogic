@@ -1,3 +1,6 @@
+% Super irritating style check
+:- style_check(-atom).
+
 % Rules for handling compounds
 :- consult('../formula/compounder').
 

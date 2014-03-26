@@ -3,7 +3,7 @@
 
 symbolic(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideLeft,SideRight]) -->
 	expr(Fmt,Coeff,CoeffR0,Elems,ElemR0,Formula,FormulaR0,SideLeft),
-	(output(Fmt,arrow), ! ; syntax_stop(arrow)),
+	(output(Fmt,arrow), ! ; syntax_stop(equation:arrow)),
 	expr(Fmt,CoeffR0,CoeffR,ElemR0,ElemR,FormulaR0,FormulaR,SideRight).
 
 
@@ -25,5 +25,54 @@ balanced_formula(Fmt,[Coeff|CoeffR],CoeffR,Elems,ElemR,Formula,FormulaR,Formula)
 coefficient(X) --> {nonvar(X), X = 1}, "".
 coefficient(X) --> num_decimal(X).
 coefficient(_) --> "".
+
+
+%%%%% GUIDANCE FOR ERRORS --- WE HAVE TO PRETEND IT'S FROM THE FORMULA MODULE %%%%%
+
+guidance_errcode(part_first,nil,
+	'You are missing a formula where it is required.
+
+	 1. An equation has reactants and products:
+	 e.g. H2 + O2 --> <H2O>, not H2 + O2 --> or --> H2O.
+ 	
+	 2. Every plus adds another formula
+	 e.g H2 + <O2> --> H2O, not H2 + --> H2O
+	 
+	 Please add the missing formulas.'
+ ). 
+
+guidance_errcode(part_first,punct,
+	'You are missing a formula where it is required. 
+	 Therefore, the highlighted symbol does not make sense here.
+
+	 1. An equation has reactants and products:
+	 e.g. H2 + O2 --> <H2O>, not H2 + O2 --> or --> H2O.
+ 	
+	 2. Every plus adds another formula
+	 e.g H2 + <O2> --> H2O, not H2 + --> H2O
+	 
+	 Please add the missing formulas.'
+ ).
+
+
+guidance_errcode(arrow,nil,
+	'Chemical equations consist of reactants --> (the arrow) and products.
+	 
+	 1. You have forgotten to insert an arrow between the reactants and the products.
+	 Find the place where the products start and insert an arrow there.
+
+ 	 2. You are entirely missing the products.
+ 	 Please insert the products for the equation.
+ 	 The program cannot figure this out for you, yet. Sorry.
+
+ 	e.g. CH4 + O2 <-->> CO2 + H2O'
+).
+
+guidance_errcode(arrow,punct,
+	'All operators must be properly spaced: one space before, one space after.
+	 You have probably forgotten to do this for the highlighted arrow.
+
+ 	 Also, an arrow consists of: -->'
+ ).
 
 % vi: ft=prolog
