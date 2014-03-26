@@ -156,8 +156,8 @@ acid_base(Sym) --> element_base(Sym,_),
 %(acid_ion_suffix(Sym) -> {true} ; syntax_stop(acid_suffix)).
 	acid_ion_suffix(Sym) xx acid_suffix.
 
-ic_suffix --> ("ic" -> {true}; syntax_stop(ic_acid_suffix)).
-
+%ic_suffix --> ("ic" -> {true}; syntax_stop(ic_acid_suffix)).
+ic_suffix --> "ic" xx ic_acid_suffix.
 
 
 %%%%% ERROR MESSAGE GUIDANCE %%%%% 
