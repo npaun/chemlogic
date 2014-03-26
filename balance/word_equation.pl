@@ -3,7 +3,7 @@
 
 word(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideLeft,SideRight]) -->
 	expr(Coeff,CoeffR0,Elems,ElemR0,Formula,FormulaR0,SideLeft),
-	(output(Fmt,arrow), !; syntax_stop(arrow)),
+	output(Fmt,arrow) xx word_equation:arrow,
 	expr(CoeffR0,CoeffR,ElemR0,ElemR,FormulaR0,FormulaR,SideRight).
 
 
