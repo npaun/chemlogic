@@ -1,9 +1,9 @@
-1. covalent_part needs error messages
-2. figure out what is wrong with the crashy pure substances
-3. figure out which error messages need imply and which ones don't.
-4. figure out how to make the ic_acid_suffix message more clear.
+1	[X]	covalent_part needs error messages
+1	[ ]	figure out what is wrong with the crashy pure substances
+2	[ ]	figure out which error messages need imply and which ones don't.
+2	[ ]	figure out how to make the ic_acid_suffix message more clear.
 
-5. figure out how to
+1	[ ]	figure out how to
 	a) make the messages actually get loaded by module
 		- perhaps metaprogram in two kinds of syntax stop
 		like {Charge > 0} X non_metal for ordinary
@@ -11,13 +11,13 @@
 	
 	b) just hack up equation and word_equation to use formula and name_parse as their message namespace.
 
-6. convert the web stuff to the new formula parser
-7. abstract up the error explainer.
+1	[ ]	convert the web stuff to the new formula parser
+1	[ ]	abstract up the error explainer.
 	a) figure out how to show these errors in prolog web.
 		- rethrow with tokens and messages and let the explainer catch it???
 		- rethrow and the explainer calls the right formatting functions
 		- the explainer is a hook of some sort that does the right thing.
-8. resolve a few unclear error messages (mostly the arrow stuff)
-9. add in a few more error messages to solver.pl
-10. allow checking if the user solution is valid. compounder
-11. a bit more pldoc-ing.
+1	[ ]	resolve a few unclear error messages (mostly the arrow stuff)
+1	[ ]	add in a few more error messages to solver.pl
+2	[ ] 	allow checking if the user solution is valid. compounder
+3	[ ]	a bit more pldoc-ing.

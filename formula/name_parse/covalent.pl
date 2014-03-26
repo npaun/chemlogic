@@ -41,7 +41,7 @@ covalent_part(SymGoal,Sym,NumGoal,Num) --> (call(NumGoal,Num,Letter) -> {true}; 
 	).
 
 
-covalent_nonmetal_ide(Sym,Base,Charge) --> (nonmetal_ide(Sym,Base,Charge) -> {true};  syntax_stop(nonmetal_ide)).
+%! covalent_nonmetal_ide(Sym,Base,Charge) --> (nonmetal_ide(Sym,Base,Charge) -> {true};  syntax_stop(nonmetal_ide)).
 
 
 %%% Covalent numbering prefixes %%%
@@ -113,6 +113,11 @@ guidance_errcode(num_prefix,alpha,
  	 
  	e.g <tetra>chloride, <mon>oxide but not just oxide or <5>oxide'
 ).
+
+guidance_errcode(covalent_part,alpha,
+	'The highlighted component cannot be processed because the element name you have entered is not valid.
+	 Please re-check the spelling of the non-metal and ensure you are using the -ide ending.'
+ ).
 
 guidance_errcode(vowel_required,alpha,
 	'You must use the full number prefix, including the last vowel because the name of the element does not start with an a or o.

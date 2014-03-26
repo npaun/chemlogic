@@ -13,7 +13,7 @@ expr(Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideH|SideT]) -->
 
 expr_tail(Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[Side]) --> 
 	" + ",
-	balanced_name(Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,Side).
+	expr(Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,Side).
 
 expr_tail(Coeff,Coeff,Elems,Elems,Formula,Formula,[]) --> [].
 

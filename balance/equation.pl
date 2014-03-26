@@ -3,7 +3,7 @@
 
 symbolic(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideLeft,SideRight]) -->
 	expr(Fmt,Coeff,CoeffR0,Elems,ElemR0,Formula,FormulaR0,SideLeft),
-	(output(Fmt,arrow), ! -> {true}; syntax_stop(arrow)),
+	(output(Fmt,arrow), ! ; syntax_stop(arrow)),
 	expr(Fmt,CoeffR0,CoeffR,ElemR0,ElemR,FormulaR0,FormulaR,SideRight).
 
 
@@ -13,7 +13,7 @@ expr(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideH|SideT]) -->
 
 expr_tail(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[Side]) -->
 	" + ",
-	balanced_formula(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,Side).
+	expr(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,Side).
 
 expr_tail(_,Coeff,Coeff,Elems,Elems,Formula,Formula,[]) --> [].
 

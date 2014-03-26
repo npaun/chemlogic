@@ -45,12 +45,17 @@ charge_check(metal,Sym,Charge) :-
 charge_check(Type,Sym) :- charge_check(Type,Sym,_).
 
 
-
-
 %%% Pure substances %%%
 
-pure(Sym,Rest,Formula) --> diatomic(Sym,Rest,Formula).
-pure(Sym,Rest,Formula) --> single_element(Sym,Rest,Formula).
+pure(Sym,Rest,Formula,Name,[]) :- pure_process(Sym,Rest,Formula,Name,[]).
+
+/* REALLY UGLY HACK! */
+pure(Sym,Rest,Formula)--> pure_process(Sym,Rest,Formula), pure_lookahead.
+pure_lookahead, [L1], [L2] --> [L1], [L2],  {char_type(L2,punct)}.
+
+
+pure_process(Sym,Rest,Formula) --> diatomic(Sym,Rest,Formula).
+pure_process(Sym,Rest,Formula) --> single_element(Sym,Rest,Formula).
 
 diatomic([Sym|Rest],Rest,[[Sym,2]]) --> element(Sym,_), {diatomic(Sym)}.
 single_element([Sym|Rest],Rest,[[Sym,1]]) --> element(Sym,_).
@@ -59,9 +64,9 @@ single_element([Sym|Rest],Rest,[[Sym,1]]) --> element(Sym,_).
 %%% Combined parser %%%
 
 name(Sym,Rest,Formula) --> retained(Sym,Rest,Formula).
+name(Sym,Rest,Formula) --> pure(Sym,Rest,Formula).
 name(Sym,Rest,Formula) --> ionic(Sym,Rest,Formula).
 name(Sym,Rest,Formula) --> covalent(Sym,Rest,Formula).
-name(Sym,Rest,Formula) --> pure(Sym,Rest,Formula).
 name(Sym,Rest,Formula) --> common(Sym,Rest,Formula).
 
 
