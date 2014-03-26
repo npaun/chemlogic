@@ -66,7 +66,7 @@ oxyanion_acid(Sym,_,_) -->
 
 
 
-guidance_errcode(invalid_oxyanion,alpha,
+guidance_errcode(invalid_oxyanion,_,
 	'The oxyanion you have entered does not exist (or it is not in the database).
 	 Please ensure that you are not inventing a new oxyanion.
 
@@ -81,7 +81,7 @@ guidance_errcode(no_oxyanions,_,
 	 e.g There is no xenate or hypocuprite'
  ).
 
-guidance_errcode(corrector_oxyanion_acid,alpha,
+guidance_errcode(corrector_oxyanion_acid,_,
 	'BUSTED! When forming acids, oxyanion suffixes are changed.
 
 	 All ions ending in -ate (including per--ates) are changed to ic:

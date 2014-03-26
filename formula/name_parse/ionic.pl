@@ -207,6 +207,13 @@ guidance_errcode(charge_invalid,white,
 	 NOTE: It is very likely that the program is simply missing this charge from its database'
  ).
 
+guidance_errcode(charge_invalid,nil,
+	'A positive ion (written with a valence charge) is not valid on its own.
+	 Ionic compounds consist of a metal and a nonmetalide.
+
+ 	 e.g copper(II) <chloride>, but not just copper(II)'
+).
+
 
 guidance_errcode(corrector_not_multivalent,white,
 	'BUSTED! You have entered an ionic charge (left of highlighting) for an element that is not multivalent.
@@ -247,6 +254,13 @@ guidance_errcode(corrector_not_reduced,_,
 guidance_errcode(hydrate_h2o,alpha,
 	'Only hydrates (water; . nH2O; etc.) are supported by the program.').
 
+guidance_errcode(hydrate_h2o,nil,
+	'You have left a number prefix by itself. What are we counting?
+	 (The answer is "hydrate").
+
+	 e.g copper(II) chloride tetra<hydrate>, not copper(II) chloride tetra'
+ ).
+
 guidance_errcode(hydrate_h2o,_,
 	'Remove the highlighted extraneous characters.').
 
@@ -262,7 +276,7 @@ guidance_errcode(noble_gas_q,_,
 
 
 
-guidance_errcode(acid_suffix,alpha,
+guidance_errcode(acid_suffix,_,
 	'When naming acids, sulfur and phosphorus use a different name than their ion.
 	 (Please ignore the highlighting)
 
@@ -270,7 +284,7 @@ guidance_errcode(acid_suffix,alpha,
  	 phosphorus makes phosphide as phosph<or>... acids'
  ).
 
-guidance_errcode(ic_acid_suffix,alpha,
+guidance_errcode(ic_acid_suffix,_,
 	'Acids of this type must have names ending in "ic".
 
 	 1. Acids not containing oxygen (starting with hydro):
@@ -289,14 +303,39 @@ guidance_errcode(nonmetal_acid,alpha,
  	 e.g. You cannot create hydrocupric acid (H2Cu), but you can create hydrosulfuric acid (H2S) and nitric acid (HNO3).'
  ). 
 
-guidance_errcode(oxy_acid_rule,alpha,
+guidance_errcode(nonmetal_acid,nil,
+	'A non-metal (or a negative polyatomic ion) is expected here.
+	 All acids are covalent compounds consisting of hydrogen and an anion.
+	 (This is just the most likely situation --- you are also missing the suffix " acid", 
+	  so you could be making a different mistake.)
+
+ 	 e.g. You cannot create hydrocupric acid (H2Cu), but you can create hydrosulfuric acid (H2S) and nitric acid (HNO3).'
+ ).
+
+guidance_errcode(nonmetal_acid,white,Message) :- guidance_errcode(nonmetal_acid,nil,Message).
+
+guidance_errcode(oxy_acid_rule,_,
 	'Acids not containing oxygen (like the one you are entering) must be prefixed with hydro-.
 	
 	 e.g. HCN is <hydro>cyanic acid, not cyanic acid.'
  ).
 
-guidance_errcode(hydro_acid_rule,alpha,
+
+
+guidance_errcode(hydro_acid_rule,_,
 	'Acids containing oxygen (like the one you are entering) are not prefixed with hydro-.
 
 	e.g. HCH3C<OO> is acetic acid, not <hydro>acetic acid.'
+).
+
+guidance_errcode(acid,nil,
+	'All acids end with the suffix " acid", but you have forgotten to insert it.'
+).
+
+
+guidance_errcode(acid,white,Message) :- guidance_errcode(acid,nil,Message).
+
+
+guidance_errcode(acid,_,
+	'All acids end the suffix " acid", not whatever you entered.'
 ).

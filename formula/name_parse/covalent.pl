@@ -137,7 +137,7 @@ guidance_errcode(peroxide,alpha,
 ).
 */
 
-guidance_errcode(corrector_no_first_mono,alpha,
+guidance_errcode(corrector_first_no_mono,_,
 	'The number prefix mono-, for 1 is *not* used for the first part of the covalent compound name.
 	 Simply remove it.
 

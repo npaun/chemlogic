@@ -1,5 +1,5 @@
 1	[X]	covalent_part needs error messages
-1	[ ]	figure out what is wrong with the crashy pure substances
+1	[X]	figure out what is wrong with the crashy pure substances
 2	[ ]	figure out which error messages need imply and which ones don't.
 2	[ ]	figure out how to make the ic_acid_suffix message more clear.
 

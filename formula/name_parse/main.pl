@@ -103,6 +103,18 @@ guidance_errcode(nonmetal,alpha,
 	 NOTE: It is possible that the non-metal is missing from the database.'
  ).
 
+guidance_errcode(nonmetal,nil,
+	'You are missing a non-metal in your compound.
+	 Ionic compounds are in the form: metal non-metalide
+	 e.g. sodium <chloride>
+
+	 Covalent compounds are in the form non-metal non-metalide
+	 e.g hydrogen mon<oxide>'
+ ).
+
+guidance_errcode(nonmetal,white,Message) :- guidance_errcode(nonmetal,nil,Message).
+
+
 guidance_errcode(nonmetal,_,
 	'You have entered the highlighted extraneous characters instead of a valid non-metal ide.'
 ).
@@ -122,6 +134,10 @@ guidance_errcode(ide,alpha,
 	 Covalent compounds are in the form non-metal non-metalide
 	 e.g hydrogen monox<ide>'
  ).
+
+guidance_errcode(ide,nil,
+	'The non-metal you have enterd must end in "ide". This error is easy to fix: just type ide at the end of the compound!'
+).
 
 
 
@@ -181,6 +197,23 @@ guidance_errcode(none,white,
  	 
  	 Otherwise, you may have to correct your formula, or the program may not support the naming convention you are using.'
  ).
+
+
+
+%%%%% CATCH-ALL GUIDANCE %%%%%
+
+
+
+guidance_errcode(_,nil,''). %Let the unparsed guidance deal with this
+guidance_errcode(_,white,
+	'You have inserted a space where it does not make sense. 
+
+	1. You forgot to type whatever component goes after the space.
+	Please insert it.
+
+	2. The space is unecessary and all of the required components are present.
+	Please remove it.'
+).
 
 guidance_errcode(_,_,
 	'You have probably entered some spurious characters. Remove them or correct them.'
