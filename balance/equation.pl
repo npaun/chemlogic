@@ -27,7 +27,7 @@ coefficient(X) --> num_decimal(X).
 coefficient(_) --> "".
 
 
-%%%%% GUIDANCE FOR ERRORS --- WE HAVE TO PRETEND IT'S FROM THE FORMULA MODULE %%%%%
+%%%%% GUIDANCE FOR ERRORS  %%%%%
 
 
 
@@ -38,30 +38,6 @@ guidance_unparsed([],
  	 The first missing component is a: '
  ).
 
-guidance_errcode(part_first,nil,
-	'You are missing a formula where it is required.
-
-	 1. An equation has reactants and products:
-	 e.g. H2 + O2 --> <H2O>, not H2 + O2 --> or --> H2O.
- 	
-	 2. Every plus adds another formula
-	 e.g H2 + <O2> --> H2O, not H2 + --> H2O
-	 
-	 Please add the missing formulas.'
- ). 
-
-guidance_errcode(part_first,punct,
-	'You are missing a formula where it is required. 
-	 Therefore, the highlighted symbol does not make sense here.
-
-	 1. An equation has reactants and products:
-	 e.g. H2 + O2 --> <H2O>, not H2 + O2 --> or --> H2O.
- 	
-	 2. Every plus adds another formula
-	 e.g H2 + <O2> --> H2O, not H2 + --> H2O
-	 
-	 Please add the missing formulas.'
- ).
 
 
 /* Let the formula parser indicate what is wrong with elements and numbers */
@@ -83,10 +59,61 @@ guidance_errcode(arrow,nil,
 
 guidance_errcode(arrow,_,
 	'All operators must be properly spaced: one space before, one space after.
-	 You have probably forgotten to do this for the highlighted arrow.
+	 1. You have forgotten to correctly space the highlighted arrow or plus
+	 2. You are missing a required operator at the highlighted position
 
  	 Also, an arrow consists of: -->'
  ).
 
+/* Let the formula parser indicate what is wrong with elements and numbers */
+guidance_errcode(none,alpha,Message) :- formula:guidance_errcode(none,alpha,Message).
+guidance_errcode(none,digit,Message) :- formula:guidance_errcode(none,digit,Message).
+
+guidance_errcode(none,white,
+	'You have already entered all of the required components of an equation.
+	 Therefore, the program does not expect the highlighted tokens to appear.
+
+ 	 Either you have entered spurious characters; in which case, you should remove them,
+	 or you are missing/misentered a +, in which case you should correct it.
+
+ 	 NOTE: 1 space before, 1 space after an operator'
+ ).
+
+guidance_errcode(none,punct,Message) :- guidance_errcode(none,white,Message).
+
+
+
+%%%%% GUIDANCE FOR FORMULA ERRORS SPECIFIC TO EQUATIONS %%%%%
+
+
+
+:- multifile formula:guidance_errcode/3.
+
+formula:guidance_errcode(part_first,nil,
+	'You are missing a formula where it is required.
+
+	 1. An equation has reactants and products:
+	 e.g. H2 + O2 --> <H2O>, not H2 + O2 --> or --> H2O.
+ 	
+	 2. Every plus adds another formula
+	 e.g H2 + <O2> --> H2O, not H2 + --> H2O
+	 
+	 Please add the missing formulas.'
+ ). 
+
+formula:guidance_errcode(part_first,punct,
+	'You are missing a formula where it is required. 
+	 Therefore, the highlighted symbol does not make sense here.
+
+	 1. An equation has reactants and products:
+	 e.g. H2 + O2 --> <H2O>, not H2 + O2 --> or --> H2O.
+ 	
+	 2. Every plus adds another formula
+	 e.g H2 + <O2> --> H2O, not H2 + --> H2O
+	 
+	 Please add the missing formulas.'
+ ).
+
+formula:guidance_errcode(part_first,white,Message) :- formula:guidance_errcode(part_first,punct,Message).
 
 % vi: ft=prolog
