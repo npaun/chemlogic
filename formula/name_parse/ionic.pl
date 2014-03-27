@@ -131,7 +131,7 @@ polyatomic_oxy_acid(Elems,Rest,ASym,ACharge) --> group_base(Elems,Rest,ASym,_), 
 	(
 	
 		{member(["O",_],ASym), !} ; 
-		({var(Elems)} -> syntax_stop(ionic:oxy_acid_rule))
+		({var(ACharge)} -> syntax_stop(ionic:oxy_acid_rule))
 		
 	), 
 		{charge_check(nonmetal,ASym,ACharge)} xx nonmetal_acid.
