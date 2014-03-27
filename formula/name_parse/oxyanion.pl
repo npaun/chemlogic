@@ -67,12 +67,12 @@ oxyanion_acid_(Sym,_,_,_) -->
 	(
 		(
 			("ate"; "ite"), 
-			syntax_stop(corrector_oxyanion_acid)
+			syntax_stop(oxyanion:corrector_oxyanion_acid)
 		);
 
 		(
 			" acid",
-			syntax_stop(corrector_oxyanion_missing)
+			syntax_stop(oxyanion:corrector_oxyanion_missing)
 		)
 	).
 
@@ -82,6 +82,13 @@ oxyanion_acid_(Sym,_,_,_) -->
 
 
 
+guidance_unparsed([],
+	'The program has parsed your entrire chemical name and detected an oxyanion, but has not found a required component.
+	 Please check that there is nothing missing from the name of your oxyacid.
+	
+ 	 The first thing that is missing is:'
+ ).
+ 	 
 guidance_errcode(invalid_oxyanion,_,
 	'The oxyanion you have entered does not exist (or it is not in the database).
 	 Please ensure that you are not inventing a new oxyanion.

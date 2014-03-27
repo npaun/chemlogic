@@ -76,7 +76,7 @@ hydrate_part(Pass,Pass,[]) --> [].
 
 %%% Metals %%% 
 
-metal(Sym,Charge) --> element(Sym,_), {charge(Sym,Charges)}, metal_valence(Charge,Charges).
+metal(Sym,Charge) --> element(Sym,_), {charge(Sym,Charges)}, metal_valence(Charge,Charges), !.
 
 metal_valence(Charge,Charges) --> 
 	{is_list(Charges)},
@@ -94,7 +94,7 @@ multivalent_corrector(Charge) --> {var(Charge)} ->
 	( 
 		(
 			multivalent_charge(_), 
-			syntax_stop(corrector_not_multivalent)
+			syntax_stop(ionic:corrector_not_multivalent)
 		); 
 		{true}
 	); {true}.
@@ -131,7 +131,7 @@ polyatomic_oxy_acid(Elems,Rest,ASym,ACharge) --> group_base(Elems,Rest,ASym,_), 
 	(
 	
 		{member(["O",_],ASym), !} ; 
-		({var(Elems)} -> syntax_stop(oxy_acid_rule))
+		({var(Elems)} -> syntax_stop(ionic:oxy_acid_rule))
 		
 	), 
 		{charge_check(nonmetal,ASym,ACharge)} xx nonmetal_acid.
@@ -151,6 +151,14 @@ ic_suffix --> "ic" xx ic_acid_suffix.
 %%%%% ERROR MESSAGE GUIDANCE %%%%% 
 
 
+
+guidance_unparsed([],
+	'The program has processed your entire chemical name and has found it to be an ionic compound.
+	 You are however, missing a required component of an ionic compound name.
+ 	 Please check to ensure that there is nothing missing.
+
+ 	 The first missing component is a: '
+ ).
 
 guidance_errcode(charge,punct,
 	'The ionic charge you have entered (starting at parenthesis) is malformed. You must use capital roman numerals in parentheses.

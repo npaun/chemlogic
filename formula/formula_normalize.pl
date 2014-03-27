@@ -43,7 +43,7 @@ part(Fmt,multi,Elems,ElemsR,[[Sym,Num]|PartR],PartR) -->
 	(
 		group_symbol(Fmt,Elems,ElemsR,Sym), !; 
 		(
-			{var(Sym)} -> syntax_stop(group,inside_paren)
+			{var(Sym)} -> syntax_stop(formula:group,inside_paren)
 		)
 	), 
 

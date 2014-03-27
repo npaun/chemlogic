@@ -48,13 +48,13 @@ double_vowel_test(Letter,Matched) :-
 	Matched = [H|_],
 	(H = 'a'; H = 'o').
 
-fwd_stop(Flag,Error) --> {Flag = yes} -> syntax_stop(Error).
+fwd_stop(Flag,Error) --> {Flag = yes} -> syntax_stop(covalent:Error).
 
 %%% Covalent numbering prefixes %%%
 
 sub_first(Num,Letter) --> num_sub(Num,Letter), !.
 /* CORRECTOR: remove if unecessary */
-sub_first(Num,_) --> {var(Num)},  ("mono"; "mon"), syntax_stop(corrector_first_no_mono), !.
+sub_first(Num,_) --> {var(Num)},  ("mono"; "mon"), syntax_stop(covalent:corrector_first_no_mono), !.
 sub_first(1,"") --> "", !.
 
 sub_general(Num,Letter) --> num_sub(Num,Letter).
