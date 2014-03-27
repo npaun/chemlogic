@@ -1,9 +1,9 @@
 1	[X]	covalent_part needs error messages
 1	[X]	figure out what is wrong with the crashy pure substances
-2	[ ]	figure out which error messages need imply and which ones don't.
+2	[X]	figure out which error messages need imply and which ones don't.
 2	[ ]	figure out how to make the ic_acid_suffix message more clear.
 
-1	[ ]	figure out how to
+1	[5]	figure out how to
 	a) make the messages actually get loaded by module
 		- perhaps metaprogram in two kinds of syntax stop
 		like {Charge > 0} X non_metal for ordinary
