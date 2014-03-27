@@ -154,6 +154,9 @@ guidance_errcode(fail,alpha,
 	 4. Some hydrocarbons: prefix ane/ene/anol
 	 e.g. methane
 
+	 5. Retained names (preferred) and some common names:
+	 e.g. water, baking soda
+
 	 NOTE: The program does not support any other naming conventions, yet. Sorry.
 
  	 If you can get your input to follow one of these conventions, as briefly described, 
@@ -182,13 +185,17 @@ guidance_errcode(none,white,
 	 e.g. dihydrogen monoxide
 
 	 4. Some hydrocarbons: prefix ane/ene/anol
-	 e.g. methane').
+	 e.g. methane
+	 
+	 5. Retained names (preferred) and some common names:
+	 e.g. water, baking soda'
+ ).
 
  guidance_errcode(none,alpha,
  	'Your input would be a valid chemical compound name if it was not for the highlighted characters on the end. 
 	 If they are spurious, please remove them.
  	 
- 	 Otherwise, you may have to correct your formula, or the program may not support the naming convention you are using.'
+ 	 Otherwise, you may have to correct your compound name, or the program may not support the naming convention you are using.'
  ).
 
 

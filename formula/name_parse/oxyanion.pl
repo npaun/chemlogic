@@ -72,7 +72,7 @@ oxyanion_acid_(Sym,_,_,_) -->
 
 		(
 			" acid",
-			syntax_stop(oxyanion:corrector_oxyanion_missing)
+			syntax_stop(oxyanion:corrector_oxyanion_missing,mark)
 		)
 	).
 
@@ -117,6 +117,7 @@ guidance_errcode(corrector_oxyanion_acid,_,
 
 guidance_errcode(corrector_oxyanion_missing,_,
 	'BUSTED! All acids have a suffix depending on their type. You forgot to enter it.
+	 Please correct the acid left of the highlighted mark.
 	 
 	 1. Oxyacids (probably what you were intending):
 

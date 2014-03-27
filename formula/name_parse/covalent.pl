@@ -134,13 +134,13 @@ guidance_errcode(covalent_part_2,alpha,
 	 Please re-check the spelling of the non-metal and ensure you are using the -ide ending.'
  ).
 
-guidance_errcode(vowel_required,alpha,
+guidance_errcode(vowel_required,_,
 	'You must use the full number prefix, including the last vowel because the name of the element does not start with an a or o.
 	 
 	e.g. <tetra>chloride, <tri>iodide, not tet*rc*hloride or t*ri*odide.'
 ).
 
-guidance_errcode(vowel_omit,alpha,
+guidance_errcode(vowel_omit,_,
 	'You must skip the last vowel of the number prefix, because the name of the element starts with an a or o.
 
 	e.g. <pent>oxide, <mon>oxide, not pent*ao*xide and mon*oo*xide.'
@@ -154,7 +154,7 @@ guidance_errcode(peroxide,alpha,
 
 guidance_errcode(corrector_first_no_mono,_,
 	'The number prefix mono-, for 1 is *not* used for the first part of the covalent compound name.
-	 Simply remove it.
+	 The highlighted part is all you need; simply remove the prefix.
 
  	 e.g. carbon <mono>xide, not <mono>carbon <mono>xide.'
  ).

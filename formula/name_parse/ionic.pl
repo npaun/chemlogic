@@ -53,12 +53,12 @@ compound(MElems,FinalRest,[MSym,MCharge,NMSym,NMCharge],Hydrate) -->
 	hydrate_part(NMRest,FinalRest,Hydrate).
 
 cation(Elems,Rest,Formula,Charge) --> group(Elems,Rest,Formula,_),
-	{charge_check(metal,Formula,Charge)} xx cation.
+	{charge_check(metal,Formula,Charge)} xx (cation, mark).
 
 cation([Sym|Rest],Rest,Sym,Charge) --> metal(Sym,Charge).
 
 anion(Elems,Rest,Formula,Charge) --> group(Elems,Rest,Formula,_), 
-		{charge_check(nonmetal,Formula,Charge)} xx anion.
+		{charge_check(nonmetal,Formula,Charge)} xx (anion, mark).
 
 anion([Sym|Rest],Rest,Sym,Charge) --> nonmetal_ide(Sym,_,Charge) xx nonmetal, 
 	{Charge < 0} xx noble_gas_q.
@@ -117,7 +117,7 @@ num_roman(1) --> "I".
 
 %%% Acids %%% 
 
-acid(["H"|Elems],Rest,["H",1,ASym,ACharge]) --> acid_anion(Elems,Rest,ASym,ACharge), " acid" xx acid.
+acid(["H"|Elems],Rest,["H",1,ASym,ACharge]) --> acid_anion(Elems,Rest,ASym,ACharge), " acid" xx (acid, mark).
 
 acid_anion(Elems,Rest,ASym,ACharge) --> hydro_acid(Elems,Rest,ASym,ACharge).
 acid_anion(Elems,Rest,ASym,ACharge) --> oxyanion_acid(Elems,Rest,ASym,ACharge).
@@ -210,15 +210,17 @@ guidance_errcode(corrector_not_multivalent,_,
 	 e.g. sodium chloride, not sodium(I) chloride'
  ).
 
-guidance_errcode(anion,alpha,
-	'The polyatomic ion you have entered is a positive ion. A negative ion is expected here.
+guidance_errcode(anion,_,
+	'The polyatomic ion you have entered (ending at the highlighted mark) is a positive ion.
+	 A negative ion is expected here.
 	 Ionic compounds consist of a positive ion and a negative ion.
 
  	e.g sodium <acetate> is correct, but not sodium <ammonium>'
 ).
 
-guidance_errcode(cation,alpha,
-	'The polyatomic ion you have entered is a negative ion. A positive ion is expected here.
+guidance_errcode(cation,_,
+	'The polyatomic ion you have entered (ending at the highlighted mark) is a negative ion.
+	 A positive ion is expected here.
 	 Ionic compounds consist of a positive ion and a negative ion.
 
  	e.g <ammonium> chloride is correct, but not <dihydrogen phosphate> chloride'
@@ -323,16 +325,9 @@ guidance_errcode(hydro_acid_rule,_,
 	e.g. HCH3C<OO> is acetic acid, not <hydro>acetic acid.'
 ).
 
-guidance_errcode(acid,nil,
-	'All acids end with the suffix " acid", but you have forgotten to insert it.'
-).
-
-
-guidance_errcode(acid,white,Message) :- guidance_errcode(acid,nil,Message).
-
-
 guidance_errcode(acid,_,
-	'All acids end the suffix " acid", not whatever you entered.'
+	'All acids end with the suffix " acid", but you have forgotten to insert it in the highlighed space.
+	 You may also have inserted some garbage instead of " acid".'
 ).
 
 
