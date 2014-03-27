@@ -86,7 +86,7 @@ guidance_unparsed([],
 	'The program has parsed your entrire chemical name and detected an oxyanion, but has not found a required component.
 	 Please check that there is nothing missing from the name of your oxyacid.
 	
- 	 The first thing that is missing is:'
+ 	 The first thing that is missing is: '
  ).
  	 
 guidance_errcode(invalid_oxyanion,_,
@@ -134,3 +134,6 @@ guidance_errcode(corrector_oxyanion_missing,_,
  	 The acid will end in -ic.
 	 e.g. <hydro>sulfur<ic> acid'
  ).
+
+
+guidance_errcode(ErrCode,Type,Message) :- name_parse:guidance_errcode(ErrCode,Type,Message). % Let the main file handle anything we can't figure out

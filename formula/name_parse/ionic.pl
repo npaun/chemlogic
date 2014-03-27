@@ -320,3 +320,6 @@ guidance_errcode(acid,white,Message) :- guidance_errcode(acid,nil,Message).
 guidance_errcode(acid,_,
 	'All acids end the suffix " acid", not whatever you entered.'
 ).
+
+
+guidance_errcode(ErrCode,Type,Message) :- name_parse:guidance_errcode(ErrCode,Type,Message). % Let the main file handle anything we can't figure out

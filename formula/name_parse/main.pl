@@ -2,7 +2,7 @@
 :- set_prolog_flag(double_quotes,chars). 
 :- use_module(ionic).
 :- use_module(covalent).
-
+:- multifile guidance_errcode/3.
 
 
 
@@ -84,13 +84,6 @@ guidance_unparsed([],
 
 
 
-%%%%% LOAD ERROR GUIDANCE FROM SUB-MODULES %%%%%
-
-
-
-guidance_errcode(ErrCode,Type,Message) :- ionic:guidance_errcode(ErrCode,Type,Message).
-guidance_errcode(ErrCode,Type,Message) :- oxyanion:guidance_errcode(ErrCode,Type,Message).
-guidance_errcode(ErrCode,Type,Message) :- covalent:guidance_errcode(ErrCode,Type,Message).
 
 
 

@@ -162,3 +162,6 @@ guidance_errcode(unknown_organic,alpha,
 	'The system does not support the type of organic compound you are entering. Sorry.
 	 Hey, at least we figured out you were entering something organic, right!?'
  ).
+
+
+guidance_errcode(ErrCode,Type,Message) :- name_parse:guidance_errcode(ErrCode,Type,Message). % Let the main file handle anything we can't figure out
