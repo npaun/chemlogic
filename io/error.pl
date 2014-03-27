@@ -13,7 +13,8 @@ scan_rule(punct,[C|T]) -->
 
 scan_rule(digit,[C|T]) -->
 	[C],
-	{\+ char_type(C,alpha)}, !,
+	({char_type(C,white)} -> \+ punct_check; {true}),
+	{\+ char_type(C,alpha); char_type(C,punct); char_type(C,white)}, !,
 	scan_rule(digit,T).
 
 
@@ -21,6 +22,11 @@ scan_rule(inside_paren,[C|T]) -->
 	[C],
 	{\+ C = ')'}, !,
 	scan_rule(inside_paren,T).
+
+scan_rule(outside_paren,[C|T]) -->
+	[C],!,
+	({ C = ')'}, ! -> {T = []}; scan_rule(outside_paren,T)).
+
 
 
 scan_rule(group,[C|T]) -->
@@ -46,6 +52,8 @@ scan_rule_r(alpha,[C|T]) -->
 scan_rule_r(_,[]) --> [].
 
 
+scan_rule_last([C]) --> [C].
+
 highlight_error(Start,Token,Rest) :-
 	writef('%s\e[01;41;37m%s\e[00m%s\n',[Start,Token,Rest]).
 
@@ -54,6 +62,7 @@ find_token([],[],nil,[]).
 find_token(Unparsed,Token,Type,Rest) :-
 	Unparsed = [First|_],
 	(
+	First = '(' -> Type = outside_paren;
 	char_type(First,alpha) -> Type = alpha;
 	char_type(First,punct) -> Type = punct;
 	char_type(First,digit) -> Type = digit;
