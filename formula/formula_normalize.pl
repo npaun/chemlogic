@@ -41,7 +41,7 @@ part(Fmt,multi,Elems,ElemsR,[[Sym,Num]|PartR],PartR) -->
 	"(",
 
 	(
-		group_symbol(Fmt,Elems,ElemsR,Sym); 
+		group_symbol(Fmt,Elems,ElemsR,Sym) -> {true}; 
 		(
 			{var(Sym)} -> syntax_stop(formula:group,inside_paren)
 		)
@@ -79,8 +79,9 @@ guidance_unparsed([],
  ).
 
 
-guidance_errcode(part_first,punct,
-	'Polyatomic ions (starting at the highlighted parenthesis) may not be left by themselves; they must form a compound.
+guidance_errcode(part_first,outside_paren,
+	'Polyatomic ions (inside highlighted parentheses) may not be left by themselves; they must form a compound.
+
 	 (Or be indicated correctly as such, but the program does not support that)
 
 	 e.g. (NH4)2<SO4>, not just (NH4)2'

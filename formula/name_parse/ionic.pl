@@ -160,8 +160,8 @@ guidance_unparsed([],
  	 The first missing component is a: '
  ).
 
-guidance_errcode(charge,punct,
-	'The ionic charge you have entered (starting at parenthesis) is malformed. You must use capital roman numerals in parentheses.
+guidance_errcode(charge,outside_paren,
+	'The ionic charge you have entered (inside the highlighted parentheses) is malformed. You must use capital roman numerals in parentheses.
 
 	e.g copper<(II)>, not something like copper<(2)> or copper<(ii)>.'
  ).
@@ -300,7 +300,14 @@ guidance_errcode(nonmetal_acid,nil,
  	 e.g. You cannot create hydrocupric acid (H2Cu), but you can create hydrosulfuric acid (H2S) and nitric acid (HNO3).'
  ).
 
-guidance_errcode(nonmetal_acid,white,Message) :- guidance_errcode(nonmetal_acid,nil,Message).
+guidance_errcode(nonmetal_acid,white,
+	'A non-metal (or a negative polyatomic ion) is expected here.
+	 All acids are covalent compounds consisting of hydrogen and an anion.
+	 (This is just the most likely situation --- you may be entering something other than an acid,
+	  making a different mistake.) 
+
+ 	 e.g. You cannot create hydrocupric acid (H2Cu), but you can create hydrosulfuric acid (H2S) and nitric acid (HNO3).'
+ ).
 
 guidance_errcode(oxy_acid_rule,_,
 	'Acids not containing oxygen (like the one you are entering) must be prefixed with hydro-.
