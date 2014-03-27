@@ -4,13 +4,13 @@ TODO: Allow symbols for polyatomic groups to be given in human-readable notation
 **/
 
 %%%%% Anions %%%%%
-cl_poly(group([["N",1],["H",4]],"ammonium","ammonium")).
+cl_poly(group([["N",1],["H",4]],"ammonium","n/a")).
         charge([["N",1],["H",4]],1).
 
-cl_poly(group([["Hg",2]],"mercury(I)","mercury(I)")).
+cl_poly(group([["Hg",2]],"mercury(I)","n/a")).
 	charge([["Hg",2]],2).
 
-cl_poly(group([["H",3],["O",1]],"hydronium","hydronium")).
+cl_poly(group([["H",3],["O",1]],"hydronium","n/a")).
 	charge([["H",3],["O",1]],1).
 
 %%%%% Cations %%%%%
@@ -32,9 +32,6 @@ cl_poly(group([["C",2],["O",4]],"oxalate","oxal")).
 
 cl_poly(group([["Cr",2],["O",7]],"dichromate","dichrom")).
 	charge([["Cr",2],["O",7]],-2).
-
-cl_poly(group([["O",2]],"peroxide","perox")).
-	charge([["O",2]],-2).
 
 %%%%% hydrogen <x> and bi<x> %%%%%
 
