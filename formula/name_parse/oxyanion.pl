@@ -61,7 +61,7 @@ oxyanion_acid_(Sym,Oxygens,Charge,3) --> "hypo", acid_base(Sym), "ous",
 		exists(Sym,[_,_,_,Oxygens],Oxygens,Charge).
 
 /* CORRECTOR; remove if unecessary */
-oxyanion_acid(Sym,_,_) --> 
+oxyanion_acid_(Sym,_,_,_) --> 
 	("per"; "hypo"; {true}), 
 	acid_base(Sym), 
 	(
@@ -125,5 +125,5 @@ guidance_errcode(corrector_oxyanion_missing,_,
 
 	 You also forgot the hydro- prefix, in that case.
  	 The acid will end in -ic.
-	 e.g. <hydro>sulfur<ic> acid
-	 '
+	 e.g. <hydro>sulfur<ic> acid'
+ ).
