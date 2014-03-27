@@ -112,6 +112,14 @@ num_alk(10) --> "dec".
 %%%%% GUIDANCE FOR ERROR CODES %%%%%
 
 
+guidance_unparsed([],
+	'The program has processed your entire compound name and has found it to be a covalent compound.
+	 You are, however, missing a required component of a covalent compound.
+ 	 Please correct or add the missing components.
+
+ 	 The first missing component is a: '
+ ).
+
 
 guidance_errcode(num_prefix,alpha,
 	'The number prefix you have entered is not valid. Therefore, the highlighted component cannot be processed.
