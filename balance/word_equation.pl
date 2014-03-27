@@ -1,4 +1,4 @@
-:- module(word_equation,[word//8]).
+:- module(word,[word//8]).
 :- set_prolog_flag(double_quotes,chars).
 
 word(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideLeft,SideRight]) -->
@@ -44,8 +44,8 @@ guidance_unparsed([],
 
 
 /* Let the name parser indicate what is wrong with elements and numbers */
-guidance_errcode(arrow,alpha,Message) :- name_parse:guidance_errcode(none,alpha,Message).
-guidance_errcode(arrow,digit,Message) :- name_parse:guidance_errcode(none,digit,Message).
+guidance_errcode(arrow,alpha,Message) :- name:guidance_errcode(none,alpha,Message).
+guidance_errcode(arrow,digit,Message) :- name:guidance_errcode(none,digit,Message).
 
 guidance_errcode(arrow,nil,
 	'Chemical equations consist of reactants --> (the arrow) and products.
@@ -72,8 +72,8 @@ guidance_errcode(arrow,_,
  ).
 
 /* Let the name parser indicate what is wrong with elements and numbers */
-guidance_errcode(none,alpha,Message) :- name_parse:guidance_errcode(none,alpha,Message).
-guidance_errcode(none,digit,Message) :- name_parse:guidance_errcode(none,digit,Message).
+guidance_errcode(none,alpha,Message) :- name:guidance_errcode(none,alpha,Message).
+guidance_errcode(none,digit,Message) :- name:guidance_errcode(none,digit,Message).
 
 guidance_errcode(none,white,
 	'You have already entered all of the required components of an equation.
@@ -86,8 +86,8 @@ guidance_errcode(none,white,
 guidance_errcode(none,punct,Message) :- guidance_errcode(none,white,Message).
 
 /* Let the name parser indicate what is wrong with elements and numbers */
-guidance_errcode(fail,alpha,Message) :- name_parse:guidance_errcode(fail,alpha,Message).
-guidance_errcode(fail,digit,Message) :- name_parse:guidance_errcode(fail,digit,Message).
+guidance_errcode(fail,alpha,Message) :- name:guidance_errcode(fail,alpha,Message).
+guidance_errcode(fail,digit,Message) :- name:guidance_errcode(fail,digit,Message).
 
 
 

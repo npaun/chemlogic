@@ -39,12 +39,7 @@ scan_rule(mark,[C]) --> [C].
 scan_rule(_,[]) -->
 	[].
 
-
-
 punct_check, [T] --> [T], {char_type(T,punct)}.
-
-
-
 
 
 scan_rule_r(alpha,[C|T]) -->
@@ -107,9 +102,17 @@ phrase_fluff_check(Clause,Input,Output) :-
 	syntax_stop(none,Rest,[])
 	)); syntax_stop(fail,Input,[])).
 
-:- meta_predicate parse(//,?,?).
+:- meta_predicate parse(?,?,?).
 
-parse(Module:Clause,Input,Output) :-
+parse(Call,Input) :- parse(Call,Input,[]).
+
+parse(Call,Args,Input,Output) :- 
+	Args =.. [H|T],
+	Clause =.. [Call|T],
+	parse(Clause,Input,Output).
+
+parse(Clause,Input,Output) :-
+	functor(Clause,Module,_),
 	catch(
 	phrase_fluff_check(Clause,Input,Output),
 	error(syntax_error(ErrCode,Flags),Unparsed),

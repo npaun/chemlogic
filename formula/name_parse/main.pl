@@ -1,4 +1,4 @@
-:- module(name_parse,[name//3,nonmetal//3,nonmetal_ide//3,charge_check/2,charge_check/3]).
+:- module(name,[name//3,nonmetal//3,nonmetal_ide//3,charge_check/2,charge_check/3]).
 :- set_prolog_flag(double_quotes,chars). 
 :- use_module(ionic).
 :- use_module(covalent).

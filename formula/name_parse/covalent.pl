@@ -168,4 +168,4 @@ guidance_errcode(unknown_organic,alpha,
  ).
 
 
-guidance_errcode(ErrCode,Type,Message) :- name_parse:guidance_errcode(ErrCode,Type,Message). % Let the main file handle anything we can't figure out
+guidance_errcode(ErrCode,Type,Message) :- name:guidance_errcode(ErrCode,Type,Message). % Let the main file handle anything we can't figure out
