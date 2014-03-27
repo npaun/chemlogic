@@ -117,7 +117,7 @@ num_roman(1) --> "I".
 
 %%% Acids %%% 
 
-acid(["H"|Elems],Rest,["H",1,ASym,ACharge]) --> acid_anion(Elems,Rest,ASym,ACharge), " acid" xx (acid, mark).
+acid(["H"|Elems],Rest,["H",1,ASym,ACharge]) --> acid_anion(Elems,Rest,ASym,ACharge), " acid" xx acid.
 
 acid_anion(Elems,Rest,ASym,ACharge) --> hydro_acid(Elems,Rest,ASym,ACharge).
 acid_anion(Elems,Rest,ASym,ACharge) --> oxyanion_acid(Elems,Rest,ASym,ACharge).
@@ -325,9 +325,16 @@ guidance_errcode(hydro_acid_rule,_,
 	e.g. HCH3C<OO> is acetic acid, not <hydro>acetic acid.'
 ).
 
+guidance_errcode(acid,nil,
+        'All acids end with the suffix " acid", but you have forgotten to insert it.'
+).
+
+
+guidance_errcode(acid,white,Message) :- guidance_errcode(acid,nil,Message).
+
+
 guidance_errcode(acid,_,
-	'All acids end with the suffix " acid", but you have forgotten to insert it in the highlighed space.
-	 You may also have inserted some garbage instead of " acid".'
+        'All acids end the suffix " acid", not whatever you entered.'
 ).
 
 
