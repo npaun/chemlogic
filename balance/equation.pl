@@ -64,10 +64,11 @@ guidance_errcode(part_first,punct,
  ).
 
 
-guidance_errcode(equation:arrow,alpha,Message) :- formula:guidance_errcode(none,alpha,Message).
-guidance_errcode(equation:arrow,digit,Message) :- formula:guidance_errcode(none,digit,Message).
+/* Let the formula parser indicate what is wrong with elements and numbers */
+guidance_errcode(arrow,alpha,Message) :- formula:guidance_errcode(none,alpha,Message).
+guidance_errcode(arrow,digit,Message) :- formula:guidance_errcode(none,digit,Message).
 
-guidance_errcode(equation:arrow,nil,
+guidance_errcode(arrow,nil,
 	'Chemical equations consist of reactants --> (the arrow) and products.
 	 
 	 1. You have forgotten to insert an arrow between the reactants and the products.
@@ -80,7 +81,7 @@ guidance_errcode(equation:arrow,nil,
  	e.g. CH4 + O2 <-->> CO2 + H2O'
 ).
 
-guidance_errcode(equation:arrow,_,
+guidance_errcode(arrow,_,
 	'All operators must be properly spaced: one space before, one space after.
 	 You have probably forgotten to do this for the highlighted arrow.
 
