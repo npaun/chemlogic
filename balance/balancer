@@ -1,14 +1,17 @@
 % Super irritating style check
 :- style_check(-atom).
 
-% Rules for handling compounds
-:- consult('../formula/compounder').
+% Meta error handling
+:- ensure_loaded('../io/meta-error').
 
 % The grammar for symbolic equations
 :- use_module(equation).
 
 % The grammar for word equations
 :- use_module(word_equation).
+
+% Rules for handling compounds
+:- consult('../formula/compounder').
 
 % Rebase procedure (creates lookup tables, merges re-occurences of elements in a formula, flattens polyatomic groups)
 :- use_module(tabulate).
