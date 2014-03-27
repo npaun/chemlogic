@@ -53,7 +53,7 @@ compound(MElems,FinalRest,[MSym,MCharge,NMSym,NMCharge],Hydrate) -->
 	hydrate_part(NMRest,FinalRest,Hydrate).
 
 cation(Elems,Rest,Formula,Charge) --> group(Elems,Rest,Formula,_),
-		charge_check(metal,Formula,Charge) xx cation.
+	{charge_check(metal,Formula,Charge)} xx cation.
 
 cation([Sym|Rest],Rest,Sym,Charge) --> metal(Sym,Charge).
 

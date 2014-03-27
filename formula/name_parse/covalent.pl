@@ -5,11 +5,12 @@
 
 %%% Covalent Compounds %%%
 
-covalent([Sym1,Sym2|Rest],Rest,Formula) --> covalent(Formula), {Formula = [[Sym1,_],[Sym2,_]]}.
-covalent([Sym1,Sym2,Sym3|Rest],Rest,Formula) --> covalent(Formula), {Formula = [[Sym1,_],[Sym2,_],[Sym3,_]]}.
 
+covalent([Sym1,Sym2,Sym3|Rest],Rest,Formula) --> alcohol(Formula), {Formula = [[Sym1,_],[Sym2,_],[Sym3,_]]}.
+covalent([Sym1,Sym2|Rest],Rest,Formula) --> covalent(Formula), {Formula = [[Sym1,_],[Sym2,_]]}.
+
+%! covalent(Formula) --> alcohol(Formula).
 covalent(Formula) --> alk(Formula).
-covalent(Formula) --> alcohol(Formula).
 
 covalent(Formula) --> systematic_covalent(Formula).
 
