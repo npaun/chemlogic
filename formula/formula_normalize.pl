@@ -41,14 +41,17 @@ part(Fmt,multi,Elems,ElemsR,[[Sym,Num]|PartR],PartR) -->
 	"(",
 
 	(
-		group_symbol(Fmt,Elems,ElemsR,Sym), !; 
+		group_symbol(Fmt,Elems,ElemsR,Sym); 
 		(
 			{var(Sym)} -> syntax_stop(formula:group,inside_paren)
 		)
 	), 
 
 	")",
-	num_decimal(Num) xx number.
+	(
+		num_decimal(Num); 
+		{var(Sym)} -> syntax_stop(formula:number)
+	).
 
 part(Fmt,multi,Elems,ElemsR,[[Sym,1]|PartR],PartR) --> group_symbol(Fmt,Elems,ElemsR,Sym).
 
