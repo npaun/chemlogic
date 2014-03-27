@@ -48,7 +48,7 @@ rev([[MSym,MSub],[NMSym,NMSub]|Appended]) -->
 compound(Elems,Rest,Formula,[]) --> acid(Elems,Rest,Formula).
 compound(MElems,FinalRest,[MSym,MCharge,NMSym,NMCharge],Hydrate) --> 
 	cation(MElems,MRest,MSym,MCharge), 
-	" ", 
+	" " xx anion_part, 
 	anion(MRest,NMRest,NMSym,NMCharge), 
 	hydrate_part(NMRest,FinalRest,Hydrate).
 
@@ -188,6 +188,7 @@ guidance_errcode(charge_invalid,white,
 	 NOTE: It is very likely that the program is simply missing this charge from its database'
  ).
 
+/* Appears to have no effect */
 guidance_errcode(charge_invalid,nil,
 	'A positive ion (written with a valence charge) is not valid on its own.
 	 Ionic compounds consist of a metal and a nonmetalide.
@@ -250,6 +251,12 @@ guidance_errcode(noble_gas_q,_,
 	 Your chemistry is too fancy for us. Sorry.'
  ).
 
+guidance_errcode(anion_part,nil,
+	'Your compound is missing a non-metal part, yet you are entering an ionic compound.
+	 Ionic compounds are in the form metal non-metalide.
+
+	  e.g copper(II)< chloride>, not just copper(II) on its own'
+ ).
 
 
 
@@ -320,6 +327,11 @@ guidance_errcode(acid,white,Message) :- guidance_errcode(acid,nil,Message).
 guidance_errcode(acid,_,
 	'All acids end the suffix " acid", not whatever you entered.'
 ).
+
+
+
+%%%%% CATCH-ALL ERROR GUIDANCE %%%%%
+
 
 
 guidance_errcode(ErrCode,Type,Message) :- name_parse:guidance_errcode(ErrCode,Type,Message). % Let the main file handle anything we can't figure out
