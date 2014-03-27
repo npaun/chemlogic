@@ -11,7 +11,7 @@ expr(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideH|SideT]) -->
 	balanced_formula(Fmt,Coeff,CoeffR0,Elems,ElemR0,Formula,FormulaR0,SideH),
 	expr_tail(Fmt,CoeffR0,CoeffR,ElemR0,ElemR,FormulaR0,FormulaR,SideT), !.
 
-expr_tail(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[Side]) -->
+expr_tail(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,Side) -->
 	" + ",
 	expr(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,Side).
 
