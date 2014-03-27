@@ -34,12 +34,16 @@ scan_rule(group,[C|T]) -->
 	{\+ (char_type(C,punct); char_type(C,white))}, !,
 	scan_rule(group,T).
 
+scan_rule(mark,[C]) --> [C].
+
 scan_rule(_,[]) -->
 	[].
 
 
 
 punct_check, [T] --> [T], {char_type(T,punct)}.
+
+
 
 
 
