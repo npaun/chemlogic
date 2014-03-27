@@ -69,7 +69,7 @@ find_token_special(Type,Unparsed,Token,Type,Rest) :-
 parse_error_debug(Unparsed,Token,ErrCode,TokenType) :- write('Scan '), writeln(Unparsed), write(ErrCode), write(': '), write(Token), write(' is '), writeln(TokenType).
 
 
-explain_error(Input,Error,Flags,Unparsed) :-
+explain_error(ParseModule,Input,Error,Flags,Unparsed) :-
 	(Flags = [] -> 
 		find_token(Unparsed,Token,TokenType,Rest); 
 		find_token_special(Flags,Unparsed,Token,TokenType,Rest)
@@ -79,7 +79,7 @@ explain_error(Input,Error,Flags,Unparsed) :-
 	parse_error_debug(Unparsed,Token,Error,TokenType),
 	highlight_error(Start,Token,Rest),
 
-	(Error = Module:ErrCode),
+	(Error = Module:ErrCode; (ParseModule = Module, Error = ErrCode)),
 
 	(Module:guidance_errcode(ErrCode,TokenType,MessageErrCode) -> writeln(MessageErrCode); true),
 	nl,
@@ -94,13 +94,13 @@ phrase_fluff_check(Clause,Input,Output) :-
 	syntax_stop(none,Rest,[])
 	)); syntax_stop(fail,Input,[])).
 
-:- meta_predicate parse(//,?,?).
+:- meta_predicate parse(//,+,+).
 
-parse(Clause,Input,Output) :-
+parse(Module:Clause,Input,Output) :-
 	catch(
 	phrase_fluff_check(Clause,Input,Output),
 	error(syntax_error(ErrCode,Flags),Unparsed),
-	explain_error(Input,ErrCode,Flags,Unparsed)
+	explain_error(Module,Input,ErrCode,Flags,Unparsed)
 	). 
 
 syntax_stop(Expected,Unprocessed,_) :- syntax_stop(Expected,[],Unprocessed,_).
