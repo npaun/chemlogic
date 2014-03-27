@@ -94,7 +94,7 @@ phrase_fluff_check(Clause,Input,Output) :-
 	syntax_stop(none,Rest,[])
 	)); syntax_stop(fail,Input,[])).
 
-:- meta_predicate parse(//,+,+).
+:- meta_predicate parse(//,?,?).
 
 parse(Module:Clause,Input,Output) :-
 	catch(
