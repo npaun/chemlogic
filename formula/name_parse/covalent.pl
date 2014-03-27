@@ -7,19 +7,18 @@
 
 
 covalent([Sym1,Sym2,Sym3|Rest],Rest,Formula) --> alcohol(Formula), {Formula = [[Sym1,_],[Sym2,_],[Sym3,_]]}.
-covalent([Sym1,Sym2|Rest],Rest,Formula) --> covalent(Formula), {Formula = [[Sym1,_],[Sym2,_]]}.
+covalent([Sym1,Sym2|Rest],Rest,Formula) --> covalent(Formula), !, {Formula = [[Sym1,_],[Sym2,_]]}.
 covalent([Sym|Rest],Rest,[[Sym,Num]]) --> covalent_part(nonmetal,Sym,sub_first,Num).
 
 %! covalent(Formula) --> alcohol(Formula).
 covalent(Formula) --> alk(Formula).
-
 covalent(Formula) --> systematic_covalent(Formula).
 
 
 %%% Systematic Naming for Covalent %%%
 
 systematic_covalent([[Sym1,Num1],[Sym2,Num2]]) --> 
-	covalent_part(nonmetal,Sym1,sub_first,Num1), 
+	covalent_part(nonmetal,Sym1,sub_first,Num1), !,
 	" ", 
 	covalent_part(nonmetal_ide,Sym2,sub_general,Num2) xx covalent_part_2.
 
@@ -76,7 +75,10 @@ num_sub(10,"a") --> "dec".
 
 %%% Alkanes, Alkenes and Alcohols %%%
 
-alk([["C",Num],["H",HydroNum]]) --> num_alk(Num), alk_type(Num,HydroNum) xx unknown_organic.
+alk([["C",Num],["H",HydroNum]]) --> num_alk(Num), (alk_type(Num,HydroNum) ;
+	(
+		{var(HydroNum)} -> syntax_stop(covalent:unknown_organic)
+	)).
 
 alk_type(Num,HydroNum) -->  "ane",
 	{
