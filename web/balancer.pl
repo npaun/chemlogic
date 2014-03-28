@@ -30,8 +30,7 @@ balancer_html(Type,Input,OutputType,Solution) :-
 	input([name(input),id(input),type(text),size(80),value(Input)]),
 	select(name(outputtype),OutputSelectList)
 	]),
-	p(id(solution),\[Solution]),
-	\html_receive(postage)
+	p(id(solution),Solution)
 	]
 	).
 
@@ -41,12 +40,11 @@ balancer_nop(Solution) :-
 
 balancer_process(Type,Input,OutputType,Solution) :-
 	atom_chars(Input,StringInput),
-	balancer_do_process(Type,StringInput,OutputType,StringSolution),
-	atom_chars(Solution,StringSolution).
+	balancer_do_process(Type,StringInput,OutputType,Solution).
 
-balancer_do_process(Type,StringInput,OutputType,StringSolution) :-
-	balance_equation(Type,StringInput,OutputType,StringSolution);
-	StringSolution = "<span class='failed'>FAILED: Balancing of equation.</span> Unfortunately, a detailed reason is not yet available.".
+balancer_do_process(Type,StringInput,OutputType,Solution) :-
+	(balance_equation(Type,StringInput,OutputType,StringSolution), atom_chars(Solution,StringSolution)) handle Nil.
+
 
 balancer_page(Request) :-
 	balancer_input(Request,Type,Input,OutputType),
