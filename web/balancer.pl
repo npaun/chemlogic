@@ -30,7 +30,8 @@ balancer_html(Type,Input,OutputType,Solution) :-
 	input([name(input),id(input),type(text),size(80),value(Input)]),
 	select(name(outputtype),OutputSelectList)
 	]),
-	p(id(solution),\[Solution])
+	p(id(solution),\[Solution]),
+	\html_receive(postage)
 	]
 	).
 

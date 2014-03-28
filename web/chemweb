@@ -22,6 +22,7 @@ web_message(Port) :-
 	writeln('When you are done, type halt.'), nl, nl.
 
 :- consult('style').
+:- use_module(web_error).
 
 :- ensure_loaded('../io/format_out').
 :- initialization(set_output_format(html),now).
