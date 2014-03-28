@@ -1,4 +1,4 @@
-
+:- http_handler('/chemlogic/',balancer_page,[]).
 :- http_handler('/chemlogic/balancer', balancer_page, []).
 
 balancer_input(Request,Type,Input,OutputType) :-
