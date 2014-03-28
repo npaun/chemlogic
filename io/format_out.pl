@@ -23,7 +23,7 @@ symbol(latex,dot) --> " \\cdot ".
 Causes side-effects. Causes all output from parsers to be in Format, unless overriden elsewhere.
 */
 set_output_format(Format) :-
-	debug(chemlogic_custom,'Set ~w~n',[Format]).
+	debug(chemlogic_custom,'Set ~w~n',[Format]),
 	retractall(output(_,_,_,_)),
 	dcg_translate_rule((output(output,Symbol) --> symbol(Format,Symbol), !),DefaultRule),
 	assertz(DefaultRule),
