@@ -1,3 +1,6 @@
+#!/usr/bin/env swipl
+
+:- set_prolog_flag(verbose,silent).
 :- set_prolog_flag(double_quotes,chars).
 :- use_module(library(http/thread_httpd)).
 :- use_module(library(http/http_dispatch)).
@@ -5,12 +8,18 @@
 :- use_module(library(http/html_write)).
 
 :- initialization server(8000,[]).
+:- initialization web_message(8000).
 
 server(Port, Options) :-
         http_server(http_dispatch,
                     [ port(Port)
                     | Options
                     ]).
+
+web_message(Port) :-
+	writeln('\e[00;32mWelcome to the Chemlogic Web Interface!\e[00m'), nl,
+	write('Try it out at \e[1mhttp://localhost:'), write(Port), writeln('/chemlogic/\e[0m'), nl,
+	writeln('When you are done, type halt.'), nl, nl.
 
 :- consult('style').
 
