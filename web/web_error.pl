@@ -1,10 +1,4 @@
-:- module(web_error,[parse_error_debug/4,error_handler/2]).
-
-parse_error_debug(_,_,_,_) :- print_message(error,).
-/*
-	  format('Content-type: text/html~n~n', []),
-	  format('Junk',[]).
-  */
+:- module(web_error,[error_handler/2]).
 
 highlight_error(highlight(Start,Token,Rest),HighlightHTML) :-
 	HighlightHTML = p(id(errorline),[span(Start),span(id(errortoken),Token),span(Rest)]).
