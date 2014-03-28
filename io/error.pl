@@ -107,7 +107,7 @@ phrase_fluff_check(Clause,Input,Output) :-
 parse(Call,Input) :- parse(Call,Input,[]).
 
 parse(Call,Args,Input,Output) :- 
-	Args =.. [H|T],
+	Args =.. [_|T],
 	Clause =.. [Call|T],
 	parse(Clause,Input,Output).
 
