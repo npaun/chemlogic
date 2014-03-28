@@ -12,6 +12,7 @@
 
 % Rules for handling compounds
 :- consult('../formula/compounder').
+:- consult(solve_error).
 
 % Rebase procedure (creates lookup tables, merges re-occurences of elements in a formula, flattens polyatomic groups)
 :- use_module(tabulate).
@@ -29,7 +30,7 @@ balance_equation_real(InGrammar,Equation,OutGrammar,Solution) :-
 	(matrix(MoleculeSet,ElementSet,Matrix); throw(error(type_error(data_sets,(MoleculeSet,ElementSet)),_))),
 	!,
 
-	solve_handler(Matrix,Coeffs,(Elements,MoleculeSet)),
+	solve_handler(Matrix,Coeffs,(Elems,MoleculeSet)),
 	!,
 
 	parse(OutGrammar,.(output,Coeffs,[],Elems,[],MoleculeSet,[],SideSet),Solution,[]).
