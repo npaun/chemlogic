@@ -72,23 +72,30 @@ find_token(Unparsed,Token,Type,Rest) :-
 find_token_special(Type,Unparsed,Token,Type,Rest) :-
 	scan_rule(Type,Token,Unparsed,Rest).
 
-explain_error(ParseModule,Input,Error,Flags,Unparsed) :-
+explain_syntax_error(ParseModule,Input,Error,Flags,Unparsed,InfoStruct) :-
 	(Flags = [] -> 
 		find_token(Unparsed,Token,TokenType,Rest); 
 		find_token_special(Flags,Unparsed,Token,TokenType,Rest)
 	),
 
 	append(Start,Unparsed,Input), !,
+	HighlightStruct = highlight(Start,Token,Rest),
+
 	parse_error_debug(Unparsed,Token,Error,TokenType),
-	highlight_error(Start,Token,Rest),
 
 	(Error = Module:ErrCode; (ParseModule = Module, Error = ErrCode)),
 
-	(Module:guidance_errcode(ErrCode,TokenType,MessageErrCode) -> message_show(MessageErrCode); true),
+	(Module:guidance_errcode(ErrCode,TokenType,MessageErrCode) ; MessageErrCode = ''),
 	nl,
-	(Module:guidance_unparsed(Unparsed,MessageUnparsed) -> (message_show(MessageUnparsed), writeln(ErrCode)); true),
+	(Module:guidance_unparsed(Unparsed,MessageUnparsed); MessageUnparsed = 'Error Code: '),
 	!,
-	error_status.
+	MessageStruct = message(MessageErrCode,MessageUnparsed,ErrCode),
+	InfoStruct = [HighlightStruct,MessageStruct].
+
+
+explain_rethrow(Module,Input,ErrCode,Flags,Unparsed) :-
+	explain_syntax_error(Module,Input,ErrCode,Flags,Unparsed,InfoStruct),
+	throw(error(InfoStruct,_)).
 
 
 phrase_fluff_check(Clause,Input,Output) :-
@@ -112,7 +119,7 @@ parse(Clause,Input,Output) :-
 	catch(
 	phrase_fluff_check(Clause,Input,Output),
 	error(syntax_error(ErrCode,Flags),Unparsed),
-	explain_error(Module,Input,ErrCode,Flags,Unparsed)
+	explain_rethrow(Module,Input,ErrCode,Flags,Unparsed)
 	). 
 
 syntax_stop(Expected,Unprocessed,_) :- syntax_stop(Expected,[],Unprocessed,_).
