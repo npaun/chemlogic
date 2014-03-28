@@ -76,8 +76,4 @@ require_positive([Var|VarS]) :-
 	{Var > 0},
 	require_positive(VarS).
 
-%%% Test Case %%%
-
-test(Values) :-
-	equation_evaluate([[1,0,-1,0],[4,0,0,-2],[0,2,-2,-1]],Values).
 
