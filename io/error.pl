@@ -81,7 +81,7 @@ explain_syntax_error(ParseModule,Input,Error,Flags,Unparsed,InfoStruct) :-
 	append(Start,Unparsed,Input), !,
 	HighlightStruct = highlight(Start,Token,Rest),
 
-	parse_error_debug(Unparsed,Token,Error,TokenType),
+	debug(chemlogic_custom,"Scan ~w~n~w: ~w is ~w",[Unparsed,Error,Token,TokenType]),
 
 	(Error = Module:ErrCode; (ParseModule = Module, Error = ErrCode)),
 
