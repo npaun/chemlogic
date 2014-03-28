@@ -29,7 +29,7 @@ balance_equation_real(InGrammar,Equation,OutGrammar,Solution) :-
 	(matrix(MoleculeSet,ElementSet,Matrix); throw(error(type_error(data_sets,(MoleculeSet,ElementSet)),_))),
 	!,
 
-	solve(Matrix,Coeffs),
+	solve_handler(Matrix,Coeffs,(Elements,MoleculeSet)),
 	!,
 
 	parse(OutGrammar,.(output,Coeffs,[],Elems,[],MoleculeSet,[],SideSet),Solution,[]).
