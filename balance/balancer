@@ -26,7 +26,7 @@ balance_equation_real(InGrammar,Equation,OutGrammar,Solution) :-
 	(tabulate(SideSet); throw(error(type_error(equation_struct,SideSet),_))),
 	sort(Elems,ElementSet),
 
-	matrix(MoleculeSet,ElementSet,Matrix),
+	(matrix(MoleculeSet,ElementSet,Matrix); throw(error(type_error(data_sets,(MoleculeSet,ElementSet)),_))),
 	!,
 
 	solve(Matrix,Coeffs),
