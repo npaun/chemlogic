@@ -2,7 +2,7 @@
 :- style_check(-atom).
 
 % Meta error handling
-:- ensure_loaded('../io/meta-error').
+:- ensure_loaded('../io/meta_error').
 
 % The grammar for symbolic equations
 :- use_module(symbolic_equation).
