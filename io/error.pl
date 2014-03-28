@@ -53,8 +53,6 @@ scan_rule_r(_,[]) --> [].
 
 scan_rule_last([C]) --> [C].
 
-highlight_error(Start,Token,Rest) :-
-	writef('%s\e[01;41;37m%s\e[00m%s\n',[Start,Token,Rest]).
 
 find_token([],[],nil,[]).
 
@@ -74,9 +72,6 @@ find_token(Unparsed,Token,Type,Rest) :-
 find_token_special(Type,Unparsed,Token,Type,Rest) :-
 	scan_rule(Type,Token,Unparsed,Rest).
 
-parse_error_debug(Unparsed,Token,ErrCode,TokenType) :- write('Scan '), writeln(Unparsed), write(ErrCode), write(': '), write(Token), write(' is '), writeln(TokenType).
-
-
 explain_error(ParseModule,Input,Error,Flags,Unparsed) :-
 	(Flags = [] -> 
 		find_token(Unparsed,Token,TokenType,Rest); 
@@ -89,9 +84,9 @@ explain_error(ParseModule,Input,Error,Flags,Unparsed) :-
 
 	(Error = Module:ErrCode; (ParseModule = Module, Error = ErrCode)),
 
-	(Module:guidance_errcode(ErrCode,TokenType,MessageErrCode) -> writeln(MessageErrCode); true),
+	(Module:guidance_errcode(ErrCode,TokenType,MessageErrCode) -> message_show(MessageErrCode); true),
 	nl,
-	(Module:guidance_unparsed(Unparsed,MessageUnparsed) -> (write(MessageUnparsed), writeln(ErrCode)); true),
+	(Module:guidance_unparsed(Unparsed,MessageUnparsed) -> (message_show(MessageUnparsed), writeln(ErrCode)); true),
 	!,fail.
 
 
