@@ -87,7 +87,8 @@ explain_error(ParseModule,Input,Error,Flags,Unparsed) :-
 	(Module:guidance_errcode(ErrCode,TokenType,MessageErrCode) -> message_show(MessageErrCode); true),
 	nl,
 	(Module:guidance_unparsed(Unparsed,MessageUnparsed) -> (message_show(MessageUnparsed), writeln(ErrCode)); true),
-	!,fail.
+	!,
+	error_status.
 
 
 phrase_fluff_check(Clause,Input,Output) :-
