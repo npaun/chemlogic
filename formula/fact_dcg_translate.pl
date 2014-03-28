@@ -62,12 +62,12 @@ cl_poly_to_dcg(Clause) :-
 
 	% Because polyatomic groups have formulas, like NH4, we need to store it formatted in various ways. Perhaps we should re-format it on the fly???
 	dcg_translate_rule(group_symbol(user,ElemsL,ElemsR,Sym) --> Formula,SymbolRule),
-	asserta(SymbolRule),
+	assertz(SymbolRule),
 
 	(formula(output,Elems,[],Sym,[],OutputFormula,[]), !),
 
 	dcg_translate_rule(group_symbol(output,ElemsL,ElemsR,Sym) --> OutputFormula,OutputSymbolRule),
-	asserta(OutputSymbolRule).
+	assertz(OutputSymbolRule).
 
 
 cl_oxy_to_dcg(Elem,Charge,OxygenS) :- oxy_to_dcg(Elem,Charge,OxygenS,["per","","","hypo"],["ate","ate","ite","ite"]).
