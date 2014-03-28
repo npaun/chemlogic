@@ -89,12 +89,12 @@ Symbol	string	The symbol of the element
 :- discontiguous [charge/2,oxyanions/3,atomic/2,diatomic/1]. % Facts about an element or group
 :- dynamic [charge/2].
 
-:- include('metal.pl').
-:- include('nonmetal.pl').
-:- include('polyatomic.pl').
+:- include('metal').
+:- include('nonmetal').
+:- include('polyatomic').
 
 % Retained and common names for compounds
-:- include('retained.pl').
+:- include('retained').
 
 % A different base name is used for sulfur and phosphorus when forming acids
-:- include('acid.pl').
+:- include('acid').

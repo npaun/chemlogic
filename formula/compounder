@@ -2,18 +2,18 @@
 :- style_check(-atom).
 
 % Output formatting
-:- consult('../io/format-in.pl').
-:- ensure_loaded('../io/format-out.pl').
+:- consult('../io/format_in').
+:- ensure_loaded('../io/format_out').
 
 % Parse error handling
-:- ensure_loaded('../io/meta-error.pl').
-:- ensure_loaded('../io/error.pl').
+:- ensure_loaded('../io/meta_error').
+:- ensure_loaded('../io/error').
 
 % Converts human-readable formulas to internal format (required for fact_dcg_translate).
 :- use_module(formula_normalize).
 
 % Translates facts about about elements and polyatomic ions to DCG rules
-:- consult('fact_dcg_translate.pl').
+:- consult('fact_dcg_translate').
 
 % Parses names for chemical compounds into internal format
 :- use_module(name_parse/main).

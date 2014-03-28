@@ -1,4 +1,4 @@
-:- consult('../fact/fact.pl').
+:- consult('../fact/fact').
 :- initialization(cl_parse_all).
 
 :- dynamic [element//2,element_base//2,element_symbol//1]. % The resulting DCG rules for elements.

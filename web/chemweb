@@ -12,14 +12,14 @@ server(Port, Options) :-
                     | Options
                     ]).
 
-:- consult('style.pl').
+:- consult('style').
 
-:- ensure_loaded('../io/format-out.pl').
+:- ensure_loaded('../io/format_out').
 :- initialization(set_output_format(html),now).
 
 :- consult('../balance/balancer').
 
-:- consult('compounder.pl').
-:- consult('balancer.pl').
+:- consult('compounder').
+:- consult('balancer').
 
 % vi: ft=prolog
