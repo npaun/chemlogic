@@ -76,7 +76,28 @@ body
 	opacity: 0.4;
  }
 
+
+/* Error Handling */
+
 .failed
  {
 	color: red;
+ }
+
+.error-token
+ {
+	 background-color: red;
+	 color: white;
+	 font-weight: bold;
+ }
+
+.error-message
+ {
+	 text-align: left;
+	 font-size: 85%;
+ }
+
+.errcode
+ {
+	 color: red;
  }
