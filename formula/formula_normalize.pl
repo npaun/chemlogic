@@ -49,7 +49,7 @@ part(Fmt,multi,Elems,ElemsR,[[Sym,Num]|PartR],PartR) -->
 
 	")",
 	(
-		num_decimal(Num); 
+		(output(Fmt,sub_start), num_decimal(Num), output(Fmt,sub_end)); 
 		{var(Sym)} -> syntax_stop(formula:number)
 	).
 
