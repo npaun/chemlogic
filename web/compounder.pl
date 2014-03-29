@@ -26,7 +26,7 @@ compounder_html(Type,Input,Solution) :-
 				select(name(type),SelectList),
 				input([name(input),id(input),type(text),size(60),value(Input)])
 			]),
-			p(id(solution),\[Solution])
+			div(id(solution),Solution)
 		]
 		).
 
@@ -36,8 +36,7 @@ compounder_nop(Solution) :-
 
 compounder_process(Type,Input,Solution) :-
 	atom_chars(Input,StringInput),
-	compounder_do_process(Type,StringInput,StringSolution),
-	atom_chars(Solution,StringSolution).
+	(compounder_do_process(Type,StringInput,StringSolution); chemweb_to_html(StringSolution,Solution)) handle Solution.
 
 compounder_do_process(name,Name,Formula) :-
 	name_2_formula(Name,Formula).
