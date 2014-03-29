@@ -30,7 +30,7 @@ balancer_html(Type,Input,OutputType,Solution) :-
 	input([name(input),id(input),type(text),size(80),value(Input)]),
 	select(name(outputtype),OutputSelectList)
 	]),
-	p(id(solution),'dogs')
+	div(id(solution),Solution)
 	]
 	).
 
@@ -44,7 +44,7 @@ balancer_process(Type,Input,OutputType,Solution) :-
 	debug(chemlogic_custom,'Did\'nt die yet',[]).
 
 balancer_do_process(Type,StringInput,OutputType,Solution) :-
-	(balance_equation(Type,StringInput,OutputType,StringSolution), atom_chars(Solution,StringSolution)) handle Solution,
+	(balance_equation(Type,StringInput,OutputType,Solution), atom_chars(Solution,StringSolution)) handle Solution,
 		debug(chemlogic_custom,"~w~n",[Solution]).
 
 
