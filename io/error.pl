@@ -86,7 +86,6 @@ explain_syntax_error(ParseModule,Input,Error,Flags,Unparsed,InfoStruct) :-
 	(Error = Module:ErrCode; (ParseModule = Module, Error = ErrCode)),
 
 	(Module:guidance_errcode(ErrCode,TokenType,MessageErrCode) ; MessageErrCode = ''),
-	nl,
 	(Module:guidance_unparsed(Unparsed,MessageUnparsed); MessageUnparsed = 'Error Code: '),
 	!,
 	MessageStruct = message(MessageErrCode,MessageUnparsed,ErrCode),
