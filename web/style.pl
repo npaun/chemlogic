@@ -31,6 +31,6 @@ cl_menu --> html(
 	li(h1(id(title),'Chemlogic')),
 	li(a(href(compounder),'Compounder')),
 	li(a(href(balancer),'Balancer')),
-	li(span([class(todo),href(products)],'Products')),
-	li(span([class(todo),href(cplx_redox)],'Complex Redox'))
+	li(span([class(todo),href(products),title('Not yet implemented.')],'Products')),
+	li(span([class(todo),href(cplx_redox),title('Not yet implemented.')],'Complex Redox'))
 	])).
