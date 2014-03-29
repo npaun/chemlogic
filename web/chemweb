@@ -21,6 +21,11 @@ web_message(Port) :-
 	write('Try it out at \e[1mhttp://localhost:'), write(Port), writeln('/chemlogic/\e[0m'), nl,
 	writeln('When you are done, type halt.'), nl, nl.
 
+chemweb_to_html(String,HTML) :-
+	atom_chars(Atom,String),
+	HTML = \[Atom].
+
+
 :- consult('style').
 :- use_module(web_error).
 

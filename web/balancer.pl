@@ -44,7 +44,7 @@ balancer_process(Type,Input,OutputType,Solution) :-
 	debug(chemlogic_custom,'Did\'nt die yet',[]).
 
 balancer_do_process(Type,StringInput,OutputType,Solution) :-
-	(balance_equation(Type,StringInput,OutputType,Solution), atom_chars(Solution,StringSolution)) handle Solution,
+	(balance_equation(Type,StringInput,OutputType,StringSolution), chemweb_to_html(StringSolution,Solution)) handle Solution,
 		debug(chemlogic_custom,"~w~n",[Solution]).
 
 
