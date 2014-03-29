@@ -36,7 +36,7 @@ compounder_nop(Solution) :-
 
 compounder_process(Type,Input,Solution) :-
 	atom_chars(Input,StringInput),
-	(compounder_do_process(Type,StringInput,StringSolution); chemweb_to_html(StringSolution,Solution)) handle Solution.
+	(compounder_do_process(Type,StringInput,StringSolution), chemweb_to_html(StringSolution,Solution)) handle Solution.
 
 compounder_do_process(name,Name,Formula) :-
 	name_2_formula(Name,Formula).

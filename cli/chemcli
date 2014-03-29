@@ -40,7 +40,7 @@ cli_message :-
 	writeln('word		Word equation'),nl,
 
 	writeln('Example:	\e[1mformula - \'CuCl2\' :: -Name.\e[0m'),
-	writeln('		word - \'H2 + O2 --> H2O\' :: symbolic - Result.'),
+	writeln('		symbolic - \'H2 + O2 --> H2O\' :: word - Result.'),
 	writeln('Complex:	name - \'baking soda\' :: -F, formula - F :: -CanonicalName.'),nl,
 
 	writeln('ALL LINES MUST END WITH A .'), nl,nl.
