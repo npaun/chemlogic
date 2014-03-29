@@ -36,7 +36,7 @@ select, option, input
 	display: inline;
  }
 
-#menu li a
+#menu li a, #menu li span
  {
 	font-size: 150%;
 	color: white;
