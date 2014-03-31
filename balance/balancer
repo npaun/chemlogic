@@ -23,10 +23,18 @@
 
 balance_equation_real(InGrammar,Equation,OutGrammar,Solution) :-
 	parse(InGrammar,.(user,_,[],Elems,[],MoleculeSet,[],SideSet),Equation,[]),
-	(tabulate(SideSet), fail; throw(error(type_error(equation_struct,SideSet),_))),
+	(
+		tabulate(SideSet); 
+		throw(error(type_error(equation_struct,SideSet),_))
+	),
 	sort(Elems,ElementSet),
 
-	(matrix(MoleculeSet,ElementSet,Matrix); throw(error(type_error(data_sets,(MoleculeSet,ElementSet)),_))),
+	(
+		matrix(MoleculeSet,ElementSet,Matrix); 
+		throw(error(type_error(data_sets,
+		(molecules(MoleculeSet),elements(ElementSet))
+		),_))
+	),
 	!,
 
 	solve(Matrix,Coeffs),
@@ -46,9 +54,17 @@ The second function sets some default parameters.
 @arg	OutGrammar	The type of equation that will be output.	(symbolic or word)
 @arg	Solution	An equation, with coefficients solved.	"CH4 + *2*O2 ..."
 */
-balance_equation(InGrammar,Equation,OutGrammar,Solution) :-
+balance_equation_cleanup(InGrammar,Equation,OutGrammar,Solution) :-
 	balance_equation_real(InGrammar,Equation,OutGrammar,Solution) -> retractall(balance(_,_,_));
 	(retractall(balance(_,_,_)), fail).
+
+balance_equation(InGrammar,Equation,OutGrammar,Solution) :-
+	catch(
+		balance_equation_cleanup(InGrammar,Equation,OutGrammar,Solution),
+		error(type_error(Type,Data),_),
+		explain_rethrow_process(Equation,Type,Data)
+	).
+
 
 balance_equation(Equation,Solution) :- balance_equation(symbolic,Equation,symbolic,Solution).
 
@@ -68,5 +84,25 @@ element_count([Mol|MolS],Elem,[Count|CountS]) :-
         !.
 
 
+
+%%%%% GUIDANCE FOR ERRORS %%%%%
+
+guidance_process(equation_struct,
+	'INTERNAL LOGIC ERROR --- this is probably a bug in the program.
+
+	 Your equation has been completely parsed but the structure that 
+	 has been constructed from it is not correct and cannot be used 
+	 to balance the equation.
+ 	
+ 	 Equation in internal format: ').
+
+guidance_process(data_sets,
+	'INTERNAL LOGIC ERROR --- this is probably a bug in the program.
+
+	Your equation has been completely parsed, but the information
+	collected about the contained molecules and elements is not
+	correct and cannot be used to construct a matrix.
+
+	The collected data sets: ').
 
 % vi: ft=prolog
