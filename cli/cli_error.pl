@@ -16,6 +16,8 @@ error_handler(_,syntax_error([HighlightStruct,MessageStruct])) :-
 	message_show_syntax(MessageStruct),
 	fail.
 
+error_handler(_,domain_error(Struct)) :- error_handler(_,type_error(Struct)).
+
 error_handler(_,type_error([HighlightStruct,MessageStruct])) :-
 	highlight_error(HighlightStruct),
 	message_show_process(MessageStruct),
