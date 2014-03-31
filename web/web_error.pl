@@ -28,7 +28,7 @@ message_show_process(message(Message,Data),MessageHTML) :-
 			pre(
 				[
 					Message,
-					span(class(errcode),Data)
+					span(class(errcode),'~w'-[Data])
 				]
 			)
 		]
