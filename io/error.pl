@@ -93,19 +93,23 @@ explain_syntax_error(ParseModule,Input,Error,Flags,Unparsed,InfoStruct) :-
 
 
 
-explain_process_error(Input,Type,Data,InfoStruct) :-
+explain_process_error(Input,Error,Data,InfoStruct) :-
 	HighlightStruct = highlight([],[],Input),
 	
-	(guidance_process(Type,MessageType); MessageType = ''),
+	(Error = Module:Type),
+
+	(Module:guidance_process(Type,MessageType); MessageType = ''),
 	MessageStruct = message(MessageType,Data),
 
 	InfoStruct = [HighlightStruct,MessageStruct].
 
-explain_domain_error(Input,Type,Data,InfoStruct) :-
+explain_domain_error(Input,Error,Data,InfoStruct) :-
 	HighlightStruct = highlight([],[],Input),
 
-	(explain_data(Data,Processed); Processed = Data),	
-	(guidance_process(Type,MessageType); MessageType = ''),
+	(Error = Module:Type),
+
+	(Module:explain_data(Data,Processed); Processed = Data),	
+	(Module:guidance_process(Type,MessageType); MessageType = ''),
 	MessageStruct = message(MessageType,Processed),
 
 	InfoStruct = [HighlightStruct,MessageStruct].
