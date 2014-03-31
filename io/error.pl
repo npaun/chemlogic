@@ -92,7 +92,7 @@ explain_syntax_error(ParseModule,Input,Error,Flags,Unparsed,InfoStruct) :-
 	InfoStruct = [HighlightStruct,MessageStruct].
 
 
-explain_rethrow(Module,Input,ErrCode,Flags,Unparsed) :-
+explain_rethrow(Module,Input,syntax_error(ErrCode,Flags),Unparsed) :-
 	explain_syntax_error(Module,Input,ErrCode,Flags,Unparsed,InfoStruct),
 	throw(error(syntax_error(InfoStruct),_)).
 
@@ -117,8 +117,8 @@ parse(Clause,Input,Output) :-
 	functor(Clause,Module,_),
 	catch(
 	phrase_fluff_check(Clause,Input,Output),
-	error(syntax_error(ErrCode,Flags),Unparsed),
-	explain_rethrow(Module,Input,ErrCode,Flags,Unparsed)
+	error(ErrorTerm,Context),
+	explain_rethrow(Module,Input,ErrorTerm,Context)
 	). 
 
 syntax_stop(Expected,Unprocessed,_) :- syntax_stop(Expected,[],Unprocessed,_).
