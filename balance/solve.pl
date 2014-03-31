@@ -59,9 +59,9 @@ Converts a Matrix describing a chemical equation into a system of linear equatio
 solve(Matrix,Solution) :-
 	VarS = [FirstVar|_], % We use the first variable when putting the solution in simplest form
 	system(Matrix,VarS,System),
-	require_positive(VarS), % Requires all variables to be positive
-	system_eval(System,VarS),
-	bb_inf(VarS,FirstVar,_,Solution),% Takes the lowest solution that satisfies all of the constraints.
+	(require_positive(VarS); throw(error(domain_error(positive,System),_)), % Requires all variables to be positive
+	(system_eval(System,VarS); throw(error(domain_error(eval,System),_))),
+	(bb_inf(VarS,FirstVar,_,Solution); throw(error(domain_error(bb_inf,System)))),% Takes the lowest solution that satisfies all of the constraints.
 	!.
 
 
