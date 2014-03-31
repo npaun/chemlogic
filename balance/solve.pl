@@ -86,3 +86,21 @@ require_positive([Var|VarS]) :-
 	require_positive(VarS).
 
 
+%%%%% GUIDANCE FOR ERRORS %%%%%
+
+guidance_processed(positive,
+	'Your chemical equation has no solution with all coefficients positive.
+	 
+	 Your equation has been converted to the following system of linear equations: ').
+
+guidance_processed(eval,
+ 	'Your chemical equation cannot be evaluated.
+
+	 The following system of linear equations has no solution: ').
+
+guidance_processed(bb_inf,
+	'The coefficients for your chemical equation cannot be reduced to lowest terms.
+	 This is a very unusual error and may represent a bug in the program.
+
+ 	 Your equation has been converted to the following system of linear equations: ').
+

@@ -60,10 +60,13 @@ balance_equation_cleanup(InGrammar,Equation,OutGrammar,Solution) :-
 
 balance_equation(InGrammar,Equation,OutGrammar,Solution) :-
 	catch(
+	catch(
 		balance_equation_cleanup(InGrammar,Equation,OutGrammar,Solution),
 		error(type_error(Type,Data),_),
 		explain_rethrow_process(Equation,Type,Data)
-	).
+	),
+	error(domain_error(Type,Data),_),
+	explain_rethrow_domain(Equation,Type,Data)).
 
 
 balance_equation(Equation,Solution) :- balance_equation(symbolic,Equation,symbolic,Solution).

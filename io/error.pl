@@ -101,6 +101,20 @@ explain_process_error(Input,Type,Data,InfoStruct) :-
 
 	InfoStruct = [HighlightStruct,MessageStruct].
 
+explain_domain_error(Input,Type,Data,InfoStruct) :-
+	HighlightStruct = highlight([],[],Input),
+
+	(explain_data(Data,Processed); Processed = Data),	
+	(guidance_process(Type,MessageType); MessageType = ''),
+	MessageStruct = message(MessageType,Processed),
+
+	InfoStruct = [HighlightStruct,MessageStruct].
+
+
+
+explain_rethrow_domain(Input,Error,Data) :-
+	explain_domain_error(Input,Error,Data,InfoStruct),
+	throw(error(domain_error(InfoStruct),_)).
 
 explain_rethrow_process(Input,Error,Data) :-
 	explain_process_error(Input,Error,Data,InfoStruct),
