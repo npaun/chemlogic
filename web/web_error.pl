@@ -22,6 +22,6 @@ message_show(message(MessageErrcode,MessageUnparsed,Errcode),MessageHTML) :-
 		]
 	).
 
-error_handler([HighlightHTML,MessageHTML],[HighlightStruct,MessageStruct]) :-
+error_handler([HighlightHTML,MessageHTML],syntax_error([HighlightStruct,MessageStruct])) :-
 	highlight_error(HighlightStruct,HighlightHTML),
 	message_show(MessageStruct,MessageHTML).

@@ -94,7 +94,7 @@ explain_syntax_error(ParseModule,Input,Error,Flags,Unparsed,InfoStruct) :-
 
 explain_rethrow(Module,Input,ErrCode,Flags,Unparsed) :-
 	explain_syntax_error(Module,Input,ErrCode,Flags,Unparsed,InfoStruct),
-	throw(error(InfoStruct,_)).
+	throw(error(syntax_error(InfoStruct),_)).
 
 
 phrase_fluff_check(Clause,Input,Output) :-

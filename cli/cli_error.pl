@@ -8,7 +8,7 @@ message_show(message(MessageErrcode,MessageUnparsed,ErrCode)) :-
 	writeln(MessageErrcode),nl,
 	write(MessageUnparsed), writeln(ErrCode),nl.
 
-error_handler(_,[HighlightStruct,MessageStruct]) :-
+error_handler(_,syntax_error([HighlightStruct,MessageStruct])) :-
 	highlight_error(HighlightStruct),
 	message_show(MessageStruct),
 	fail.
