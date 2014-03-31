@@ -108,7 +108,8 @@ explain_domain_error(Input,Error,Data,InfoStruct) :-
 
 	(Error = Module:Type),
 
-	(Module:explain_data(Data,Processed); Processed = Data),	
+	(Module:explain_data(Data,Processed); Processed = Data),
+	!,	
 	(Module:guidance_process(Type,MessageType); MessageType = ''),
 	MessageStruct = message(MessageType,Processed),
 
