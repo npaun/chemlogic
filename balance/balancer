@@ -23,7 +23,7 @@
 
 balance_equation_real(InGrammar,Equation,OutGrammar,Solution) :-
 	parse(InGrammar,.(user,_,[],Elems,[],MoleculeSet,[],SideSet),Equation,[]),
-	(tabulate(SideSet); throw(error(type_error(equation_struct,SideSet),_))),
+	(tabulate(SideSet), fail; throw(error(type_error(equation_struct,SideSet),_))),
 	sort(Elems,ElementSet),
 
 	(matrix(MoleculeSet,ElementSet,Matrix); throw(error(type_error(data_sets,(MoleculeSet,ElementSet)),_))),
