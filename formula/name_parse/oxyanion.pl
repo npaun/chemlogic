@@ -78,12 +78,12 @@ oxyanion_acid_(Sym,_,_,_) -->
 
 
 
-%%%%% ERROR CODE GUIDANCE %%%%%
+%%%%% ERROR MESSAGE GUIDANCE %%%%%
 
 
 
 guidance_unparsed([],
-	'The program has parsed your entrire chemical name and detected an oxyanion, but has not found a required component.
+	'The program has parsed your entire chemical name and detected an oxyanion, but has not found a required component.
 	 Please check that there is nothing missing from the name of your oxyacid.
 	
  	 The first thing that is missing is: '
