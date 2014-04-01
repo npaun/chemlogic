@@ -14,9 +14,9 @@ symbol(html,sub_end) --> "</sub>".
 symbol(latex,sub_start) --> "_{".
 symbol(latex,sub_end) --> "}".
 
-symbol(user,dot) --> " . ".
-symbol(html,dot) --> " &middot; ".
-symbol(latex,dot) --> " \\cdot ".
+symbol(user,dot) --> ".".
+symbol(html,dot) --> "&middot;".
+symbol(latex,dot) --> "\\cdot".
 
 /** set_output_format(+Format) is det.
 

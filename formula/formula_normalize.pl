@@ -135,17 +135,12 @@ guidance_errcode(hydrate_h2o,group,
  ).
 
 guidance_errcode(none,punct,
-	'Remove any extraneous characters from your formula.
-	 Also ensure that you are correctly spacing operators: one space before, one space after
-	 
-	 e.g CH4_._10H2O'
+	'Remove any extraneous characters from your formula.'
 ).
 
 guidance_errcode(none,white,
-	'Remove any extraneous spaces from your formula.
-	 Also ensure that you are correctly spacing operators: one space before, one space after
+	'Remove any extraneous spaces from your formula.'
 	 
-	 e.g CH4_._10H2O'
 ).
 
 guidance_errcode(none,digit,
