@@ -58,7 +58,7 @@ guidance_errcode(arrow,nil,
 ).
 
 guidance_errcode(arrow,_,
-	'All operators must be properly spaced: one space before, one space after.
+	'All operators must be properly spaced: 1 space before, 1 space after.
 	 1. You have forgotten to correctly space the highlighted --> or +
 	 2. You are missing a required operator at the highlighted position
 
