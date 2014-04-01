@@ -16,3 +16,4 @@ common(["Ca","C","O"|Rest],Rest,[["Ca",1],[[["C",1],["O",3]],1]]) --> "chalk".
 common(["Ca","C","O"|Rest],Rest,[["Ca",1],[[["C",1],["O",3]],1]]) --> "limestone".
 common(["Ca","O"|Rest],Rest,[["Ca",1],["O",1]]) --> "quicklime".
 common(["Ca","O","H"|Rest],Rest,[["Ca",1],[[["O",1],["H",1]],2]]) --> "slaked lime".
+common(["H","O"|Rest],Rest,[["H",2],["O",2]]) --> "hydrogen peroxide".
