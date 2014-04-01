@@ -94,28 +94,28 @@ guidance_errcode(fail,digit,Message) :- name:guidance_errcode(fail,digit,Message
 
 
 guidance_errcode(fail,nil,
-	'You are missing a compound where it is required.
+	'You are missing a chemical name where it is required.
 
 	 1. An equation has reactants and products:
 	 e.g. hydrogen + oxygen --> <water>, not hydrogen + oxygen --> or --> water.
  	
-	 2. Every plus adds another compound name:
+	 2. Every plus adds another chemical name:
 	 e.g hydrogen + <oxygen> --> water, not hydrogen + --> water
 	 
-	 Please add the missing compounds.'
+	 Please add the missing chemical names.'
  ). 
 
 guidance_errcode(fail,punct,
-	'You are missing a compound where it is required. 
+	'You are missing a chemical name where it is required. 
 	 Therefore, the highlighted symbol does not make sense here.
 
 	 1. An equation has reactants and products:
 	 e.g. hydrogen + oxygen --> <water>, not hydrogen + oxygen --> or --> water.
  	
-	 2. Every plus adds another compound name:
+	 2. Every plus adds another chemical name:
 	 e.g hydrogen + <oxygen> --> water, not hydrogen + --> water
 	 
-	 Please add the missing compounds.'
+	 Please add the missing chemical names.'
  ).
 
 guidance_errcode(fail,white,Message) :- guidance_errcode(fail,punct,Message).
