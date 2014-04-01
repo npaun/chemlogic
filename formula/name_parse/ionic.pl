@@ -326,7 +326,7 @@ guidance_errcode(hydro_acid_rule,_,
 ).
 
 guidance_errcode(acid,nil,
-        'All acids end with the suffix " acid", but you have forgotten to insert it.'
+	'All acids end with  -acid, but you have forgotten to insert it.'
 ).
 
 
@@ -334,7 +334,7 @@ guidance_errcode(acid,white,Message) :- guidance_errcode(acid,nil,Message).
 
 
 guidance_errcode(acid,_,
-        'All acids end the suffix " acid", not whatever you entered.'
+	'All acids end with  -acid, not whatever you entered.'
 ).
 
 
