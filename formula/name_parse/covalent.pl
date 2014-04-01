@@ -61,7 +61,6 @@ sub_first(1,"") --> "", !.
 
 sub_general(Num,Letter) --> num_sub(Num,Letter).
 sub_general(1,"o") --> "mon".
-%! sub_general(Num,_) --> {var(Num)}, "", syntax_stop(corrector_prefix_required).
 
 num_sub(2,[]) --> "di".
 num_sub(3,[]) --> "tri".
@@ -149,12 +148,6 @@ guidance_errcode(vowel_omit,_,
 
 	e.g. <pent>oxide, <mon>oxide, not pent*ao*xide and mon*oo*xide.'
 ).
-
-/*!
-guidance_errcode(peroxide,alpha,
-	'The only per- supported by the covalent parser is peroxide, meaning O2. Sorry.'
-).
-*/
 
 guidance_errcode(corrector_first_no_mono,_,
 	'The number prefix mono-, for 1 is *not* used for the first part of the covalent compound name.
