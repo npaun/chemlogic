@@ -94,7 +94,11 @@ guidance_processed(positive,
 	 Your equation has been converted to the following system of linear equations: ').
 
 guidance_processed(eval,
- 	'Your chemical equation cannot be evaluated.
+ 	'Your chemical equation follows all the rules, but is not be valid.
+	 Therefore, the equation cannot be balanced.
+
+	 e.g: CH4 --> CO2 + H2O follows all the rules but it cannot be balanced,
+	 because oxygen is missing from the left hand side.
 
 	 The following system of linear equations has no solution: ').
 
