@@ -71,7 +71,7 @@ guidance_errcode(none,digit,Message) :- formula:guidance_errcode(none,digit,Mess
 
 guidance_errcode(none,white,
 	'You have already entered all of the required components of an equation.
-	 Therefore, the program does not expect the highlighted tokens to appear.
+	 Therefore, the program does not expect the highlighted compontent to appear.
 
  	 Either you have entered spurious characters; in which case, you should remove them,
 	 or you are missing/misentered a +, in which case you should correct it.
