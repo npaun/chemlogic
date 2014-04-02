@@ -130,10 +130,11 @@ guidance_errcode(fail,white,Message) :- guidance_errcode(fail,punct,Message).
 :- multifile ionic:guidance_errcode/3.
 
 ionic:guidance_errcode(nonmetal,punct,
-	'You have entered the following extraneous characters instead of a valid non-metal ide.
+	'You have entered the following extraneous characters instead of a valid non-metal ending in ide.
 	 If an operator is highlighted, you have forgotten to enter the second part of the compound name
 
-	 Ionic compounds are in the form metal non-metalide.'
+	 Ionic compounds consist of a positive ion (e.g. a metal) and a negative ion (e.g. a non-metal with an -ide ending)
+	 e.g. sodium chloride'
  ).
 
 % vi: ft=prolog
