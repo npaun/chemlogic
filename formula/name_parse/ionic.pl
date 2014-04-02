@@ -188,10 +188,9 @@ guidance_errcode(charge_invalid,white,
 	 NOTE: It is very likely that the program is simply missing this charge from its database'
  ).
 
-/* Appears to have no effect */
 guidance_errcode(charge_invalid,nil,
-	'A positive ion (written with a valence charge) is not valid on its own.
-	 Ionic compounds consist of a metal and a nonmetalide.
+	'A multivalent metal ion (probably with an incorrect charge) is not valid on its own.
+	 Ionic compounds consist of a positive ion (e.g. a metal) and a negative ion (e.g. a non-metal with an -ide ending).
 
  	 e.g copper(II) <chloride>, but not just copper(II)'
 ).
@@ -255,9 +254,9 @@ guidance_errcode(noble_gas_q,_,
 
 guidance_errcode(anion_part,nil,
 	'Your compound is missing a non-metal part, yet you are entering an ionic compound.
-	 Ionic compounds are in the form metal non-metalide.
+	 Ionic compounds consist of a positive ion (e.g. a metal) and a negative ion (e.g. a non-metal with an -ide ending).
 
-	  e.g copper(II)< chloride>, not just copper(II) on its own'
+ 	 e.g copper(II) <chloride>, but not just copper(II)'
  ).
 
 
