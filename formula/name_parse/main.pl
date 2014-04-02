@@ -103,10 +103,10 @@ guidance_errcode(nonmetal,alpha,
 
 guidance_errcode(nonmetal,nil,
 	'You are missing a non-metal in your compound.
-	 Ionic compounds are in the form: metal non-metalide
+	 Ionic compounds consist of: a positive ion (e.g. a metal) and a negative ion (e.g. a non-metal with an -ide ending).
 	 e.g. sodium <chloride>
 
-	 Covalent compounds are in the form non-metal non-metalide
+	 Covalent compounds consist of: a non-metal and a non-metal with an -ide ending.
 	 e.g hydrogen mon<oxide>'
  ).
 
@@ -114,7 +114,7 @@ guidance_errcode(nonmetal,white,Message) :- guidance_errcode(nonmetal,nil,Messag
 
 
 guidance_errcode(nonmetal,_,
-	'You have entered the highlighted extraneous characters instead of a valid non-metal ide.'
+	'You have entered the highlighted extraneous characters instead of a valid non-metal with an -ide ending.'
 ).
 
 guidance_errcode(nonmetal_charge,alpha,
@@ -125,12 +125,13 @@ guidance_errcode(nonmetal_charge,alpha,
 
 guidance_errcode(ide,alpha,
 	'The non-metal you have entered must end in "ide". This error is easy to fix: just change the junk you have entered (highlighted) to ide!
-	 Ionic compounds are in the form: metal non-metalide
-	 e.g. sodium chlor<ide>
+
+
+	 Ionic compounds consist of: a positive ion (e.g. a metal) a non-metal with an -ide ending.
 	 NOTE: If the compound you are entering is ionic, you may have misspelled the name of a negative ion instead.
 
-	 Covalent compounds are in the form non-metal non-metalide
-	 e.g hydrogen monox<ide>'
+	 Covalent compounds consist of: a non-metal and a non-metal with an -ide ending.
+	 e.g hydrogen mon<oxide>'
  ).
 
 guidance_errcode(ide,nil,
@@ -147,7 +148,7 @@ guidance_errcode(fail,alpha,
 	'The chemical name you are entering (starting with the highlighted component) does not conform to any known naming rules.
 	 Please check that you are correctly following one of these rules:
 
-	 1. Ionic: metal non-metalide
+	 1. Ionic: positive ion (e.g. a metal) negative ion (e.g. a non-metal with an -ide ending)
 	 e.g sodium chloride
 
 	 2. Acid: hydro (if it does not contain oxygen) non-metal suffix acid
@@ -156,11 +157,15 @@ guidance_errcode(fail,alpha,
 	 3. Covalent: non-metal non-metalide
 	 e.g. dihydrogen monoxide
 
-	 4. Some hydrocarbons: prefix ane/ene/anol
+	 4. Allotropes of nonmetals: prefixnon-metal
+	 e.g. trioxygen
+
+	 5. Some hydrocarbons: prefix ane/ene/anol
 	 e.g. methane
 
-	 5. Retained names (preferred) and some common names:
+	 6. Retained names (preferred) and some common names:
 	 e.g. water, baking soda
+
 
 	 NOTE: The program does not support any other naming conventions, yet. Sorry.
 
@@ -177,10 +182,9 @@ guidance_errcode(fail,_,
 ).
 
 guidance_errcode(none,white,
-	'The program only supports compounds in two parts, with support for hydrates. Sorry.
-	 Here is a brief summary of the supported rules:
+	'The program only supports the following simple compound types:
 
-	 1. Ionic: metal non-metalide
+	 1. Ionic: positive ion (e.g. a metal) negative ion (e.g. a non-metal with an -ide ending)
 	 e.g sodium chloride
 
 	 2. Acid: hydro (if it does not contain oxygen) non-metal suffix acid
@@ -189,10 +193,13 @@ guidance_errcode(none,white,
 	 3. Covalent: non-metal non-metalide
 	 e.g. dihydrogen monoxide
 
-	 4. Some hydrocarbons: prefix ane/ene/anol
+	 4. Allotropes of nonmetals: prefixnon-metal
+	 e.g. trioxygen
+
+	 5. Some hydrocarbons: prefix ane/ene/anol
 	 e.g. methane
-	 
-	 5. Retained names (preferred) and some common names:
+
+	 6. Retained names (preferred) and some common names:
 	 e.g. water, baking soda'
  ).
 
