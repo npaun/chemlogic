@@ -114,7 +114,7 @@ guidance_errcode(nonmetal,white,Message) :- guidance_errcode(nonmetal,nil,Messag
 
 
 guidance_errcode(nonmetal,_,
-	'You have entered the highlighted extraneous characters instead of a valid non-metal with an -ide ending.'
+	'You have entered the highlighted incorrect characters instead of a valid non-metal with an -ide ending.'
 ).
 
 guidance_errcode(nonmetal_charge,alpha,
@@ -178,7 +178,7 @@ guidance_errcode(fail,nil,
 ).
 
 guidance_errcode(fail,_,
- 	'Remove any extraneous characters from highlighted component.'
+ 	'Remove any incorrect or unnecessary characters from highlighted component.'
 ).
 
 guidance_errcode(none,white,
@@ -205,7 +205,7 @@ guidance_errcode(none,white,
 
  guidance_errcode(none,alpha,
  	'Your input would be a valid chemical compound name if it was not for the highlighted characters on the end. 
-	 If they are spurious, please remove them.
+	 If they are unnecessary, please remove them.
  	 
  	 Otherwise, you may have to correct your compound name, or the program may not support the naming convention you are using.'
  ).
@@ -228,5 +228,5 @@ guidance_errcode(_,white,
 ).
 
 guidance_errcode(_,_,
-	'You have probably entered some spurious characters. Remove them or correct them.'
+	'You have probably entered some incorrect characters. Remove them or correct them.'
 ).

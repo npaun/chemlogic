@@ -66,7 +66,7 @@ guidance_errcode(arrow,_,
 	 Possible mistakes:
 	 1. You have forgotten to correctly space the highlighted --> or +
 	 2. You are missing a required operator at the highlighted position
-	 3. You have entered spurious characters instead of a valid operator
+	 3. You have entered incorrect characters instead of a valid operator
 
  	 Also, an arrow consists of: -->'
  ).
@@ -79,7 +79,7 @@ guidance_errcode(none,white,
 	'You have already entered all of the required components of an equation.
 	 Therefore, the program does not expect the highlighted component to appear.
 
- 	 Either you have entered spurious characters; in which case, you should remove them,
+ 	 Either you have entered unnecessary characters; in which case, you should remove them,
 	 or you are missing/misentered a +, in which case you should correct it.
  	
  	 NOTE: 1 space before, 1 space after an --> or +'
@@ -130,7 +130,7 @@ guidance_errcode(fail,white,Message) :- guidance_errcode(fail,punct,Message).
 :- multifile ionic:guidance_errcode/3.
 
 ionic:guidance_errcode(nonmetal,punct,
-	'You have entered the following extraneous characters instead of a valid non-metal ending in ide.
+	'You have entered the following incorrect characters instead of a valid non-metal with an -ide ending.
 	 If an operator is highlighted, you have forgotten to enter the second part of the compound name
 
 	 Ionic compounds consist of a positive ion (e.g. a metal) and a negative ion (e.g. a non-metal with an -ide ending)

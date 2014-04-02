@@ -154,7 +154,7 @@ guidance_errcode(none,digit,
 
 guidance_errcode(none,alpha,
 	'Check that you have correctly entered the highlighted element. (The program may also simply not have it in its database).
-	 Also, the highlighted characters may, in fact, be extraneous.
+	 Also, the highlighted characters may, in fact, be incorrect or unnecessary.
 
 	 e.g. Nm2SO4 is actually Na2SO4'
  ).

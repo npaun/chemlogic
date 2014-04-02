@@ -161,7 +161,8 @@ guidance_unparsed([],
  ).
 
 guidance_errcode(charge,outside_paren,
-	'The ionic charge you have entered (inside the highlighted parentheses) is malformed. You must use capital roman numerals in parentheses.
+	'The ionic charge you have entered (inside the highlighted parentheses) has been entered incorrectly.
+	 You must use capital roman numerals in parentheses.
 
 	e.g copper<(II)>, not something like copper<(2)> or copper<(ii)>.'
  ).
@@ -204,7 +205,7 @@ guidance_errcode(corrector_not_multivalent,white,
 
 guidance_errcode(corrector_not_multivalent,_,
 	'BUSTED! You have entered an ionic charge (left of highlighting) for an element that is not multivalent.
-	 Not only that, you have also inserted some extraneous characters (the highlighted part).
+	 Not only that, you have also inserted some incorrect characters (the highlighted part).
 	 
 	 e.g. sodium chloride, not sodium(I) chloride'
  ).
@@ -245,7 +246,7 @@ guidance_errcode(hydrate_h2o,nil,
  ).
 
 guidance_errcode(hydrate_h2o,_,
-	'Remove the highlighted extraneous characters.').
+	'Remove the highlighted incorrect characters.').
 
 guidance_errcode(noble_gas_q,_,
 	'The program has no idea what ionic compounds form from noble gases.
