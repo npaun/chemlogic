@@ -39,7 +39,7 @@ error_handler([HighlightHTML,MessageHTML],syntax_error([HighlightStruct,MessageS
 	highlight_error(HighlightStruct,HighlightHTML),
 	message_show_syntax(MessageStruct,MessageHTML).
 
-error_handler(HTML,domain_error(Struct)) :- error_handler(HTML,domain_error(Struct)).
+error_handler(HTML,domain_error(Struct)) :- error_handler(HTML,type_error(Struct)).
 
 error_handler([HighlightHTML,MessageHTML],type_error([HighlightStruct,MessageStruct])) :-
 	highlight_error(HighlightStruct,HighlightHTML),

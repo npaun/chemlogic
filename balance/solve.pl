@@ -69,7 +69,7 @@ solve(Matrix,Solution) :-
 	),
 	(
 		bb_inf(VarS,FirstVar,_,Solution); 
-		throw(error(domain_error(bb_inf,System)))
+		throw(error(domain_error(solve:bb_inf,System)))
 	), % Takes the lowest solution that satisfies all of the constraints.
 	!.
 
@@ -88,12 +88,12 @@ require_positive([Var|VarS]) :-
 
 %%%%% GUIDANCE FOR ERRORS %%%%%
 
-guidance_processed(positive,
+guidance_process(positive,
 	'Your chemical equation has no solution with all coefficients positive.
 	 
 	 Your equation has been converted to the following system of linear equations: ').
 
-guidance_processed(eval,
+guidance_process(eval,
  	'Your chemical equation follows all the rules, but is not be valid.
 	 Therefore, the equation cannot be balanced.
 
@@ -102,7 +102,7 @@ guidance_processed(eval,
 
 	 The following system of linear equations has no solution: ').
 
-guidance_processed(bb_inf,
+guidance_process(bb_inf,
 	'The coefficients for your chemical equation cannot be reduced to lowest terms.
 	 This is a very unusual error and may represent a bug in the program.
 
