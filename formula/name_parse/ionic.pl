@@ -161,7 +161,8 @@ guidance_unparsed([],
  ).
 
 guidance_errcode(charge,outside_paren,
-	'The ionic charge you have entered (inside the highlighted parentheses) is malformed. You must use capital roman numerals in parentheses.
+	'The ionic charge you have entered (inside the highlighted parentheses) has been entered incorrectly.
+	 You must use capital roman numerals in parentheses.
 
 	e.g copper<(II)>, not something like copper<(2)> or copper<(ii)>.'
  ).
@@ -188,10 +189,9 @@ guidance_errcode(charge_invalid,white,
 	 NOTE: It is very likely that the program is simply missing this charge from its database'
  ).
 
-/* Appears to have no effect */
 guidance_errcode(charge_invalid,nil,
-	'A positive ion (written with a valence charge) is not valid on its own.
-	 Ionic compounds consist of a metal and a nonmetalide.
+	'A multivalent metal ion (probably with an incorrect charge) is not valid on its own.
+	 Ionic compounds consist of a positive ion (e.g. a metal) and a negative ion (e.g. a non-metal with an -ide ending).
 
  	 e.g copper(II) <chloride>, but not just copper(II)'
 ).
@@ -205,7 +205,7 @@ guidance_errcode(corrector_not_multivalent,white,
 
 guidance_errcode(corrector_not_multivalent,_,
 	'BUSTED! You have entered an ionic charge (left of highlighting) for an element that is not multivalent.
-	 Not only that, you have also inserted some extraneous characters (the highlighted part).
+	 Not only that, you have also inserted some incorrect characters (the highlighted part).
 	 
 	 e.g. sodium chloride, not sodium(I) chloride'
  ).
@@ -246,7 +246,7 @@ guidance_errcode(hydrate_h2o,nil,
  ).
 
 guidance_errcode(hydrate_h2o,_,
-	'Remove the highlighted extraneous characters.').
+	'Remove the highlighted incorrect characters.').
 
 guidance_errcode(noble_gas_q,_,
 	'The program has no idea what ionic compounds form from noble gases.
@@ -255,9 +255,9 @@ guidance_errcode(noble_gas_q,_,
 
 guidance_errcode(anion_part,nil,
 	'Your compound is missing a non-metal part, yet you are entering an ionic compound.
-	 Ionic compounds are in the form metal non-metalide.
+	 Ionic compounds consist of a positive ion (e.g. a metal) and a negative ion (e.g. a non-metal with an -ide ending).
 
-	  e.g copper(II)< chloride>, not just copper(II) on its own'
+ 	 e.g copper(II) <chloride>, but not just copper(II)'
  ).
 
 
@@ -326,7 +326,7 @@ guidance_errcode(hydro_acid_rule,_,
 ).
 
 guidance_errcode(acid,nil,
-        'All acids end with the suffix " acid", but you have forgotten to insert it.'
+	'All acids end with  -acid, but you have forgotten to insert it.'
 ).
 
 
@@ -334,7 +334,7 @@ guidance_errcode(acid,white,Message) :- guidance_errcode(acid,nil,Message).
 
 
 guidance_errcode(acid,_,
-        'All acids end the suffix " acid", not whatever you entered.'
+	'All acids end with  -acid, not whatever you entered.'
 ).
 
 

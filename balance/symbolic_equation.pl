@@ -47,8 +47,8 @@ guidance_errcode(arrow,digit,Message) :- formula:guidance_errcode(none,digit,Mes
 guidance_errcode(arrow,nil,
 	'Chemical equations consist of reactants --> (the arrow) and products.
 	 
-	 1. You have forgotten to insert an arrow between the reactants and the products.
-	 Find the place where the products start and insert an arrow there.
+	 1. You have forgotten to insert an --> between the reactants and the products.
+	 Find the place where the products start and insert an --> there.
 
  	 2. You are entirely missing the products.
  	 Please insert the products for the equation.
@@ -58,8 +58,8 @@ guidance_errcode(arrow,nil,
 ).
 
 guidance_errcode(arrow,_,
-	'All operators must be properly spaced: one space before, one space after.
-	 1. You have forgotten to correctly space the highlighted arrow or plus
+	'All operators must be properly spaced: 1 space before, 1 space after.
+	 1. You have forgotten to correctly space the highlighted --> or +
 	 2. You are missing a required operator at the highlighted position
 
  	 Also, an arrow consists of: -->'
@@ -71,12 +71,12 @@ guidance_errcode(none,digit,Message) :- formula:guidance_errcode(none,digit,Mess
 
 guidance_errcode(none,white,
 	'You have already entered all of the required components of an equation.
-	 Therefore, the program does not expect the highlighted tokens to appear.
+	 Therefore, the program does not expect the highlighted compontent to appear.
 
- 	 Either you have entered spurious characters; in which case, you should remove them,
+ 	 Either you have entered unnecessary characters; in which case, you should remove them,
 	 or you are missing/misentered a +, in which case you should correct it.
 
- 	 NOTE: 1 space before, 1 space after an operator'
+	 NOTE: 1 space before, 1 space after an --> or +'
  ).
 
 guidance_errcode(none,punct,Message) :- guidance_errcode(none,white,Message).

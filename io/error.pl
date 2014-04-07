@@ -92,9 +92,42 @@ explain_syntax_error(ParseModule,Input,Error,Flags,Unparsed,InfoStruct) :-
 	InfoStruct = [HighlightStruct,MessageStruct].
 
 
-explain_rethrow(Module,Input,ErrCode,Flags,Unparsed) :-
+
+explain_process_error(Input,Error,Data,InfoStruct) :-
+	HighlightStruct = highlight([],[],Input),
+	
+	(Error = Module:Type),
+
+	(Module:guidance_process(Type,MessageType); MessageType = ''),
+	MessageStruct = message(MessageType,Data),
+
+	InfoStruct = [HighlightStruct,MessageStruct].
+
+explain_domain_error(Input,Error,Data,InfoStruct) :-
+	HighlightStruct = highlight([],[],Input),
+
+	(Error = Module:Type),
+
+	(Module:explain_data(Data,Processed); Processed = Data),
+	!,	
+	(Module:guidance_process(Type,MessageType); MessageType = ''),
+	MessageStruct = message(MessageType,Processed),
+
+	InfoStruct = [HighlightStruct,MessageStruct].
+
+
+
+explain_rethrow_domain(Input,Error,Data) :-
+	explain_domain_error(Input,Error,Data,InfoStruct),
+	throw(error(domain_error(InfoStruct),_)).
+
+explain_rethrow_process(Input,Error,Data) :-
+	explain_process_error(Input,Error,Data,InfoStruct),
+	throw(error(type_error(InfoStruct),_)).
+
+explain_rethrow(Module,Input,syntax_error(ErrCode,Flags),Unparsed) :-
 	explain_syntax_error(Module,Input,ErrCode,Flags,Unparsed,InfoStruct),
-	throw(error(InfoStruct,_)).
+	throw(error(syntax_error(InfoStruct),_)).
 
 
 phrase_fluff_check(Clause,Input,Output) :-
@@ -117,8 +150,8 @@ parse(Clause,Input,Output) :-
 	functor(Clause,Module,_),
 	catch(
 	phrase_fluff_check(Clause,Input,Output),
-	error(syntax_error(ErrCode,Flags),Unparsed),
-	explain_rethrow(Module,Input,ErrCode,Flags,Unparsed)
+	error(ErrorTerm,Context),
+	explain_rethrow(Module,Input,ErrorTerm,Context)
 	). 
 
 syntax_stop(Expected,Unprocessed,_) :- syntax_stop(Expected,[],Unprocessed,_).
