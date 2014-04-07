@@ -97,8 +97,8 @@ guidance_process(eval,
  	'Your chemical equation follows all the rules, but is not be valid.
 	 Therefore, the equation cannot be balanced.
 
-	 e.g: CH4 --> CO2 + H2O follows all the rules but it cannot be balanced,
-	 because oxygen is missing from the left hand side.
+	 e.g: CH4 --> CO2 + H2O 
+	 It follows all the rules but cannot be balanced, because oxygen is missing from the left hand side.
 
 	 The following system of linear equations has no solution: ').
 

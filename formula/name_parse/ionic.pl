@@ -174,7 +174,7 @@ guidance_errcode(charge,digit,
  ).
 
 guidance_errcode(charge,alpha,
-	'Ionic charges must be in parenthesis ().'
+	'Ionic charges must be in parentheses ().'
 ).
 
 guidance_errcode(charge,white,
@@ -296,8 +296,7 @@ guidance_errcode(nonmetal_acid,alpha,
 guidance_errcode(nonmetal_acid,nil,
 	'A non-metal (or a negative polyatomic ion) is expected here.
 	 All acids are covalent compounds consisting of hydrogen and an anion.
-	 (This is just the most likely situation --- you are also missing the suffix " acid", 
-	  so you could be making a different mistake.)
+	 (This is just the most likely situation --- you are also missing the suffix " acid", so you could be making a different mistake.)
 
  	 e.g. You cannot create hydrocupric acid (H2Cu), but you can create hydrosulfuric acid (H2S) and nitric acid (HNO3).'
  ).
@@ -305,8 +304,7 @@ guidance_errcode(nonmetal_acid,nil,
 guidance_errcode(nonmetal_acid,white,
 	'A non-metal (or a negative polyatomic ion) is expected here.
 	 All acids are covalent compounds consisting of hydrogen and an anion.
-	 (This is just the most likely situation --- you may be entering something other than an acid,
-	  making a different mistake.) 
+	 (This is just the most likely situation --- you may be entering something other than an acid, making a different mistake.) 
 
  	 e.g. You cannot create hydrocupric acid (H2Cu), but you can create hydrosulfuric acid (H2S) and nitric acid (HNO3).'
  ).
