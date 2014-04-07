@@ -12,7 +12,6 @@ formula(Fmt,Elems,ElemsR,Formula,FormulaR) -->
 
 %%% Hydrates %%%
 
-%! hydrate_part(_,[],[],[],[],[],[]) :- !.
 hydrate_part(Fmt,["H","O"|ElemsR],ElemsR,[[Formula,Coeff]|SymR],SymR) --> 
 	output(Fmt,dot), 
 	(num_decimal(Coeff); {Coeff = 1}),
