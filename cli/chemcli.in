@@ -52,5 +52,4 @@ cli_message :-
 	writeln('ALL LINES MUST END WITH A .'), nl,nl.
 
 
-
 % vi: ft=prolog
