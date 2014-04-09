@@ -99,10 +99,10 @@ explain_general_error(Input,Error,DebugData,InfoStruct) :-
 
 	(Error = Module:Type),
 
-	(Module:explain_general_data(DebugData,DebugInfo); Processed = Data),
+	(Module:explain_general_data(DebugData,DebugInfo); DebugInfo = DebugData),
 	!,	
 	(Module:guidance_general(Type,MessageType); MessageType = ''),
-	MessageStruct = message(MessageType,DefugInfo),
+	MessageStruct = message(MessageType,DebugInfo),
 
 	InfoStruct = [HighlightStruct,MessageStruct].
 
