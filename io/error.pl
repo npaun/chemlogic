@@ -94,31 +94,20 @@ explain_syntax_error(ParseModule,Input,Error,Flags,Unparsed,InfoStruct) :-
 	InfoStruct = [HighlightStruct,MessageStruct].
 
 
-
-explain_process_error(Input,Error,Data,InfoStruct) :-
-	HighlightStruct = highlight([],[],Input),
-	
-	(Error = Module:Type),
-
-	(Module:guidance_process(Type,MessageType); MessageType = ''),
-	MessageStruct = message(MessageType,Data),
-
-	InfoStruct = [HighlightStruct,MessageStruct].
-
-explain_general_error(Input,Error,Data,InfoStruct) :-
+explain_general_error(Input,Error,DebugData,InfoStruct) :-
 	HighlightStruct = highlight([],[],Input),
 
 	(Error = Module:Type),
 
-	(Module:explain_data(Data,Processed); Processed = Data),
+	(Module:explain_general_data(DebugData,DebugInfo); Processed = Data),
 	!,	
-	(Module:guidance_process(Type,MessageType); MessageType = ''),
-	MessageStruct = message(MessageType,Processed),
+	(Module:guidance_general(Type,MessageType); MessageType = ''),
+	MessageStruct = message(MessageType,DefugInfo),
 
 	InfoStruct = [HighlightStruct,MessageStruct].
 
-explain_general_rethrow(Type,Input,Error,Data) :-
-	explain_general_error(Input,Error,Data,InfoStruct),
+explain_general_rethrow(Type,Input,Error,DebugData) :-
+	explain_general_error(Input,Error,DebugData,InfoStruct),
 	ErrorTerm =.. [Type,InfoStruct],
 	throw(error(ErrorTerm,_)).
 
