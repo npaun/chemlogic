@@ -4,6 +4,7 @@
 % (C) Copyright 2012-2014 Nicholas Paun
 
 
+
 % IDEA:
 % Different input fields for names, formulas, symbolic equations and word equations. This would make auto-complete more useful, perhaps.
 
@@ -14,7 +15,7 @@ compounder_input(Request,Type,Input) :-
 	http_parameters(Request,
 		[   
 			type(Type, [ optional(true), oneof([name,formula]) ]),
-			input(Input, [ optional(true) ])
+			compounder_input(Input, [ optional(true) ])
 		]).
 
 compounder_html(Type,Input,Solution) :-
@@ -30,7 +31,7 @@ compounder_html(Type,Input,Solution) :-
 			h1(id(feature),'Compounder'),
 			form([
 				select(name(type),SelectList),
-				input([name(input),id(input),type(text),size(60),value(Input)])
+				input([name(compounder_input),id(compounder_input),type(text),size(60),value(Input)])
 			]),
 			div(id(solution),Solution)
 		]
