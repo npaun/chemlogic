@@ -10,8 +10,6 @@
 
 :- dynamic [element//2,element_base//2,element_symbol//1]. % The resulting DCG rules for elements.
 :- dynamic [group//4,group_base//4,group_symbol//4]. % The resulting DCG rules for groups
-:- dynamic [charge/2].
-
 
 
 
