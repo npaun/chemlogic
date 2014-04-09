@@ -1,0 +1,30 @@
+#!/usr/bin/env swipl
+
+:- initialization main.
+
+parse_argv(Interface,Destination,Standalone) :-
+        current_prolog_flag(argv, Argv),
+	(
+	Argv = [Interface,Destination,Standalone];
+	(Argv = [Interface,Destination], Standalone = false);
+	(Argv = [Interface], Destination = ./, Standalone = false)
+	).
+
+file_name(Interface,InFile,OutFile) :-
+	atom_concat('chem',Interface,OutFile),
+	atomic_list_concat([Interface,OutFile],'/',InName),
+	atom_concat(InName,'.in',InFile).
+
+compile(Interface,Standalone) :-
+	writeln(Standalone),
+	file_name(Interface,InFile,OutFile),
+	consult(InFile),
+	cl_parse_all,
+	qsave_program(OutFile,[stand_alone(Standalone)]).
+
+message.
+
+main :-
+	(parse_argv(I,D,S); message),
+	compile(I,S).
+	
