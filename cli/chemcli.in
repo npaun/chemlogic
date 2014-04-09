@@ -1,0 +1,56 @@
+#!/usr/bin/env swipl
+% chemcli: A simple command-line DSL for accessing chemlogic features
+% This file is from Chemlogic, a logic programming computer chemistry system
+% <http://icebergsystems.ca/chemlogic>
+% (C) Copyright 2012-2014 Nicholas Paun
+
+:- set_prolog_flag(verbose,silent).
+:- use_module(cli_error).
+:- consult('../balance/balancer').
+:- initialization cli_message.
+:- op(990,xfy,::).
+
+
+
+InputType - Input :: -Result :-
+	InputType - Input :: symbolic - Result,
+	!.
+
+
+InputType - AtomInput :: ResultType - Result :-
+	atom_chars(AtomInput,Input),
+	(
+		InputType = name -> name_2_formula(Input,StringRes) handle _;
+		InputType = formula -> formula_2_name(Input,StringRes) handle _ ;
+		balance_equation(InputType,Input,ResultType,StringRes) handle _
+	),
+		
+	atom_chars(Result,StringRes).
+
+
+
+
+
+cli_message :-
+	writeln('\e[00;32mWelcome to the Chemlogic CLI interface!\e[00m'),
+	writeln('(Work in progress)'), nl,
+
+	writeln('Enter a rule in the form:		\e[1minput type - \'input\' :: output type -X.\e[0m'),
+	writeln('For default output, use: 		\e[1minput type - \'input\' :: -X.\e[0m'),
+	writeln('To quit the program:			halt.'), nl,
+
+	writeln('Input and Output Types:'),
+	writeln('formula	Chemical formula'),
+	writeln('name		Chemical name'),
+	writeln('symbolic	Symbolic equation'),
+	writeln('word		Word equation'),nl,
+
+	writeln('Example:	\e[1mformula - \'CuCl2\' :: -Name.\e[0m'),
+	writeln('		symbolic - \'H2 + O2 --> H2O\' :: word - Result.'),
+	writeln('Complex:	name - \'baking soda\' :: -F, formula - F :: -CanonicalName.'),nl,
+
+	writeln('ALL LINES MUST END WITH A .'), nl,nl.
+
+
+
+% vi: ft=prolog

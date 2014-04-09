@@ -6,7 +6,6 @@
 
 
 :- consult('../fact/fact').
-:- initialization(cl_parse_all).
 
 :- dynamic [element//2,element_base//2,element_symbol//1]. % The resulting DCG rules for elements.
 :- dynamic [group//4,group_base//4,group_symbol//4]. % The resulting DCG rules for groups
@@ -127,4 +126,5 @@ cl_parse_all :-
 		oxyanions(Elem,Charge,Oxygens),
 		cl_oxy_to_dcg(Elem,Charge,Oxygens)
 	),
-	_).
+	_),
+	writeln('* Fact DB compiled').
