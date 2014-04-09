@@ -1,0 +1,3 @@
+1. Change field name (see balancer.pl/compounder.pl)
+2. Move dynamic charge somewhere else (see fact.pl)
+3. Move acid rules somewhere else?
