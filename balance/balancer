@@ -107,5 +107,5 @@ guidance_process(data_sets,
 
 	The collected data sets: ').
 
-explain_data(_,[]).
+explain_data([],[]).
 % vi: ft=prolog
