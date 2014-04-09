@@ -1,5 +1,5 @@
 % error.pl: Handles syntax errors, identifies error tokens and rethrows errors for handling with additional context
-% This file is from Chemlogic, a logic programming computer chemistry system
+% This file is from Chemlogic, a logic programming computer chemistry system°% <http://icebergsystems.ca/chemlogic>
 % (C) Copyright 2012-2014 Nicholas Paun
 
 

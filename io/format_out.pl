@@ -1,5 +1,5 @@
 % format_out.pl: Formats various tokens depending on user selected output format
-% This file is from Chemlogic, a logic programming computer chemistry system
+% This file is from Chemlogic, a logic programming computer chemistry system°% <http://icebergsystems.ca/chemlogic>
 % (C) Copyright 2012-2014 Nicholas Paun
 
 
