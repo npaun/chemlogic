@@ -1,5 +1,5 @@
 % formula_normalize.pl: The DCG rules for chemical formulas
-% This file is from Chemlogic, a logic programming computer chemistry system
+% This file is from Chemlogic, a logic programming computer chemistry system°% <http://icebergsystems.ca/chemlogic>
 % (C) Copyright 2012-2014 Nicholas Paun
 
 
