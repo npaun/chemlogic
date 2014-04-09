@@ -105,7 +105,7 @@ explain_process_error(Input,Error,Data,InfoStruct) :-
 
 	InfoStruct = [HighlightStruct,MessageStruct].
 
-explain_domain_error(Input,Error,Data,InfoStruct) :-
+explain_general_error(Input,Error,Data,InfoStruct) :-
 	HighlightStruct = highlight([],[],Input),
 
 	(Error = Module:Type),
@@ -117,17 +117,12 @@ explain_domain_error(Input,Error,Data,InfoStruct) :-
 
 	InfoStruct = [HighlightStruct,MessageStruct].
 
+explain_general_rethrow(Type,Input,Error,Data) :-
+	explain_general_error(Input,Error,Data,InfoStruct),
+	Error =.. [Type,InfoStruct],
+	throw(error(Error,_)).
 
-
-explain_rethrow_domain(Input,Error,Data) :-
-	explain_domain_error(Input,Error,Data,InfoStruct),
-	throw(error(domain_error(InfoStruct),_)).
-
-explain_rethrow_process(Input,Error,Data) :-
-	explain_process_error(Input,Error,Data,InfoStruct),
-	throw(error(type_error(InfoStruct),_)).
-
-explain_rethrow(Module,Input,syntax_error(ErrCode,Flags),Unparsed) :-
+explain_syntax_rethrow(Module,Input,ErrCode,Flags,Unparsed) :-
 	explain_syntax_error(Module,Input,ErrCode,Flags,Unparsed,InfoStruct),
 	throw(error(syntax_error(InfoStruct),_)).
 
@@ -152,8 +147,8 @@ parse(Clause,Input,Output) :-
 	functor(Clause,Module,_),
 	catch(
 		phrase_fluff_check(Clause,Input,Output),
-		error(ErrorTerm,Context),
-		explain_rethrow(Module,Input,ErrorTerm,Context)
+		error(syntax_error(ErrCode,Flags),Context),
+		explain_syntax_rethrow(Module,Input,ErrCode,Flags,Context)
 	). 
 
 syntax_stop(Expected,Unprocessed,_) :- syntax_stop(Expected,[],Unprocessed,_).
