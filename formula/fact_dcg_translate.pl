@@ -1,5 +1,6 @@
 % fact_dcg_translate.pl: Converts entries from the chemical info DB to DCG rules. Cachable, but isn't yet.
-% This file is from Chemlogic, a logic programming computer chemistry system°% <http://icebergsystems.ca/chemlogic>
+% This file is from Chemlogic, a logic programming computer chemistry system
+% <http://icebergsystems.ca/chemlogic>
 % (C) Copyright 2012-2014 Nicholas Paun
 
 
