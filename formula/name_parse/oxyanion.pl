@@ -6,7 +6,7 @@
 
 %%% Test to check if user-provided oxyanion really exists %%% 
 
-exists(Sym,List,Oxygens,Charge) --> 
+exists(Sym,Charge,List,Oxygens) --> 
 	{oxyanions(Sym,Charge,List)} xx no_oxyanions,
 	{Oxygens > 0} xx invalid_oxyanion. 
 
