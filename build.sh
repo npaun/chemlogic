@@ -11,8 +11,9 @@ if [ -z "$IFACE" ]; then
 fi
 
 if [ $IFACE == 'all' ]; then
-	$0 cli
-	$0 web
+	$0 cli $2
+	$0 web $2
+	exit
 fi
 
 if [ -z "$DEST" ]; then
