@@ -4,11 +4,11 @@
 highlight_error(highlight(Start,Token,Rest)) :-
 	writef('%s\e[01;41;37m%s\e[00m%s\n',[Start,Token,Rest]).
 
-message_show_syntax(message(MessageErrcode,MessageUnparsed,ErrCode)) :-
+message_syntax_show(message(MessageErrcode,MessageUnparsed,ErrCode)) :-
 	writeln(MessageErrcode),nl,
 	write(MessageUnparsed), writeln(ErrCode),nl.
 
-message_show_process(message(Message,Data)) :-
+message_general_show(message(Message,Data)) :-
 	write(Message), writeln(Data), nl.
 
 error_handler(_,syntax_error([HighlightStruct,MessageStruct])) :-
@@ -20,5 +20,5 @@ error_handler(_,domain_error(Struct)) :- error_handler(_,type_error(Struct)).
 
 error_handler(_,type_error([HighlightStruct,MessageStruct])) :-
 	highlight_error(HighlightStruct),
-	message_show_process(MessageStruct),
+	message_general_show(MessageStruct),
 	fail.

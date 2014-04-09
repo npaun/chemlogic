@@ -9,7 +9,7 @@ highlight_error(highlight(Start,Token,Rest),HighlightHTML) :-
 		]
 	).
 
-message_show_syntax(message(MessageErrcode,MessageUnparsed,Errcode),MessageHTML) :-
+message_syntax_show(message(MessageErrcode,MessageUnparsed,Errcode),MessageHTML) :-
 	MessageHTML = div(class('error-message'),
 		[
 			pre(MessageErrcode),
@@ -22,7 +22,7 @@ message_show_syntax(message(MessageErrcode,MessageUnparsed,Errcode),MessageHTML)
 		]
 	).
 
-message_show_process(message(Message,Data),MessageHTML) :-
+message_general_show(message(Message,Data),MessageHTML) :-
 	MessageHTML = div(class('error-message'),
 		[
 			pre(
@@ -37,10 +37,10 @@ message_show_process(message(Message,Data),MessageHTML) :-
 
 error_handler([HighlightHTML,MessageHTML],syntax_error([HighlightStruct,MessageStruct])) :-
 	highlight_error(HighlightStruct,HighlightHTML),
-	message_show_syntax(MessageStruct,MessageHTML).
+	message_syntax_show(MessageStruct,MessageHTML).
 
 error_handler(HTML,domain_error(Struct)) :- error_handler(HTML,type_error(Struct)).
 
 error_handler([HighlightHTML,MessageHTML],type_error([HighlightStruct,MessageStruct])) :-
 	highlight_error(HighlightStruct,HighlightHTML),
-	message_show_process(MessageStruct,MessageHTML).
+	message_general_show(MessageStruct,MessageHTML).
