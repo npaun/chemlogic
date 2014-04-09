@@ -22,13 +22,13 @@ message_syntax_show(message(MessageErrcode,MessageUnparsed,Errcode),MessageHTML)
 		]
 	).
 
-message_general_show(message(Message,Data),MessageHTML) :-
+message_general_show(message(Message,DebugInfo),MessageHTML) :-
 	MessageHTML = div(class('error-message'),
 		[
 			pre(
 				[
 					Message,
-					span(class(errcode),'~w'-[Data])
+					span(class(errcode),'~w'-[DebugInfo])
 				]
 			)
 		]
