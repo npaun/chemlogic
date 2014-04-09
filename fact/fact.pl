@@ -105,3 +105,8 @@ Symbol	string	The symbol of the element
 
 % A different base name is used for sulfur and phosphorus when forming acids
 :- include('acid').
+
+
+%%%% DATABASE VERSION %%%%
+
+db_version(2014,04,09,00).
