@@ -119,8 +119,8 @@ explain_general_error(Input,Error,Data,InfoStruct) :-
 
 explain_general_rethrow(Type,Input,Error,Data) :-
 	explain_general_error(Input,Error,Data,InfoStruct),
-	Error =.. [Type,InfoStruct],
-	throw(error(Error,_)).
+	ErrorTerm =.. [Type,InfoStruct],
+	throw(error(ErrorTerm,_)).
 
 explain_syntax_rethrow(Module,Input,ErrCode,Flags,Unparsed) :-
 	explain_syntax_error(Module,Input,ErrCode,Flags,Unparsed,InfoStruct),
