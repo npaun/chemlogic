@@ -6,10 +6,10 @@ highlight_error(highlight(Start,Token,Rest)) :-
 
 message_syntax_show(message(MessageErrcode,MessageUnparsed,ErrCode)) :-
 	writeln(MessageErrcode),nl,
-	write(MessageUnparsed), writeln(ErrCode),nl.
+	write(MessageUnparsed), writeln(ErrCode), nl.
 
-message_general_show(message(Message,Data)) :-
-	write(Message), writeln(Data), nl.
+message_general_show(message(Message,DebugInfo)) :-
+	write(Message), writeln(DebugInfo), nl.
 
 error_handler(_,syntax_error([HighlightStruct,MessageStruct])) :-
 	highlight_error(HighlightStruct),
