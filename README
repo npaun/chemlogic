@@ -1,0 +1,105 @@
+% README
+% This file is from Chemlogic, a logic programming computer chemistry system
+% <http://icebergsystems.ca/chemlogic>
+% (C) Copyright 2012-2014 Nicholas Paun
+
+
+
+## Contents ##
+1. Usage and Installation
+2. Features
+3. Documentation
+4. Changelog
+5. To Do
+6. License
+7. Credits
+8. Contact
+
+
+
+
+## 1. Usage and Installation ##
+
+Chemlogic comes with two interfaces: a command-line interface and a Web interface.
+
+To run the CLI:
+	1. cd cli/
+	2. ./chemcli
+
+The CLI implements an extemely simple DSL for querying chemical information (a help message will appear when chemcli is run). It is also a Prolog top-level (shell), so you program more complicated things.
+
+To run the Web interface:
+	1. cd web/
+	2. ./chemweb
+
+The Web interface runs on port `8000` by default, at `http://localhost:8000/chemlogic/`. The Web interface provides a simple interface for all of the Chemlogic features.
+
+To compile the interfaces (which avoids re-running `fact_dcg_translate`), use `build.sh`:
+
+	Usage: ./build.sh <interface> <destination>
+
+Interface is either `cli` or `web`, or `all` to build both interfaces.
+The default destination is the empty `bin/` sub-directory in this directory.
+
+The executables built are still dependent on a copy of SWI-Prolog.
+
+	NOTE: If the `fact/` database is edited, the program must be re-compiled.
+	NOTE: The `style/` directory that is created when the web interface is built MUST be in the same directory as the `chemweb` executable or the pages will look terrible.
+
+
+
+
+## 2. Features ##
+
+* Chemical formulas (incl. hydrates)
+* Chemical names
+	* Retained names
+	* Acids
+	* Ionic compounds
+	* Covalent compounds
+	* Some organic compounds
+	* Pure substances/allotropes
+	* Common names
+
+* Symbolic equations
+* Word equations
+
+
+
+## 3. Documentation ##
+
+See the `docs/` directory. Documentation is available in plain text, LaTeX and PDF.
+
+
+
+## 4. Changelog ##
+
+* Version 1.0
+	* First release
+
+
+
+## 5. To Do ##
+
+See `TODO` in this directory.
+
+
+
+## 6. License ##
+
+This program is licensed under the GNU Affero GPL v. 3, which requires modifications to programs offered publically as network services to be released.
+See `LICENSE`.
+
+If this requirement is inconvenient, please contact me.
+
+
+
+## 7. Credits ##
+
+ZZ
+
+
+
+## 8. Contact ##
+
+Nicholas Paun <np@icebergsystems.ca>, <http://icebergsystems.ca>
