@@ -2,18 +2,20 @@
 
 scan_rule(alpha,[C|T]) --> [C], scan_rule_r(alpha,T).
 
-
 scan_rule(white,C) --> scan_rule(punct,C).
 
 scan_rule(punct,[C|T]) --> 
 	        [C],
-		        {\+ char_type(C,alnum)}, !,
-			        scan_rule(punct,T).
+		{\+ char_type(C,alnum)}, !,
+		scan_rule(punct,T).
 
 
 scan_rule(digit,[C|T]) -->
 	[C],
-	({char_type(C,white)} -> \+ punct_check; {true}),
+	(
+		{char_type(C,white)} -> \+ punct_check;
+       		{true}
+	),
 	{\+ char_type(C,alpha); char_type(C,punct); char_type(C,white)}, !,
 	scan_rule(digit,T).
 
@@ -25,9 +27,10 @@ scan_rule(inside_paren,[C|T]) -->
 
 scan_rule(outside_paren,[C|T]) -->
 	[C],!,
-	({ C = ')'}, ! -> {T = []}; scan_rule(outside_paren,T)).
-
-
+	(
+		{ C = ')'}, ! -> {T = []};
+	       	scan_rule(outside_paren,T)
+	).
 
 scan_rule(group,[C|T]) -->
 	[C],
@@ -41,7 +44,6 @@ scan_rule(_,[]) -->
 
 punct_check, [T] --> [T], {char_type(T,punct)}.
 
-
 scan_rule_r(alpha,[C|T]) -->
 	[C],
 	({char_type(C,white)} -> \+ punct_check; {true}),
@@ -50,8 +52,8 @@ scan_rule_r(alpha,[C|T]) -->
 
 scan_rule_r(_,[]) --> [].
 
-
 scan_rule_last([C]) --> [C].
+
 
 
 find_token([],[],nil,[]).
@@ -149,9 +151,9 @@ parse(Call,Args,Input,Output) :-
 parse(Clause,Input,Output) :-
 	functor(Clause,Module,_),
 	catch(
-	phrase_fluff_check(Clause,Input,Output),
-	error(ErrorTerm,Context),
-	explain_rethrow(Module,Input,ErrorTerm,Context)
+		phrase_fluff_check(Clause,Input,Output),
+		error(ErrorTerm,Context),
+		explain_rethrow(Module,Input,ErrorTerm,Context)
 	). 
 
 syntax_stop(Expected,Unprocessed,_) :- syntax_stop(Expected,[],Unprocessed,_).
