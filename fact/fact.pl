@@ -1,3 +1,9 @@
+% fact.pl: The main file that loads the chemical information database
+% This file is from Chemlogic, a logic programming computer chemistry system
+% (C) Copyright 2012-2014 Nicholas Paun
+
+
+
 /**
 NOTE: Quick description of Prolog notation.
 

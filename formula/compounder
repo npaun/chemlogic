@@ -1,3 +1,10 @@
+% compounder: The main file for the compound library. Implements the predicates for naming compounds and writing formals.
+% This file is from Chemlogic, a logic programming computer chemistry system
+% (C) Copyright 2012-2014 Nicholas Paun
+
+
+
+
 :- set_prolog_flag(double_quotes,chars).
 :- style_check(-atom).
 

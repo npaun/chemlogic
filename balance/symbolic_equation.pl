@@ -1,5 +1,14 @@
+% symbolic_equation.pl: The DCG for symbolic chemical equations
+% This file is from Chemlogic, a logic programming computer chemistry system
+% (C) Copyright 2012-2014 Nicholas Paun
+
+
+
 :- module(symbolic,[symbolic//8]).
 :- set_prolog_flag(double_quotes,chars).
+
+
+
 
 symbolic(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideLeft,SideRight]) -->
 	expr(Fmt,Coeff,CoeffR0,Elems,ElemR0,Formula,FormulaR0,SideLeft),

@@ -1,3 +1,8 @@
+% compounder.pl: Web frontend for the Compounder features (naming compounds and writing formulas) 
+% This file is from Chemlogic, a logic programming computer chemistry system
+% (C) Copyright 2012-2014 Nicholas Paun
+
+
 % IDEA:
 % Different input fields for names, formulas, symbolic equations and word equations. This would make auto-complete more useful, perhaps.
 

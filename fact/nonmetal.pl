@@ -1,3 +1,9 @@
+% nonmetal.pl: Database file for non-metals
+% This file is from Chemlogic, a logic programming computer chemistry system
+% (C) Copyright 2012-2014 Nicholas Paun
+
+
+
 % Longest match first. Unfortunately, the database must be stored out of order!
 cl(element("Cl","chlorine","chlor")).
         charge("Cl",-1).

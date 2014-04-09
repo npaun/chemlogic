@@ -1,5 +1,14 @@
+% solve.pl: Converts a provided matrix to a system of linear equations which is solved using CLP(q).
+% This file is from Chemlogic, a logic programming computer chemistry system
+% (C) Copyright 2012-2014 Nicholas Paun
+
+
+
 :- module(solve,[system/3,solve/2]).
 :- use_module(library(clpq)).
+
+
+
 
 % Build a system of linear equations
 

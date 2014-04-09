@@ -1,3 +1,9 @@
+% main.pl: Common predicates and an interface for chemical naming rules
+% This file is from Chemlogic, a logic programming computer chemistry system
+% (C) Copyright 2012-2014 Nicholas Paun
+
+
+
 :- module(name,[name//3,nonmetal//3,nonmetal_ide//3,charge_check/2,charge_check/3]).
 :- set_prolog_flag(double_quotes,chars). 
 :- use_module(ionic).

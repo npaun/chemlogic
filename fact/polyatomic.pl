@@ -1,3 +1,9 @@
+% polyatomic.pl: Database file for polyatomic ions (except oxyanions)
+% This file is from Chemlogic, a logic programming computer chemistry system
+% (C) Copyright 2012-2014 Nicholas Paun
+
+
+
 /**
 NOTE: Simple oxyanions are generated from oxyanions/3 declarations, located with the element definitions.
 TODO: Allow symbols for polyatomic groups to be given in human-readable notation, instead of internal format.

@@ -1,3 +1,9 @@
+% ionic.pl: DCG rules for the names of binary ionic compounds (hydrates supported) and the names of acids
+% This file is from Chemlogic, a logic programming computer chemistry system
+% (C) Copyright 2012-2014 Nicholas Paun
+
+
+
 :- module(ionic,[ionic//3,acid_base//1]).
 :- set_prolog_flag(double_quotes,chars).
 :- use_module(oxyanion).

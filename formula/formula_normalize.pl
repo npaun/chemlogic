@@ -1,3 +1,9 @@
+% formula_normalize.pl: The DCG rules for chemical formulas
+% This file is from Chemlogic, a logic programming computer chemistry system
+% (C) Copyright 2012-2014 Nicholas Paun
+
+
+
 :- module(formula,[formula//5]).
 :- set_prolog_flag(double_quotes,chars).
 

@@ -1,4 +1,9 @@
-:- [error].
+% meta_error.pl: Some extremely simple meta-programming constructs that make error handling simpler
+% This file is from Chemlogic, a logic programming computer chemistry system
+% (C) Copyright 2012-2014 Nicholas Paun
+
+
+:- consult(error).
 :- op(990,yfx,(xx)).
 :- op(990,yfx,(handle)).
 :- meta_predicate xx(//,?,?,?).

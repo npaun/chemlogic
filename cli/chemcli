@@ -1,9 +1,14 @@
-#!/usr/bin/env swipl 
+#!/usr/bin/env swipl
+% chemcli: A simple command-line DSL for accessing chemlogic features
+% This file is from Chemlogic, a logic programming computer chemistry system
+% (C) Copyright 2012-2014 Nicholas Paun
+
 :- set_prolog_flag(verbose,silent).
 :- use_module(cli_error).
 :- consult('../balance/balancer').
 :- initialization cli_message.
 :- op(990,xfy,::).
+
 
 
 InputType - Input :: -Result :-
@@ -45,3 +50,6 @@ cli_message :-
 
 	writeln('ALL LINES MUST END WITH A .'), nl,nl.
 
+
+
+% vi: ft=prolog

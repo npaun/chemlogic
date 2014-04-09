@@ -1,3 +1,9 @@
+% oxyanions.pl: A rather inefficient on-the-fly DCG for oxyanion names --- used to help catch syntax errors
+% This file is from Chemlogic, a logic programming computer chemistry system
+% (C) Copyright 2012-2014 Nicholas Paun
+
+
+
 :- module(oxyanion,[oxyanion//4,oxyanion_acid//4]).
 :- set_prolog_flag(double_quotes,chars).
 :- use_module(ionic,[acid_base//1]).

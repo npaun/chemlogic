@@ -1,4 +1,9 @@
+% cli_error.pl: An error output format for terminals, using ANSI color.
+% This file is from Chemlogic, a logic programming computer chemistry system
+% (C) Copyright 2012-2014 Nicholas Paun
+
 :- module(cli_error,[error_handler/2]).
+
 
 
 highlight_error(highlight(Start,Token,Rest)) :-

@@ -1,4 +1,10 @@
+% format_out.pl: Formats various tokens depending on user selected output format
+% This file is from Chemlogic, a logic programming computer chemistry system
+% (C) Copyright 2012-2014 Nicholas Paun
+
+
 :- dynamic output//2.
+
 
 
 symbol(user,arrow) --> " --> ".

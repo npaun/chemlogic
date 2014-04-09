@@ -1,4 +1,12 @@
+% web_error.pl: Error handling predicates for HTML output, including token highlighting
+% This file is from Chemlogic, a logic programming computer chemistry system
+% (C) Copyright 2012-2014 Nicholas Paun
+
+
+
 :- module(web_error,[error_handler/2]).
+
+
 
 highlight_error(highlight(Start,Token,Rest),HighlightHTML) :-
 	HighlightHTML = p(class('error-line'),

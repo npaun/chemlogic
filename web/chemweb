@@ -1,4 +1,9 @@
 #!/usr/bin/env swipl
+% chemweb: A web interface for the Chemlogic features, implemented using SWI-Prolog's nifty Web stack
+% This file is from Chemlogic, a logic programming computer chemistry system
+% (C) Copyright 2012-2014 Nicholas Paun
+
+
 
 :- set_prolog_flag(verbose,silent).
 :- set_prolog_flag(double_quotes,chars).
@@ -9,6 +14,9 @@
 
 :- initialization server(8000,[]).
 :- initialization web_message(8000).
+
+
+
 
 server(Port, Options) :-
         http_server(http_dispatch,

@@ -1,3 +1,9 @@
+% covalent.pl: DCG rules for the names of binary covalent compounds, non-metal allotropes and some organic compounds
+% This file is from Chemlogic, a logic programming computer chemistry system
+% (C) Copyright 2012-2014 Nicholas Paun
+
+
+
 :- module(covalent,[covalent//3,sub_general//2]).
 :- set_prolog_flag(double_quotes,chars).
 
@@ -11,7 +17,6 @@ covalent([Sym1,Sym2,Sym3|Rest],Rest,Formula) --> alcohol(Formula), {Formula = [[
 covalent([Sym1,Sym2|Rest],Rest,Formula) --> covalent(Formula), !, {Formula = [[Sym1,_],[Sym2,_]]}.
 covalent([Sym|Rest],Rest,[[Sym,Num]]) --> covalent_part(nonmetal,Sym,sub_first,Num).
 
-%! covalent(Formula) --> alcohol(Formula).
 covalent(Formula) --> alk(Formula).
 covalent(Formula) --> systematic_covalent(Formula).
 

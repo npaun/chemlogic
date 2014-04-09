@@ -1,8 +1,17 @@
+% fact_dcg_translate.pl: Converts entries from the chemical info DB to DCG rules. Cachable, but isn't yet.
+% This file is from Chemlogic, a logic programming computer chemistry system
+% (C) Copyright 2012-2014 Nicholas Paun
+
+
+
 :- consult('../fact/fact').
 :- initialization(cl_parse_all).
 
 :- dynamic [element//2,element_base//2,element_symbol//1]. % The resulting DCG rules for elements.
 :- dynamic [group//4,group_base//4,group_symbol//4]. % The resulting DCG rules for groups
+:- dynamic [charge/2].
+
+
 
 
 /** group_symbol(?Elems,?ElemsR,?Sym) is semidet.

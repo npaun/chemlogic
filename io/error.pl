@@ -1,4 +1,8 @@
-%:- module(cl_error,[parse/3,syntax_stop/3,syntax_stop/4]).
+% error.pl: Handles syntax errors, identifies error tokens and rethrows errors for handling with additional context
+% This file is from Chemlogic, a logic programming computer chemistry system
+% (C) Copyright 2012-2014 Nicholas Paun
+
+
 
 scan_rule(alpha,[C|T]) --> [C], scan_rule_r(alpha,T).
 

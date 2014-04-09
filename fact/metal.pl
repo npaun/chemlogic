@@ -1,3 +1,9 @@
+% metal.pl: Database file for metals
+% This file is from Chemlogic, a logic programming computer chemistry system
+% (C) Copyright 2012-2014 Nicholas Paun
+
+
+
 %%%%% Alkali Metals %%%%%
 
 cl(element("Li","lithium","lith")).

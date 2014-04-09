@@ -1,5 +1,14 @@
+% word_equation.pl: The DCG for word chemical equations
+% This file is from Chemlogic, a logic programming computer chemistry system
+% (C) Copyright 2012-2014 Nicholas Paun
+
+
+
 :- module(word,[word//8]).
 :- set_prolog_flag(double_quotes,chars).
+
+
+
 
 word(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideLeft,SideRight]) -->
 	expr(Coeff,CoeffR0,Elems,ElemR0,Formula,FormulaR0,SideLeft),
