@@ -1,8 +1,17 @@
 #!/bin/sh
+# build.sh: A simple bash script to compile Chemlogic interfaces with qsave
+# This file is from Chemlogic, a logic programming computer chemistry system
+# <http://icebergsystems.ca/chemlogic>
+# (C) Copyright 2012-2014 Nicholas Paun
+
+
 
 IFACE=$1
 PROGNAME=chem$IFACE
 DEST=$2
+
+
+
 
 if [ -z "$IFACE" ]; then
 	echo "$0 <interface> <dest>: Compiles a Chemlogic interface to destination"
