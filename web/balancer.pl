@@ -11,7 +11,7 @@ balancer_input(Request,Type,Input,OutputType) :-
 	http_parameters(Request,
 	[
 	type(Type, [ optional(true), oneof([symbolic,word]) ]),
-	input(Input, [ optional(true) ]),
+	balancer_input(Input, [ optional(true) ]),
 	outputtype(OutputType, [ optional(true), oneof([symbolic,word]) ])
 	]).
 
@@ -33,7 +33,7 @@ balancer_html(Type,Input,OutputType,Solution) :-
 	h1(id(feature),'Balancer'),
 	form([
 	select(name(type),SelectList),
-	input([name(input),id(input),type(text),size(80),value(Input)]),
+	input([name(balancer_input),id(balancer_input),type(text),size(80),value(Input)]),
 	select(name(outputtype),OutputSelectList)
 	]),
 	div(id(solution),Solution)
