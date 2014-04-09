@@ -108,4 +108,4 @@ guidance_general(bb_inf,
 
  	 Your equation has been converted to the following system of linear equations: ').
 
-explain_data([],[]).
+explain_general_data([],[]).
