@@ -66,7 +66,7 @@ cl(element("V","vanadium","vanad")).
 	atomic("V",23).
 
 cl(element("Cr","chromium","chrom")).
-        charge("Cr",[2,3]).
+        charge("Cr",[2,3,6]).
 	%% NOTE: There are two oxyanion declarations for chromium because the listed oxyanions for chromium have different charges.
         oxyanions("Cr",-2,[0,4,0,0]).
         oxyanions("Cr",-1,[0,0,2,0]).

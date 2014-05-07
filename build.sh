@@ -29,16 +29,18 @@ if [ -z "$DEST" ]; then
 	DEST='../bin/'
 fi
 
-
 cd $IFACE
 echo "
 cl_parse_all.
-qsave_program('$DEST/$PROGNAME').
+qsave_program('$$.build').
 " | swipl -l $PROGNAME\.in
 
-echo "* Built	$IFACE,	Copied to	$DEST"
 
+mv $$.build $DEST/$PROGNAME
 
 if [ $IFACE == 'web' ]; then
 	cp -a style $DEST
 fi
+
+
+echo "* Built	$IFACE,	Copied to	$DEST"
