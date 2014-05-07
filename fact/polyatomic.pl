@@ -42,30 +42,31 @@ cl_poly(group([["Cr",2],["O",7]],"dichromate","dichrom")).
 
 %%%%% hydrogen <x> and bi<x> %%%%%
 
-cl_poly(group([["H",1],["C",1],["O",3]],"bicarbonate","n/a")).
 cl_poly(group([["H",1],["C",1],["O",3]],"hydrogen carbonate","n/a")).
+cl_poly(group([["H",1],["C",1],["O",3]],"bicarbonate","n/a")).
 	charge([["H",1],["C",1],["O",3]],-1).
 
-cl_poly(group([["H",1],["S",1],["O",4]],"bisulfate","n/a")).
 cl_poly(group([["H",1],["S",1],["O",4]],"hydrogen sulfate","n/a")).
-cl_poly(group([["H",1],["S",1],["O",4]],"bisulphate","n/a")).
+cl_poly(group([["H",1],["S",1],["O",4]],"bisulfate","n/a")).
 cl_poly(group([["H",1],["S",1],["O",4]],"hydrogen sulphate","n/a")).
+cl_poly(group([["H",1],["S",1],["O",4]],"bisulphate","n/a")).
         charge([["H",1],["S",1],["O",4]],-1).
 
-cl_poly(group([["H",1],["S",1],["O",3]],"bisulfite","n/a")).
 cl_poly(group([["H",1],["S",1],["O",3]],"hydrogen sulfite","n/a")).
-cl_poly(group([["H",1],["S",1],["O",3]],"bisulphite","n/a")).
+cl_poly(group([["H",1],["S",1],["O",3]],"bisulfite","n/a")).
 cl_poly(group([["H",1],["S",1],["O",3]],"hydrogen sulphite","n/a")).
+cl_poly(group([["H",1],["S",1],["O",3]],"bisulphite","n/a")).
         charge([["H",1],["S",1],["O",3]],-1).
 
-cl_poly(group([["H",1],["S",1]],"bisulfide","n/a")).
 cl_poly(group([["H",1],["S",1]],"hydrogen sulfide","n/a")).
-cl_poly(group([["H",1],["S",1]],"bisulphide","n/a")).
+cl_poly(group([["H",1],["S",1]],"bisulfide","n/a")).
 cl_poly(group([["H",1],["S",1]],"hydrogen sulphide","n/a")).
+cl_poly(group([["H",1],["S",1]],"bisulphide","n/a")).
         charge([["H",1],["S",1]],-1).
 
-cl_poly(group([["H",1],["C",2],["O",4]],"binoxalate","n/a")).
 cl_poly(group([["H",1],["C",2],["O",4]],"hydrogen oxalate","n/a")).
+cl_poly(group([["H",1],["C",2],["O",4]],"hydrogenoxalate","n/a")).
+cl_poly(group([["H",1],["C",2],["O",4]],"binoxalate","n/a")).
 	charge([["H",1],["C",2],["O",4]],-1).
 
 cl_poly(group([["H",2],["P",1],["O",4]],"dihydrogen phosphate","n/a")).
