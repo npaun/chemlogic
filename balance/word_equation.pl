@@ -13,7 +13,7 @@
 
 word(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[ElemsL,ElemR0],[SideLeft,SideRight]) -->
 	expr(Coeff,CoeffR0,Elems,ElemR0,Formula,FormulaR0,SideLeft),
-	{make_element_sideset(Elems,ElemsL)},
+	{var(ElemR0) -> make_element_sideset(Elems-ElemR0,ElemsL-[]); true},
 	output(Fmt,arrow) xx arrow,
 	expr(CoeffR0,CoeffR,ElemR0,ElemR,FormulaR0,FormulaR,SideRight).
 

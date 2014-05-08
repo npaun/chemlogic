@@ -13,7 +13,7 @@
 
 symbolic(Fmt,Coeff,CoeffR,Elems,ElemsR,Formula,FormulaR,[ElemsL,ElemsR0],[SideLeft,SideRight]) -->
 	expr(Fmt,Coeff,CoeffR0,Elems,ElemsR0,Formula,FormulaR0,SideLeft),
-	{make_element_sideset(Elems,ElemsL)},
+	{var(ElemsR0) -> make_element_sideset(Elems-ElemsR0,ElemsL-[]); true},
 	output(Fmt,arrow) xx arrow,
 	expr(Fmt,CoeffR0,CoeffR,ElemsR0,ElemsR,FormulaR0,FormulaR,SideRight).
 
