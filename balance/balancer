@@ -29,7 +29,7 @@
 
 
 balance_equation_real(InGrammar,Equation,OutGrammar,Solution) :-
-	parse(InGrammar,.(user,_,[],Elems,[],MoleculeSet,[],SideSet),Equation,[]),
+	parse(InGrammar,.(user,_,[],Elems,[],MoleculeSet,[],ElementSideSet,SideSet),Equation,[]),
 	(
 		tabulate(SideSet); 
 		throw(error(type_error(user:equation_struct,SideSet),_))
@@ -47,7 +47,7 @@ balance_equation_real(InGrammar,Equation,OutGrammar,Solution) :-
 	solve(Matrix,Coeffs),
 	!,
 
-	parse(OutGrammar,.(output,Coeffs,[],Elems,[],MoleculeSet,[],SideSet),Solution,[]).
+	parse(OutGrammar,.(output,Coeffs,[],Elems,[],MoleculeSet,[],ElementSideSet,SideSet),Solution,[]).
 
 
 balance_equation_cleanup :-
