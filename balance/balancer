@@ -105,8 +105,8 @@ test_elements(Elements,[Reactants,Products]) :-
 	); throw(error(
 		domain_error(user:missing_elements,
 			(
-				'Elements missing in reactants:', MissingReactants,
-				'Elements missing in products:', MissingProducts
+				'Elements missing from reactants:', MissingReactants,
+				'		Elements missing from products:', MissingProducts
 			)
 		), _)
 		)).
@@ -135,7 +135,7 @@ guidance_general(missing_elements,
 	
  	Please check to ensure you have entered the entire equation and all of its names/formulas correctly.
  	
- 	The following structure describes the missing elements: ').
+ 	').
 
 explain_general_data([],[]).
 % vi: ft=prolog
