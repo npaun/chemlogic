@@ -35,7 +35,7 @@ balance_equation_real(InGrammar,Equation,OutGrammar,Solution) :-
 		throw(error(type_error(user:equation_struct,SideSet),_))
 	),
 	sort(Elems,ElementSet),
-
+	test_elements(ElementSet,ElementSideSet),
 	(
 		matrix(MoleculeSet,ElementSet,Matrix); 
 		throw(error(type_error(user:data_sets,
@@ -95,6 +95,14 @@ element_count([Mol|MolS],Elem,[Count|CountS]) :-
         element_count(MolS,Elem,CountS),
         !.
 
+
+test_elements(Elements,[Reactants,Products]) :-
+	subtract(Elements,Reactants,MissingReactants),
+	subtract(Elements,Products,MissingProducts),
+	((
+		MissingReactants = [],
+		MissingProducts = []
+	); throw(error(domain_error(user:missing_elements,['Elements missing in reactants: ',MissingReactants]),_))).
 
 
 %%%%% GUIDANCE FOR ERRORS %%%%%
