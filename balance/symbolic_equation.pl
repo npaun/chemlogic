@@ -5,16 +5,18 @@
 
 
 
-:- module(symbolic,[symbolic//8]).
+:- module(symbolic,[symbolic//9]).
 :- set_prolog_flag(double_quotes,chars).
 
 
 
 
-symbolic(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideLeft,SideRight]) -->
-	expr(Fmt,Coeff,CoeffR0,Elems,ElemR0,Formula,FormulaR0,SideLeft),
+symbolic(Fmt,Coeff,CoeffR,Elems,ElemsR,Formula,FormulaR,[ElemsL,ElemsR0],[SideLeft,SideRight]) -->
+	expr(Fmt,Coeff,CoeffR0,Elems,ElemsR0,Formula,FormulaR0,SideLeft),
+	{make_element_sideset(Elems,ElemsL)},
 	output(Fmt,arrow) xx arrow,
-	expr(Fmt,CoeffR0,CoeffR,ElemR0,ElemR,FormulaR0,FormulaR,SideRight).
+	expr(Fmt,CoeffR0,CoeffR,ElemsR0,ElemsR,FormulaR0,FormulaR,SideRight).
+
 
 
 expr(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideH|SideT]) -->
@@ -35,6 +37,9 @@ balanced_formula(Fmt,[Coeff|CoeffR],CoeffR,Elems,ElemR,[Formula|FormulaR],Formul
 coefficient(X) --> {nonvar(X), X = 1}, "".
 coefficient(X) --> num_decimal(X).
 coefficient(_) --> "".
+
+make_element_sideset(Elems,ElemsCopy) :-
+	copy_term(Elems,ElemsCopy).
 
 
 %%%%% GUIDANCE FOR ERRORS  %%%%%

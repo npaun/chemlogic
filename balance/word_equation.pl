@@ -5,14 +5,15 @@
 
 
 
-:- module(word,[word//8]).
+:- module(word,[word//9]).
 :- set_prolog_flag(double_quotes,chars).
 
 
 
 
-word(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideLeft,SideRight]) -->
+word(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[ElemsL,ElemR0],[SideLeft,SideRight]) -->
 	expr(Coeff,CoeffR0,Elems,ElemR0,Formula,FormulaR0,SideLeft),
+	{make_element_sideset(Elems,ElemsL)},
 	output(Fmt,arrow) xx arrow,
 	expr(CoeffR0,CoeffR,ElemR0,ElemR,FormulaR0,FormulaR,SideRight).
 
@@ -37,6 +38,8 @@ coefficient(X) --> {nonvar(X), X = 1}, "".
 coefficient(X) --> num_decimal(X), " ".
 coefficient(_) --> "".
 
+make_element_sideset(Elems,ElemsCopy) :-
+	copy_term(Elems,ElemsCopy).
 
 
 
