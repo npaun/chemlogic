@@ -102,7 +102,14 @@ test_elements(Elements,[Reactants,Products]) :-
 	((
 		MissingReactants = [],
 		MissingProducts = []
-	); throw(error(domain_error(user:missing_elements,['Elements missing in reactants: ',MissingReactants]),_))).
+	); throw(error(
+		domain_error(user:missing_elements,
+			(
+				'Elements missing in reactants:', MissingReactants,
+				'Elements missing in products:', MissingProducts
+			)
+		), _)
+		)).
 
 
 %%%%% GUIDANCE FOR ERRORS %%%%%
@@ -121,6 +128,14 @@ guidance_general(data_sets,
  	 INTERNAL LOGIC ERROR --- this is probably a bug in the program.
 
 	The collected data sets: ').
+
+guidance_general(missing_elements,
+	'You are missing elements (or entire substances) from either the reactants or the products. Therefore, the equation is unbalanable.
+	 Since atoms cannot be created or destroyed in a chemical reaction, all of the elements present in the reactants must be present in the products.
+	
+ 	Please check to ensure you have entered the entire equation and all of its names/formulas correctly.
+ 	
+ 	The following structure describes the missing elements: ').
 
 explain_general_data([],[]).
 % vi: ft=prolog
