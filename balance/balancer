@@ -99,17 +99,20 @@ element_count([Mol|MolS],Elem,[Count|CountS]) :-
 test_elements(Elements,[Reactants,Products]) :-
 	subtract(Elements,Reactants,MissingReactants),
 	subtract(Elements,Products,MissingProducts),
-	((
-		MissingReactants = [],
-		MissingProducts = []
-	); throw(error(
-		domain_error(user:missing_elements,
+	(
+		(
+			MissingReactants = [],
+			MissingProducts = []
+		); 
+
+		throw(error(domain_error(user:missing_elements,
 			(
 				'Elements missing from reactants:', MissingReactants,
 				'		Elements missing from products:', MissingProducts
 			)
 		), _)
-		)).
+		)
+	).
 
 
 %%%%% GUIDANCE FOR ERRORS %%%%%
@@ -130,7 +133,7 @@ guidance_general(data_sets,
 	The collected data sets: ').
 
 guidance_general(missing_elements,
-	'You are missing elements (or entire substances) from either the reactants or the products. Therefore, the equation is unbalanable.
+	'You are missing elements (or entire substances) from either the reactants or the products. Therefore, the equation is unbalancable.
 	 Since atoms cannot be created or destroyed in a chemical reaction, all of the elements present in the reactants must be present in the products.
 	
  	Please check to ensure you have entered the entire equation and all of its names/formulas correctly.
