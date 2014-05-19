@@ -74,7 +74,7 @@ The Web interface can also be compiled as a UNIX daemon:
 
 ## 3. Documentation ##
 
-See the `docs/` directory. Documentation is available in plain text, LaTeX and PDF.
+See the `docs/` directory. Documentation (the Chemlogic papers) is available in PDF.
 
 
 
