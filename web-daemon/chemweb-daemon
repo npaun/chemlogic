@@ -1,0 +1,9 @@
+#!/usr/bin/env swipl
+% chemwebd: A UNIX Daemon for the Chemlogic Web interface
+% This file is from Chemlogic, a logic programming computer chemistry system
+% <http://icebergsystems.ca/chemlogic>
+% (C) Copyright 2012-2014 Nicholas Paun
+
+
+
+:- initialization http_daemon([port(8000),user(www)]).
