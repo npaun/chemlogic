@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -x
 # build.sh: A simple bash script to compile Chemlogic interfaces with qsave
 # This file is from Chemlogic, a logic programming computer chemistry system
 # <http://icebergsystems.ca/chemlogic>
@@ -29,17 +29,22 @@ if [ -z "$DEST" ]; then
 	DEST='../bin/'
 fi
 
+
 cd $IFACE
-echo "
+
+if [ $IFACE == 'web-daemon' ]; then
+	swipl -g 'http_daemon([port(8000),user(www)])' -o $$.build -c $PROGNAME\.in
+else
+	echo "
 cl_parse_all.
 qsave_program('$$.build').
 " | swipl -l $PROGNAME\.in
-
+fi
 
 mv $$.build $DEST/$PROGNAME
 
-if [ $IFACE == 'web' ]; then
-	cp -a style $DEST
+if [ $IFACE == 'web' ] || [ $IFACE == 'web-daemon' ]; then
+	cp -aL style $DEST
 fi
 
 

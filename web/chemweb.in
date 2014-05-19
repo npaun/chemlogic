@@ -1,19 +1,13 @@
 #!/usr/bin/env swipl
-% chemweb: A web interface for the Chemlogic features, implemented using SWI-Prolog's nifty Web stack
+% chemweb.in: A web interface for the Chemlogic features, implemented using SWI-Prolog's nifty Web stack
 % This file is from Chemlogic, a logic programming computer chemistry system
 % <http://icebergsystems.ca/chemlogic>
 % (C) Copyright 2012-2014 Nicholas Paun
 
 
 
-:- set_prolog_flag(verbose,silent).
-:- set_prolog_flag(double_quotes,chars).
+:- [main].
 :- use_module(library(http/thread_httpd)).
-:- use_module(library(http/http_dispatch)).
-:- use_module(library(http/http_parameters)).
-:- use_module(library(http/http_error)).
-:- use_module(library(http/html_write)).
-
 :- initialization server(8000,[]).
 :- initialization web_message(8000).
 
@@ -26,25 +20,3 @@ server(Port, Options) :-
                     | Options
                     ]).
 
-web_message(Port) :-
-	writeln('\e[00;32mWelcome to the Chemlogic Web Interface!\e[00m'), nl,
-	write('Try it out at \e[1mhttp://localhost:'), write(Port), writeln('/chemlogic/\e[0m'), nl,
-	writeln('When you are done, type halt.'), nl, nl.
-
-chemweb_to_html(String,HTML) :-
-	atom_chars(Atom,String),
-	HTML = \[Atom].
-
-
-:- consult('style').
-:- use_module(web_error).
-
-:- ensure_loaded('../io/format_out').
-:- initialization(set_output_format(html),now).
-
-:- consult('../balance/balancer').
-
-:- consult('compounder').
-:- consult('balancer').
-
-% vi: ft=prolog

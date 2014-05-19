@@ -7,6 +7,9 @@
 :- multifile [user:head//2,user:body//2].
 
 
+% Load the custom footer
+
+:- [custom_footer].
 
 
 % Serves stylesheet and font.
@@ -19,7 +22,8 @@ user:head(chemlogic,Head) -->
 	html(
 	head([
 	Head,
-	link([rel(stylesheet),href('style/modern.css')])
+	link([rel(stylesheet),href('style/modern.css')]),
+	link([rel(stylesheet),href('style/custom_footer.css')])
 	])
 	).
 
@@ -28,7 +32,8 @@ user:body(chemlogic,Body) -->
 	html(
 	body([
 	div(id(top),\cl_menu),
-	div(id(content),Body)
+	div(id(content),Body),
+ 	div(id(footer),\custom_footer)
 	])
 	).
 
