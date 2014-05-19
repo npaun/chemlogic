@@ -1,4 +1,4 @@
-#!/bin/sh -x
+#!/bin/sh
 # build.sh: A simple bash script to compile Chemlogic interfaces with qsave
 # This file is from Chemlogic, a logic programming computer chemistry system
 # <http://icebergsystems.ca/chemlogic>
@@ -16,6 +16,7 @@ DEST=$2
 if [ -z "$IFACE" ]; then
 	echo "$0 <interface> <dest>: Compiles a Chemlogic interface to destination"
 	echo "Interface is either cli or web, or use all to make both interfaces"
+	echo "The web interface can also be compiled as a daemon (<interface> is web-daemon)"
 	exit
 fi
 

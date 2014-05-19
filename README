@@ -47,6 +47,12 @@ The executables built are still dependent on a copy of SWI-Prolog.
 	NOTE: The `style/` directory that is created when the web interface is built MUST be in the same directory as the `chemweb` executable or the pages will look terrible.
 
 
+The Web interface can also be compiled as a UNIX daemon:
+	1. ./build.sh web-daemon <destination>
+
+
+	NOTE: You must be root to run the daemon.
+
 
 
 ## 2. Features ##
