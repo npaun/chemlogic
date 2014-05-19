@@ -44,7 +44,7 @@ fi
 mv $$.build $DEST/$PROGNAME
 
 if [ $IFACE == 'web' ] || [ $IFACE == 'web-daemon' ]; then
-	cp -aL style $DEST
+	cp -a style $DEST
 fi
 
 
