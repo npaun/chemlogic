@@ -81,6 +81,10 @@ cl(element("Fe","iron","ferr")).
 	charge("Fe",[3,2]).
 	atomic("Fe",26).
 
+cl(element("Co","cobalt","cobalt")).
+	charge("Co",[2]).
+	atomic("Co",27).
+
 cl(element("Cu","copper","cupr")).
         charge("Cu",[1,2]).
 	atomic("Cu",29).
