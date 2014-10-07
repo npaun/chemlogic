@@ -23,6 +23,7 @@
 Chemlogic comes with two interfaces: a command-line interface and a Web interface.
 
 To run the CLI:
+
 1. cd cli/
 2. ./chemcli
 
