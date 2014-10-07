@@ -24,14 +24,15 @@ Chemlogic comes with two interfaces: a command-line interface and a Web interfac
 
 To run the CLI:
 
-1. cd cli/
-2. ./chemcli
+1. `cd cli/`
+2. `./chemcli`
 
 The CLI implements an extemely simple DSL for querying chemical information (a help message will appear when chemcli is run). It is also a Prolog top-level (shell), so you program more complicated things.
 
 To run the Web interface:
-1. cd web/
-2. ./chemweb
+
+1. `cd web/`
+2. `./chemweb`
 
 The Web interface runs on port `8000` by default, at `http://localhost:8000/chemlogic/`. The Web interface provides a simple interface for all of the Chemlogic features.
 
@@ -44,12 +45,13 @@ The default destination is the empty `bin/` sub-directory in this directory.
 
 The executables built are still dependent on a copy of SWI-Prolog.
 
-NOTE: If the `fact/` database is edited, the program must be re-compiled.
+NOTE: If the `fact/` database is edited, the program must be re-compiled.  
 NOTE: The `style/` directory that is created when the web interface is built MUST be in the same directory as the `chemweb` executable or the pages will look terrible.
 
 
 The Web interface can also be compiled as a UNIX daemon:
-1. ./build.sh web-daemon <destination>
+
+1. `./build.sh web-daemon <destination>`
 
 
 NOTE: You must be root to run the daemon.
