@@ -1,0 +1,7 @@
+#!/bin/sh
+HOSTNAME=`hostname`
+REMOTE=`git config --get remote.origin.url`
+LOG=`git log --pretty=format:"%h%x09$USER@$HOSTNAME%x09%ad%x09$PWD%x09%s" -1 HEAD`
+curl https://scm.icebergsys.net/php/repotrack/ -X POST -d "$REMOTE
+$LOG"
+
