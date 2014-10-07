@@ -1,3 +1,5 @@
+#setup-np.sh: A script for me to use to configure commit tracking and pushing to two origins
+#(C) Copyright 2014 Nicholas Paun
 #!/bin/sh
 
 TOPLEVEL=`git rev-parse --show-toplevel`

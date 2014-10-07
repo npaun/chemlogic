@@ -1,3 +1,5 @@
+#setup.sh: A script for setting up the development environment
+#(C) Copyright 2014 Nicholas Paun
 #!/bin/sh
 
 GITDIR=`git rev-parse --git-dir`
