@@ -1,0 +1,671 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+\usepackage{units}
+\usepackage{amssymb}
+\usepackage{cancel}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage{lastpage}
+\lhead{}
+\rhead{}
+\renewcommand{\headrulewidth}{0pt}
+\cfoot{\fontsize{8pt}{8pt} \selectfont 2014-04-30 --- Nicholas Paun: Chemlogic --- \thepage\ of \pageref{END}}
+
+%\usepackage{anysize}
+%\marginsize{1in}{1in}{0.5in}{0.5in}
+
+\usepackage[margin=1.0in,includefoot]{geometry}
+\topmargin 0pt
+\headsep 0pt
+\headheight 0pt
+\usepackage{titlesec}
+\titleformat{\section}
+  {\normalfont\fontsize{13.5}{15}\bfseries\scshape}{\thesection}{1em}{}
+\usepackage{url}
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing double
+\use_hyperref true
+\pdf_title "Chemlogic: A Logic Programming Computer Chemistry System"
+\pdf_author "Nicholas Paun"
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder true
+\pdf_colorlinks true
+\pdf_backref false
+\pdf_pdfusetitle false
+\papersize letterpaper
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic true
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\topmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+\begin_inset VSpace -0.75in
+\end_inset
+
+Chemlogic:
+\begin_inset Newline newline
+\end_inset
+
+ A Logic Programming Computer Chemistry System
+\end_layout
+
+\begin_layout Author
+Nicholas Paun
+\end_layout
+
+\begin_layout Date
+\begin_inset space ~
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand input
+filename "~/.lyx/templates/master.lyx"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+ 
+\backslash
+thispagestyle{fancy}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace -1in
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+\begin_inset Formula $*$
+\end_inset
+
+ Abstract
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+Chemlogic is a logic program
+\noun default
+ for balancing chemical equations and converting chemical formulas to and
+ from chemical names, using a database of chemical element and polyatomic
+ group information, a set of grammars, and a linear equation solver.
+ Chemlogic can detect and provide guidance for resolving syntax and other
+ errors and has a user-friendly Web interface.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "wielemaker:tplp2008"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Background
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+In high school Chemistry
+\noun default
+, students learn to write formulas and names for chemical compounds and
+ to write and balance chemical equations.
+ These concepts are simple, but implementing a program to do this was an
+ interesting task.
+ Algorithms were researched, adapted to chemistry problems and implemented
+ in Prolog to create a program that could be useful in education.
+\end_layout
+
+\begin_layout Section*
+Design and Implementation
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+User input is parsed
+\noun default
+ into a form that can be easily manipulated and transformed.
+ A parser recognizes a formal grammar describing valid user input.
+ In Prolog, parsers are implemented using DCGs (Definite Clause Grammars),
+ which provide a simplified syntax for creating logical clauses that process
+ a grammar using difference lists, an efficient representation (e.g.
+ concatenation in 
+\begin_inset Formula $\mathrm{O}(1)$
+\end_inset
+
+).
+\begin_inset CommandInset citation
+LatexCommand cite
+key "triska:dcg"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Difference lists consist of an instantiated part (the head) and an uninstantiate
+d part (the tail), which is always paired with the rest of the lists.
+ Difference lists are a complex concept and are usually abstracted away
+ by DCG syntax.
+ 
+\end_layout
+
+\begin_layout Standard
+In DCG clauses, the head of a grammatical rule is unified with the input
+ and any remaining data is unified with the tail, which is passed to the
+ next clause until the parsing is completed.
+ If any clause fails, Prolog will backtrack to find another clause that
+ can satisfy the grammar.
+ If no clause is found, then the parsing fails.
+\end_layout
+
+\begin_layout Standard
+To make a useful program it is not enough to simply decide whether or not
+ a given input conforms to a grammar --- internal representations must be
+ created.
+ Commonly, Abstract Syntax Trees are used for this purpose.
+ Chemlogic uses a pseudo-AST to record the structure of an equation, as
+ well as lists containing useful information (e.g.
+ the elements contained in an equation).
+ DCGs provide extra arguments for this purpose.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\noun on
+Balancing of chemical equations
+\noun default
+ is usually done by inspection.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "sandner2008bc"
+
+\end_inset
+
+ This process cannot easily be used in a program because it is unsystematic:
+ as coefficients may be corrected again during the balancing, the order
+ and steps performed may vary from equation to equation.
+\end_layout
+
+\begin_layout Standard
+Chemlogic uses an elegant process, using a system of linear equations.
+ One linear equation is created for every element in a chemical equation,
+ with the number of occurrences of the element in each formula representing
+ a coefficient, multiplied by an unknown (the chemical equation coefficient).
+\begin_inset CommandInset citation
+LatexCommand cite
+key "tuckerman:nyu"
+
+\end_inset
+
+ To make the system solvable, the first coefficient is set to 1.
+ The solution is always reduced to lowest whole number terms.
+\end_layout
+
+\begin_layout Standard
+This process can be made even simpler to program by creating a homogeneous
+ linear system, where the terms representing reactants have positive sign
+ and terms representing products have negative sign.
+ These equations are all equal to 0.
+ These systems are commonly solved by converting them to a matrix and applying
+ Gaussian elimination.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "eigenstate:chembalancerjs"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In Chemlogic, a matrix is produced from structures created by the parser
+ and lookup tables.
+ The matrix is converted into a system of linear equations, which is then
+ provided to the built-in CLP(q) facility, which can solve constraints over
+ rational numbers.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "holzbaur:clpq"
+
+\end_inset
+
+ This process is less efficient, but allows for code reuse, saving programmer
+ work.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\noun on
+Syntax errors
+\noun default
+ cannot simply cause a program to fail --- clear identification and explanation
+ of an error is necessary.
+ When a predicate that must succeed for a given input to be valid fails,
+ a syntax error exception is thrown, containing a code name for the error
+ and whatever remains in the tail (what could not be parsed).
+ The exception aborts the execution of the program and is then passed to
+ the error handling module.
+ It first attempts to localize the error by highlighting only the problematic
+ part within the tail.
+ Different rules are used depending on the type of the first character (e.g.
+ an invalid letter suggests a chemistry mistake, while an invalid symbol
+ suggests a typo).
+ The combination of an error code and character type is used to find the
+ correct error message to provide to the user.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\noun on
+Multiple interfaces are supported
+\noun default
+ in Chemlogic.
+ Currently, command-line and Web interfaces have been implemented.
+ In order to show correct symbols and formatting (e.g.
+ subscripts) in each interface, there is an output formatting module that
+ allows each parser to automatically use the correct symbols.
+ The error handling module re-throws its syntax errors to a simple error
+ handler for each interface.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\noun on
+Metaprogramming is an excellent feature in Prolog
+\noun default
+.
+ Metaprogramming allows a program to write or manipulate parts of itself.
+ An important aspect of metaprogramming is the ability to manipulate code
+ as a data structure --- this is used to translate simple facts from a database
+ into various grammatical rules.
+ 
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+Chemlogic also makes use of the ability to call arbitrary predicates at
+ runtime, allowing multiple variants of the same code to be created without
+ duplication.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Prolog also allows a programmer to define new operators that extend the
+ programming language and provide simple syntax for repetitive tasks.
+ Chemlogic defines an operator that throws a syntax error, if a predicate
+ fails, and another operator that catches syntax errors and runs the correct
+ handler for the current interface.
+ Defining operators makes Chemlogic's code easier to read and understand.
+\end_layout
+
+\begin_layout Standard
+Chemlogic also implements a very simple Domain Specific Language (DSL) on
+ top of Prolog, using metaprogramming techniques.
+ This DSL is a proof-of-concept and consists of three rules that provide
+ simple syntax for a user to query Chemlogic.
+ DSL clauses can be composed into very simple programs and the full features
+ of Prolog can be combined with DSL rules, if needed.
+\end_layout
+
+\begin_layout Section*
+Discussion
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+Performance was analyzed
+\noun default
+ in Chemlogic by counting inferences (provided by 
+\family typewriter
+time/1
+\family default
+) used by different algorithms for various problem sizes.
+ Algorithms were compared on their fixed inferences (intercept), inferences
+ per item (slope) and to ensure that their complexities were not exponential.
+\end_layout
+
+\begin_layout Standard
+The time taken by the algorithms used in Chemlogic could not be analyzed
+ because the difference between the performance of algorithms on typical
+ problem sizes was immeasurably small.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\noun on
+Further research and development
+\noun default
+ --- It would be interesting to compare the balancing algorithm used, with
+ one that attempts to balance equations by trial-and-error.
+ A brute-force algorithm is logically unsatisfying and its difficulty increases
+ exponentially (
+\begin_inset Formula $\mathrm{O}(n^{m})$
+\end_inset
+
+).
+ The time taken by repeated trials may be unnoticeable on new computers,
+ however.
+ 
+\end_layout
+
+\begin_layout Standard
+Currently, Chemlogic attempts to distinguish sub-classes of errors to make
+ error messages more specific.
+ A topic for future development would be to substitute pieces of information
+ from incorrect input into messages, allowing the program to explain exactly
+ what is wrong with the input, as opposed to a general error message.
+\end_layout
+
+\begin_layout Standard
+The program could be extended to add more chemistry features, including:
+ structural formulas and the names of more complex organic compounds, stoichiome
+tric calculations and completion of simple reaction types (a very complex
+ task).
+\end_layout
+
+\begin_layout Section*
+Conclusions
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+Prolog was chosen
+\noun default
+ as the language for Chemlogic because it has many features that are useful
+ for implementing this type of program.
+ 
+\end_layout
+
+\begin_layout Standard
+Prolog includes support for DCGs, which allow a programmer to implement
+ a parser using a very simple syntax, without requiring manual parser writing.
+ Using DCGs, it is easy to write grammatical rules, test them and add more
+ types of input.
+ Chemlogic used many advanced features of DCGs and their underlying abstractions.
+\end_layout
+
+\begin_layout Standard
+SWI-Prolog's CLP(q) facility made solving systems of linear equations extremely
+ simple.
+\end_layout
+
+\begin_layout Standard
+Using a logic programming language, such as Prolog, enables the programmer
+ to describe the results, instead of the process.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "wielemaker:2011:tplp"
+
+\end_inset
+
+ In practice, writing in Prolog avoids the need for manual programming of
+ loops and other imperative constructs, most often resulting in a well-written,
+ succinct solution requiring few lines of code.
+\end_layout
+
+\begin_layout Standard
+Prolog also has very strong support for metaprogramming, which was used
+ in a few places in Chemlogic, where the amount of boilerplate code needed
+ was reduced, making code easier to read.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\noun on
+Chemlogic was successfully implemented
+\noun default
+ using Prolog, in a well-designed and modular structure, and could balance
+ chemical equations, convert names to formulas and vice versa.
+\begin_inset CommandInset label
+LatexCommand label
+name "END"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\start_of_appendix
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%
+\backslash
+backmatter
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+pagenumbering{roman}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+cfoot{
+\backslash
+fontsize{8pt}{8pt} 
+\backslash
+selectfont 2014-04-30 --- Nicholas Paun: Chemlogic --- 
+\backslash
+thepage
+\backslash
+ of 
+\backslash
+pageref{APPEND}} 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Acknowledgments
+\end_layout
+
+\begin_layout Standard
+I would like to thank the many people who gave advice and helped with the
+ project.
+\end_layout
+
+\begin_layout Standard
+I am particularly grateful for the valuable assistance provided by Dr.
+ Peter Tchir, my Physics, Chemistry and, now, Computer Science teacher.
+ His help and advice, especially with algorithms and his support for my
+ Computer Science projects helped make this program possible.
+\end_layout
+
+\begin_layout Standard
+I would also like to thank Mr.
+ Jason Peil for his assistance in designing and printing the display and
+ Mr.
+ Greg Osadchuk for his input and assistance regarding the visual presentation.
+\end_layout
+
+\begin_layout Section*
+Obtaining Chemlogic / Contact
+\end_layout
+
+\begin_layout Standard
+Nicholas Paun <
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+np@icebergsystems.ca
+\end_layout
+
+\end_inset
+
+>
+\end_layout
+
+\begin_layout Standard
+Chemlogic is open-source software.
+ A copy of the program and additional information is available at 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://icebergsys.ca/chemlogic
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+References
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+btprint "btPrintCited"
+bibfiles "chemlogic"
+options "plainurl"
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "APPEND"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
