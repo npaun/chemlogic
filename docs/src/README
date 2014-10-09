@@ -15,7 +15,8 @@
 
 These files (`Chemlogic-paper` and `Chemlogic-paper-extended`) are the source files for my two papers on Chemlogic. 
 These papers were produced using LyX and can easily be built using it. To export to PDF using `pdflatex`:  
-	lyx -e pdf2 <file>
+	
+	`lyx -e pdf2 <file>`
 
 Plain TeX files (and the BibTeX bibliography) are also included.
 The BibTeX bibliography style used is `plainurl.bst`, which is not included with all TeX distributions, so I have provided a copy.
