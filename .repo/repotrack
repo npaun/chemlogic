@@ -1,6 +1,6 @@
+#!/bin/sh
 #repotrack: A simple script that reports all commits I make to my server
 #(C) Copyright 2014 Nicholas Paun
-#!/bin/sh
 
 # NOTE: 
 # 	This script is called only by my personal commit hooks and is used only by me.
