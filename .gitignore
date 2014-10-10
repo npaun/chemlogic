@@ -1,0 +1,18 @@
+# Files created by editing processes
+\#*\#
+*~
+.*.sw*
+
+# Build files
+*.out
+bin/chem*
+
+# TeX-related files
+*.log
+*.blg
+*.aux
+*.bbl
+*.toc
+
+# Core dumps
+*.core
