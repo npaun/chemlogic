@@ -1,11 +1,12 @@
-# Files created by editing processes
+# Files created by text editors
 \#*\#
 *~
 .*.sw*
 
 # Build files
 *.out
-bin/chem*
+bin/*
+!bin/README
 
 # TeX-related files
 *.log
@@ -13,6 +14,9 @@ bin/chem*
 *.aux
 *.bbl
 *.toc
+*.lof
+*.brf
+docs/src/*.pdf
 
 # Core dumps
 *.core
