@@ -1,16 +1,25 @@
 .ifmake install
-DEST=/usr/local/mugu
+DEST?=/usr/local/mugu
 .endif
 
-all: cli web web-daemon
+all: cli web
 cli web web-daemon! 
-	$(MAKE) IFACE=$(.TARGET) DEST=$(DEST) mk-$(.TARGET)
-	
+	$(MAKE) INTERFACE=$(.TARGET) DEST=$(DEST) mk-$(.TARGET)
+
+help: 
+	@echo "make <target> [DEST=<destination>]"
+	@echo "	all: Build cli and web interfaces"
+	@echo "	cli: Command-line interface"
+	@echo "	web: Web interface"
+	@echo "	web-daemon: Web interface as a UNIX Daemon"
+	@echo "	install: Install any of the previous selections into /usr/local/bin"
+	@echo "	dist: Make a tar.gz archive of the Chemlogic code"
+
 # Real rules
 
 DEST?=bin/
 
-mk-cli mk-web mk-web-daemon: qsave install-iface
+mk-cli mk-web mk-web-daemon: qsave install-interface
 mk-web mk-web-daemon: install-style
 
 dist: clean package archive
@@ -38,15 +47,15 @@ archive:
  
 
 qsave:
-	cd $(IFACE) ; \
+	cd $(INTERFACE) ; \
 	echo " \
 cl_parse_all. \
-qsave_program('chem$(IFACE).out'). \
-" | swipl -l chem$(IFACE).in
+qsave_program('chem$(INTERFACE).out'). \
+" | swipl -l chem$(INTERFACE).in
 
 
-install-iface:
-	mv $(IFACE)/chem$(IFACE).out $(DEST)/chem$(IFACE)
+install-interface:
+	mv $(INTERFACE)/chem$(INTERFACE).out $(DEST)/chem$(INTERFACE)
 
 install-style:
-	cp -a $(IFACE)/style $(DEST)/
+	cp -a $(INTERFACE)/style $(DEST)/
