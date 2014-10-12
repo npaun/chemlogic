@@ -1,7 +1,7 @@
-% TODO
-% This file is from Chemlogic, a logic programming computer chemistry system
-% <http://icebergsystems.ca/chemlogic>
-% (C) Copyright 2012-2014 Nicholas Paun
+% TODO  
+% This file is from Chemlogic, a logic programming computer chemistry system  
+% <http://icebergsystems.ca/chemlogic>  
+% (C) Copyright 2012-2014 Nicholas Paun  
 
 
 ## Contents ##
@@ -37,8 +37,8 @@ Chemlogic currently implements most of the Chemistry relating to equations and c
 
 * Mole calculations:
 	* A field will need to be added in the database for atomic mass of elements.
-	* fact_dcg_translate will need to be extended to handle polyatomic groups/oxyanions
-	* Tabulate or possibly formula_normalize will be extended to calculate molar masses
+	* `fact_dcg_translate` will need to be extended to handle polyatomic groups/oxyanions
+	* Tabulate or possibly `formula_normalize` will be extended to calculate molar masses
 	* Allow parsers to accept information about stoichiometric problems to solve
 	* Implement information about mole bridges into the solver (probably a new module)
 
@@ -69,7 +69,7 @@ Chemlogic currently implements most of the Chemistry relating to equations and c
 
 ## 4. Program features ##
 
-* Extend the chemcli DSL to make it more useful.
+* Extend the `chemcli` DSL to make it more useful.
 	* Offer a way to query the chemical information database.
 	* More constructs/operators.
 	* A standard library?
@@ -117,7 +117,7 @@ Chemlogic currently implements most of the Chemistry relating to equations and c
 ## 6. Bugs ##
 
 * The program will get very upset if a substance is repeated:
-	* e.g. H2O + H2O --> H2O
+	* e.g. `H2O + H2O --> H2O`
 	* There is not much of a valid reason to enter this, but the program should handle this correctly
 	* An error message explaining that this is junk is probably a good idea
 

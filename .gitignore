@@ -1,0 +1,22 @@
+# Files created by text editors
+\#*\#
+*~
+.*.sw*
+
+# Build files
+*.out
+bin/*
+!bin/README
+
+# TeX-related files
+*.log
+*.blg
+*.aux
+*.bbl
+*.toc
+*.lof
+*.brf
+docs/src/*.pdf
+
+# Core dumps
+*.core

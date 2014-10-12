@@ -1,0 +1,18 @@
+#!/bin/sh
+cd $1
+ 	TAG=`git tag -l | tail -1`
+	BUILDER="$USER@`hostname`"
+	DATE=`date "+%F %R"`
+	COMMIT=`git log --pretty=format:%H HEAD -1`
+	SOURCEPATH=$PWD
+cd -
+
+	echo "
+---
+Chemlogic $TAG 
+($COMMIT)
+---
+
+<$BUILDER>
+Built at: $DATE
+Source path: $SOURCEPATH" > Buildinfo

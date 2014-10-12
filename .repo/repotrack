@@ -1,0 +1,15 @@
+#!/bin/sh
+#repotrack: A simple script that reports all commits I make to my server
+#(C) Copyright 2014 Nicholas Paun
+
+# NOTE: 
+# 	This script is called only by my personal commit hooks and is used only by me.
+# 	The purpose of this script is to avoid losing track of clones on various computers, 
+#	 in various states of development. I hope it will help.
+
+HOSTNAME=`hostname`
+REMOTE=`git config --get remote.origin.url`
+LOG=`git log --pretty=format:"%h%x09$USER@$HOSTNAME%x09%ad%x09$PWD%x09%s" -1 HEAD`
+curl -so /dev/null https://scm.icebergsys.net/php/repotrack/ -X POST -d "$REMOTE
+$LOG"
+
