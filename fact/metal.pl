@@ -20,9 +20,6 @@ cl(element("K","potassium","kall")).
 	charge("K",1).
 	atomic("K",19).
 
-cl(element("Ba","barium","barium")).
-	charge("Ba",2).
-	atomic("Ba",56).
 
 
 
@@ -39,6 +36,11 @@ cl(element("Ca","calcium","calc")).
 cl(element("Sr","strontium","stront")).
 	charge("Sr",2).
 	atomic("Sr",38).
+
+cl(element("Ba","barium","barium")).
+	charge("Ba",2).
+	atomic("Ba",56).
+
 
 %%%%% Actinides %%%%%
 
