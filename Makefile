@@ -42,25 +42,25 @@ uninstall:
 mk-cli mk-web mk-web-daemon: qsave
 mk-web mk-web-daemon: stage-style
 
-dist: clean package archive
+dist: clean archive
 
 clean:
 	# Build files
 	-rm bin/chem*
 	-rm -r bin/style/
 
-.ifmake dist || package || archive
+.ifmake dist || disttree || archive
 TAG != git tag -l | tail -1
 .endif
 
-package:
+disttree:
 	echo $(TAG)
 	cp -av ./ ../chemlogic-$(TAG)/
 	cd ../chemlogic-$(TAG)/; \
 	rm -rf  .git/ .repo/ ; \
 	$(PWD)/tagbuild $(PWD)
 
-archive:
+archive: disttree
 	cd ..; \
 	tar -czvf chemlogic-$(TAG).tar.gz chemlogic-$(TAG)
  
