@@ -16,15 +16,15 @@ cli web web-daemon: compile.cf
 # Set the default prefix
 PREFIX?=/usr/local
 
-ifdef DEST
+.ifdef DEST
 # If the user has explicitly specified a DEST, write all files there
 BINDIR?=$(DEST)
 SHAREDIR?=$(DEST)
-else
+.else
 # Otherwise, install to UNIX standard locations
 BINDIR?=$(PREFIX)/bin
 SHAREDIR?=$(PREFIX)/share/chemlogic
-endif
+.endif
 
 # Set the DEST for the output of the building process, if not set by user
 # Files will be copied to installation location from here
@@ -95,11 +95,11 @@ uninstall:
 
 ### Creating Distributions ###
 
-# BSD: .ifmake dist || disttree || archive
-# BSD: TAG != git tag | tail -1
-# BSD: .endif
+.ifmake dist || disttree || archive
+TAG != git tag | tail -1
+.endif
 
-dist disttree archive: TAG := $(strip $(shell git tag | tail -1))#<<< GNU
+
 
 #dist: archive
 
