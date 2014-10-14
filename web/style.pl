@@ -12,9 +12,25 @@
 :- [custom_footer].
 
 
+:- volatile style_dir/1.
+
+find_style_dir :-
+	prefix(Prefix),
+	atom_concat(Prefix,'/share/chemlogic/',ChemlogicShare),
+	exists_directory(ChemlogicShare) -> assertz(style_dir(ChemlogicShare));
+	assertz(style_dir('')).
+
+
+:- initialization(find_style_dir,now).
+
+
+style_path(File,Path) :-
+	style_dir(Dir),	
+	atom_concat(Dir,File,Path).
+
 % Serves stylesheet and font.
-:- http_handler('/chemlogic/style/modern.css',http_reply_file('style/modern.css',[]),[]).
-:- http_handler('/chemlogic/style/computer-modern.otf',http_reply_file('style/computer-modern.otf',[]),[]).
+:- initialization style_path('style/modern.css',P), http_handler('/chemlogic/style/modern.css',http_reply_file(P,[unsafe(true)]),[]).
+:- initialization style_path('style/computer-modern.otf',P), http_handler('/chemlogic/style/computer-modern.otf',http_reply_file(P,[unsafe(true)]),[]).
 
 
 % Injects stylesheet into every page.

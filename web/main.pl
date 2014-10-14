@@ -23,7 +23,7 @@ chemweb_to_html(String,HTML) :-
 	atom_chars(Atom,String),
 	HTML = \[Atom].
 
-
+:- ensure_loaded('../compile.cf').
 :- consult('style').
 :- use_module(web_error).
 
