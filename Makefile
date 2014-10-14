@@ -1,7 +1,3 @@
-.ifmake install
-DEST?=/usr/local/mugu
-.endif
-
 all: cli web
 cli web web-daemon! 
 	$(MAKE) INTERFACE=$(.TARGET) DEST=$(DEST) mk-$(.TARGET)
@@ -17,16 +13,39 @@ help:
 
 # Real rules
 
-DEST?=bin/
 
-mk-cli mk-web mk-web-daemon: qsave install-interface
-mk-web mk-web-daemon: install-style
+
+PREFIX?=/usr/local
+
+.ifdef DEST
+BINDIR?=$(DEST)
+SHAREDIR?=$(DEST)
+.else
+BINDIR?=$(PREFIX)/bin
+SHAREDIR?=$(PREFIX)/share/chemlogic
+.endif
+
+DEST ?= bin/
+
+install:
+	cp -a bin/chem* $(BINDIR)/
+.if exists(bin/style)
+	mkdir -p $(SHAREDIR)
+	cp -a bin/style $(SHAREDIR)/
+.endif
+
+uninstall:
+	-rm $(BINDIR)/chemcli
+	-rm $(BINDIR)/chemweb
+	-rm -r $(SHAREDIR)
+
+mk-cli mk-web mk-web-daemon: qsave
+mk-web mk-web-daemon: stage-style
 
 dist: clean package archive
 
 clean:
 	# Build files
-	-rm */*.out
 	-rm bin/chem*
 	-rm -r bin/style/
 
@@ -46,16 +65,18 @@ archive:
 	tar -czvf chemlogic-$(TAG).tar.gz chemlogic-$(TAG)
  
 
-qsave:
-	cd $(INTERFACE) ; \
+compile.cf!
+	sed -i '' '1,10!d' compile.cf
+	echo "prefix('$(PREFIX)')." >> compile.cf	
+
+
+qsave: compile.cf
 	echo " \
 cl_parse_all. \
-qsave_program('chem$(INTERFACE).out'). \
-" | swipl -l chem$(INTERFACE).in
+qsave_program('$(DEST)/chem$(INTERFACE)'). \
+" | swipl -l $(INTERFACE)/chem$(INTERFACE).in
 
 
-install-interface:
-	mv $(INTERFACE)/chem$(INTERFACE).out $(DEST)/chem$(INTERFACE)
 
-install-style:
+stage-style:
 	cp -a $(INTERFACE)/style $(DEST)/
