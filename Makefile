@@ -103,6 +103,9 @@ clean:
 	-rm bin/chem*
 	-rm -r bin/style/
 
+	#Clear everything in the file except the header
+	sed -i '' '1,10!d' compile.cf
+
 .ifmake dist || disttree || archive
 # Read tag from git
 TAG != git tag -l | tail -1
