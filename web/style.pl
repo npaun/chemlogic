@@ -9,7 +9,9 @@
 
 
 
-:- volatile style_dir/1.
+
+% Checks to see if style files have been installed in the correct system-wide location (e.g /usr/share/chemlogic)
+% If not, look for style files in the current directory.
 
 find_style_dir :-
 	prefix(Prefix),
@@ -17,13 +19,21 @@ find_style_dir :-
 	exists_directory(ChemlogicShare) -> assertz(style_dir(ChemlogicShare));
 	assertz(style_dir('')).
 
-
+% This process must not be cached -- it is possible for Chemlogic to be moved.
+:- volatile style_dir/1.
+%  Locate style files once per start up
 :- initialization(find_style_dir,now).
 
 
-style_path(File,Path) :-
+% This predicate will automatically register a HTTP handler for the style file, automatically calculating paths.
+serve_style_file(File) :-
 	style_dir(Dir),	
-	atom_concat(Dir,File,Path).
+	atom_concat(Dir,File,FSPath),
+	atom_concat('/chemlogic/',File,HTTPath),
+	% The 'unsafe' option allows the HTTP server to serve a file above the directory from which Chemlogic was started.
+	% This is necessary because style files may be installed in a system-wide location (e.g. /usr/share/chemlogic)
+	% I think this is safe, because no user-provided input is used to determine which files to serve.
+	http_handler(HTTPath,http_reply_file(FSPath,[unsafe(true)]),[]).
 
 % Load the custom footer
 
@@ -31,8 +41,8 @@ style_path(File,Path) :-
 
 
 % Serves stylesheet and font.
-:- initialization style_path('style/modern.css',P), http_handler('/chemlogic/style/modern.css',http_reply_file(P,[unsafe(true)]),[]).
-:- initialization style_path('style/computer-modern.otf',P), http_handler('/chemlogic/style/computer-modern.otf',http_reply_file(P,[unsafe(true)]),[]).
+:- initialization serve_style_file('style/modern.css').
+:- initialization serve_style_file('style/computer-modern.otf').
 
 
 % Injects stylesheet into every page.

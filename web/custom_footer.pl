@@ -4,8 +4,8 @@
 % <http://icebergsystems.ca/chemlogic>
 % (C) Copyright 2012-2014 Nicholas Paun
 
-:- initialization style_path('style/custom_footer.css',P), http_handler('/chemlogic/style/custom_footer.css',http_reply_file(P,[unsafe(true)]),[]).
-:- initialization style_path('style/cwsf.png',P), http_handler('/chemlogic/style/cwsf.png',http_reply_file(P,[unsafe(true)]),[]).
+:- initialization serve_style_file('style/custom_footer.css').
+:- initialization serve_style_file('style/cwsf.png').
 
 
 
