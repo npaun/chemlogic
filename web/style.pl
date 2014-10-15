@@ -7,9 +7,6 @@
 :- multifile [user:head//2,user:body//2].
 
 
-% Load the custom footer
-
-:- [custom_footer].
 
 
 :- volatile style_dir/1.
@@ -27,6 +24,11 @@ find_style_dir :-
 style_path(File,Path) :-
 	style_dir(Dir),	
 	atom_concat(Dir,File,Path).
+
+% Load the custom footer
+
+:- [custom_footer].
+
 
 % Serves stylesheet and font.
 :- initialization style_path('style/modern.css',P), http_handler('/chemlogic/style/modern.css',http_reply_file(P,[unsafe(true)]),[]).
