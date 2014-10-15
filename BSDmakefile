@@ -1,3 +1,11 @@
+# Makefile
+# This file is from Chemlogic, a logic programming computer chemistry system  
+# <http://icebergsystems.ca/chemlogic>  
+# (C) Copyright 2012-2014 Nicholas Paun  
+
+### This Makefile has been AUTOMATICALLY CONVERTED to BSD Make syntax ###
+
+
 ### Meta-Targets
 .DEFAULT: all
 all: cli web

@@ -3,6 +3,7 @@
 # <http://icebergsystems.ca/chemlogic>  
 # (C) Copyright 2012-2014 Nicholas Paun  
 
+### This Makefile is written in GNU Make syntax ###
 
 
 ### Meta-Targets
