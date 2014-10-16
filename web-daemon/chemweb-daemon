@@ -6,4 +6,5 @@
 
 
 
-:- initialization http_daemon([port(8000),user(www)]).
+:- consult('chemweb-daemon.in').
+:- initialization cl_parse_all.
