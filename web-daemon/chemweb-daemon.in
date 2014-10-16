@@ -6,6 +6,6 @@
 
 
 
+:- ['../web/main.pl'].
 :- use_module(library(http/http_unix_daemon)).
 :- initialization http_daemon([port(8000),user(www)]).
-:- ['../web/main.pl'].
