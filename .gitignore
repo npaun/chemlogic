@@ -8,6 +8,9 @@
 bin/*
 !bin/README
 
+# Compile options
+compile.cf
+
 # TeX-related files
 *.log
 *.blg

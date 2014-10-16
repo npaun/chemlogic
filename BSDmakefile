@@ -75,7 +75,7 @@ qsave_program('$(DEST)/chem$(INTERFACE)'). \
 .PHONY: compile.cf
 compile.cf:
 	#Clear everything in the file except the header
-	sed -i '' '1,10!d' compile.cf
+	cp compile.cf.dist compile.cf
 	#Tell Prolog the prefix
 	echo "prefix('$(PREFIX)')." >> compile.cf	
 	echo END
@@ -116,8 +116,8 @@ clean:
 	-rm bin/chem*
 	-rm -r bin/style/
 
-	#Clear everything in the file except the header
-	sed -i '' '1,10!d' compile.cf
+	# Reset Compile options
+	cp compile.cf.dist compile.cf
 
 dist: clean
 	cp -av ./ ../chemlogic-$(TAG)

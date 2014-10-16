@@ -14,7 +14,7 @@
 % If not, look for style files in the current directory.
 
 find_style_dir :-
-	catch(prefix(Prefix),_,true), % Suppress errors when predicate is not yet configured.
+	catch(prefix(Prefix),_,fail), % Suppress errors and just fail when predicate is not yet configured.
 	atom_concat(Prefix,'/share/chemlogic/',ChemlogicShare),
 	exists_directory(ChemlogicShare) -> assertz(style_dir(ChemlogicShare));
 	assertz(style_dir('')).
