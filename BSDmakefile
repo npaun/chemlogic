@@ -104,7 +104,7 @@ uninstall:
 ### Creating Distributions ###
 
 .ifmake dist || disttree || archive
-TAG != git tag | tail -1
+TAG != git tag | tail -1 | cut -c 2-
 .endif
 
 
