@@ -36,25 +36,23 @@ To run the Web interface:
 
 The Web interface runs on port `8000` by default, at `http://localhost:8000/chemlogic/`. The Web interface provides a simple interface for all of the Chemlogic features.
 
-To compile the interfaces (which avoids re-running `fact_dcg_translate`), use `build.sh`:
+To compile the interfaces, use `make`:
+1. `make <interface>`
+2. `make install`
+Run `make help` for more details.
 
-	Usage: ./build.sh <interface> <destination>
+`<interface>` is either `cli` or `web`, or `all` to build both interfaces.
+The program will be installed by default to `/usr/local.` This can be changed by passing `PREFIX=<directory>` to `make` to install Chemlogic under a UNIX-style filesystem structure or by passing `DEST=<directory>` to install all Chemlogic files to the specified directory.  
 
-Interface is either `cli` or `web`, or `all` to build both interfaces.
-The default destination is the empty `bin/` sub-directory in this directory.
+NOTE: These options must be specified when running both the build and install targets, if they are run separately.
 
 The executables built are still dependent on a copy of SWI-Prolog.
 
 NOTE: If the `fact/` database is edited, the program must be re-compiled.  
-NOTE: The `style/` directory that is created when the web interface is built MUST be in the same directory as the `chemweb` executable or the pages will look terrible.
+NOTE: The Web interface will automatically search for its style files in `<PREFIX>/share/chemlogic`, or if it is not found, the current directory.
 
 
-The Web interface can also be compiled as a UNIX daemon:
-
-1. `./build.sh web-daemon <destination>`
-
-
-NOTE: You must be root to run the daemon.
+The Web interface can also be compiled as a UNIX daemon, by running `make web-daemon`
 
 
 
