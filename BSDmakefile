@@ -75,9 +75,9 @@ qsave_program('$(DEST)/chem$(INTERFACE)'). \
 .PHONY: compile.cf
 compile.cf:
 	#Clear everything in the file except the header
-	cp compile.cf.dist compile.cf
+	cp build/compile.cf.dist build/compile.cf
 	#Tell Prolog the prefix
-	echo "prefix('$(PREFIX)')." >> compile.cf	
+	echo "prefix('$(PREFIX)')." >> build/compile.cf	
 	echo END
 
 
@@ -117,7 +117,7 @@ clean:
 	-rm -r bin/style/
 
 	# Reset Compile options
-	cp compile.cf.dist compile.cf
+	cp build/compile.cf.dist build/compile.cf
 
 dist: clean
 	cp -av ./ ../chemlogic-$(TAG)
@@ -126,7 +126,7 @@ dist: clean
 disttree:
 	# Place a file in the new tree with information about the Git commits so that I can figure out how I produced a certain distribution. 	
 	$(PWD)/tagbuild $(PWD)
-	rm -rf  .git/ .gitignore .repo/
+	rm -rf  .git/ .gitignore .repo/ tags
 
 archive: disttree
 	cd ../; tar -czvf chemlogic-$(TAG).tar.gz chemlogic-$(TAG)
