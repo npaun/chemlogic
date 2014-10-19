@@ -125,7 +125,7 @@ dist: clean
 
 disttree:
 	# Place a file in the new tree with information about the Git commits so that I can figure out how I produced a certain distribution. 	
-	$(PWD)/tagbuild $(PWD)
+	$(PWD)/build/tagdist $(PWD)
 	rm -rf  .git/ .gitignore .repo/ tags
 
 archive: disttree
