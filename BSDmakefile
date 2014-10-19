@@ -83,7 +83,7 @@ compile.cf:
 
 stage-style:
 	# When building the Web interace, copy the style/ files to the DEST
-	cp -a $(INTERFACE)/style $(DEST)/
+	cp -aL $(INTERFACE)/style $(DEST)/
 
 ### Installation ###
 
