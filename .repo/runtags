@@ -2,6 +2,11 @@
 
 TOPLEVEL=`git rev-parse --show-toplevel`
 CTAGS=/usr/local/bin/exctags
+
+if [ ! -e $CTAGS ]; then
+	exit
+fi
+
 cd $TOPLEVEL
 $CTAGS \
 	--langdef=Prolog \
