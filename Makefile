@@ -83,7 +83,7 @@ compile.cf:
 
 stage-style:
 	# When building the Web interace, copy the style/ files to the DEST
-	cp -a $(INTERFACE)/style $(DEST)/
+	cp -aL $(INTERFACE)/style $(DEST)/
 
 ### Installation ###
 
@@ -104,10 +104,10 @@ uninstall:
 ### Creating Distributions ###
 
 # BSD: .ifmake dist || disttree || archive
-# BSD: TAG != git tag | tail -1
+# BSD: TAG != git tag | tail -1 | cut -c 2-
 # BSD: .endif
 
-dist disttree archive: TAG := $(strip $(shell git tag | tail -1))#<<< GNU
+dist disttree archive: TAG := $(strip $(shell git tag | tail -1 | cut -c 2-))#<<< GNU
 
 #dist: archive
 

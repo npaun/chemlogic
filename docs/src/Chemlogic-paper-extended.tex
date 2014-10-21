@@ -1,0 +1,1594 @@
+%% LyX 2.1.0 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[twoside,english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\pagestyle{headings}
+\usepackage{color}
+\usepackage{babel}
+\usepackage{varioref}
+\usepackage{float}
+\usepackage{units}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{cancel}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=false,pdfborder={0 0 0},backref=page,colorlinks=true]
+ {hyperref}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+%% Because html converters don't know tabularnewline
+\providecommand{\tabularnewline}{\\}
+\floatstyle{ruled}
+\newfloat{algorithm}{tbp}{loa}
+\providecommand{\algorithmname}{Algorithm}
+\floatname{algorithm}{\protect\algorithmname}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+\newcommand{\lyxrightaddress}[1]{
+\par {\raggedleft \begin{tabular}{l}\ignorespaces
+#1
+\end{tabular}
+\vspace{1.4em}
+\par}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{units}
+
+\@ifundefined{showcaptionsetup}{}{%
+ \PassOptionsToPackage{caption=false}{subfig}}
+\usepackage{subfig}
+\makeatother
+
+\usepackage{listings}
+\renewcommand{\lstlistingname}{Listing}
+
+\begin{document}
+
+\title{Chemlogic: A logic programming computer chemistry system}
+
+
+\author{Nicholas Paun\\
+\url{<np@icebergsystems.ca>}\\
+Gr. 10, Mount Sentinel Secondary School}
+
+
+\date{April 5, 2014}
+
+\maketitle
+\input{/home/np/.lyx/templates/master.tex}
+
+
+\lyxrightaddress{Nicholas Paun\\
+RR1 S2 C16,\\
+Slocan Park, BC\\
+\texttt{V0G 2E0}\\
+CANADA}
+
+\newpage{}
+\begin{abstract}
+Chemlogic is a logic program written in Prolog which uses a database
+of information about chemical elements and polyatomic groups, a set
+of grammatical rules for chemical names and formulas and an equation
+solver to balance chemical equations in either symbolic or word form
+and to convert formulas to names and names to formulas. In order to
+assist users in entering queries, Chemlogic can detect and provide
+guidance for resolving syntax errors and other errors. Chemlogic also
+has a user-friendly Web interface, also written using SWI-Prolog's
+logic programming Web framework.
+\end{abstract}
+\tableofcontents{}
+
+\listoffigures
+
+
+
+\section{Curricular Connections}
+
+
+\subsection{Science 9 }
+\begin{itemize}
+\item Names and formulas of ionic compounds, including support for multivalent
+metals and polyatomic groups.
+\end{itemize}
+
+\subsection{Science 10}
+\begin{itemize}
+\item Names and formulas of binary covalent compounds.
+\item Naming systems for most acids.
+\item Naming conventions for some organic compounds (alkanes and alcohols).
+\item Symbolic and word chemical equations and their balancing.
+\end{itemize}
+Not yet implemented:
+\begin{itemize}
+\item Recognition and completion of common types of reactions.
+\end{itemize}
+
+\subsection{Chemistry 11 \emph{(Partial)}}
+\begin{itemize}
+\item Hydrates of ionic compounds.
+\item The concept of an empirical formula.
+\item Support for alkenes.
+\end{itemize}
+
+\section{Design and Algorithms}
+
+Chemlogic implements two major features: Balancing symbolic or word
+equations and converting chemical names to formulas and vice versa.
+These operations are done using two interesting algorithms, which
+will be discussed below. 
+
+
+\subsection{Balancing Chemical Equations with Systems of Linear Equations\label{sub:Balancing-Chemical}}
+
+
+\subsubsection{Balancing by Inspection}
+
+Chemical equations are most commonly balanced \textbf{by inspection}.
+\cite{sandner2008bc}\textbf{ }In this process, a single element is
+balanced over the entire equation. Then, more elements are balanced
+and the resulting coefficients corrected until the entire equation
+is balanced.\textbf{ }
+
+\begin{algorithm}
+\protect\caption{An example of balancing by inspection}
+
+
+\begin{eqnarray}
+\mathrm{C_{2}H_{6}+O_{2}} & \rightarrow & \mathrm{CO_{2}+H_{2}O}\label{eq:ethane-unbal}\\
+\mathrm{C_{2}H_{6}+O_{2}} & \rightarrow & \mathrm{CO_{2}+3H_{2}O}\label{eq:ethane-h}\\
+\mathrm{C_{2}H_{6}+O_{2}} & \rightarrow & \mathrm{2CO_{2}+3H_{2}O}\label{eq:ethane-c}\\
+\mathrm{C_{2}H_{6}+\nicefrac{7}{2}O_{2}} & \rightarrow & \mathrm{2CO_{2}+3H_{2}O}\label{eq:ethane-o}\\
+2\mathrm{C_{2}H_{6}+7O_{2}} & \rightarrow & \mathrm{4CO_{2}+6H_{2}O}\label{eq:ethane-bal}
+\end{eqnarray}
+
+
+(\ref{eq:ethane-unbal}) The combustion of ethane, (\ref{eq:ethane-h})
+There are 6 hydrogens on the left-hand side, so there must be 6 on
+the right (3 groups of 2), (\ref{eq:ethane-c}) There are 2 carbons
+on the left, so there must be 2 on the right, (\ref{eq:ethane-o})
+Now there are 7 oxygens on the right (2 groups of 2 = 4 from $\mathrm{CO_{2}}$
+and 3 from $\mathrm{H_{2}O}$), but oxygens come only in groups of
+2, \ref{eq:ethane-bal}Each coefficient must be multiplied by 2 to
+clear the fraction.
+\end{algorithm}
+This process is not very useful for implementing a program because
+it is not systematic: steps may be performed differently or in different
+orders, depending on the equation to be balanced. Even a certain equation,
+such as the example could be balanced in a different way.
+
+
+\subsubsection{Balancing by Trial and Error\label{sub:Balancing-by-Trial}}
+
+Another unsystematic process is to randomly select coefficients until
+the equation is balanced. This process is also unsystematic, but easy
+to programatically implement. The complexity of such a method increases
+exponentially; for an equation with 4 terms and a maximum coefficient
+of 10, balancing the equation may take, at worst, \textbf{$10^{4}=10,000$
+}guesses.
+
+If we expect that equations will generally have few terms and low
+coefficients, the massive processing power of modern computers will
+likely make the inefficiency of such a method unnoticeable to user.
+In fact, this method may even perform better on small problems than
+more complex solvers, with fixed costs to create tables and costs
+per equation evaluated.
+
+Besides the likelihood of the program never terminating when faced
+with a complex equation, this method is also unsatisfying because
+it is simply an application of brute-force, instead of finding a logical
+solution.
+
+
+\subsubsection{Balancing using Systems of Linear Equations}
+
+An elegantly logical method is to convert a chemical equation into
+a system of linear equations \cite{tuckerman:nyu}, with one equation
+representing each element, the number of each element representing
+a coefficient to an unknown variable, representing the chemical equation
+coefficient for a substance. To make the system solvable, the first
+unknown is arbitrarily set to 1.
+
+\begin{algorithm}
+\protect\caption{The representation of a chemical equation as a system of linear equations}
+
+
+\begin{eqnarray}
+\mathrm{H_{2}+O_{2}} & \rightarrow & \mathrm{H_{2}O}\label{eq:lin-ex-eq}\\
+a\mathrm{H_{2}+\mathit{b}O_{2}} & \rightarrow & \mathrm{\mathit{c}H_{2}O}\label{eq:lin-ex-vars}\\
+\begin{cases}
+2a & =2c\\
+2b & =c\\
+a & =1
+\end{cases}\label{eq:lin-ex-sys}
+\end{eqnarray}
+\end{algorithm}
+
+
+The resulting values can then be multiplied by the greatest common
+denominator of the values to remove any fractions.\\
+\\
+The process of converting a chemical equation to a system of linear
+equations, which is performed by a parser, can be made even simpler
+to implement by creating equations that are all in the same form (\ref{eq:lin-sys-sys})
+or by creating a matrix \cite{eigenstate:chembalancerjs} (\ref{eq:lin-sys-matrix}):
+
+\begin{algorithm}
+\protect\caption{Systematic representation of chemical equation (\ref{eq:lin-ex-eq})}
+
+
+\begin{align}
+ & \begin{cases}
+2a+0b-2c & =0\\
+0a+2b-1c & =0\\
+a & =1
+\end{cases}\label{eq:lin-sys-sys}\\
+ & \left\{ \begin{array}{ccc|c}
+2 & 0 & -2 & 0\\
+0 & 2 & -1 & 0
+\end{array}\right\} \label{eq:lin-sys-matrix}
+\end{align}
+\end{algorithm}
+
+
+
+\subsubsection{Methods of Solving Systems of Linear Equations\label{sub:Methods-of-Solving}}
+
+When a system of linear equations is converted into a matrix, it can
+be solved by performing Gaussian elimination on the matrix. \cite{eigenstate:chembalancerjs}
+The unknowns can then be found from the matrix.\\
+\\
+The parser in Chemlogic produces a structure that is then simply transformed
+into a matrix, but it is not solved directly, but is converted into
+a system of linear equations, to take advantage of the built-in linear
+equation solver (CLP(q)) provided by SWI-Prolog. 
+
+This allows for provided code to be re-used and makes programming
+simpler, at the cost of inefficient conversions between forms.
+
+
+\subsection{Using DCGs to Parse Chemical Names, Formulas and Equations\label{sub:Using-DCGs}}
+
+
+\subsubsection{About DCGs}
+
+In any program that deals with user input, the input must be converted
+into a form that can be processed and interpreted. This process is
+called parsing.
+
+A parser recognizes a formal grammar and can produce structures that
+can be manipulated programmatically from information contained in
+the inputs. The parsing facility provided in many logic programming
+languages, including Prolog, is an implementation of DCGs (Definite
+Clause Grammars).\cite{triska:dcg} This type of grammar maps a grammatical
+rule to a logic programming clause. They can be simply described as
+a simplified syntax for creating functions that process a grammar
+using lists.
+
+In Prolog, DCGs are implemented using difference lists, an extremely
+efficient representation that has many useful properties. 
+
+\begin{figure}
+\protect\caption{A very simple grammar (binary ionic compounds)\label{fig:simple-grammar}}
+
+
+\begin{lstlisting}[basicstyle={\ttfamily},breaklines=true,numbers=left]
+compound --> metal, " ",non_metal_base, ide.
+
+metal --> "sodium".
+metal --> "calcium".
+metal --> "silver".
+
+non_metal_base --> "chlor".
+non_metal_base --> "ox".
+non_metal_base --> "sulf".
+
+ide --> "ide".
+\end{lstlisting}
+\end{figure}
+Chemlogic uses grammatical rules to describe valid chemical names,
+formulas and equations. A simple example is shown in Figure\vref{fig:simple-grammar}.
+
+
+\subsubsection{Difference Lists and the Implementation of DCGs}
+
+Many programming languages have their own definition for a list. In
+Prolog, a list is a structure consisting of an arbitrary number of
+elements. Elements can be of any valid Prolog data type, most relevantly
+an atom (a single unit of characters) and nested sub-lists.
+
+Difference lists consist of an instantiated part, the head and an
+uninstantiated part, the tail. The tail is always paired with the
+rest of the list. This can be a difficult concept to understand and
+the major use of difference lists is in DCGs, where it is not exposed
+to the programmer. See Figure\vref{fig:internal-grammar} for an example
+of difference list usage.
+
+\begin{figure}
+\protect\caption{The internal form of the grammar from Figure \ref{fig:simple-grammar}
+\label{fig:internal-grammar}}
+
+
+\begin{lstlisting}[basicstyle={\ttfamily},breaklines=true,numbers=left]
+compound(Compound, Rest) :-
+	metal(Compound, MetalRest),
+    MetalRest=[' '|SpaceRest],
+	non_metal_base(SpaceRest, NonMetalRest),
+	ide(NonMetalRest, Rest).
+
+metal([s, o, d, i, u, m|Rest], Rest).
+non_metal_base([c, h, l, o, r|Rest], Rest).
+ide([i, d, e|Rest], Rest).
+\end{lstlisting}
+\end{figure}
+
+
+In DCG clauses, the head is matched with the the input and any remaining
+data is returned as the tail, which is passed to the next clause,
+which performs the same matching until the entire input is parsed
+and the remaining tail is given back to the user (or rejected as a
+syntax error in Chemlogic). If any clause fails, Prolog will backtrack
+to find another clause that can satisfy the grammar. If none is found,
+then the parsing fails. To better explain the function of difference
+lists in practice, a sample parsing is shown in Figure\vref{fig:trace-grammar}.
+
+\begin{figure}
+\protect\caption{An simplified trace of the grammar in Figure \ref{fig:simple-grammar}\label{fig:trace-grammar}}
+
+
+\begin{lstlisting}[basicstyle={\ttfamily},breaklines=true,numbers=left]
+[trace]  ?- compound("sodium chloride",Rest).
+	metal("sodium chloride", MetalRest)
+metal("sodium chloride", " chloride")
+
+ 	non_metal_base("chloride", NonMetalRest)
+non_metal_base("chloride", "ide")
+	ide("ide", IdeRest)
+ide("ide", [])
+compound("sodium chloride", [])
+
+yes.
+\end{lstlisting}
+
+
+1. Parse \texttt{``sodium chloride''} as a compound.
+
+2. Parse \texttt{``sodium chloride''} as a metal leaving \texttt{MetalRest}.
+
+3. \texttt{``sodium''} is consumed (the head), leaving \texttt{``
+chloride''} (the tail).
+
+---
+
+5. Parse \texttt{``chloride''} as a non-metal base name leaving
+\texttt{NonMetalRest}.
+
+6. \texttt{``chlor''} is consumed (the head), leaving \texttt{``ide''}
+(the tail).
+
+7. Parse \texttt{``ide''} as an \texttt{ide} terminal.
+
+8. \texttt{``ide''} is consumed (the head), leaving the empty list,
+\texttt{{[}{]}} (the tail).
+
+9. Therefore, \texttt{``sodium chloride''} is a compound with no
+remaining characters.
+
+10. The result of the parsing.
+\end{figure}
+
+
+
+\subsubsection{Extra Arguments\label{sub:Extra-Arguments}}
+
+The parsers that have been described so far can only state whether
+or not a given input conforms to a grammar or not (in Figure\vref{fig:trace-grammar}
+the answer was ``\texttt{yes}'' --- it is valid). In order to make
+a program actually perform any tasks, some information must be recorded
+about the input that is parsed (Figure\vref{fig:extra-grammar}).
+This information is then in an internal representation which can be
+manipulated by the other parts of the program. Commonly, the internal
+representation is an Abstract Syntax Tree (implemented in Prolog using
+terms), but in Chemlogic a simple list is used. The AST provides the
+advantage of the various components of the input being labeled (e.g.
+\texttt{(metal(Na), non\_metal(Cl))}), but lists are easier to manipulate.
+
+\begin{figure}
+\protect\caption{A new version of the parser from Figure \ref{fig:simple-grammar},
+using extra arguments and its result\label{fig:extra-grammar}}
+
+
+\begin{lstlisting}[basicstyle={\ttfamily},breaklines=true,numbers=left]
+compound([Metal,...,NonMetal,...]) --> metal(Metal), " ",
+non_metal_base(NonMetal), ide.
+
+metal("Na") --> "sodium".
+metal("Ca") --> "calcium".
+metal("Ag") --> "silver".
+
+non_metal_base("Cl") --> "chlor".
+non_metal_base("O") --> "ox".
+non_metal_base("S") --> "sulf".
+
+ide --> "ide".
+\end{lstlisting}
+
+
+1. Extra arguments are passed to the parsing rules. The arguments
+are assembled into a list.
+
+---
+
+3---5. Values are provided for these arguments (the element symbol).
+
+---
+
+7---9. Values are also provided by this predicate.
+
+---
+
+11. This predicate does not record any information.
+
+~
+
+\begin{lstlisting}[basicstyle={\ttfamily},breaklines=true,numbers=left]
+?- compound(Compound,"sodium chloride",Rest).
+	Compound = [['N', a], ..., ['C', l], ...], 
+	Rest = [] .
+\end{lstlisting}
+
+
+1. A new argument is added to the beginning of the query: the \texttt{Compound}
+structure.
+
+2. The structure created for \texttt{``sodium chloride''} is \texttt{{[}Na,...,Cl,...{]}}.
+
+3. There is nothing remaining after parsing --- the input conforms
+to the grammar.
+\end{figure}
+
+
+
+\subsubsection{Semicontext Notation}
+
+Another difficult concepts in DCGs is semicontext notation. It allows
+elements not originally present in the input being processed to be
+added to the parsing list. After the grammar rule is parsed, the pushback
+list is added to the front of the parsing list (see Figure\vref{fig:semicontext-grammar}).
+
+Semicontext notation can be used to implement lookahead, where a parser
+checks the next element in a list without processing it. This is used
+to make decisions about how to parse a certain element based on elements
+that occur after it. A lookahead is implemented by removing the item
+to be tested, testing it, then using the pushback list to put it back
+on the list of tokens to be parsed. Decisions can then be made based
+on the results of the test. 
+
+Figure\vref{fig:lookahead-grammar} demonstrates the use of a simple
+lookahead.
+
+\begin{figure}
+
+
+\protect\caption{A trivial example and usage of semicontext notation\label{fig:semicontext-grammar}}
+
+
+\begin{lstlisting}[basicstyle={\ttfamily},breaklines=true,numbers=left]
+censor, 
+	"secret metal" 
+	--> "sodium".
+\end{lstlisting}
+
+
+1. Define a rule called \texttt{censor}.
+
+2. Push \texttt{``secret metal''} to the front of the list, if...
+
+3. \texttt{``sodium''} is parsed.
+
+~
+
+\begin{lstlisting}[basicstyle={\ttfamily},breaklines=true,numbers=left]
+?- censor("sodium",Rest). 
+	Rest = "secret metal".
+\end{lstlisting}
+
+
+1. Call our completely useless predicate.
+
+2. Notice that it did not parse anything --- it just made \texttt{``secret
+metal''} the remaining unparsed list.
+
+This predicate could perhaps be connected to another rule that processes
+compounds --- it will receive the censored version.
+\end{figure}
+
+
+\begin{figure}
+
+
+\protect\caption{A simple example and usage of a lookahead implemented with semicontext
+notation\label{fig:lookahead-grammar}}
+
+
+\begin{lstlisting}[basicstyle={\ttfamily},breaklines=true,numbers=left]
+is_vowel_drop, 
+	[Tested] 
+	--> [Tested], 
+	{Tested = 'a'; Tested = 'o'}.
+\end{lstlisting}
+
+
+1. Define a rule called \texttt{is\_vowel\_drop}.
+
+2. Push the content of \texttt{Tested} to the front of the list, if...
+
+3. \texttt{Tested} is removed from the list, and...
+
+4. \texttt{Tested} is \texttt{a} or \texttt{o}.
+
+~
+
+\begin{lstlisting}[basicstyle={\ttfamily},breaklines=true,numbers=left]
+?- is_vowel_drop("oxygen",NonMetal). 
+NonMetal = [o, x, y, g, e, n].
+
+?- is_vowel_drop("chlorine",NonMetal). 
+false. 
+\end{lstlisting}
+
+
+1. Should we drop the vowel from our prefix if the non metal is oxygen?
+
+2. Yes! Notice that \texttt{``oxygen''} has been left untampered
+and can be parsed by a non-metal rule.
+
+---
+
+4. Should we drop the vowel from our prefix if the non metal is chlorine?
+
+5. No! Our rule will fail and a clause that doesn't drop the vowel
+will try to process this compound.
+\end{figure}
+
+
+
+\section{Implementation}
+
+
+\subsection{Notes for the Equation Balancer}
+
+
+\subsubsection{Building the Matrix}
+
+The equation balancer implements the linear equation balancing algorithm
+described in \vref{sub:Balancing-Chemical} in multiple processes.
+
+First, the parser is configured to produce structures (as described
+in \vref{sub:Using-DCGs}) containing the formulas involved in an
+equation, the elements involved in an equation and a structure grouping
+the formulas into reactants and products (equation structure). 
+
+The element structure is sorted and duplicates are removed to produce
+an element set.
+
+Then, the equation structure is tabulated: a lookup table is produced
+which records the number of occurrences of an element in a given formula.
+Polyatomic groups are flattened by this process (their subscript is
+distributed to their elements and the elements are added by the same
+process as is used when they are on their own).%
+\footnote{For example: $\mathrm{NH_{4}NO_{3}}$ is flattened to \texttt{{[}N2,
+H4, O3{]}}%
+}. The process of creating a lookup table is commonly used in chemical
+equation balancers --- see \cite{eigenstate:chembalancerjs} for a
+balancer that uses a roughly similar procedure.
+
+To finally construct the matrix, each element is evaluated and its
+count in each formula is recorded.
+
+
+\subsubsection{Solving the Equations}
+
+To use Prolog's built-in equation solver, the matrix is converted
+back into an equation, a process made simple by Prolog's ability to
+treat code as data (metaprogramming, \vref{sub:Metaprogramming}).
+
+The solver used in Chemlogic is CLP(r) (Constraint Logic Programming
+over Rational Numbers)\cite{holzbaur:clpq}, which is built-in to
+SWI-Prolog. This solver is used since the coefficients of a chemical
+equation are always rational numbers, but may sometimes not be integers
+before the fractions are cleared.%
+\footnote{A more common solver, built-in to nearly all Prolog systems, CLPfd
+(Constraint Logic Programming over Finite Domains) had annoying limitations
+regarding this situation.%
+}
+
+CLP(r) allows input of equations in a simple notation and provides
+the solution to the unknowns by instantiating Prolog variables used
+in the equations. The results are always reduced to lowest terms using
+the provided predicate \texttt{bb\_inf}.
+
+
+\subsubsection{Providing Results to the User}
+
+The solved coefficients are re-inserted into the structures, which
+are then provided as results to a parser. The parser returns the input
+that would create those structures (i.e. human-readable equations).
+
+The program could be made more efficient by not re-parsing the structures
+to provide output, instead inserting the coefficients directly into
+the human-readable input by some method.
+
+
+\subsection{Notes for the Formula and Name Processing Code}
+
+
+\subsubsection{Validation}
+
+Chemlogic uses a formula parser to convert formulas inputted by users
+to their internal representation in Chemlogic. The formulas are verified
+to ensure that they are in the correct form, but whether or not they
+represent valid compounds is not verified, to support balancing equations
+with types of compounds that are not known to the program. When parsing
+a name or converting a formula to a name, the input is checked to
+ensure that the compounds conform to the types known by Chemlogic.
+
+
+\subsubsection{DCG Translation}
+
+The chemical information database is not used directly. Instead, a
+file called \texttt{fact\_dcg\_translate} converts the facts to grammatical
+rules, providing base names, formulas, full names, symbols, etc. in
+whatever output format is selected (see \vref{sub:Output-Formatting}
+for a brief discussion of output formats).
+
+This process is cached when Chemlogic is compiled, so it is only re-run
+when the database is changed.
+
+
+\subsubsection{Element Structure}
+
+In order to create the element structures used by the balancer, the
+formula and name parsers record the elements contained in the input
+in a flat structure created by using additional difference lists as
+extra arguments to the DCG (see \vref{sub:Extra-Arguments} for a
+discussion of extra arguments).
+
+
+\subsection{Handling User Syntax and other Errors}
+
+
+\subsubsection{About Error Handling in Chemlogic}
+
+The features and algorithms discussed so far deal only with cases
+when user input conforms to the grammars. If the user makes a mistake,
+the only information he is given is ``\texttt{false.}''
+
+In order to make Chemlogic truly useful, it must identify where in
+the input the problem has occurred and provide clear error guidance.
+
+Clearly identifying a syntax error is a difficult problem: even many
+programming languages cannot provide clear guidance as to what is
+wrong. Implementing error handling took nearly as long as writing
+the rest of Chemlogic and the process of implementation uncovered
+a few bugs and poor design decisions in the parsers.
+
+
+\subsubsection{Raising a Syntax Error}
+
+Whenever a predicate that must succeed for a given input to be valid
+fails, a syntax error is raised. The error term contains a code name
+for the error that will be used to look up messages and the list of
+unparsed tokens remaining that can no longer be parsed because of
+this error. In Prolog, this is done by \texttt{throw}ing an exception.
+Exceptions stop the execution of the program and backtrack through
+the program until a handler can be found --- the \texttt{catch}er. 
+
+The actual process of raising the syntax error is simplified with
+the \texttt{xx} operator (see \vref{sub:Metaprogramming}).
+
+
+\subsubsection{Explaining the Syntax Error}
+
+The exception is then given to the error explaining library. It first
+attempts to localize the error by searching for the problematic part
+in the unparsed tokens. It does this by testing the character type
+of the first character, then implementing rules depending on the type
+(e.g. if the first character is a letter, read until a number or capital
+letter is reached, etc.) The erroneous part is recorded.
+
+Messages are then looked up using the error code and the character
+type. Knowing what type of character has triggered the error can often
+pinpoint the problem and allow for different messages to be used when
+a logic error is suspected (e.g. bad letters in a compound name) or
+when a simple typing error is suspected (e.g. unusual symbols like
+\textasciicircum{} in a compound name).
+
+A structure is created from the information determined by the error
+explainer. It is then re-thrown --- the exception is allowed to pass
+all the way back to the predicate that called the parser. The calling
+predicate is an interface function (from either the command-line or
+the web interface). Using metaprogramming techniques, the exception
+is then given to a handler that knows how to render the error in that
+interface (e.g. \texttt{cli\_error} knows how to highlight the erroneous
+part using ANSI color).
+
+
+\subsection{Simplification of Program Code using Metaprogramming\label{sub:Metaprogramming}}
+
+Many functional and logical programming languages, including Prolog
+have strong support for metaprogramming. Metaprogramming allows a
+program to write or manipulate parts of itself (or other programs).
+\cite{wiki:metaprogramming}
+
+In the Fact---DCG translator (Figure\vref{fig:code-as-data}), data
+is extracted from a fact and is then reassembled into a new term,
+which is asserted as a grammatical rule. This ability to manipulate
+code as data is a very useful feature. In this case, using metaprogramming
+saves the database builder from manually entering data in these awkward
+forms.
+
+\begin{figure}[h]
+\protect\caption{\texttt{fact\_dcg\_translate.pl} converting a group fact into a lot
+of rules\label{fig:code-as-data}}
+
+
+\begin{lstlisting}[basicstyle={\ttfamily},breaklines=true,numbers=left]
+cl_poly_to_dcg(group([["N",1],["H",4]],"ammonium","n/a")) :-
+	Clause =.. [_Functor,Sym,Name,Base], 
+
+	dcg_translate_rule(group(ElemsL,ElemsR,Sym,Name) --> Name,FullRule),
+	assertz(FullRule),
+
+	dcg_translate_rule(group_base(ElemsL,ElemsR,Sym,Base) --> Base,BaseRule),
+	assertz(BaseRule),
+\end{lstlisting}
+1. An input clause (code)
+
+2. The clause (code) is separated into data
+
+---
+
+4. A new clause (code) is translated from the data
+
+5. The new code is loaded into the program
+\end{figure}
+Chemlogic also makes use of the ability to call an arbitrary predicate
+at runtime (a common programming language feature) to avoid writing
+many different variants of the same predicate (Figure\vref{fig:runtime-call}).
+
+\begin{figure}[h]
+\protect\caption{covalent.pl using call to implement multiple variants of the same
+code\label{fig:runtime-call}}
+
+
+\begin{lstlisting}[basicstyle={\ttfamily},breaklines=true,numbers=left]
+systematic_covalent([[Sym1,Num1],[Sym2,Num2]]) -->
+	covalent_part(nonmetal,Sym1,sub_first,Num1), !,
+	" ",
+	covalent_part(nonmetal_ide,Sym2,sub_general,Num2) xx covalent_part_2.
+
+covalent_part(SymGoal,Sym,NumGoal,Num) -->  	
+	{fwd_flag(Num,Hack)},  	
+	call(NumGoal,Num,Letter),  	
+	call(SymGoal,Sym,Matched,_),  	
+	( 		
+		{double_vowel_test(Letter,Matched)};  		
+		fwd_stop(Hack,vowel_required) 	
+	).
+\end{lstlisting}
+
+
+---
+
+2. Call a predicate telling it to use non-metal (without ide ending)
+and prefixes for the first element in a compound.
+
+---
+
+4. The same predicate now instructed to use non-metal with ide ending
+and to use normal prefix rules
+
+---
+
+7. Doing some processing. These lines of code don't have to be written
+n times.
+
+8 and 9. Call the predicates instructed
+
+10---13. Perform operations on the results of the predicates.
+\end{figure}
+The most interesting use of metaprogramming is the ability to define
+new operators that extend the programming language with a simple syntax
+for a repetitive task. 
+
+In Chemlogic, two operators are defined: 
+\begin{itemize}
+\item \texttt{xx}, the syntax error operator: it executes the predicate
+on its left-hand side and, if it fails, raises the given syntax error
+on its right-hand side. It is used in parsers to stop whenever a grammatical
+rule fails. (See Figure\vref{fig:xx-operator}).
+\item \texttt{handle}, the error operator: it executes the predicate on
+its left-hand side and, if a syntax error occurs it calls correct
+handler function for the interface, then returns the result on its
+right-hand side. It is used in interface code to show the correct
+error message
+\end{itemize}
+\begin{figure}[h]
+\protect\caption{The \texttt{xx} syntax error operator: Definition and Use\label{fig:xx-operator}}
+
+
+\begin{lstlisting}[basicstyle={\ttfamily},breaklines=true,numbers=left]
+:- op(990,yfx,xx).
+:- meta_predicate xx(//,?,?,?).
+
+Condition xx (SyntaxError,Flags) -->
+	{Condition = Module:_},
+	(
+		Condition, !; 
+		syntax_stop(Module:SyntaxError,Flags)
+	).
+\end{lstlisting}
+
+
+1. Declare \texttt{xx} as an operator
+
+--
+
+4. Define a predicate
+
+5---9. The operation performed for the given predicate
+
+\begin{lstlisting}[basicstyle={\ttfamily},breaklines=true,numbers=left]
+formula(Fmt,Elems,ElemsR,Formula,FormulaR) -->
+	formula_part_first(Fmt,Elems,ElemsR0,Formula,FormulaR0) xx part_first,
+	(hydrate_part(Fmt,ElemsR0,ElemsR,FormulaR0,FormulaR), !).
+\end{lstlisting}
+
+
+---
+
+2. Call \texttt{formula\_part\_first}, otherwise declare a \texttt{part\_first}
+syntax error.
+\end{figure}
+
+
+There are many potential places where more metaprogramming could be
+added to Chemlogic: the various extra arguments used in the DCGs could
+be simplified with special operators and a goal/term expansion function.
+This would massively simplify the parsers. Also, the Web interface
+has some code that performs the same steps, but with different predicates.
+These could be combined with the use of runtime calls.
+
+
+\section{Interfaces and Miscellaneous Code}
+
+
+\subsection{Web Interface --- A user-friendly way of using the program}
+
+
+\subsubsection{Advantages of Web Interfaces}
+
+Command-line interfaces are often not user-friendly. Terminals also
+cannot display subscripts and special characters, making the output
+an approximation of the correct form of an equation or formula. 
+
+A web interface can provide a graphical interface to a program, making
+it simple to use select features and options, that is also available
+over the network.%
+\footnote{This allows an entire computer lab to use a single copy of Chemlogic
+installed on a server, for example.
+
+If a copy of the \texttt{chemweb} (the web interface is running),
+users can access it by going to:
+
+\url{http://<ip-address>:8000/chemlogic/}%
+}
+
+
+\subsubsection{SWI-Prolog's Web stack}
+
+SWI-Prolog has a built-in Web stack, \cite{wielemaker:tplp2008} providing
+a server that can run Prolog programs and send their output over HTTP.
+To avoid writing HTML manually and handling arguments, SWI-Prolog
+provides an excellent library that allows HTML to be written as Prolog
+terms and input to be validated. To keep code organized, a library
+that can insert menus, stylesheets and other header elements. These
+features make writing Web applications in Prolog even simpler than
+in many common languages used in Web programming.
+
+The web libraries make excellent use of DCGs and metaprogramming in
+their implementations, making code easy to understand.
+
+
+\subsubsection{Output Formatting\label{sub:Output-Formatting}}
+
+In order to produce the correct formatting codes for each interface
+(HTML entities in this case), the handling of symbols is decoupled
+from the various parsers and is instead implemented in a common formatting
+library. This allows for readable and correct formatting in the Web
+interface.
+
+
+\subsection{Command-line Interface --- An extremely simple DSL\label{sub:Command-line-Interface}}
+
+During the development of Chemlogic, it was often necessary to run
+various predicates in order to test the program. Calling Prolog predicates,
+as is, is not a user-friendly command-line interface, however. It
+requires the user to enter his query as a Prolog statement and gives
+back the answer as a list of characters.
+
+Using metaprogramming techniques, like defining operators, calling
+at runtime and syntactic unification, it possible to build a very
+simple DSL (domain specific language) for querying Chemlogic (see
+Figure\vref{fig:dsl}). Despite the fact that it only implements 4
+simple features, with 2 rules, language statements can be composed
+into more complex programs. Prolog statements can also be used in
+the DSL and language statements can be combined with Prolog statements
+seamlessly.
+
+The DSL offers an elegant way of balancing chemical equations and
+converting formulas to names and vice versa by offering a simplified
+syntax and automatic conversions to and from Prolog strings (see Figure\vref{fig:dsl-usage}).
+
+Because of its simplicity, the DSL is mostly a proof of concept and
+more syntax will need to be added (and the features to expose from
+Chemlogic) to make writing it possible to write interesting programs
+in this language.
+
+\begin{figure}
+\protect\caption{The entire code of the \texttt{chemcli} DSL \label{fig:dsl}}
+
+
+\begin{lstlisting}[basicstyle={\ttfamily},breaklines=true,numbers=left]
+:- op(990,xfy,::). 
+
+InputType - Input :: -Result :-
+	InputType - Input :: symbolic - Result, !.
+
+InputType - AtomInput :: ResultType - Result :-
+	atom_chars(AtomInput,Input),
+	(
+		InputType = name -> name_2_formula(Input,StringRes) handle _;
+		InputType = formula -> formula_2_name(Input,StringRes) handle _;
+		balance_equation(InputType,Input,ResultType,StringRes) handle _ 
+	), 	
+	atom_chars(Result,StringRes).
+\end{lstlisting}
+
+
+A programming language in 13 lines of code.
+\end{figure}
+
+
+\begin{figure}
+\protect\caption{Simple \texttt{chemcli} queries and an example of a program that can
+be written using it\label{fig:dsl-usage}}
+
+
+\begin{lstlisting}[basicstyle={\ttfamily},breaklines=true,numbers=left]
+?- formula - 'CuCl2' :: -Name.
+Name = 'copper(II) chloride'.
+\end{lstlisting}
+
+
+1. Input a formula, get default output.
+
+2. The result, with human readable formatting.
+
+\begin{lstlisting}[basicstyle={\ttfamily},breaklines=true,numbers=left]
+?- name - 'baking soda' :: -F, formula - F :: -CanonicalName.
+F = 'NaHCO3',
+CanonicalName = 'sodium hydrogen carbonate'.
+\end{lstlisting}
+
+
+1. This line finds the ``canonical'' name for a compound when given
+another name for it.
+
+2. The name is converted to a formula.
+
+3. ...and back into a now systematic name.
+\end{figure}
+
+
+
+\section{Discussion}
+
+
+\subsection{Suitability of Prolog for application}
+
+Initially, Prolog was chosen because of its simple fact database and
+built-in support for parsers as DCGs and for linear equation solvers.
+Using a logic programming language would also reduce programmer work
+by describing the results, not the process and by offering metaprogramming
+features.
+
+In practice, the simple fact database was no more convenient than
+in any other programming language because the facts (the chemical
+information database) had to be converted to DCG rules by a translator
+in order for them to be used efficiently and correctly in parsers.
+
+DCG support in Prolog and similar languages makes it possible to easily
+write parser for all sorts of grammars. In most programming languages,
+the programmer must write the parser from scratch or use a contributed
+library. Chemlogic ended up using many advanced features of DCGs,
+including extra arguments for constructing parsing structures, using
+the underlying difference list representation for certain structures
+and using semicontext notation for some simple lookahead rules.
+
+In some places, parsing rules have become complicated and hacky, but
+overall DCGs have made it simpler and more logical to construct grammars
+and extend them for many types of data a chemistry program uses.\\
+\\
+As discussed in the section on the linear equation balancing algorithm
+(\vref{sub:Methods-of-Solving}), using Prolog's linear equation solver
+entails producing a system of linear equations, which is probably
+re-converted to a matrix in order to be solved. Using the library
+certainly simplified the code, because matrix operations are difficult
+in many Programming languages and because implementing Gaussian elimination
+requires a lot of mathematical understanding.\\
+\\
+Using a logic programming language made the code simpler and more
+elegant. While the idea of describing results instead of process is
+somewhat exaggerated, programming in Prolog avoids manual writing
+of loops, if statements and other imperative constructs. It can be
+rather amazing, when a situation can finally explained in Prolog,
+how few lines of code are necessary to do something. %
+\footnote{Perhaps this is why Prolog programmers name their variables A, X,
+Acc, H, T, R0, etc and do not document things in detail?%
+}\\
+Metaprogramming was not used heavily but it proved to make code simpler
+by allowing predicates to be generated from other predicates, by allowing
+predicates that call other predicates and by defining convenient operators.
+This last aspect proved to be the most interesting and was used as
+the basis of the extremely simple \texttt{chemcli} DSL (\vref{sub:Command-line-Interface}).
+The support of metaprogramming is more extensive in Prolog than in
+many languages and it was relatively simple to make use of this support.
+
+
+\subsection{Methods of Analyzing Performance in Prolog\label{sub:Methods-of-Analyzing}}
+
+SWI-Prolog, like many programming language implementations, offers
+a few tools for analyzing a program's performance. It includes \texttt{gxprof}
+(A graphical profiler), \texttt{time} (a command-line predicate offering
+a few simple statistics) and \texttt{statistics} (a command-line predicate
+offering very detailed runtime statistics).
+
+\texttt{gxprof} primarily performs time efficiency analyses, which
+were often not useful for Chemlogic because the time taken by different
+implementations were often so small as to be incomparable. Therefore
+it was not used during the development of Chemlogic.
+
+The most commonly used analysis function was \texttt{time}, which
+provides a few interesting statistics, including inferences and Lips
+(logical inferences per second?). I am unsure of exactly what the
+inference count measures or its connection to the actual performance
+of the algorithm. Inferences were a useful way of comparing algorithms
+and implementations because it gave consistent results between runs
+and on different computers.
+
+Analysis was performed mostly by recording the performance of an predicate
+for arguments of various sizes to try to find the fixed costs (intercept)
+and cost per element (slope) and to ensure that there were no algorithms
+with exponential cost. Inefficient pieces of code were found using
+the debugger and new solutions were compared against old ones.
+
+\texttt{statistics} may provide details that could be useful for future
+research, but on a small program like Chemlogic analyzing some of
+these statistics may be overly complicated.\\
+\\
+It must be noted that the performance of algorithms was not formally
+analyzed (by creating mathematical definitions and determining the
+fastest growing terms to find the worst-case performance, for example)
+primarily because no novel algorithms were introduced in this program,
+nor unusual adaptations.
+
+Formal analysis of a specific parser may enable useful improvements
+to be made.
+
+
+\subsection{Organization and Structure of Code}
+
+The organization of code is quite clear overall. I have tried to follow
+proper naming, indention and structuring practices. Prolog allows
+for code to be separated into modules with private predicates used
+only inside a single module and public predicates that are useful
+to other modules. Modules were frequently used to organize Chemlogic.
+
+
+\subsubsection{Modularity of Interfaces and Error Handlers}
+
+Since Chemlogic needed to support a Web interface to its Prolog predicates
+which were used from the command-line, it was very important to allow
+for the de-coupling of formatting and interfaces from the code itself.
+The interfaces for Chemlogic often implement the bare-minimum required
+to make the program modular, but there are a few over-engineered parts
+that may prove useful when improving the detail of error messages.
+
+The error handling system itself was an experiment, using Prolog exceptions,
+handlers and meta-predicates that call modules. The design of the
+error handling system is modular and relatively organized, but more
+experience with Prolog exceptions may allow for improvements to the
+design.
+
+
+\subsubsection{Some Confusing Points}
+
+There are few confusing interactions between pieces of code, with
+a few small cases between the ionic, oxyanion and acid functions.
+The lack of a tokenizer proved to make implementing error handling
+problematic in some places, as it was always necessary to determine
+whether or not a certain parser can safely give error messages or
+whether it must simply fail and give the next parser a chance to process
+the input. A tokenizer can quickly determine which parser to use and
+avoid problems like these.
+
+Some inefficient tokenizers are used to highlight the erroneous component
+of user input. Since they are used only when a problem occurs, they
+are not much of a concern.
+
+The only uses of semicontext notation in this program were some hacks
+to allow naming for pure substances to avoid triggering error messages.
+This is a good place to target for improvement if a tokenizer is introduced.\\
+
+
+
+\subsubsection{A Note about Covalent Prefixes}
+
+Correctly handling the rule that the last vowel (if a or o) of an
+IUPAC prefix is dropped if the succeeding element starts with an a
+or o was quite difficult to implement. Figure\vref{fig:vowel-dropping}
+shows some examples of the rule. 
+
+It seems to me that this is a case of a Context-Sensitive Grammar,
+where a certain token may or may not be permitted at a certain point
+given its preceding token.
+
+Currently a repeated test and a metaprogramming call is used to determine
+the right prefix to use.
+
+\begin{figure}
+\protect\caption{Examples of vowel dropping in IUPAC prefixes\label{fig:vowel-dropping}}
+
+
+\begin{tabular}{|c|c|c|}
+\hline 
+Prefix & Element & Result\tabularnewline
+\hline 
+\hline 
+mono & oxygen & \textbf{mon}oxygen\tabularnewline
+\hline 
+mono & carbon & \textbf{mono}carbon\tabularnewline
+\hline 
+tetra & oxygen & \textbf{tetr}oxygen\tabularnewline
+\hline 
+tri & iodine & \textbf{tri}iodine\tabularnewline
+\hline 
+\end{tabular}
+\end{figure}
+
+
+
+\subsection{Tokenizers: Simpler and More Performant Code}
+
+Very recently, SWI-Prolog introduced a new string type. \cite{swi:doublequote}
+The string type solves many problems that have traditionally required
+complicated workarounds in Prolog.
+
+The type replaces the use of atoms for manipulated strings, or lists
+of character codes with a more efficient data structure. The most
+important (for Chemlogic) change is the introduction of a predicate
+(split\_string/4) which allows for a string to be broken into parts
+delimited by a character and allows extraneous padding characters
+to be removed. The string type can still be operated on as a list
+of character codes when needed (as in DCGs).\\
+\\
+The benefits to a program like Chemlogic from this change are quite
+large: it is now simple to implement a tokenization step for the various
+parsers, like most compilers and interpreters (You will recall that
+Chemlogic does not tokenize its strings before parsing them).
+
+Currently, when processing a string like ``carbon monoxide'', the
+program must go through many testing steps (is it an ionic compound,
+is carbon a metal, is it an acid, is carbon a polyatomic ion, and
+their many sub-tests etc.) But, if the string is tokenized into {[}``carbon'',''monoxide''{]},
+it is obvious it is not an ionic compound, because the first token
+is not a metal and its obvious that it is not an acid because the
+second part is not ``acid''.
+
+In the case of determining if it is an acid, tokenization makes implementing
+a lookahead parser simpler: one element lookahead instead of $n$
+character lookahead (because it is not yet known how long the first
+part of a string is in that case).\\
+\\
+The tokenizers currently in use for error parsing may be able to be
+re-written in a simpler way using the new string type.
+
+
+\subsection{Ideas for Additional Features}
+
+Many ideas for new features are discussed from a programmatical perspective
+in the \texttt{TODO} file distributed with the program and as an appendix
+to this paper (Appendix\vref{sec:TODO}). Some of them are summarized
+here:
+
+To complete the implementation of Science 10-level Chemistry, the
+program should be extended to recognize common reaction types and
+complete them. The current equation structure should be able support
+this use case. A new module would be written that reads the half-structure
+and re-arranges it to make another half-structure. The complete structure
+can then be used as is for display and balancing. The reaction type
+recognizer could be made more useful by integrating the reactivity
+series and informing the user if the reaction he/she is balancing
+is or is not likely to occur.
+
+This program can also be extended to handle stoichiometric calculations,
+by determining the molar mass of substances, performing calculations
+with them both at the single-compound level and at the level of equations.
+The parsers will have to be extended to support stoichiometric problems
+inputted in equations, for simple cases, but it may be necessary to
+build additional views and interfaces for entering calculations. The
+\texttt{chemcli} DSL (\vref{sub:Command-line-Interface}) could perhaps
+become a more useful tool if it can calculate using this information.
+
+In order to handle more complex types of organic compounds, the program
+must be greatly extended to support manipulating structural formulas
+(when given a name as input), displaying diagrams of them and to support
+an input method for structural formulas. Since balancing and many
+other parts of the program operate using molecular or empirical formulas,
+a module can be written to ``flatten'' structural formulas, allowing
+for code to be re-used.
+
+
+\subsection{Further Research}
+
+
+\subsubsection{Algorithms}
+
+As discussed in \vref{sub:Balancing-by-Trial} (Balancing by Trial
+and Error), the performance of the trial and error algorithm may be
+better than the system of linear equations algorithm for simple cases.
+It would be interesting to compare the algorithms using the inference
+testing method described in \vref{sub:Methods-of-Analyzing}. The
+performance of this algorithm will depend on the efficiency of a test
+for whether the equation is balanced or not. The ranges of complexity
+in which each algorithm performs better and the appropriate algorithm
+selected for a specific balancing.
+
+If Chemlogic is re-implemented, with an initial tokenization step,
+the performance of the program (both using inference testing and wall-time
+measurements, if possible. %
+\footnote{Currently the individual algorithms in Chemlogic do not take more
+than $\unit[0.005]{s}$ to run. The new algorithm may perform in similar
+time, or the time may be affected by other factors.%
+}) before and after the change can be compared. The cleanliness and
+simplicity of the code, in practice, should also be compared. Such
+a change may also improve the quality of the error messages.
+
+
+\subsubsection{Performance Analysis of the Whole Program}
+
+As described in \vref{sub:Methods-of-Analyzing}, performance analysis
+was performed mostly on small components of a program. But since changes
+in one part may affect another part, it will be useful to make comparisons
+over an entire program for a given input in order to find out if a
+certain algorithm is truly better or if it simply off-loads costs
+elsewhere.
+
+
+\subsubsection{Balancing for Complex Redox Reactions}
+
+For some difficult redox reactions, the currently used algorithm will
+produce a solution that satisfies the system of linear equations,
+and therefore is balanced, but is not actually what occurs when the
+reaction takes place.
+
+This is because the system of linear equations has more than one solution,
+and the solver always picks the simplest form.
+
+To correctly handle these types of equations, it will be necessary
+to find under what conditions this problem occurs. It will also be
+necessary to determine how to distinguish between the various solutions
+and determine the correct one.
+
+It will perhaps be necessary to write a new algorithm for balancing,
+based on oxidation numbers or perhaps on half-reactions.
+
+This algorithm will not be necessary in all cases. It may be possible
+to determine when to use this algorithm. Otherwise, a user-selected
+option will be necessary (the ``Complex Redox'' tab).
+
+
+\subsubsection{Messages and User Communications}
+
+The messages in Chemlogic have been written to explain, primarily,
+the specific syntax error a user is making and how the syntax error
+relates to Chemistry. The messages have been reviewed and were simplified,
+corrected or clarified according to advice.
+
+The messages are written at a high-level, discuss the Chemistry in
+abstract and often refer to the idea of unnecessary or incorrect characters.
+Testing the error messages produced by the program with actual users
+(Science students) will make the program more useful as a means of
+reviewing Chemistry. It may be necessary, perhaps, to adjust the messages
+to make them more clear, given what triggers them most, in practice.
+Perhaps it would be useful to refer the user to sections from a textbook.
+
+Improvements to the error handling functionality could allow for further
+distinctions in the errors triggered, beyond error code and token
+type. A particularly useful, but tedious, change would be to use templates
+to insert specific information about the problem in a given input
+(see Figure\vref{fig:error-improvements} for an example).
+
+\begin{figure}
+\protect\caption{Error messages for a missing charge on a multivalent metal\label{fig:error-improvements}}
+\hfill{}
+
+\subfloat[Current error message]{
+
+\begin{minipage}[t]{1\columnwidth}%
+The element you have entered is multivalent. You must provide the
+charge in the highlighted space. 
+
+NOTE: Use capital roman numerals in parentheses
+
+e.g. (II)%
+\end{minipage}}
+
+\subfloat[Improved error message exposing chemical information]{
+
+\begin{minipage}[t]{1\columnwidth}%
+The element you have entered is multivalent. You must provide the
+charge in the highlighted space. 
+
+\textbf{Copper ions have the following charges: $\mathrm{Cu^{+}}$
+--- copper(I) and $\mathrm{Cu^{2+}}$ --- copper(II)}
+
+NOTE: Use capital roman numerals in parentheses 
+
+e.g. (II)%
+\end{minipage}
+
+}
+\end{figure}
+
+
+
+\section*{Acknowledgments}
+
+I am particularly grateful for the valuable assistance given by Mr.
+Peter Tchir, my Physics and Chemistry teacher, and now my teacher
+for the Computer Science IDS. His help and advice, especially with
+algorithms and his support for my Computer Science projects helped
+make this program possible.\\
+\\
+I would also like to thank Mr. Dave Steel for letting me dismantle
+his computers everyday and use his monitors.\\
+\\
+The interest, advice and testing of everybody who tried my program
+or asked me to explain it is greatly appreciated.
+
+\bibliographystyle{amsplain}
+\nocite{*}
+\bibliography{./chemlogic}
+
+
+\appendix
+
+\section{Obtaining Chemlogic\label{sec:Obtaining-Chemlogic}}
+
+Chemlogic is available from \url{http://icebergsystems.ca/chemlogic/}.
+Chemlogic currently depends on SWI-Prolog (\url{http://swi-prolog.org/})
+because it uses CLP(r), Qsave files and a few other features. See
+the \texttt{README} file distributed with the program for installation
+instructions. The installer can be used on any Unix-like system (Linux,
+BSD, Mac OS X) as is. The program itself will run on any operating
+system SWI-Prolog runs on (incl. Windows).\\
+\\
+Chemlogic is an open-source program licensed under the GNU Affero
+GPL v.3 (\url{http://www.gnu.org/licenses/agpl-3.0.html}). Users
+of open-source programs are free to use, modify and distribute them
+even for profit. Copyleft licenses (like the one used for this program)
+also require that any changes to the program that are distributed
+must also be released as open-source software.
+
+The AGPL requires that modified versions offered as a network service
+are also released as open-source software. If this requirement is
+inconvenient, please contact me.
+
+
+\section{User Quick Reference\label{sec:User-Quick}}
+
+
+\subsection{Formulas}
+\begin{description}
+\item [{Formula}] CH4, Na2CO3.10H20, (NH4)2SO4
+\end{description}
+
+\subsection{Chemical Equations}
+\begin{description}
+\item [{Symbolic}] CH4 + O2 --> CO2 + H2O
+\item [{Word}] methane + oxygen --> carbon dioxide + water
+\end{description}
+
+\subsection{Chemical Names}
+\begin{description}
+\item [{Retained~Names\textmd{~}\textmd{\emph{(preferred)}}}] water,
+ammonia
+\item [{Ionic}] copper(II) chloride, sodium carbonate decahydrate, calcium
+chloride
+\item [{Acids}] hydrocyanic acid, acetic acid, sulfuric acid, hypochlorous
+acid
+\item [{Covalent}] carbon monoxide, trichloride triiodide, dihydrogen monoxide
+\item [{Pure~Substances/Allotropes}] copper, silicon, trioxygen, hydrogen
+($\mathrm{=H_{2}}$)
+\item [{Common~Names~\textmd{\emph{(accepted~but~not~produced)}}}] baking
+soda, chalk, hydrogen peroxide
+\end{description}
+
+\section{\texttt{TODO} \label{sec:TODO}}
+
+
+\subsection{Science 10}
+
+Chemlogic currently implements most of the Chemistry relating to equations
+and compounds from the Science 10 curriculum. It is missing one major
+feature, however:
+\begin{itemize}
+\item Recognizing reaction types:
+
+\begin{itemize}
+\item  There are very many reaction types, but the program should recognize
+the most common ones (synthesis, decomposition, single replacement,
+double replacement, neutralization and combustion) 
+\item  Probably another module will be necessary that uses equation structures,
+fits them according to the type and then fills in the products
+\end{itemize}
+\end{itemize}
+
+\subsection{Chemistry features}
+\begin{itemize}
+\item  Support for structural formulas: 
+
+\begin{itemize}
+\item  The covalent parser will have to be extended very much, to handle
+structures of the compounds it supports 
+\item  The formula parser will need to have some sort of input and output
+representation for structural formulas
+\item  Each output format will have its own ways of rendering structural
+formulas. This will have to be extended.
+\item  A module will be needed to convert structural formulas to molecular
+formulas for balancing and other processes.
+\end{itemize}
+\item  Reactivity series: 
+
+\begin{itemize}
+\item  After the types of reactions are recognized, it will not be too difficult
+to implement knowledge about whether or not a reaction will take place.
+The user can be informed about this when an equation is balanced.
+\end{itemize}
+\item  Mole calculations: 
+
+\begin{itemize}
+\item  A field will need to be added in the database for atomic mass of
+elements. 
+\item  fact\_dcg\_translate will need to be extended to handle polyatomic
+groups/oxyanions 
+\item  Tabulate or possibly formula\_normalize will be extended to calculate
+molar masses 
+\item  Allow parsers to accept information about stoichiometric problems
+to solve
+\item  Implement information about mole bridges into the solver (probably
+a new module)
+\end{itemize}
+\item  More organic naming: 
+
+\begin{itemize}
+\item  It will be useful to implement organic compound naming at least for
+Chemistry 11 to 12.
+\end{itemize}
+\item  Complex Redox reactions: 
+
+\begin{itemize}
+\item  Sometimes, for a few very complex redox reactions, Chemlogic gives
+an answer that satisfies the system of linear equations (i.e. is balanced)
+but will not actually occur in real life. 
+\item  A new balancing process, with a separate module should be implemented.
+Perhaps based on oxidation numbers or half-reactions
+\end{itemize}
+\item  Diagramming: 
+
+\begin{itemize}
+\item  Show structural formulas of compounds 
+\item  Bohr models, Lewis diagrams 
+\item  Periodic tables?
+\end{itemize}
+\end{itemize}
+
+\subsection{Database}
+\begin{itemize}
+\item  Add many, many more elements. 
+\item More polyatomic groups 
+\item  Write-up a large batch of common names
+\item  Add atomic masses
+\end{itemize}
+
+\subsection{Program features}
+\begin{itemize}
+\item  Extend the \texttt{chemcli} DSL to make it more useful. 
+
+\begin{itemize}
+\item  Offer a way to query the chemical information database. 
+\item  More constructs/operators.
+\item  A standard library? 
+\item  This will all depend on the sorts of programs that someone will actually
+want to write
+\end{itemize}
+\item  Quiz program 
+
+\begin{itemize}
+\item Allow for questions to be generated with selectable options (the parser
+and perhaps major sub-parts)
+\item  Interactive and non-interactive usage depending on output format 
+\item  Configurable marking (allow retry, show correct answer at end, etc.) 
+\item  Possible to produce the same questions if passed the same seed.  Some
+sort of intelligence, focusing on problem areas when giving questions.
+\end{itemize}
+\item  Expose the chemical information database.
+\item  Better error messages for equation balancing errors 
+
+\begin{itemize}
+\item  Test to ensure that all elements appear in both products and reactants
+\item  Perhaps explain why some charge shifts are unsatisfied 
+\item  Explain which element makes the system unbalancable, if possible.
+\end{itemize}
+\end{itemize}
+
+\subsection{Organization and Structure}
+\begin{itemize}
+\item Take advantage of SWI-Prolog's new string type. This makes tokenization,
+concatenation and many other things more efficient. 
+
+\begin{itemize}
+\item Chemlogic needs a simple tokenizer to break up chemical names and
+equations (especially) 
+\item  At minimum, it should split on spaces and remove extraneous spaces 
+\item  Potentially deal with character types? 
+\item  Potentially deal with the insides of parentheses? 
+\end{itemize}
+\item  Rewrite the current error tokenizers to use the new and better functions 
+\item  Tokenizers make parser much, much nicer: 
+
+\begin{itemize}
+\item  It is now quick and simple to see if something is an acid without
+having to go through all of the tests 
+\item  It can be easy to distinguish between ionic and covalent
+\end{itemize}
+\item  Make the oxyanion functions less messy and hacky. There must be a
+better way to tell the user what's wrong with the oxyanion names. 
+\item  The ugly hacks around pure substances can be removed with a better
+tokenizer
+\item  Some things will need to be renamed and reorganized
+\item  Use more meta-programming to remove boilerplate code from the web
+interface.
+\end{itemize}
+
+\subsection{Bugs}
+\begin{itemize}
+\item  The program will get very upset if a substance is repeated:
+
+\begin{itemize}
+\item  e.g. H2O + H2O --> H2O 
+\item  There is not much of a valid reason to enter this, but the program
+should handle this correctly 
+\item  An error message explaining that this is junk is probably a good
+idea\end{itemize}
+\end{itemize}
+
+\end{document}
