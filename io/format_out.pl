@@ -32,9 +32,9 @@ Causes side-effects. Causes all output from parsers to be in Format, unless over
 set_output_format(Format) :-
 	debug(chemlogic_custom,'Set ~w~n',[Format]),
 	retractall(output(_,_,_,_)),
-	dcg_translate_rule((output(output,Symbol) --> symbol(Format,Symbol), !),DefaultRule),
+	expand_term((output(output,Symbol) --> symbol(Format,Symbol), !),DefaultRule),
 	assertz(DefaultRule),
-	dcg_translate_rule((output(Other,Symbol) --> symbol(Other,Symbol),!),OtherRule),
+	expand_term((output(Other,Symbol) --> symbol(Other,Symbol),!),OtherRule),
 	assertz(OtherRule).
 
 :- initialization set_output_format(user).

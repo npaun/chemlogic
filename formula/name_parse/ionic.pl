@@ -22,7 +22,7 @@ ionic(_,_,Formula) --> {nonvar(Formula)}, rev(Formula).
 
 fwd(MElems,FinalRest,[[MSym,MSub],[NMSym,NMSub]|Appended]) --> compound(MElems,FinalRest,[MSym,MCharge,NMSym,NMCharge],Appended),
 	{
-		GCD is gcd(MCharge,NMCharge),
+		gcd(MCharge,NMCharge,GCD),
 		MSub is abs(NMCharge / GCD),
 		NMSub is abs(MCharge / GCD)
 	}.
@@ -45,7 +45,7 @@ rev([[MSym,MSub],[NMSym,NMSub]|Appended]) -->
 
 	/* Corrector: remove if unecessary */
 	(
-		{GCD is gcd(MSub,NMSub)}, 
+		{gcd(MSub,NMSub,GCD)}, 
 		{GCD = 1} xx corrector_not_reduced
 	).
 
@@ -86,7 +86,7 @@ hydrate_part(Pass,Pass,[]) --> [].
 metal(Sym,Charge) --> element(Sym,_), {charge(Sym,Charges)}, metal_valence(Charge,Charges), !.
 
 metal_valence(Charge,Charges) --> 
-	{is_list(Charges)},
+	{compound(Charges)}, % Does the metal have multiple charges?
 	multivalent_charge(Charge) xx charge,
 
 	{member(Charge,Charges)} xx charge_invalid.

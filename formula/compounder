@@ -5,9 +5,11 @@
 
 
 
-
 :- set_prolog_flag(double_quotes,chars).
 :- style_check(-atom).
+
+% Prolog compatability
+:- ensure_loaded('../lib/prolog_compat/compat').
 
 % Output formatting
 :- consult('../io/format_in').

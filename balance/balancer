@@ -49,6 +49,9 @@ balance_equation_real(InGrammar,Equation,OutGrammar,Solution) :-
 
 	parse(OutGrammar,.(output,Coeffs,[],Elems,[],MoleculeSet,[],ElementSideSet,SideSet),Solution,[]).
 
+balance_equation_run(InGrammar,Equation,OutGrammar,Solution) :-
+	balance_equation_real(InGrammar,Equation,OutGrammar,Solution) -> balance_equation_cleanup;
+	(balance_equation_cleanup,false).
 
 balance_equation_cleanup :-
 	retractall(balance(_,_,_)).

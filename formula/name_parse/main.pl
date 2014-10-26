@@ -40,13 +40,16 @@ It can also return the charge, because we need it to do the test anyway.
 
 charge_check(nonmetal,Sym,Charge) :-
         charge(Sym,Charge),
-	\+ is_list(Charge),
+	\+ compound(Charge), % Non-metals do not have more than one charge
         Charge =< 0.
 
 charge_check(metal,Sym,Charge) :-
         charge(Sym,Charge),
 	!,
-        (is_list(Charge); Charge > 0),
+        	(
+			compound(Charge); % Only metals have more than one charge
+			Charge > 0 % Otherwise, metals have a charge > 0.
+		),
         !.
 
 charge_check(Type,Sym) :- charge_check(Type,Sym,_).
