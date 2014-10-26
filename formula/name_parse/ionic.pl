@@ -6,7 +6,7 @@
 
 
 :- module(ionic,[ionic//3]).
-:- set_prolog_flag(double_quotes,chars).
+%:- set_prolog_flag(double_quotes,chars).
 :- use_module(acid).
 :- use_module(covalent,[sub_general//2]).
 

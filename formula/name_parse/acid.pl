@@ -7,7 +7,7 @@
 
 :- module(acid,[acid//3,acid_base//1]).
 :- use_module(oxyanion).
-:- set_prolog_flag(double_quotes,chars).
+%:- set_prolog_flag(double_quotes,chars).
 
 
 

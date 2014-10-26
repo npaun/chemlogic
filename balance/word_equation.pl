@@ -6,7 +6,7 @@
 
 
 :- module(word,[word//9]).
-:- set_prolog_flag(double_quotes,chars).
+%:- set_prolog_flag(double_quotes,chars).
 
 
 

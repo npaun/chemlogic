@@ -11,17 +11,17 @@ scan_rule(white,C) --> scan_rule(punct,C).
 
 scan_rule(punct,[C|T]) --> 
 	        [C],
-		{\+ char_type(C,alnum)}, !,
+		{\+ code_type(C,alnum)}, !,
 		scan_rule(punct,T).
 
 
 scan_rule(digit,[C|T]) -->
 	[C],
 	(
-		{char_type(C,white)} -> \+ punct_check;
+		{code_type(C,white)} -> \+ punct_check;
        		{true}
 	),
-	{\+ char_type(C,alpha); char_type(C,punct); char_type(C,white)}, !,
+	{\+ code_type(C,alpha); code_type(C,punct); code_type(C,white)}, !,
 	scan_rule(digit,T).
 
 
@@ -39,7 +39,7 @@ scan_rule(outside_paren,[C|T]) -->
 
 scan_rule(group,[C|T]) -->
 	[C],
-	{\+ (char_type(C,punct); char_type(C,white))}, !,
+	{\+ (code_type(C,punct); code_type(C,white))}, !,
 	scan_rule(group,T).
 
 scan_rule(mark,[C]) --> [C].
@@ -47,12 +47,12 @@ scan_rule(mark,[C]) --> [C].
 scan_rule(_,[]) -->
 	[].
 
-punct_check, [T] --> [T], {char_type(T,punct)}.
+punct_check, [T] --> [T], {code_type(T,punct)}.
 
 scan_rule_r(alpha,[C|T]) -->
 	[C],
-	({char_type(C,white)} -> \+ punct_check; {true}),
-	{\+ (char_type(C,digit); char_type(C,upper); char_type(C,punct); char_type(C,white))}, !,
+	({code_type(C,white)} -> \+ punct_check; {true}),
+	{\+ (code_type(C,digit); code_type(C,upper); code_type(C,punct); code_type(C,white))}, !,
 	scan_rule_r(alpha,T).
 
 scan_rule_r(_,[]) --> [].
@@ -67,10 +67,10 @@ find_token(Unparsed,Token,Type,Rest) :-
 	Unparsed = [First|_],
 	(
 	First = '(' -> Type = outside_paren;
-	char_type(First,alpha) -> Type = alpha;
-	char_type(First,punct) -> Type = punct;
-	char_type(First,digit) -> Type = digit;
-	char_type(First,white) -> Type = white
+	code_type(First,alpha) -> Type = alpha;
+	code_type(First,punct) -> Type = punct;
+	code_type(First,digit) -> Type = digit;
+	code_type(First,white) -> Type = white
 	), !,
 
 	scan_rule(Type,Token,Unparsed,Rest).

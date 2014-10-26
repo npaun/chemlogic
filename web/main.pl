@@ -7,7 +7,7 @@
 
 
 :- set_prolog_flag(verbose,silent).
-:- set_prolog_flag(double_quotes,chars).
+%:- set_prolog_flag(double_quotes,chars).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/http_parameters)).
 :- use_module(library(http/http_error)).
@@ -20,7 +20,7 @@ web_message(Port) :-
 	writeln('When you are done, type halt.'), nl, nl.
 
 chemweb_to_html(String,HTML) :-
-	atom_chars(Atom,String),
+	atom_codes(Atom,String),
 	HTML = \[Atom].
 
 :- ensure_loaded('../build/compile.cf').

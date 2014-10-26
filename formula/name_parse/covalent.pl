@@ -6,7 +6,7 @@
 
 
 :- module(covalent,[covalent//3,sub_general//2]).
-:- set_prolog_flag(double_quotes,chars).
+%:- set_prolog_flag(double_quotes,chars).
 
 
 
@@ -54,7 +54,7 @@ fwd_flag(Num,Flag) :- var(Num) -> Flag = yes; Flag = no.
 double_vowel_test(Letter,Matched) :-
 	Letter = "" -> true;
 	Matched = [H|_],
-	(H = 'a'; H = 'o').
+	(H = 97 /* a */; H = 111 /* o */).
 
 fwd_stop(Flag,Error) --> {Flag = yes} -> syntax_stop(covalent:Error).
 

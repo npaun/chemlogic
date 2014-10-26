@@ -18,14 +18,14 @@ InputType - Input :: -Result :-
 
 
 InputType - AtomInput :: ResultType - Result :-
-	atom_chars(AtomInput,Input),
+	atom_codes(AtomInput,Input),
 	(
 		InputType = name -> name_2_formula(Input,StringRes) handle _;
 		InputType = formula -> formula_2_name(Input,StringRes) handle _ ;
 		balance_equation(InputType,Input,ResultType,StringRes) handle _
 	),
 		
-	atom_chars(Result,StringRes).
+	atom_codes(Result,StringRes).
 
 
 

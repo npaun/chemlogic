@@ -6,7 +6,7 @@
 
 
 :- module(formula,[formula//5]).
-:- set_prolog_flag(double_quotes,chars).
+%:- set_prolog_flag(double_quotes,chars).
 
 
 

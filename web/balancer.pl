@@ -45,7 +45,7 @@ balancer_nop(Solution) :-
 
 
 balancer_process(Type,Input,OutputType,Solution) :-
-	atom_chars(Input,StringInput),
+	atom_codes(Input,StringInput),
 	balancer_do_process(Type,StringInput,OutputType,Solution),
 	debug(chemlogic_custom,'Did\'nt die yet',[]).
 

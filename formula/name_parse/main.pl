@@ -6,7 +6,7 @@
 
 
 :- module(name,[name//3,nonmetal//3,nonmetal_ide//3,charge_check/2,charge_check/3]).
-:- set_prolog_flag(double_quotes,chars). 
+%:- set_prolog_flag(double_quotes,chars). 
 :- use_module(ionic).
 :- use_module(covalent).
 :- multifile guidance_errcode/3.
@@ -63,7 +63,7 @@ pure(Sym,Rest,Formula,Name,[]) :- pure_process(Sym,Rest,Formula,Name,[]).
 
 /* REALLY UGLY HACK! */
 pure(Sym,Rest,Formula)--> pure_process(Sym,Rest,Formula), pure_lookahead.
-pure_lookahead, [L1], [L2] --> [L1], [L2],  {char_type(L2,punct)}.
+pure_lookahead, [L1], [L2] --> [L1], [L2],  {code_type(L2,punct)}.
 
 
 
