@@ -23,6 +23,6 @@ Clause handle HandlerArgs :-
 	catch(
 		Clause,
 		error(InfoStruct,_),
-		call(error_handler,HandlerArgs,InfoStruct)
+		call(error_handler(HandlerArgs,InfoStruct))
 	).
 
