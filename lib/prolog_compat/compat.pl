@@ -28,37 +28,35 @@ member_([H|T], El, _) :-
 
 
 
-% Recursive Euclidean algorithm
-% Requires 5 inferences in most cases
-% Does not evaluate arguments arithmetically (i.e do not use 2*2)
-gcd(X, 0, X):- !.
-gcd(0, X, X):- !.
-gcd(X, Y, D):- X > Y, !, Z is X mod Y, gcd(Y, Z, D).
-gcd(X, Y, D):- Z is Y mod X, gcd(X, Z, D).
+% code_type/2 is not supported by all Prologs. This is a simple re-implementation for the purposes of Chemlogic.
 
-% debug/2 is used to output messages with special formatting, only when requested by the user.
-% It is SWI-Prolog specific.
-% This is a simplified version that will work properly on all Prologs.
+code_type(32 /* SPACE */,white).
+code_type(9 /* TAB */, white).
 
-:- dynamic cl_debug_mode.
-cl_debug_mode :- fail.
+code_type(Code,digit) :-
+	Code >= 48 /* 0 */,
+	Code =< 57 /* 9 */.
 
-debugmsg(Tokens) :-
-	cl_debug_mode -> (
-		write(user_error,'[01;34m[DEBUG][00m '),
-		debug_print(Tokens)
-	); true.
+code_type(Code,upper) :-
+	Code >= 65 /* A */,
+	Code =< 90 /* Z */.
 
-debug_print([]) :- nl.
-debug_print([Token|TokenS]) :-
-	write(user_error,Token),
-	debug_print(TokenS).
+code_type(Code,lower) :-
+	Code >= 97 /* a */,
+	Code =< 122 /* z */.
 
+code_type(Code,alpha) :- 
+	code_type(Code,upper);
+	code_type(Code,lower).
 
-% Some Prologs only support call/1. This predicate uses Univ to convert a list of arguments into a term, which is then called.
-%
-call_list(List) :-
-	List =.. Term,
-	call(Term).
+code_type(Code,alnum) :-
+	code_type(Code,alpha);
+	code_type(Code,digit).
+
+% This is not the exact same definition as SWI-Prolog's but it should do for the purpoes of this program.
+code_type(Code,punct) :- 
+	\+ code_type(Code,alnum),
+	\+ code_type(Code,white).	
+
 
 % vi: ft=prolog

@@ -30,7 +30,7 @@ symbol(latex,dot) --> "\\cdot".
 Causes side-effects. Causes all output from parsers to be in Format, unless overriden elsewhere.
 */
 set_output_format(Format) :-
-	debug(chemlogic_custom,'Set ~w~n',[Format]),
+	debug_msg(['Set ',Format]),
 	retractall(output(_,_,_,_)),
 	expand_term((output(output,Symbol) --> symbol(Format,Symbol), !),DefaultRule),
 	assertz(DefaultRule),

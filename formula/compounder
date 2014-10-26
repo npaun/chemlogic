@@ -9,6 +9,7 @@
 :- style_check(-atom).
 
 % Prolog compatability
+:- ensure_loaded('../lib/prolog_compat/common').
 :- ensure_loaded('../lib/prolog_compat/compat').
 
 % Output formatting
