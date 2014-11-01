@@ -16,15 +16,17 @@ cl_debug_mode :- fail.
 cl_debug :-
 	assertz(cl_debug_mode).
 
-debug_msg(Tokens) :-
+debug_msg(Source,Tokens) :-
 	cl_debug_mode -> (
-		write(user_error,'[01;34m[DEBUG][00m '),
+		write('[01;34m[DEBUG][00m[1m '),
+		write(Source),
+		write(':[00m '),
 		debug_print(Tokens)
 	); true.
 
 debug_print([]) :- nl.
 debug_print([Token|TokenS]) :-
-	write(user_error,Token),
+	write(Token),
 	debug_print(TokenS).
 
 

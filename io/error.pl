@@ -88,7 +88,7 @@ explain_syntax_error(ParseModule,Input,Error,Flags,Unparsed,InfoStruct) :-
 	append(Start,Unparsed,Input), !,
 	HighlightStruct = highlight(Start,Token,Rest),
 
-	debug_msg(['Scan ',Unparsed,'\n',Error,': ',Token,' is ',TokenType]),
+	debug_msg(explain_syntax_error,['Scan ',Unparsed,'\n',Error,': ',Token,' is ',TokenType]),
 
 	(Error = Module:ErrCode; (ParseModule = Module, Error = ErrCode)),
 
