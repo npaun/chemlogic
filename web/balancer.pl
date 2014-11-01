@@ -45,10 +45,13 @@ balancer_nop(Solution) :-
 
 balancer_process(Type,Input,OutputType,Solution) :-
 	atom_codes(Input,StringInput),
-	balancer_do_process(Type,StringInput,OutputType,Solution),
+	balancer_do_process(Type,StringInput,OutputType,Solution).
 
 balancer_do_process(Type,StringInput,OutputType,Solution) :-
-	(balance_equation(Type,StringInput,OutputType,StringSolution), chemweb_to_html(StringSolution,Solution)) handle Solution,
+	(
+		balance_equation(Type,StringInput,OutputType,StringSolution), 
+		chemweb_to_html(StringSolution,Solution)
+	) handle Solution.
 
 
 balancer_page(Request) :-

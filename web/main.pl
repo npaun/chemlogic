@@ -27,6 +27,7 @@ chemweb_to_html(String,HTML) :-
 :- consult('style').
 :- use_module(web_error).
 
+:- ensure_loaded('../lib/prolog_compat/common.pl').
 :- ensure_loaded('../io/format_out').
 :- initialization(set_output_format(html),now).
 
