@@ -1,3 +1,23 @@
+% Some Prologs do not support multi-argument calls.
+% This is a real nuisance. This predicate uses Univ to convert a list of arguments to a term and then calls it.
+ 
+dynamic_call(Args) :-
+	Call =.. Args,
+	call(Call).
+
+
+xx_call_expand_dynamic(Term,Exp) :-
+	Term =.. [xx,Call|Rest],
+	call_expand_dynamic(Call,NewCall),
+	Exp =.. [xx,NewCall|Rest].
+
+call_expand_dynamic(Term,Exp) :-
+	Term =.. [call|Args],
+	Exp =.. [dynamic_call,Args],
+	debug_msg(call_expand_dynamic,['Expanded ',Term,'\n','Rewritten to ',Exp]).
+
+goal_expansion(Term,Exp) :- xx_call_expand_dynamic(Term,Exp).
+goal_expansion(Term,Exp) :- call_expand_dynamic(Term, Exp).
 
 writeln(Atom) :- write(Atom), nl.
 
