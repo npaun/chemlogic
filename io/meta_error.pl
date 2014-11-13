@@ -10,7 +10,6 @@
 :- meta_predicate xx(//,?,?,?).
 
 
-
 Condition xx (SyntaxError,Flags) -->
 	{Condition = Module:_},
 	(Condition, !; syntax_stop(Module:SyntaxError,Flags)).

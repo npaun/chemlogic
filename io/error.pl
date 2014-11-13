@@ -4,7 +4,6 @@
 % (C) Copyright 2012-2014 Nicholas Paun
 
 
-
 scan_rule(alpha,[C|T]) --> [C], scan_rule_r(alpha,T).
 
 scan_rule(white,C) --> scan_rule(punct,C).

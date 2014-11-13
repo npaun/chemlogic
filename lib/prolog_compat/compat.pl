@@ -5,17 +5,23 @@ dynamic_call(Args) :-
 	Call =.. Args,
 	call(Call).
 
+phrase_expand(Term,Exp) :-
+	Term =.. [phrase|Args],
+	writeln(Args),
+	Term = Exp.
 
 xx_call_expand_dynamic(Term,Exp) :-
 	Term =.. [xx,Call|Rest],
+	nonvar(Call),
 	call_expand_dynamic(Call,NewCall),
 	Exp =.. [xx,NewCall|Rest].
 
 call_expand_dynamic(Term,Exp) :-
-	Term =.. [call|Args],
-	Exp =.. [dynamic_call,Args],
+	Term =.. [call,CallClause|Args],
+	Exp =.. [dynamic_call,CallClause|Args],
 	debug_msg(call_expand_dynamic,['Expanded ',Term,'\n','Rewritten to ',Exp]).
 
+goal_expansion(Term,Exp) :- phrase_expand(Term,Exp).
 goal_expansion(Term,Exp) :- xx_call_expand_dynamic(Term,Exp).
 goal_expansion(Term,Exp) :- call_expand_dynamic(Term, Exp).
 
@@ -77,6 +83,9 @@ code_type(Code,alnum) :-
 code_type(Code,punct) :- 
 	\+ code_type(Code,alnum),
 	\+ code_type(Code,white).	
+
+
+
 
 
 % vi: ft=prolog
