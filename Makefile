@@ -24,14 +24,19 @@ cli web web-daemon: compile.cf
 # Set the default prefix
 PREFIX?=/usr/local
 
+
 ifdef DEST
 # If the user has explicitly specified a DEST, write all files there
 BINDIR?=$(DEST)
 SHAREDIR?=$(DEST)
 else
 # Otherwise, install to UNIX standard locations
-BINDIR?=$(PREFIX)/bin
-SHAREDIR?=$(PREFIX)/share/chemlogic
+	ifdef DESTDIR
+		DESTDIR = $(DESTDIR)/
+	endif
+
+BINDIR?=$(DESTDIR)$(PREFIX)/bin
+SHAREDIR?=$(DESTDIR)$(PREFIX)/share/chemlogic
 endif
 
 # Set the DEST for the output of the building process, if not set by user
@@ -91,12 +96,13 @@ stage-style:
 ### Installation ###
 
 install:
+	mkdir -p $(BINDIR)
 	cp -a bin/chem* $(BINDIR)/
 	# If a style/ directory was produced (by building the Web Interface), copy these files
-	test -e bin/style &&\
-		mkdir -p $(SHAREDIR) &&\
-       		cp -a bin/style $(SHAREDIR)/
-
+	if test -e bin/style; then \
+		mkdir -p $(SHAREDIR) && \
+		cp -a bin/style $(SHAREDIR)/; \
+	fi
 
 uninstall:
 	-rm $(BINDIR)/chemcli
