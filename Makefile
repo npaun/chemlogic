@@ -15,7 +15,7 @@ all: cli web
 # This allows code to be re-used, while allowing the user to use targets
 .PHONY: cli web web-daemon
 cli web web-daemon: compile.cf
-	$(MAKE) INTERFACE=$@ DEST=$(DEST) mk-$@
+	$(MAKE) INTERFACE=$@ mk-$@
 
 
 ### Build Setup ###
@@ -38,6 +38,10 @@ endif
 # Files will be copied to installation location from here
 DEST ?= bin/
 
+# Set which Prolog system is used to compile Chemlogic.
+PROLOG_SYSTEM ?= swipl
+PROLOG_PATH ?= $(shell which swipl) 
+
 
 ### Help ###
 
@@ -57,19 +61,28 @@ help:
 
 ### Chemlogic Interfaces ###
 
-mk-cli mk-web mk-web-daemon: qsave	
-mk-web mk-web-daemon: stage-style
+web-warning:
+ifneq "$(PROLOG_SYSTEM)" "swipl"
+	@echo WARNING: The Web interface probably cannot be compiled with $(PROLOG_SYSTEM). Only SWI-Prolog is supported.
+	false # Delete this line to try, anyway.
+endif
+
+mk-web mk-web-daemon: web-warning stage-style
+mk-cli mk-web mk-web-daemon: compile-$(PROLOG_SYSTEM)
 
 ### Compilation and Building ###
 
 
 
-qsave:
-	# This compiles the program using SWI-Prolog's QSAVE system
+compile-swipl:
+	# Compiling using the SWI-Prolog QSAVE system.
 	echo " \
 cl_parse_all. \
 qsave_program('$(DEST)/chem$(INTERFACE)'). \
-" | swipl -l $(INTERFACE)/chem$(INTERFACE).in
+" | $(PROLOG_PATH) -l $(INTERFACE)/chem$(INTERFACE).in
+
+compile-gprolog:
+	@echo "Sorry. Compilation using GNU Prolog is not yet implemented."
 
 # Provide information to Prolog about the paths and other settings we have set up
 .PHONY: compile.cf
