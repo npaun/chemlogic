@@ -61,18 +61,10 @@ help:
 
 ### Chemlogic Interfaces ###
 
-web-warning:
-ifneq "$(PROLOG_SYSTEM)" "swipl"
-	@echo WARNING: The Web interface probably cannot be compiled with $(PROLOG_SYSTEM). Only SWI-Prolog is supported.
-	false # Delete this line to try, anyway.
-endif
-
-mk-web mk-web-daemon: web-warning stage-style
+mk-web mk-web-daemon: stage-style
 mk-cli mk-web mk-web-daemon: compile-$(PROLOG_SYSTEM)
 
 ### Compilation and Building ###
-
-
 
 compile-swipl:
 	# Compiling using the SWI-Prolog QSAVE system.
@@ -81,8 +73,6 @@ cl_parse_all. \
 qsave_program('$(DEST)/chem$(INTERFACE)'). \
 " | $(PROLOG_PATH) -l $(INTERFACE)/chem$(INTERFACE).in
 
-compile-gprolog:
-	@echo "Sorry. Compilation using GNU Prolog is not yet implemented."
 
 # Provide information to Prolog about the paths and other settings we have set up
 .PHONY: compile.cf
