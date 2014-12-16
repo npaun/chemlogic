@@ -4,7 +4,7 @@
 # (C) Copyright 2012-2014 Nicholas Paun  
 
 ### This Makefile has been AUTOMATICALLY CONVERTED to BSD Make syntax ###
-
+#### FIXME: This file is obsolete, because I have lost my conversion script and I no longer have a FreeBSD machine handy. ####
 
 ### Meta-Targets
 .DEFAULT: all
