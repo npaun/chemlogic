@@ -18,4 +18,4 @@ Chemlogic $TAG
 Built at: $DATE
 Source path: $SOURCEPATH" > Buildinfo
 
-echo "version('$TAG')" >> build/compile.cf.dist
+echo "cf_version('$TAG')." >> build/compile.cf.dist
