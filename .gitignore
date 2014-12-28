@@ -11,6 +11,9 @@ bin/*
 # Compile options
 compile.cf
 
+# Distribution tag
+Buildinfo
+
 # TeX-related files
 *.log
 *.blg
