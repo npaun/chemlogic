@@ -1,3 +1,9 @@
 #!/bin/sh
 
-git describe --always --match v* --dirty='~' | sed s/^v//g | sed  s/-.*-g/+git-/g
+BRANCH=`git symbolic-ref -q --short HEAD`
+if [ "x$BRANCH" == "xmaster" ]; then
+	BRANCHTAG=""
+else
+	BRANCHTAG="-$BRANCH"
+fi
+git describe --always --match v* --dirty='*' | sed s/^v//g | sed  s/-.*-g/$BRANCHTAG+git-/g
