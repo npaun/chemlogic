@@ -43,7 +43,7 @@ cli_init :-
 (Argv = ['--api'|Format]; Argv = [_,'--api'|Format]) -> 
 (
 cli_api_init(Format),
-cli_api_message
+cli_api_message(Format)
 );
 (
 set_output_format(ansi),

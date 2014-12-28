@@ -7,12 +7,14 @@ cli_api_init([Format]) :-
         set_stream(user_output,tty(true)),
         set_prolog_flag(toplevel_prompt,'CL ?-[~!]\n').
 
-cli_api_message :-
+cli_api_message(Format) :-
         writeln('Chemlogic	API		1'),
-	cf_version(Version),
+	(catch(cf_version(Version),_,false); Version = '*** DEVELOPMENT COPY ***'),
 	write('"		version		'), writeln(Version),
 	db_version(DBVersion),
 	write('" database	version		'),writeln(DBVersion),
+	(Format = [] -> FormatInfo = '*** DEFAULT ***'; Format = [FormatInfo]),
+	write('output		format		'),writeln(FormatInfo),
 	current_prolog_flag(version_data,PrologVersion),
 	write('Prolog		version		'), writeln(PrologVersion),
 	current_prolog_flag(arch,SystemArch),
