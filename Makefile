@@ -85,7 +85,7 @@ compile.cf:
 	#Clear everything in the file except the header
 	cp build/compile.cf.dist build/compile.cf
 	#Tell Prolog the prefix
-	echo "prefix('$(PREFIX)')." >> build/compile.cf	
+	echo "cf_prefix('$(PREFIX)')." >> build/compile.cf	
 	echo END
 
 
