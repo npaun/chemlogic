@@ -116,7 +116,7 @@ uninstall:
 # BSD: TAG != git tag | tail -1 | cut -c 2-
 # BSD: .endif
 
-dist disttree archive: TAG := $(strip $(shell git tag | tail -1 | cut -c 2-))#<<< GNU
+dist disttree archive: TAG := $(strip $(shell ./build/versionName))#<<< GNU
 
 #dist: archive
 

@@ -1,0 +1,3 @@
+#!/bin/sh
+
+git describe --always --match v* --dirty='*' | sed s/^v//g | sed  s/-.*-g/+git-/g
