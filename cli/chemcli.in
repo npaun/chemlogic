@@ -39,7 +39,8 @@ InputType - Input :: ResultType print :-
 
 
 cli_init :-
-	current_prolog_flag(argv,['--api'|Format]) -> 
+	current_prolog_flag(argv,Argv),
+(Argv = ['--api'|Format]; Argv = [_,'--api'|Format]) -> 
 (
 cli_api_init(Format),
 cli_api_message
