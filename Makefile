@@ -85,7 +85,7 @@ compile.cf:
 	#Clear everything in the file except the header
 	cp build/compile.cf.dist build/compile.cf
 	#Tell Prolog the prefix
-	echo "prefix('$(PREFIX)')." >> build/compile.cf	
+	echo "cf_prefix('$(PREFIX)')." >> build/compile.cf	
 	echo END
 
 
@@ -116,7 +116,7 @@ uninstall:
 # BSD: TAG != git tag | tail -1 | cut -c 2-
 # BSD: .endif
 
-dist disttree archive: TAG := $(strip $(shell git tag | tail -1 | cut -c 2-))#<<< GNU
+dist disttree archive: TAG := $(strip $(shell ./build/versionName))#<<< GNU
 
 #dist: archive
 
