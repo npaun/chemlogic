@@ -13,7 +13,6 @@
 :- op(100,xf,print).
 
 
-
 InputType - Input :: -Result :-
 	InputType - Input :: symbolic - Result,
 	!.
@@ -26,8 +25,18 @@ InputType - AtomInput :: ResultType - Result :-
 		balance_equation(InputType,Input,ResultType,StringRes) handle _
 	),
 		
-	atom_chars(Result,StringRes),
-	echo_output(Result).
+	atom_chars(Result,StringRes).
+
+InputType - Input :: print :-
+        InputType - Input :: symbolic - Result,
+        writeln(Result),
+        !.
+
+InputType - Input :: ResultType print :-
+        InputType - Input :: ResultType - Result,
+        writeln(Result),
+        !.
+
 
 cli_init :-
 	current_prolog_flag(argv,['--api'|Format]) -> 
@@ -37,7 +46,6 @@ cli_api_message
 );
 (
 set_output_format(ansi),
-assertz(echo_output(_)),
 cli_interactive_message
 ).
 	
