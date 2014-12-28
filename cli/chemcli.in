@@ -6,16 +6,17 @@
 
 :- set_prolog_flag(verbose,silent).
 :- use_module(cli_error).
+:- consult('api').
 :- consult('../balance/balancer').
 :- initialization cli_init.
 :- op(990,xfy,::).
+:- op(100,xf,print).
 
 
 
 InputType - Input :: -Result :-
 	InputType - Input :: symbolic - Result,
 	!.
-
 
 InputType - AtomInput :: ResultType - Result :-
 	atom_chars(AtomInput,Input),
@@ -28,8 +29,6 @@ InputType - AtomInput :: ResultType - Result :-
 	atom_chars(Result,StringRes),
 	echo_output(Result).
 
-
-
 cli_init :-
 	current_prolog_flag(argv,['--api'|Format]) -> 
 (
@@ -41,15 +40,6 @@ set_output_format(ansi),
 assertz(echo_output(_)),
 cli_interactive_message
 ).
-
-cli_api_init([]) :- cli_api_init([user]).
-cli_api_init([Format]) :-
-	set_output_format(Format),
-	assertz(echo_output(X) :- writeln(X)),
-   	set_stream(user_input,tty(true)),
-        set_stream(user_output,tty(true)),
-        set_prolog_flag(toplevel_prompt,'CL ?-[~!]\n').
-
 	
 cli_interactive_message :-
 	writeln('\e[00;32mWelcome to the Chemlogic CLI interface!\e[00m'),
@@ -71,7 +61,5 @@ cli_interactive_message :-
 
 	writeln('ALL LINES MUST END WITH A .'), nl,nl.
 
-cli_api_message :-
-	writeln('Chemlogic	API').
 
 % vi: ft=prolog
