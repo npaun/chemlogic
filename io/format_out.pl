@@ -45,10 +45,10 @@ LaTeX formatting is not intended to be used in an user-interactive program, so e
 */
 
 /* 
-ANDROID: TextView supports only some HTML tags via the HTML class. The font tag can change the text's color (set to orange), but not the background color (bgcolor, set to red). 
-I might extend the class to support this.
+ANDROID: TextView supports only some HTML tags via the HTML class. The font tag can change the text's color (set to white), but not the background color (set to red).
+A span with the inline background-color style is recognized by a customized tag handler that I have written for the app.
 */
-symbol(html_android_textview,err_token_start) --> "<font color='#ffa500' bgcolor='#ff0000'>".
+symbol(html_android_textview,err_token_start) --> "<font color='#ffffff'><span style=\"background-color: #ff0000;\">".
 symbol(html_android_textview,err_token_end) --> "</font>".
 
 symbol(ansi,err_token_start) --> "\e[01;41;37m".
