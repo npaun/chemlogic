@@ -49,7 +49,7 @@ ANDROID: TextView supports only some HTML tags via the HTML class. The font tag 
 A span with the inline background-color style is recognized by a customized tag handler that I have written for the app.
 */
 symbol(html_android_textview,err_token_start) --> "<font color='#ffffff'><span style=\"background-color: #ff0000;\">".
-symbol(html_android_textview,err_token_end) --> "</font>".
+symbol(html_android_textview,err_token_end) --> "</span></font>".
 
 symbol(ansi,err_token_start) --> "\e[01;41;37m".
 symbol(ansi,err_token_end) --> "\e[00m".
