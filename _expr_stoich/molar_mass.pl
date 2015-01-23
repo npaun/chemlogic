@@ -3,7 +3,7 @@
 
 v_molar(22.414).
 
-%%% Mass units %%%%
+%%% Mass units %%%
 unit(Formula,Mass,g,Mol,mol) :-
 	molar_mass(Formula,MMass),
 	Mol /* mol */ is Mass /* g */ * 1 /* mol */ / MMass /* g */.
@@ -12,7 +12,7 @@ unit(Formula,Mol,mol,Mass,g) :-
 	molar_mass(Formula,MMass),
 	Mass /* g */ is Mol /* mol */ * MMass /* g */ / 1 /* mol */.
 
-%%% Volume units %%%%
+%%% Volume units %%%
 /*** NOTE:
 Formula is assumed to represent a gas at STP (standard temperature and pressure)
 ***/
@@ -25,6 +25,14 @@ unit(_,Vol,'L',Mol,mol) :-
 unit(_,Mol,mol,Vol,'L') :-
 	v_molar(Vm),
 	Mol /* mol */ is Vol /* L */ * 1 /* mol */ / Vm /* L */.
+
+%%% Concentration units %%%
+conc(_,Vol,'L',Conc,'M',Mol,mol) :-
+	Mol /* mol */ is Conc /* mol / L */ * Vol /* L */.
+
+
+conc(_,Mol,mol,Conc,'M',Vol,'L') :-
+	Vol /* L */ is Mol /* mol */ / Conc /* mol / L */.
 
 
 
