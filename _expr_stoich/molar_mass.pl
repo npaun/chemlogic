@@ -1,5 +1,12 @@
 :- consult('../formula/compounder').
 
+
+stoich(CoeffIn,FormulaIn,[QtyIn,UnitIn],CoeffOut,FormulaOut,[QtyOut,UnitOut]) :-
+	unit(FormulaIn,QtyIn,UnitIn,MolIn,mol),
+	MolOut is MolIn * CoeffOut / CoeffIn,
+	unit(FormulaOut,MolOut,mol,QtyOut,UnitOut).
+
+
 /*** NOTE:
 STP is assumed to be calculated as defined by IUPAC: temperature of 0 °C and a pressure of 101.325 kPa.
 The value used was obtained from CODATA: the NIST Reference on Constants, Units and Uncertainty.
