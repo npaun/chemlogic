@@ -1,7 +1,10 @@
 :- consult('../formula/compounder').
 
-
-v_molar(22.414).
+/*** NOTE:
+STP is assumed to be calculated as defined by IUPAC: temperature of 0 °C and a pressure of 101.325 kPa.
+The value used was obtained from CODATA: the NIST Reference on Constants, Units and Uncertainty.
+***/
+v_molar(22.413968).
 
 %%% Mass units %%%
 unit(Formula,Mass,g,Mol,mol) :-
@@ -28,6 +31,10 @@ unit(_,Mol,mol,Vol,'L') :-
 
 
 %%% Concentration units %%%
+/*** NOTE:
+ The volume (Vol) is assumed to represent the volume of the entire solution.
+***/
+
 conc(_,Vol,'L',Conc,'M',Mol,mol) :-
 	Mol /* mol */ is Conc /* mol / L */ * Vol /* L */, !.
 
