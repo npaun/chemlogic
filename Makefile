@@ -6,6 +6,7 @@
 ### This Makefile is written in GNU Make syntax ###
 
 
+
 ### Meta-Targets
 .DEFAULT: all
 all: cli web
@@ -45,7 +46,8 @@ DEST ?= bin/
 
 # Set which Prolog system is used to compile Chemlogic.
 PROLOG_SYSTEM ?= swipl
-PROLOG_PATH ?= $(shell which swipl) 
+PROLOG_PATH_DETECT = $(shell which swipl)
+PROLOG_PATH ?= $(PROLOG_PATH_DETECT)
 
 
 ### Help ###
@@ -112,14 +114,6 @@ uninstall:
 
 ### Creating Distributions ###
 
-# BSD: .ifmake dist || disttree || archive
-# BSD: TAG != git tag | tail -1 | cut -c 2-
-# BSD: .endif
-
-dist disttree archive: TAG := $(strip $(shell ./build/versionName))#<<< GNU
-
-#dist: archive
-
 clean:
 	# Build files
 	-rm bin/chem*
@@ -128,15 +122,15 @@ clean:
 	# Reset Compile options
 	cp build/compile.cf.dist build/compile.cf
 
-dist: clean
-	cp -av ./ ../chemlogic-$(TAG)
-	$(MAKE) -C ../chemlogic-$(TAG) archive
 
-disttree:
-	# Place a file in the new tree with information about the Git commits so that I can figure out how I produced a certain distribution. 	
-	$(PWD)/build/tagdist $(PWD)
-	rm -rf  .git/ .gitignore .repo/ tags
+dist: archive
 
-archive: disttree
-	cd ../; tar -czvf chemlogic-$(TAG).tar.gz chemlogic-$(TAG)
- 
+dist-tree: TAG = $(shell ./build/versionName)
+dist-tree:
+	cp -a ./ ../chemlogic-$(TAG)/
+	./build/tagdist $(TAG)	
+	rm -rf ../chemlogic-$(TAG)/.git/ ../chemlogic-$(TAG)/.repo/
+
+archive: TAG = $(shell ./build/versionName)
+archive: dist-tree
+	tar -czf ../chemlogic-$(TAG).tar.gz ../chemlogic-$(TAG)/
