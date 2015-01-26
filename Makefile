@@ -23,21 +23,21 @@ cli web web-daemon: compile.cf
 
 
 # Set the default prefix
-PREFIX?=/usr/local
+PREFIX ?= /usr/local
 
 
 ifdef DEST
 # If the user has explicitly specified a DEST, write all files there
-BINDIR?=$(DEST)
-SHAREDIR?=$(DEST)
+BINDIR ?= $(DEST)
+SHAREDIR ?= $(DEST)
 else
 # Otherwise, install to UNIX standard locations
 	ifdef DESTDIR
 		DESTDIR = $(DESTDIR)/
 	endif
 
-BINDIR?=$(DESTDIR)$(PREFIX)/bin
-SHAREDIR?=$(DESTDIR)$(PREFIX)/share/chemlogic
+BINDIR ?= $(DESTDIR)$(PREFIX)/bin
+SHAREDIR ?= $(DESTDIR)$(PREFIX)/share/chemlogic
 endif
 
 # Set the DEST for the output of the building process, if not set by user
