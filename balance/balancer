@@ -28,7 +28,7 @@
 
 
 
-balance_equation_real(InGrammar,Equation,OutGrammar,Solution) :-
+balance_equation_real(InGrammar,Equation,OutGrammar,Solution,Coeffs,MoleculeSet) :-
 	parse(InGrammar,.(user,_,[],Elems,[],MoleculeSet,[],ElementSideSet,SideSet),Equation,[]),
 	(
 		tabulate(SideSet); 
@@ -67,10 +67,10 @@ The second function sets some default parameters.
 */
 
 
-balance_equation(InGrammar,Equation,OutGrammar,Solution) :-
+balance_equation(InGrammar,Equation,OutGrammar,Solution,Coeffs,MoleculeSet) :-
 	catch(
 	catch(
-		call_cleanup(balance_equation_real(InGrammar,Equation,OutGrammar,Solution),balance_equation_cleanup),
+		call_cleanup(balance_equation_real(InGrammar,Equation,OutGrammar,Solution,Coeffs,MoleculeSet),balance_equation_cleanup),
 		error(type_error(Type,Data),_),
 		explain_general_rethrow(type_error,Equation,Type,Data)
 	),
@@ -78,7 +78,8 @@ balance_equation(InGrammar,Equation,OutGrammar,Solution) :-
 	explain_general_rethrow(domain_error,Equation,Type,Data)).
 
 
-balance_equation(Equation,Solution) :- balance_equation(symbolic,Equation,symbolic,Solution).
+balance_equation(InGrammar,Equation,OutGrammar,Solution) :- balance_equation(InGrammar,Equation,OutGrammar,Solution,_,_).
+balance_equation(Equation,Solution) :- balance_equation(symbolic,Equation,symbolic,Solution,_,_).
 
 
 matrix(_,[],[]) :- !.

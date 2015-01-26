@@ -1,4 +1,4 @@
-:- consult('../formula/compounder').
+:- consult('../balance/balancer').
 
 
 stoich(CoeffIn,FormulaIn,[QtyIn,UnitIn],CoeffOut,FormulaOut,[QtyOut,UnitOut]) :-
