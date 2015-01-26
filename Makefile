@@ -128,7 +128,8 @@ dist: archive
 dist-tree: TAG = $(shell ./build/versionName)
 dist-tree:
 	cp -a ./ ../chemlogic-$(TAG)/
-	./build/tagdist $(TAG)	
+	./build/tagdist $(TAG)
+	make2bsd ../chemlogic-$(TAG)/Makefile ../chemlogic-$(TAG)/BSDmakefile	
 	rm -rf ../chemlogic-$(TAG)/.git/ ../chemlogic-$(TAG)/.repo/
 
 archive: TAG = $(shell ./build/versionName)
