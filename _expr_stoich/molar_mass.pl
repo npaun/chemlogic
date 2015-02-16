@@ -1,11 +1,10 @@
 :- consult('../balance/balancer').
 
 
-stoich(CoeffIn,FormulaIn,[QtyIn,UnitIn],CoeffOut,FormulaOut,[QtyOut,UnitOut]) :-
-	unit(FormulaIn,QtyIn,UnitIn,MolIn,mol),
+stoich(CoeffIn,FormulaIn,QtyIn,CoeffOut,FormulaOut,QtyOut) :-
+	unit(FormulaIn,QtyIn,[MolIn,mol]),
 	MolOut is MolIn * CoeffOut / CoeffIn,
-	unit(FormulaOut,MolOut,mol,QtyOut,UnitOut).
-
+	unit(FormulaOut,[MolOut,mol],QtyOut).
 
 /*** NOTE:
 STP is assumed to be calculated as defined by IUPAC: temperature of 0 °C and a pressure of 101.325 kPa.
@@ -14,14 +13,14 @@ The value used was obtained from CODATA: the NIST Reference on Constants, Units 
 v_molar(22.413968 /* L/mol */).
 
 %%% No conversion %%%
-unit(_,Mol,mol,Mol,mol).
+unit(_,[Mol,mol],[Mol,mol]).
 
 %%% Mass units %%%
-unit(Formula,Mass,g,Mol,mol) :-
+unit(Formula,[Mass,g],[Mol,mol]) :-
 	molar_mass(Formula,MMass),
 	Mol /* mol */ is Mass /* g */ * 1 /* mol */ / MMass /* g */, !.
 
-unit(Formula,Mol,mol,Mass,g) :-
+unit(Formula,[Mol,mol],[Mass,g]) :-
 	molar_mass(Formula,MMass),
 	Mass /* g */ is Mol /* mol */ * MMass /* g */ / 1 /* mol */, !.
 
@@ -30,12 +29,12 @@ unit(Formula,Mol,mol,Mass,g) :-
 Formula is assumed to represent a gas at STP (standard temperature and pressure)
 ***/
 
-unit(_,Vol,'L',Mol,mol) :-
+unit(_,[Vol,'L'],[Mol,mol]) :-
 	v_molar(Vm),
 	Mol /* mol */ is Vol /* L */ * 1 /* mol */ / Vm /* L */, !.
 
 
-unit(_,Mol,mol,Vol,'L') :-
+unit(_,[Mol,mol],[Vol,'L']) :-
 	v_molar(Vm),
 	Vol /* L */ is Mol /* mol */ * Vm /* L */ / 1 /* mol */, !.
 
@@ -45,14 +44,16 @@ unit(_,Mol,mol,Vol,'L') :-
  The volume (Vol) is assumed to represent the volume of the entire solution.
 ***/
 
-conc(_,Vol,'L',Conc,'M',Mol,mol) :-
+unit(_,[Vol,'L',Conc,'M'],[Mol,mol]) :-
 	Mol /* mol */ is Conc /* mol / L */ * Vol /* L */, !.
 
 
-conc(_,Mol,mol,Conc,'M',Vol,'L') :-
+unit(_,[Mol,mol,Conc,'M'],[Vol,'L']) :-
 	Vol /* L */ is Mol /* mol */ / Conc /* mol / L */, !.
 
 
+unit(_,[Mol,mol],[Vol,'L',Conc,'M']) :- 
+	Conc /* M */ is Mol /* mol */ / Vol /* L */, !.
 
 %%% Calculate the Molar Mass of a compound %%%
 add_sum(Element,Sub,MassIn,MassOut) :-
