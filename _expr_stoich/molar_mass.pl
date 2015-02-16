@@ -13,6 +13,9 @@ The value used was obtained from CODATA: the NIST Reference on Constants, Units 
 ***/
 v_molar(22.413968).
 
+%%% No conversion %%%
+unit(_,Mol,mol,Mol,mol).
+
 %%% Mass units %%%
 unit(Formula,Mass,g,Mol,mol) :-
 	molar_mass(Formula,MMass),
@@ -56,7 +59,7 @@ add_sum(Element,Sub,MassIn,MassOut) :-
 	mass(Element,AtomicMass),!,
 	MassOut is MassIn + AtomicMass * Sub.
 
-	
+
 sum_part([],_,X,X) :- !.
 sum_part([[Sym,Sub]|PairS],GroupSub,Mass,MassF) :-
 	add_sum(Sym, Sub * GroupSub,Mass,Mass1),
