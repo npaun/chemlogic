@@ -11,7 +11,7 @@ stoich(CoeffIn,FormulaIn,[QtyIn,UnitIn],CoeffOut,FormulaOut,[QtyOut,UnitOut]) :-
 STP is assumed to be calculated as defined by IUPAC: temperature of 0 °C and a pressure of 101.325 kPa.
 The value used was obtained from CODATA: the NIST Reference on Constants, Units and Uncertainty.
 ***/
-v_molar(22.413968).
+v_molar(22.413968 /* L/mol */).
 
 %%% No conversion %%%
 unit(_,Mol,mol,Mol,mol).
