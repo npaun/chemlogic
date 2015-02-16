@@ -109,4 +109,4 @@ Symbol	string	The symbol of the element
 
 %%%% DATABASE VERSION %%%%
 
-db_version(2014,04,09,00).
+db_version((2014,04,09,00)).

@@ -1,12 +1,11 @@
 #!/bin/sh
 
-cd $1
- 	TAG=`git tag -l | tail -1`
+	TAG=$1
+ 	DISTDIR="../chemlogic-$1/"
 	BUILDER="$USER@`hostname`"
 	DATE=`date "+%F %R"`
 	COMMIT=`git log --pretty=format:%H HEAD -1`
 	SOURCEPATH=$PWD
-cd -
 
 	echo "
 ---
@@ -16,4 +15,6 @@ Chemlogic $TAG
 
 <$BUILDER>
 Built at: $DATE
-Source path: $SOURCEPATH" > Buildinfo
+Source path: $SOURCEPATH" > $DISTDIR/Buildinfo
+
+echo "cf_version('$TAG')." >> $DISTDIR/build/compile.cf.dist
