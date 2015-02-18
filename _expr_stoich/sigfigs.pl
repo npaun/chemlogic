@@ -1,12 +1,13 @@
 :- set_prolog_flag(double_quotes,chars).
 
-sigfigs(H,T) --> leading_zeros(_), whole(H), decimal_part(T).
+sigfigs(H,T) --> leading_zeros(_), whole(H), decimal_part(H,T).
 
-decimal_part(T) -->  decimal_point, decimal_zeros(_), decimal(T).
-decimal_part([]) --> "".
+decimal_part([],T) -->  decimal_point, decimal_zeros(_), decimal(T).
+decimal_part(_,[H|T]) --> decimal_point, decimal_zeros(H), decimal(T).
+decimal_part(_,[]) --> "".
 
 
-leading_zeros([0|T]) --> "0", leading_zeros(T).
+leading_zeros(["0"|T]) --> "0", leading_zeros(T).
 leading_zeros([]) --> "".
 
 number("0") --> "0".
