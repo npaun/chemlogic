@@ -1,0 +1,13 @@
+<?php
+
+function magicround($num,$sf)
+	{
+		$d = ceil(log10(abs($num));
+		$power = $sf - $d;
+		$magnitude = pow(10,$power);
+		$shifted = round($num*$magnitude);
+		return($shifted/$magnitude);
+		}
+
+echo(magicround($argv[1],$argv[2])."\n");
+
