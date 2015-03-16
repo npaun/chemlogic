@@ -48,12 +48,15 @@ unit(_,[Vol,'L',Conc,'M'],[Mol,mol]) :-
 	Mol /* mol */ is Conc /* mol / L */ * Vol /* L */, !.
 
 
-unit(_,[Mol,mol,Conc,'M'],[Vol,'L']) :-
-	Vol /* L */ is Mol /* mol */ / Conc /* mol / L */, !.
+%unit(_,[Mol,mol,Conc,'M'],[Vol,'L']) :-
+%	Vol /* L */ is Mol /* mol */ / Conc /* mol / L */, !.
 
+unit(_,[Mol,mol],[Vol,'L',Conc,'M']) :-
+	var(Conc) -> Conc /* M */ is Mol /* mol */ / Vol /* L */, !.
 
-unit(_,[Mol,mol],[Vol,'L',Conc,'M']) :- 
-	Conc /* M */ is Mol /* mol */ / Vol /* L */, !.
+unit(_,[Mol,mol],[Vol,'L',Conc,'M']) :-
+	var(Vol) -> Vol /* L */ is Mol /* mol */ / Conc /* mol / L */, !.
+
 
 %%% Calculate the Molar Mass of a compound %%%
 add_sum(Element,Sub,MassIn,MassOut) :-
