@@ -1,10 +1,25 @@
 :- set_prolog_flag(double_quotes,chars).
 
-sigfigs(Digit,DigitR) --> leading_zeros(_,_), (new_digit(Digit,DigitR0) -> decimal_part(DigitR0,DigitR), !; decimal_part_nozero(Digit,DigitR), !).
 
-decimal_part_nozero(Digit,DigitR) --> decimal_point, leading_zeros(_,_), new_digit(Digit,DigitR).
 
-decimal_part(Digit,DigitR) --> decimal_point, leading_zeros(Digit,DigitR0), new_digit(DigitR0,DigitR).
+sigfigs(Value,SF) :-
+	sig_number(SigDigits,[],Value,[]),
+	length(SigDigits,SF).
+
+
+sig_number(Digit,DigitR) --> leading_zeros(Zeros,ZerosR), 
+(
+	(new_digit(Digit,DigitR0) -> decimal_part(DigitR0,DigitR), !; decimal_part_nozero(Digit,DigitR), !);
+	{Digit = [0], DigitR = [], !}
+).
+
+
+decimal_part_nozero(Digit,DigitR) --> decimal_point, leading_zeros(Zeros,ZerosR), new_digit_tail(DigitCand,DigitCandR), 
+(
+	{DigitCand = []} -> {Digit = Zeros, ZerosR = [0|DigitR]}; {Digit = DigitCand, DigitR = DigitCandR}
+	).
+
+decimal_part(Digit,DigitR) --> decimal_point, leading_zeros(Digit,DigitR0), new_digit_tail(DigitR0,DigitR).
 decimal_part(Digit,Digit) --> decimal_point.
 decimal_part(Digit,Digit) --> "".
 
