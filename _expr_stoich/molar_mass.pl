@@ -3,8 +3,10 @@
 
 stoich(CoeffIn,FormulaIn,QtyIn,CoeffOut,FormulaOut,QtyOutR) :-
 	unit(FormulaIn,QtyIn,[MolIn,mol],SFIn),
+	writeln(SFIn),
 	MolOut is MolIn * CoeffOut / CoeffIn,
 	unit(FormulaOut,[MolOut,mol],QtyOut,SFOut),
+	writeln(SFOut),
 	LowestSF is min(SFIn,SFOut),
 	sf_produce(QtyOut,LowestSF,QtyOutR).
 
@@ -19,9 +21,9 @@ unit(_,[Mol,mol],[Mol,mol],LowestSF) :- sf_calc(Mol,LowestSF).
 
 %%% Mass units %%%
 unit(Formula,[Mass,g],[Mol,mol],LowestSF) :-
-	sf_calc(Mass,LowestSF),
+	sf_calc(Mass,LowestSF,MassNum),
 	molar_mass(Formula,MMass),
-	Mol /* mol */ is Mass /* g */ * 1 /* mol */ / MMass /* g */, !.
+	Mol /* mol */ is MassNum /* g */ * 1 /* mol */ / MMass /* g */, !.
 
 unit(Formula,[Mol,mol],[Mass,g],LowestSF) :-
 	sf_calc(Mol,LowestSF),
@@ -68,11 +70,12 @@ unit(_,[Mol,mol],[Vol,'L',Conc,'M'],LowestSF) :-
 	Conc /* M */ is Mol /* mol */ / Vol /* L */, !.
 
 unit(_,[Mol,mol],[Vol,'L',Conc,'M'],LowestSF) :-
-	var(Vol) -> 
-	sf_calc(Mol,MolSF),
-	sf_calc(Conc,ConcSF),
+	var(Vol) ->( 
+	sf_calc(Mol,MolSF,MolNum),
+	sf_calc(Conc,ConcSF,ConcNum),
 	LowestSF is min(MolSF,ConcSF),
-	Vol /* L */ is Mol /* mol */ / Conc /* mol / L */, !.
+	writeln(LowestSF),
+	Vol /* L */ is MolNum /* mol */ / ConcNum /* mol / L */, !).
 
 
 %%% Calculate the Molar Mass of a compound %%%
