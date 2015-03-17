@@ -6,6 +6,7 @@ function magicround($num,$sf)
 		  return(0);
 
 		$d = ceil(log10(abs($num)));
+		echo("D is $d\n");
 		$power = $sf - $d;
 		$magnitude = pow(10,$power);
 		$shifted = round($num*$magnitude);
