@@ -1,7 +1,7 @@
 % fact.pl: The main file that loads the chemical information database
 % This file is from Chemlogic, a logic programming computer chemistry system
 % <http://icebergsystems.ca/chemlogic>
-% (C) Copyright 2012-2014 Nicholas Paun
+% (C) Copyright 2012-2015 Nicholas Paun
 
 
 
@@ -109,4 +109,4 @@ Symbol	string	The symbol of the element
 
 %%%% DATABASE VERSION %%%%
 
-db_version(2014,04,09,00).
+db_version((2014,04,09,00)).

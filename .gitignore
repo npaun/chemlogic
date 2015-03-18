@@ -29,3 +29,6 @@ docs/src/*.pdf
 
 # Ctags
 tags
+
+# Auto-generated Makefiles
+BSDmakefile

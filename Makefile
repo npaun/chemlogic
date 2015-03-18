@@ -1,9 +1,10 @@
-# Makefile
+# Makefile: Rules to package, compile and install Chemlogic
 # This file is from Chemlogic, a logic programming computer chemistry system  
 # <http://icebergsystems.ca/chemlogic>  
-# (C) Copyright 2012-2014 Nicholas Paun  
+# (C) Copyright 2012-2015 Nicholas Paun  
 
 ### This Makefile is written in GNU Make syntax ###
+
 
 
 ### Meta-Targets
@@ -22,21 +23,21 @@ cli web web-daemon: compile.cf
 
 
 # Set the default prefix
-PREFIX?=/usr/local
+PREFIX ?= /usr/local
 
 
 ifdef DEST
 # If the user has explicitly specified a DEST, write all files there
-BINDIR?=$(DEST)
-SHAREDIR?=$(DEST)
+BINDIR ?= $(DEST)
+SHAREDIR ?= $(DEST)
 else
 # Otherwise, install to UNIX standard locations
 	ifdef DESTDIR
 		DESTDIR = $(DESTDIR)/
 	endif
 
-BINDIR?=$(DESTDIR)$(PREFIX)/bin
-SHAREDIR?=$(DESTDIR)$(PREFIX)/share/chemlogic
+BINDIR ?= $(DESTDIR)$(PREFIX)/bin
+SHAREDIR ?= $(DESTDIR)$(PREFIX)/share/chemlogic
 endif
 
 # Set the DEST for the output of the building process, if not set by user
@@ -45,7 +46,8 @@ DEST ?= bin/
 
 # Set which Prolog system is used to compile Chemlogic.
 PROLOG_SYSTEM ?= swipl
-PROLOG_PATH ?= $(shell which swipl) 
+PROLOG_PATH_DETECT = $(shell which swipl)
+PROLOG_PATH ?= $(PROLOG_PATH_DETECT)
 
 
 ### Help ###
@@ -85,7 +87,7 @@ compile.cf:
 	#Clear everything in the file except the header
 	cp build/compile.cf.dist build/compile.cf
 	#Tell Prolog the prefix
-	echo "prefix('$(PREFIX)')." >> build/compile.cf	
+	echo "cf_prefix('$(PREFIX)')." >> build/compile.cf	
 	echo END
 
 
@@ -112,14 +114,6 @@ uninstall:
 
 ### Creating Distributions ###
 
-# BSD: .ifmake dist || disttree || archive
-# BSD: TAG != git tag | tail -1 | cut -c 2-
-# BSD: .endif
-
-dist disttree archive: TAG := $(strip $(shell git tag | tail -1 | cut -c 2-))#<<< GNU
-
-#dist: archive
-
 clean:
 	# Build files
 	-rm bin/chem*
@@ -128,15 +122,16 @@ clean:
 	# Reset Compile options
 	cp build/compile.cf.dist build/compile.cf
 
-dist: clean
-	cp -av ./ ../chemlogic-$(TAG)
-	$(MAKE) -C ../chemlogic-$(TAG) archive
 
-disttree:
-	# Place a file in the new tree with information about the Git commits so that I can figure out how I produced a certain distribution. 	
-	$(PWD)/build/tagdist $(PWD)
-	rm -rf  .git/ .gitignore .repo/ tags
+dist: archive
 
-archive: disttree
-	cd ../; tar -czvf chemlogic-$(TAG).tar.gz chemlogic-$(TAG)
- 
+dist-tree: TAG = $(shell ./build/versionName)
+dist-tree:
+	cp -a ./ ../chemlogic-$(TAG)/
+	./build/tagdist $(TAG)
+	make2bsd ../chemlogic-$(TAG)/Makefile ../chemlogic-$(TAG)/BSDmakefile	
+	rm -rf ../chemlogic-$(TAG)/.git/
+
+archive: TAG = $(shell ./build/versionName)
+archive: dist-tree
+	tar -czf ../chemlogic-$(TAG).tar.gz ../chemlogic-$(TAG)/

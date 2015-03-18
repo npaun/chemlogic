@@ -1,11 +1,14 @@
 % balancer.pl: Web frontend for the chemical equation balancer
 % This file is from Chemlogic, a logic programming computer chemistry system
 % <http://icebergsystems.ca/chemlogic>
-% (C) Copyright 2012-2014 Nicholas Paun
+% (C) Copyright 2012-2015 Nicholas Paun
+
 
 
 :- http_handler('/chemlogic/',balancer_page,[]). %% Make it the default page
 :- http_handler('/chemlogic/balancer', balancer_page, []).
+
+
 
 balancer_input(Request,Type,Input,OutputType) :-
 	http_parameters(Request,

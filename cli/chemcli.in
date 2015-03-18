@@ -1,8 +1,11 @@
 #!/usr/bin/env swipl
-% chemcli: A simple command-line DSL for accessing chemlogic features
+% chemcli: A simple command-line DSL for accessing Chemlogic features
 % This file is from Chemlogic, a logic programming computer chemistry system
 % <http://icebergsystems.ca/chemlogic>
-% (C) Copyright 2012-2014 Nicholas Paun
+% (C) Copyright 2012-2015 Nicholas Paun
+
+
+
 
 :- set_prolog_flag(verbose,silent).
 :- use_module(cli_error).
@@ -11,6 +14,7 @@
 :- initialization cli_init.
 :- op(990,xfy,::).
 :- op(100,xf,print).
+
 
 
 InputType - Input :: -Result :-
@@ -39,10 +43,11 @@ InputType - Input :: ResultType print :-
 
 
 cli_init :-
-	current_prolog_flag(argv,['--api'|Format]) -> 
+	current_prolog_flag(argv,Argv),
+(Argv = ['--api'|Format]; Argv = [_,'--api'|Format]) -> 
 (
 cli_api_init(Format),
-cli_api_message
+cli_api_message(Format)
 );
 (
 set_output_format(ansi),

@@ -1,6 +1,6 @@
 % web_error.pl: Error handling predicates for HTML output, including token highlighting
 % This file is from Chemlogic, a logic programming computer chemistry system
-% (C) Copyright 2012-2014 Nicholas Paun
+% (C) Copyright 2012-2015 Nicholas Paun
 
 
 

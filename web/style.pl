@@ -1,6 +1,6 @@
 % style.pl: Styles the pages from the Web frontend: adds menus, containers and a CSS file
 % This file is from Chemlogic, a logic programming computer chemistry system
-% (C) Copyright 2012-2014 Nicholas Paun
+% (C) Copyright 2012-2015 Nicholas Paun
 
 
 
@@ -8,13 +8,11 @@
 
 
 
-
-
 % Checks to see if style files have been installed in the correct system-wide location (e.g /usr/share/chemlogic)
 % If not, look for style files in the current directory.
 
 find_style_dir :-
-	catch(prefix(Prefix),_,fail), % If the prefix is not configured, fail and assume that the files are not installed
+	catch(cf_prefix(Prefix),_,fail), % If the prefix is not configured, fail and assume that the files are not installed
 	atom_concat(Prefix,'/share/chemlogic/',ChemlogicShare),
 	exists_directory(ChemlogicShare) -> assertz(style_dir(ChemlogicShare));
 	assertz(style_dir('')).
