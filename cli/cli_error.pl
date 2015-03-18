@@ -3,7 +3,10 @@
 % <http://icebergsystems.ca/chemlogic>
 % (C) Copyright 2012-2015 Nicholas Paun
 
+
+
 :- module(cli_error,[error_handler/2]).
+
 
 
 error_line(Start,Token,Rest) --> Start, output(output,err_token_start), Token, output(output,err_token_end), Rest.
