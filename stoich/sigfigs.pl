@@ -1,6 +1,19 @@
+% sigfigs.pl: Implements the calculation and rounding of numbers using signficant figures.
+% This file is from Chemlogic, a logic programming computer chemistry system
+% <http://icebergsystems.ca/chemlogic>
+% (C) Copyright 2012-2015 Nicholas Paun
+
+
+
 :- module(sigfigs,[sigfigs/2,round_sigfigs/3, to_number/2]).
 :- consult(sigfigs_number).
 :- set_prolog_flag(double_quotes,chars).
+
+
+/*** TODO:
+ 	* Implement scientific notation.
+	* Make the treatment of numbers with trailing zeros in the whole part configurable.
+***/
 
 round_precision(0,_,0). % The rounding logic will not work if the input is 0. The untruncator will produce the correct precision.
 round_precision(Number,Precision,Result) :-

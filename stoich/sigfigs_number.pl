@@ -1,3 +1,10 @@
+% sigfigs_number.pl: The DCG for identifying the significant digits of a number.
+% This file is from Chemlogic, a logic programming computer chemistry system
+% <http://icebergsystems.ca/chemlogic>
+% (C) Copyright 2012-2015 Nicholas Paun
+
+
+
 number(Digit,DigitR) --> leading_zeros(_,_), % Leading zeros in the whole part are not significant. 
 	(
 		(

@@ -1,5 +1,14 @@
+% units.pl: Defines the conversion and formatting of units of various chemical quantities.
+% This file is from Chemlogic, a logic programming computer chemistry system
+% <http://icebergsystems.ca/chemlogic>
+% (C) Copyright 2012-2015 Nicholas Paun
+
+
+
 :- consult('../balance/balancer').
 :- use_module(sigfigs).
+
+
 
 stoich(CoeffK,FormulaK,QtyK,CoeffR,FormulaR,QtyR) :-
 	calc_format(input,FormulaK,QtyK,[MolK,mol],SF),
