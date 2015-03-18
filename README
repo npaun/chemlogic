@@ -37,6 +37,7 @@ To run the Web interface:
 The Web interface runs on port `8000` by default, at `http://localhost:8000/chemlogic/`. The Web interface provides a simple interface for all of the Chemlogic features.
 
 To compile the interfaces, use `make`:
+
 1. `make <interface>`  
 2. `make install`  
 Run `make help` for more details.
