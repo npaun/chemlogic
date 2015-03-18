@@ -34,8 +34,10 @@ calc_format(user,Formula,[[QtyIn1,UnitIn1],[QtyIn2,UnitIn2]],[QtyOut,UnitOut],SF
 	SF is min(SF1,SF2),
 	unit(Formula,[[QtyInNum1,UnitIn1],[QtyInNum2,UnitIn2]],[QtyOut,UnitOut]).
 
-/* Perhaps output might be useful from a two unit input? */
+% Perhaps output from the 2 unit form might be useful in some cases.
 
+% In this case, some aspects of the result are known, while others are unknown. The variable could be in either term. 
+% This clause determines which quantities represent each argument and then calls the actual procedure.
 calc_format(output,Formula,[QtyCalc,UnitCalc],[[QtyR1,UnitR1],[QtyR2,UnitR2]],MaxSF) :-
 	(var(QtyR1) -> calc_format_complex_result(Formula,[QtyCalc,UnitCalc],[QtyR2,UnitR2],[QtyR1,UnitR1],MaxSF);
 	calc_format_complex_result(Formula,[QtyCalc,UnitCalc],[QtyR1,UnitR1],[QtyR2,UnitR2],MaxSF)).
