@@ -34,8 +34,7 @@ sf_produce(Value,SF,Result) :-
 
 
 sf_calc(Value,SF) :-
-	atom_chars(Value,ValueChars),
-	sf_number(SigDigits,[],ValueChars,[]), % Identify all of the significant figures in the number.
+	sf_number(SigDigits,[],Value,[]), % Identify all of the significant figures in the number.
 	length(SigDigits,SF). % Count them to identify the number of signifcant figures.
 
 

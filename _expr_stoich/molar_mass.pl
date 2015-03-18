@@ -1,26 +1,38 @@
 :- consult('../balance/balancer').
 :- use_module(sigfigs).
 
-stoich(CoeffIn,FormulaIn,QtyIn,CoeffOut,FormulaOut,QtyOut) :-
-	calc(FormulaIn,QtyIn,[MolIn,mol],SF),
-	MolOut is MolIn * CoeffOut / CoeffIn,
-	calc(FormulaOut,[MolOut,mol],QtyOut,SF).
+stoich(CoeffK,FormulaK,QtyK,CoeffR,FormulaR,QtyR) :-
+	calc(user,FormulaK,QtyK,[MolK,mol],SF),
+	MolR is MolK * CoeffR / CoeffK,
+	calc(output,FormulaR,[MolR,mol],QtyR,SF).
 
-calc(Formula,[QtyIn,UnitIn],[QtyOutR,UnitOut],MaxSF) :-
-	(atom(QtyIn) -> atom_number(
-	unit(Formula,[QtyIn,UnitIn],[QtyOut,UnitOut]),
-	(var(MaxSF) -> 
-		(
-			sf_calc(QtyIn,MaxSF),
-			QtyOut = QtyOutR
-		);
-		(
-			sf_produce(QtyOut,MaxSF,QtyOutR)
-		)
-	).
 		
+calc(user,Formula,[QtyIn,UnitIn],[QtyOut,UnitOut],SF) :-
+	sf_calc(QtyIn,SF),
+	number_chars(QtyInNum,QtyIn),
+	unit(Formula,[QtyInNum,UnitIn],[QtyOut,UnitOut]).
+
+calc(output,Formula,[QtyIn,UnitIn],[QtyOutRound,UnitOut],SF) :-
+	unit(Formula,[QtyIn,UnitIn],[QtyOut,UnitOut]),
+	sf_produce(QtyOut,SF,QtyOutRound).
 
 
+calc(user,Formula,[[QtyIn1,UnitIn1],[QtyIn2,UnitIn2]],[QtyOut,UnitOut],SF) :-
+	sf_calc(QtyIn1,SF1),
+	number_chars(QtyInNum1,QtyIn1),
+	sf_calc(QtyIn2,SF2),
+	number_chars(QtyInNum2,QtyIn2),
+	SF is min(SF1,SF2),
+	unit(Formula,[[QtyInNum1,UnitIn1],[QtyInNum2,UnitIn2]],[QtyOut,UnitOut]).
+
+/* Perhaps output might be useful from a two unit input? */
+
+calc(output,Formula,[QtyCalc,UnitCalc],[[QtyIn,UnitIn],[QtyOutRound,UnitOut]],MaxSF) :-
+	sf_calc(QtyIn,SFIn),
+	number_chars(QtyInNum,QtyIn),
+	unit(Formula,[[QtyCalc,UnitCalc],[QtyInNum,UnitIn]],[QtyOut,UnitOut]),
+	SF is min(MaxSF,SFIn),
+	sf_produce(QtyOut,SF,QtyOutRound).
 
 
 /*** NOTE:
@@ -61,31 +73,15 @@ unit(_,[Mol,mol],[Vol,'L']) :-
  The volume (Vol) is assumed to represent the volume of the entire solution.
 ***/
 
-unit(_,[Vol,'L',Conc,'M'],[Mol,mol],LowestSF) :-
-	sf_calc(Vol,VolSF),
-	sf_calc(Conc,ConcSF),
-	LowestSF is min(VolSF,ConcSF),
+unit(_,[[Vol,'L'],[Conc,'M']],[Mol,mol]) :-
 	Mol /* mol */ is Conc /* mol / L */ * Vol /* L */, !.
 
 
-%unit(_,[Mol,mol,Conc,'M'],[Vol,'L']) :-
-%	Vol /* L */ is Mol /* mol */ / Conc /* mol / L */, !.
+unit(_,[[Mol,mol],[Conc,'M']],[Vol,'L']) :-
+	Vol /* L */ is Mol /* mol */ / Conc /* mol / L */, !.
 
-unit(_,[Mol,mol],[Vol,'L',Conc,'M'],LowestSF) :-
-	var(Conc) -> 
-	sf_calc(Mol,MolSF),
-	sf_calc(Vol,VolSF),
-	LowestSF is min(MolSF,VolSF),
+unit(_,[[Mol,mol],[Vol,'L']],[Conc,'M']) :-
 	Conc /* M */ is Mol /* mol */ / Vol /* L */, !.
-
-unit(_,[Mol,mol],[Vol,'L',Conc,'M'],LowestSF) :-
-	var(Vol) ->( 
-	sf_calc(Mol,MolSF,MolNum),
-	sf_calc(Conc,ConcSF,ConcNum),
-	LowestSF is min(MolSF,ConcSF),
-	writeln(LowestSF),
-	Vol /* L */ is MolNum /* mol */ / ConcNum /* mol / L */, !).
-
 
 %%% Calculate the Molar Mass of a compound %%%
 add_sum(Element,Sub,MassIn,MassOut) :-
