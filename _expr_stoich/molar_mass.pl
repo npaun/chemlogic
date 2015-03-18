@@ -27,7 +27,11 @@ calc(user,Formula,[[QtyIn1,UnitIn1],[QtyIn2,UnitIn2]],[QtyOut,UnitOut],SF) :-
 
 /* Perhaps output might be useful from a two unit input? */
 
-calc(output,Formula,[QtyCalc,UnitCalc],[[QtyIn,UnitIn],[QtyOutRound,UnitOut]],MaxSF) :-
+calc(output,Formula,[QtyCalc,UnitCalc],[[QtyR1,UnitR1],[QtyR2,UnitR2]],MaxSF) :-
+	(var(QtyR1) -> calc_real(Formula,[QtyCalc,UnitCalc],[QtyR2,UnitR2],[QtyR1,UnitR1],MaxSF);
+	calc_real(Formula,[QtyCalc,UnitCalc],[QtyR1,UnitR1],[QtyR2,UnitR2],MaxSF)).
+
+calc_real(Formula,[QtyCalc,UnitCalc],[QtyIn,UnitIn],[QtyOutRound,UnitOut],MaxSF) :-
 	sf_calc(QtyIn,SFIn),
 	number_chars(QtyInNum,QtyIn),
 	unit(Formula,[[QtyCalc,UnitCalc],[QtyInNum,UnitIn]],[QtyOut,UnitOut]),
