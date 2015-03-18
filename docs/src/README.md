@@ -1,4 +1,4 @@
-% Document Source README  
+% README: Instructions for rendering th Chemlogic papers from source. 
 % This file is from Chemlogic, a logic programming computer chemistry system  
 % <http://icebergsystems.ca/chemlogic>  
 % (C) Copyright 2012-2015 Nichlolas Paun 

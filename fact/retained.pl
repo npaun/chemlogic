@@ -3,6 +3,8 @@
 % <http://icebergsystems.ca/chemlogic>
 % (C) Copyright 2012-2015 Nicholas Paun
 
+
+
 %%%%% IUPAC Retained Names (preferred) %%%%%
 
 retained(["H","O"|Rest],Rest,[["H",2],["O",1]]) --> "water".

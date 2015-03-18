@@ -4,8 +4,11 @@
 % (C) Copyright 2012-2015 Nicholas Paun
 
 
+
 :- http_handler('/chemlogic/',balancer_page,[]). %% Make it the default page
 :- http_handler('/chemlogic/balancer', balancer_page, []).
+
+
 
 balancer_input(Request,Type,Input,OutputType) :-
 	http_parameters(Request,

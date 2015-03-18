@@ -8,8 +8,6 @@
 
 
 
-
-
 % Checks to see if style files have been installed in the correct system-wide location (e.g /usr/share/chemlogic)
 % If not, look for style files in the current directory.
 
