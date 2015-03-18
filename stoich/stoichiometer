@@ -1,0 +1,16 @@
+#!/usr/bin/env swipl
+:- consult(units).
+
+identify_query([Qty|QtyS],[Coeff|CoeffS],[Formula|FormulaS],QtyAns,CoeffAns,FormulaAns) :-
+	(var(Qty) -> identify_query(QtyS,CoeffS,FormulaS,QtyAns,CoeffAns,FormulaAns);
+	(Qty = QtyAns, Coeff = CoeffAns, Formula = FormulaAns )
+	).
+
+
+stoich_ui(InGrammar,Equation,OutGrammar,Balanced,StoichKnown,StoichResult) :-
+	balance_equation(InGrammar,Equation,OutGrammar,Balanced,CoeffS,FormulaS),
+	identify_query(StoichKnown,CoeffS,FormulaS,QtyIn,CoeffIn,FormulaIn),
+	identify_query(StoichResult,CoeffS,FormulaS,QtyOut,CoeffOut,FormulaOut),
+	stoich(CoeffIn,FormulaIn,QtyIn,CoeffOut,FormulaOut,QtyOut).
+
+% vi: ft=prolog

@@ -11,9 +11,9 @@
 
 
 stoich(CoeffK,FormulaK,QtyK,CoeffR,FormulaR,QtyR) :-
-	calc_format(input,FormulaK,QtyK,[MolK,mol],SF),
+	calc_format(input,FormulaK,QtyK,[MolK,mol],SF), !,
 	MolR is MolK * CoeffR / CoeffK,
-	calc_format(output,FormulaR,[MolR,mol],QtyR,SF).
+	calc_format(output,FormulaR,[MolR,mol],QtyR,SF), !.
 
 		
 calc_format(input,Formula,[QtyIn,UnitIn],[QtyOut,UnitOut],SF) :-
@@ -21,12 +21,12 @@ calc_format(input,Formula,[QtyIn,UnitIn],[QtyOut,UnitOut],SF) :-
 	to_number(QtyIn,QtyInNum),
 	unit(Formula,[QtyInNum,UnitIn],[QtyOut,UnitOut]).
 
-calc_format(input,Formula,[QtyIn,UnitIn],[QtyOutRound,UnitOut],SF) :-
+calc_format(output,Formula,[QtyIn,UnitIn],[QtyOutRound,UnitOut],SF) :-
 	unit(Formula,[QtyIn,UnitIn],[QtyOut,UnitOut]),
 	round_sigfigs(QtyOut,SF,QtyOutRound).
 
 
-calc_format(user,Formula,[[QtyIn1,UnitIn1],[QtyIn2,UnitIn2]],[QtyOut,UnitOut],SF) :-
+calc_format(input,Formula,[[QtyIn1,UnitIn1],[QtyIn2,UnitIn2]],[QtyOut,UnitOut],SF) :-
 	sigfigs(QtyIn1,SF1),
 	to_number(QtyIn1,QtyInNum1),
 	sigfigs(QtyIn2,SF2),

@@ -3,6 +3,7 @@
 % <http://icebergsystems.ca/chemlogic>
 % (C) Copyright 2012-2015 Nicholas Paun
 
+:- set_prolog_flag(double_quotes,chars).
 
 
 number(Digit,DigitR) --> leading_zeros(_,_), % Leading zeros in the whole part are not significant. 
