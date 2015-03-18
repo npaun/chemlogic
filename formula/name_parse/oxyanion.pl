@@ -1,7 +1,7 @@
 % oxyanion.pl: A rather inefficient on-the-fly DCG for oxyanion names --- used to help catch syntax errors
 % This file is from Chemlogic, a logic programming computer chemistry system
 % <http://icebergsystems.ca/chemlogic>
-% (C) Copyright 2012-2014 Nicholas Paun
+% (C) Copyright 2012-2015 Nicholas Paun
 
 
 

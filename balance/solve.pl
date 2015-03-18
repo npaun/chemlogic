@@ -1,7 +1,7 @@
 % solve.pl: Converts a provided matrix to a system of linear equations which is solved using CLP(q).
 % This file is from Chemlogic, a logic programming computer chemistry system
 % <http://icebergsystems.ca/chemlogic>
-% (C) Copyright 2012-2014 Nicholas Paun
+% (C) Copyright 2012-2015 Nicholas Paun
 
 
 

@@ -1,7 +1,7 @@
 % tabulate.pl: Builds a lookup table, implemented as a dynamic predicate for a parsed equation struct
 % This file is from Chemlogic, a logic programming computer chemistry system
 % <http://icebergsystems.ca/chemlogic>
-% (C) Copyright 2012-2014 Nicholas Paun
+% (C) Copyright 2012-2015 Nicholas Paun
 
 
 
