@@ -2,41 +2,41 @@
 :- use_module(sigfigs).
 
 stoich(CoeffK,FormulaK,QtyK,CoeffR,FormulaR,QtyR) :-
-	calc(user,FormulaK,QtyK,[MolK,mol],SF),
+	calc_format(input,FormulaK,QtyK,[MolK,mol],SF),
 	MolR is MolK * CoeffR / CoeffK,
-	calc(output,FormulaR,[MolR,mol],QtyR,SF).
+	calc_format(output,FormulaR,[MolR,mol],QtyR,SF).
 
 		
-calc(user,Formula,[QtyIn,UnitIn],[QtyOut,UnitOut],SF) :-
-	sf_calc(QtyIn,SF),
-	number_chars(QtyInNum,QtyIn),
+calc_format(input,Formula,[QtyIn,UnitIn],[QtyOut,UnitOut],SF) :-
+	sigfigs(QtyIn,SF),
+	to_number(QtyIn,QtyInNum),
 	unit(Formula,[QtyInNum,UnitIn],[QtyOut,UnitOut]).
 
-calc(output,Formula,[QtyIn,UnitIn],[QtyOutRound,UnitOut],SF) :-
+calc_format(input,Formula,[QtyIn,UnitIn],[QtyOutRound,UnitOut],SF) :-
 	unit(Formula,[QtyIn,UnitIn],[QtyOut,UnitOut]),
-	sf_produce(QtyOut,SF,QtyOutRound).
+	round_sigfigs(QtyOut,SF,QtyOutRound).
 
 
-calc(user,Formula,[[QtyIn1,UnitIn1],[QtyIn2,UnitIn2]],[QtyOut,UnitOut],SF) :-
-	sf_calc(QtyIn1,SF1),
-	number_chars(QtyInNum1,QtyIn1),
-	sf_calc(QtyIn2,SF2),
-	number_chars(QtyInNum2,QtyIn2),
+calc_format(user,Formula,[[QtyIn1,UnitIn1],[QtyIn2,UnitIn2]],[QtyOut,UnitOut],SF) :-
+	sigfigs(QtyIn1,SF1),
+	to_number(QtyIn1,QtyInNum1),
+	sigfigs(QtyIn2,SF2),
+	to_number(QtyIn2,QtyInNum2),
 	SF is min(SF1,SF2),
 	unit(Formula,[[QtyInNum1,UnitIn1],[QtyInNum2,UnitIn2]],[QtyOut,UnitOut]).
 
 /* Perhaps output might be useful from a two unit input? */
 
-calc(output,Formula,[QtyCalc,UnitCalc],[[QtyR1,UnitR1],[QtyR2,UnitR2]],MaxSF) :-
-	(var(QtyR1) -> calc_real(Formula,[QtyCalc,UnitCalc],[QtyR2,UnitR2],[QtyR1,UnitR1],MaxSF);
-	calc_real(Formula,[QtyCalc,UnitCalc],[QtyR1,UnitR1],[QtyR2,UnitR2],MaxSF)).
+calc_format(output,Formula,[QtyCalc,UnitCalc],[[QtyR1,UnitR1],[QtyR2,UnitR2]],MaxSF) :-
+	(var(QtyR1) -> calc_format_complex_result(Formula,[QtyCalc,UnitCalc],[QtyR2,UnitR2],[QtyR1,UnitR1],MaxSF);
+	calc_format_complex_result(Formula,[QtyCalc,UnitCalc],[QtyR1,UnitR1],[QtyR2,UnitR2],MaxSF)).
 
-calc_real(Formula,[QtyCalc,UnitCalc],[QtyIn,UnitIn],[QtyOutRound,UnitOut],MaxSF) :-
-	sf_calc(QtyIn,SFIn),
-	number_chars(QtyInNum,QtyIn),
+calc_format_complex_result(Formula,[QtyCalc,UnitCalc],[QtyIn,UnitIn],[QtyOutRound,UnitOut],MaxSF) :-
+	sigfigs(QtyIn,SFIn),
+	to_number(QtyIn,QtyInNum),
 	unit(Formula,[[QtyCalc,UnitCalc],[QtyInNum,UnitIn]],[QtyOut,UnitOut]),
 	SF is min(MaxSF,SFIn),
-	sf_produce(QtyOut,SF,QtyOutRound).
+	round_sigfigs(QtyOut,SF,QtyOutRound).
 
 
 /*** NOTE:

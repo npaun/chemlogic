@@ -1,4 +1,4 @@
-:- module(sigfigs,[sf_calc/2,sf_produce/3]).
+:- module(sigfigs,[sigfigs/2,round_sigfigs/3, to_number/2]).
 :- set_prolog_flag(double_quotes,chars).
 
 round_precision(0,_,0). % The rounding logic will not work if the input is 0. The untruncator will produce the correct precision.
@@ -28,17 +28,20 @@ round_untruncate(Rounded,Precision,Fixed) :-
 	); Rounded = Fixed).
 				
 
-sf_produce(Value,SF,Result) :-
+round_sigfigs(Value,SF,Result) :-
 	round_precision(Value,SF,Rounded),
 	round_untruncate(Rounded,SF,Result).
 
 
-sf_calc(Value,SF) :-
-	sf_number(SigDigits,[],Value,[]), % Identify all of the significant figures in the number.
+to_number(Atom,Number) :-
+	number_chars(Number,Atom).
+
+sigfigs(Value,SF) :-
+	number(SigDigits,[],Value,[]), % Identify all of the significant figures in the number.
 	length(SigDigits,SF). % Count them to identify the number of signifcant figures.
 
 
-sf_number(Digit,DigitR) --> leading_zeros(_,_), % Leading zeros in the whole part are not significant. 
+number(Digit,DigitR) --> leading_zeros(_,_), % Leading zeros in the whole part are not significant. 
 	(
 		(
 			nonzero_sequence(Digit,DigitR0) -> decimal_part(DigitR0,DigitR), !; % If the whole number component is not zero, then leading zeros in the decimal part of the number are significant. 
