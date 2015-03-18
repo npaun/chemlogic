@@ -23,7 +23,7 @@ nonmetal_ide(Sym,Base,Charge) -->
 	"ide" xx ide.
 
 	
-/** charge_check(+Type:atom,+Sym:string,?Charge:number) is semidet.
+/** charge_check(+Type:atom,+Sym:string,?Charge:int) is semidet.
  ** charge_check(+Type:atom,+Sym:string,?Charge:list) is semidet.
  ** charge_check(+Type:atom,+Sym:string) is semidet.
 
