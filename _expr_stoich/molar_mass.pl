@@ -1,14 +1,27 @@
 :- consult('../balance/balancer').
 :- use_module(sigfigs).
 
-stoich(CoeffIn,FormulaIn,QtyIn,CoeffOut,FormulaOut,QtyOutR) :-
-	unit(FormulaIn,QtyIn,[MolIn,mol],SFIn),
-	writeln(SFIn),
+stoich(CoeffIn,FormulaIn,QtyIn,CoeffOut,FormulaOut,QtyOut) :-
+	calc(FormulaIn,QtyIn,[MolIn,mol],SF),
 	MolOut is MolIn * CoeffOut / CoeffIn,
-	unit(FormulaOut,[MolOut,mol],QtyOut,SFOut),
-	writeln(SFOut),
-	LowestSF is min(SFIn,SFOut),
-	sf_produce(QtyOut,LowestSF,QtyOutR).
+	calc(FormulaOut,[MolOut,mol],QtyOut,SF).
+
+calc(Formula,[QtyIn,UnitIn],[QtyOutR,UnitOut],MaxSF) :-
+	(atom(QtyIn) -> atom_number(
+	unit(Formula,[QtyIn,UnitIn],[QtyOut,UnitOut]),
+	(var(MaxSF) -> 
+		(
+			sf_calc(QtyIn,MaxSF),
+			QtyOut = QtyOutR
+		);
+		(
+			sf_produce(QtyOut,MaxSF,QtyOutR)
+		)
+	).
+		
+
+
+
 
 /*** NOTE:
 STP is assumed to be calculated as defined by IUPAC: temperature of 0 °C and a pressure of 101.325 kPa.
@@ -17,16 +30,14 @@ The value used was obtained from CODATA: the NIST Reference on Constants, Units 
 v_molar(22.413968 /* L/mol */).
 
 %%% No conversion %%%
-unit(_,[Mol,mol],[Mol,mol],LowestSF) :- sf_calc(Mol,LowestSF).
+unit(_,[Mol,mol],[Mol,mol]) :- !.
 
 %%% Mass units %%%
-unit(Formula,[Mass,g],[Mol,mol],LowestSF) :-
-	sf_calc(Mass,LowestSF,MassNum),
+unit(Formula,[Mass,g],[Mol,mol]) :-
 	molar_mass(Formula,MMass),
-	Mol /* mol */ is MassNum /* g */ * 1 /* mol */ / MMass /* g */, !.
+	Mol /* mol */ is Mass /* g */ * 1 /* mol */ / MMass /* g */, !.
 
-unit(Formula,[Mol,mol],[Mass,g],LowestSF) :-
-	sf_calc(Mol,LowestSF),
+unit(Formula,[Mol,mol],[Mass,g]) :-
 	molar_mass(Formula,MMass),
 	Mass /* g */ is Mol /* mol */ * MMass /* g */ / 1 /* mol */, !.
 
@@ -35,14 +46,12 @@ unit(Formula,[Mol,mol],[Mass,g],LowestSF) :-
 Formula is assumed to represent a gas at STP (standard temperature and pressure)
 ***/
 
-unit(_,[Vol,'L'],[Mol,mol],LowestSF) :-
-	sf_calc(Vol,LowestSF),
+unit(_,[Vol,'L'],[Mol,mol]) :-
 	v_molar(Vm),
 	Mol /* mol */ is Vol /* L */ * 1 /* mol */ / Vm /* L */, !.
 
 
-unit(_,[Mol,mol],[Vol,'L'],LowestSF) :-
-	sf_calc(Mol,LowestSF),
+unit(_,[Mol,mol],[Vol,'L']) :-
 	v_molar(Vm),
 	Vol /* L */ is Mol /* mol */ * Vm /* L */ / 1 /* mol */, !.
 

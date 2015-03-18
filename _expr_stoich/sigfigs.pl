@@ -1,4 +1,4 @@
-:- module(sigfigs,[sf_calc/3,sf_produce/3]).
+:- module(sigfigs,[sf_calc/2,sf_produce/3]).
 :- set_prolog_flag(double_quotes,chars).
 
 round_precision(0,_,0). % The rounding logic will not work if the input is 0. The untruncator will produce the correct precision.
@@ -33,8 +33,7 @@ sf_produce(Value,SF,Result) :-
 	round_untruncate(Rounded,SF,Result).
 
 
-sf_calc(Value,SF,ValueNum) :-
-	atom_number(Value,ValueNum),
+sf_calc(Value,SF) :-
 	atom_chars(Value,ValueChars),
 	sf_number(SigDigits,[],ValueChars,[]), % Identify all of the significant figures in the number.
 	length(SigDigits,SF). % Count them to identify the number of signifcant figures.
