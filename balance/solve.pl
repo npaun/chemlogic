@@ -70,17 +70,17 @@ solve(Matrix,Solution) :-
 	VarS = [FirstVar|_], % We use the first variable when putting the solution in simplest form
 	system(Matrix,VarS,System),
 	(
-		require_positive(VarS); 
+		require_positive(VarS); % Requires all variables to be positive 
 		throw(error(domain_error(solve:positive,System),_))
-	), % Requires all variables to be positive
+	), 
 	(
 		system_eval(System,VarS); 
 		throw(error(domain_error(solve:eval,System),_))
 	),
 	(
-		bb_inf(VarS,FirstVar,_,Solution); 
+		bb_inf(VarS,FirstVar,_,Solution); % Takes the lowest solution that satisfies all of the constraints. 
 		throw(error(domain_error(solve:bb_inf,System)))
-	), % Takes the lowest solution that satisfies all of the constraints.
+	), 
 	!.
 
 
