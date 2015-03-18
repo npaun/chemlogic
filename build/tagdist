@@ -1,14 +1,19 @@
 #!/bin/sh
+# tagdist: A simple script to add useful information to Chemlogic distribution archives
+# This file is from Chemlogic, a logic programming computer chemistry system  
+# <http://icebergsystems.ca/chemlogic>  
+# (C) Copyright 2012-2015 Nicholas Paun  
 
-cd $1
- 	TAG=`git tag -l | tail -1`
-	BUILDER="$USER@`hostname`"
-	DATE=`date "+%F %R"`
-	COMMIT=`git log --pretty=format:%H HEAD -1`
-	SOURCEPATH=$PWD
-cd -
 
-	echo "
+
+TAG=$1
+DISTDIR="../chemlogic-$1/"
+BUILDER="$USER@`hostname`"
+DATE=`date "+%F %R"`
+COMMIT=`git log --pretty=format:%H HEAD -1`
+SOURCEPATH=$PWD
+
+echo "
 ---
 Chemlogic $TAG 
 ($COMMIT)
@@ -16,4 +21,6 @@ Chemlogic $TAG
 
 <$BUILDER>
 Built at: $DATE
-Source path: $SOURCEPATH" > Buildinfo
+Source path: $SOURCEPATH" > $DISTDIR/Buildinfo
+
+echo "cf_version('$TAG')." >> $DISTDIR/build/compile.cf.dist

@@ -1,14 +1,20 @@
 % cli_error.pl: An error output format for terminals, using ANSI color.
 % This file is from Chemlogic, a logic programming computer chemistry system
 % <http://icebergsystems.ca/chemlogic>
-% (C) Copyright 2012-2014 Nicholas Paun
+% (C) Copyright 2012-2015 Nicholas Paun
+
+
 
 :- module(cli_error,[error_handler/2]).
 
 
 
+error_line(Start,Token,Rest) --> Start, output(output,err_token_start), Token, output(output,err_token_end), Rest.
+
 highlight_error(highlight(Start,Token,Rest)) :-
-	writef('%s\e[01;41;37m%s\e[00m%s\n',[Start,Token,Rest]).
+	error_line(Start,Token,Rest,String,[]),
+	atom_chars(Highlight,String),
+	writeln(Highlight).	
 
 message_syntax_show(message(MessageErrcode,MessageUnparsed,ErrCode)) :-
 	writeln(MessageErrcode),nl,

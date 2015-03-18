@@ -1,7 +1,7 @@
 % main.pl: Common predicates and an interface for chemical naming rules
 % This file is from Chemlogic, a logic programming computer chemistry system
 % <http://icebergsystems.ca/chemlogic>
-% (C) Copyright 2012-2014 Nicholas Paun
+% (C) Copyright 2012-2015 Nicholas Paun
 
 
 
@@ -23,8 +23,9 @@ nonmetal_ide(Sym,Base,Charge) -->
 	"ide" xx ide.
 
 	
-/** charge_check(+Type,+Sym,?Charge) is semidet.
- ** charge_check(+Type,+Sym) is semidet.
+/** charge_check(+Type:atom,+Sym:string,?Charge:int) is semidet.
+ ** charge_check(+Type:atom,+Sym:string,?Charge:list) is semidet.
+ ** charge_check(+Type:atom,+Sym:string) is semidet.
 
 Tests whether a given symbol is a nonmetal or metal. This is used in parsers to ensure that the user supplies a two nonmetals in the systematic_covalent parser or that a compound consists of a metal and a nonmetal in the ionic parser, for example.
 

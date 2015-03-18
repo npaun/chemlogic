@@ -1,9 +1,10 @@
-# Makefile
+# Makefile: Rules to package, compile and install Chemlogic
 # This file is from Chemlogic, a logic programming computer chemistry system  
 # <http://icebergsystems.ca/chemlogic>  
-# (C) Copyright 2012-2014 Nicholas Paun  
+# (C) Copyright 2012-2015 Nicholas Paun  
 
 ### This Makefile is written in GNU Make syntax ###
+
 
 
 ### Meta-Targets
@@ -15,28 +16,38 @@ all: cli web
 # This allows code to be re-used, while allowing the user to use targets
 .PHONY: cli web web-daemon
 cli web web-daemon: compile.cf
-	$(MAKE) INTERFACE=$@ DEST=$(DEST) mk-$@
+	$(MAKE) INTERFACE=$@ mk-$@
 
 
 ### Build Setup ###
 
 
 # Set the default prefix
-PREFIX?=/usr/local
+PREFIX ?= /usr/local
+
 
 ifdef DEST
 # If the user has explicitly specified a DEST, write all files there
-BINDIR?=$(DEST)
-SHAREDIR?=$(DEST)
+BINDIR ?= $(DEST)
+SHAREDIR ?= $(DEST)
 else
 # Otherwise, install to UNIX standard locations
-BINDIR?=$(PREFIX)/bin
-SHAREDIR?=$(PREFIX)/share/chemlogic
+	ifdef DESTDIR
+		DESTDIR = $(DESTDIR)/
+	endif
+
+BINDIR ?= $(DESTDIR)$(PREFIX)/bin
+SHAREDIR ?= $(DESTDIR)$(PREFIX)/share/chemlogic
 endif
 
 # Set the DEST for the output of the building process, if not set by user
 # Files will be copied to installation location from here
 DEST ?= bin/
+
+# Set which Prolog system is used to compile Chemlogic.
+PROLOG_SYSTEM ?= swipl
+PROLOG_PATH_DETECT = $(shell which swipl)
+PROLOG_PATH ?= $(PROLOG_PATH_DETECT)
 
 
 ### Help ###
@@ -57,19 +68,18 @@ help:
 
 ### Chemlogic Interfaces ###
 
-mk-cli mk-web mk-web-daemon: qsave	
 mk-web mk-web-daemon: stage-style
+mk-cli mk-web mk-web-daemon: compile-$(PROLOG_SYSTEM)
 
 ### Compilation and Building ###
 
-
-
-qsave:
-	# This compiles the program using SWI-Prolog's QSAVE system
+compile-swipl:
+	# Compiling using the SWI-Prolog QSAVE system.
 	echo " \
 cl_parse_all. \
 qsave_program('$(DEST)/chem$(INTERFACE)'). \
-" | swipl -l $(INTERFACE)/chem$(INTERFACE).in
+" | $(PROLOG_PATH) -l $(INTERFACE)/chem$(INTERFACE).in
+
 
 # Provide information to Prolog about the paths and other settings we have set up
 .PHONY: compile.cf
@@ -77,7 +87,7 @@ compile.cf:
 	#Clear everything in the file except the header
 	cp build/compile.cf.dist build/compile.cf
 	#Tell Prolog the prefix
-	echo "prefix('$(PREFIX)')." >> build/compile.cf	
+	echo "cf_prefix('$(PREFIX)')." >> build/compile.cf	
 	echo END
 
 
@@ -88,12 +98,13 @@ stage-style:
 ### Installation ###
 
 install:
+	mkdir -p $(BINDIR)
 	cp -a bin/chem* $(BINDIR)/
 	# If a style/ directory was produced (by building the Web Interface), copy these files
-	test -e bin/style &&\
-		mkdir -p $(SHAREDIR) &&\
-       		cp -a bin/style $(SHAREDIR)/
-
+	if test -e bin/style; then \
+		mkdir -p $(SHAREDIR) && \
+		cp -a bin/style $(SHAREDIR)/; \
+	fi
 
 uninstall:
 	-rm $(BINDIR)/chemcli
@@ -103,14 +114,6 @@ uninstall:
 
 ### Creating Distributions ###
 
-# BSD: .ifmake dist || disttree || archive
-# BSD: TAG != git tag | tail -1 | cut -c 2-
-# BSD: .endif
-
-dist disttree archive: TAG := $(strip $(shell git tag | tail -1 | cut -c 2-))#<<< GNU
-
-#dist: archive
-
 clean:
 	# Build files
 	-rm bin/chem*
@@ -119,15 +122,16 @@ clean:
 	# Reset Compile options
 	cp build/compile.cf.dist build/compile.cf
 
-dist: clean
-	cp -av ./ ../chemlogic-$(TAG)
-	$(MAKE) -C ../chemlogic-$(TAG) archive
 
-disttree:
-	# Place a file in the new tree with information about the Git commits so that I can figure out how I produced a certain distribution. 	
-	$(PWD)/build/tagdist $(PWD)
-	rm -rf  .git/ .gitignore .repo/ tags
+dist: archive
 
-archive: disttree
-	cd ../; tar -czvf chemlogic-$(TAG).tar.gz chemlogic-$(TAG)
- 
+dist-tree: TAG = $(shell ./build/versionName)
+dist-tree:
+	cp -a ./ ../chemlogic-$(TAG)/
+	./build/tagdist $(TAG)
+	make2bsd ../chemlogic-$(TAG)/Makefile ../chemlogic-$(TAG)/BSDmakefile	
+	rm -rf ../chemlogic-$(TAG)/.git/
+
+archive: TAG = $(shell ./build/versionName)
+archive: dist-tree
+	tar -czf ../chemlogic-$(TAG).tar.gz ../chemlogic-$(TAG)/

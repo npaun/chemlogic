@@ -2,7 +2,7 @@
 % main.pl: Server-independent code for the Chemlogic web interface
 % This file is from Chemlogic, a logic programming computer chemistry system
 % <http://icebergsystems.ca/chemlogic>
-% (C) Copyright 2012-2014 Nicholas Paun
+% (C) Copyright 2012-2015 Nicholas Paun
 
 
 
@@ -12,6 +12,7 @@
 :- use_module(library(http/http_parameters)).
 :- use_module(library(http/http_error)).
 :- use_module(library(http/html_write)).
+
 
 
 web_message(Port) :-

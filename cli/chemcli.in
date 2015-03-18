@@ -1,21 +1,25 @@
 #!/usr/bin/env swipl
-% chemcli: A simple command-line DSL for accessing chemlogic features
+% chemcli: A simple command-line DSL for accessing Chemlogic features
 % This file is from Chemlogic, a logic programming computer chemistry system
 % <http://icebergsystems.ca/chemlogic>
-% (C) Copyright 2012-2014 Nicholas Paun
+% (C) Copyright 2012-2015 Nicholas Paun
+
+
+
 
 :- set_prolog_flag(verbose,silent).
 :- use_module(cli_error).
+:- consult('api').
 :- consult('../balance/balancer').
-:- initialization cli_message.
+:- initialization cli_init.
 :- op(990,xfy,::).
+:- op(100,xf,print).
 
 
 
 InputType - Input :: -Result :-
 	InputType - Input :: symbolic - Result,
 	!.
-
 
 InputType - AtomInput :: ResultType - Result :-
 	atom_codes(AtomInput,Input),
@@ -27,11 +31,30 @@ InputType - AtomInput :: ResultType - Result :-
 		
 	atom_codes(Result,StringRes).
 
+InputType - Input :: print :-
+        InputType - Input :: symbolic - Result,
+        writeln(Result),
+        !.
+
+InputType - Input :: ResultType print :-
+        InputType - Input :: ResultType - Result,
+        writeln(Result),
+        !.
 
 
-
-
-cli_message :-
+cli_init :-
+	current_prolog_flag(argv,Argv),
+(Argv = ['--api'|Format]; Argv = [_,'--api'|Format]) -> 
+(
+cli_api_init(Format),
+cli_api_message(Format)
+);
+(
+set_output_format(ansi),
+cli_interactive_message
+).
+	
+cli_interactive_message :-
 	writeln('\e[00;32mWelcome to the Chemlogic CLI interface!\e[00m'),
 	writeln('(Work in progress)'), nl,
 
