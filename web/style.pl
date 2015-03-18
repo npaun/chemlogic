@@ -1,12 +1,10 @@
 % style.pl: Styles the pages from the Web frontend: adds menus, containers and a CSS file
 % This file is from Chemlogic, a logic programming computer chemistry system
-% (C) Copyright 2012-2014 Nicholas Paun
+% (C) Copyright 2012-2015 Nicholas Paun
 
 
 
 :- multifile [user:head//2,user:body//2].
-
-
 
 
 

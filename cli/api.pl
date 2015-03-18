@@ -1,4 +1,14 @@
+% api.pl: Configures the CLI interface to produce machine-readable output for embedded applications
+% This file is from Chemlogic, a logic programming computer chemistry system
+% <http://icebergsystems.ca/chemlogic>
+% (C) Copyright 2012-2015 Nicholas Paun
+
+
+
 :- consult('../build/compile.cf').
+
+
+
 
 cli_api_init([]) :- cli_api_init([user]).
 cli_api_init([Format]) :-
