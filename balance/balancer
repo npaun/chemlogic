@@ -80,6 +80,15 @@ balance_equation(InGrammar,Equation,OutGrammar,Solution) :-
 
 balance_equation(Equation,Solution) :- balance_equation(symbolic,Equation,symbolic,Solution).
 
+/** matrix(+MolSet:list,+ElemSet:list,?Rows:list) is semidet.
+
+	Produces a matrix representing the chemical equation, with rows representing chemical elements and columns representing molecules.
+	This is done by iterating through structures produced by the chemical equation DCG and reading corresponding tabulated values representing total occurences of elements.
+
+@arg	MolSet		A set of the formulas of all of the chemicals in an equation.	
+@arg	ElemSet		A set of all of the elements involved in an equation.
+@arg	Rows		The corresponding matrix.
+**/
 
 matrix(_,[],[]) :- !.
 
@@ -95,6 +104,15 @@ element_count([Mol|MolS],Elem,[Count|CountS]) :-
         element_count(MolS,Elem,CountS),
         !.
 
+/** test_elements(+Elements:list,+ElementSideSet:list) is semidet.
+
+	Ensures that all chemical equations conform to the Law of Conservation of Atoms, which states that all the atoms involved in a reaction must be present in both the reactants and the products. This predicate verifies this by identifying any elements present in the overall reaction that are not present in one part of the reaction.
+
+	The exception and error message it raises helps explain a common mistake.
+
+@arg	Elements	A list of all of the elements in the chemical equation					e.g. ["C","H","O"]
+@arg	ElementSideSet	A list of all the elements in a chemical equation, separated by side of reaction.	e.g. [["C","H"],["O"]]
+**/
 
 test_elements(Elements,[Reactants,Products]) :-
 	subtract(Elements,Reactants,MissingReactants),
