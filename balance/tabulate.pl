@@ -11,7 +11,7 @@
 
 
 /**
-add_atom(+Formula,+Sym,+Value) is det.
+add_atom(+Formula:list,+Sym:string,+Value:number) is det.
 
 Adds Value (an element subscript) to the total count of Sym (an element) in Formula.
 Used in flattening polyatomic groups, normalizing formulas with recurrences, etc.
@@ -23,7 +23,7 @@ add_atom(Formula,Sym,Value) :-
 
 
 /**
-tabulate_part(+Formula,+Symbol,+Subscript,+Sign) is det.
+tabulate_part(+Formula:list,+Symbol:string,+Subscript:number,+Sign:number) is det.
 
 1. Traverses a polyatomic group, which is represented as a symbol which is actually a list containing Symbols and Subscripts. It distributes the subscript of the polyatomic group (GroupSub) and applies the sign representing side.
 2. Stores a simple pair, a real Sym and Sub (like H, 2). It applies the sign before storage. This is done simply to make the output nicer; store_balance could simply multiply by sign.
@@ -51,7 +51,7 @@ tabulate_part(Original,Sym,Sub,-1) :-
 
 
 
-/** formula(+Formula,+Formula,+Sign) is det.
+/** formula(+Formula:list,+Formula:list,+Sign:number) is det.
 
 Breaks up a Formula into PairS of Symbol and Subscript, which are then given to store_subpart, which flattens polyatomic groups and applies the sign.
 
@@ -71,7 +71,7 @@ expression([Formula|FormulaS],Sign) :-
 	expression(FormulaS,Sign).
 
 
-/** tabulate(+Tree) is det.
+/** tabulate(+Tree:list) is det.
 
 Converts an abstract syntax tree, produced by the parsing of a chemical equation.
 (Something like: CH4, O2; CO2, H2O)

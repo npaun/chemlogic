@@ -12,11 +12,11 @@
 
 
 
-/** group_symbol(?Elems,?ElemsR,?Sym) is semidet.
+/** group_symbol(?Elems:list,?ElemsR:var,?Sym:list) is semidet.
 
 A rule that abstracts away the caching of polyatomic group formulas in different output formats. This rule simply processes the group symbol unformatted, like all of the other rules.
 
-@arg	Elems	The elememnts contained in the polyatomic group	[O,H]
+@arg	Elems	The elements contained in the polyatomic group	[O,H]
 @arg	ElemsR	Difference list tail
 @arg	Sym	The internal representation of the group formula	[[O,1],[H,1]]
 **/
@@ -24,7 +24,7 @@ A rule that abstracts away the caching of polyatomic group formulas in different
 group_symbol(Elems,ElemsR,Sym) --> group_symbol(user,Elems,ElemsR,Sym).
 
 
-/** cl_to_dcg(+Clause) is det.
+/** cl_to_dcg(+Clause:term) is det.
 
 Converts an ordinary element definition (Clause) to grammar rules for its name, base name and symbol.
 
@@ -44,14 +44,14 @@ cl_to_dcg(Clause) :-
 	assertz(SymbolRule).
 
 
-/** cl_poly_to_dcg(+Clause) is det.
+/** cl_poly_to_dcg(+Clause:term) is det.
 
 Converts a polyatomic group definition (Clause), to grammar rules for its name, base name and internal formula (Sym). Because of various supported output formats, an additional fact is created for the external formula.
 
 The external formula may simply be a textual representation: NH4
 or it could be HTML: NH<sub>4</sub>.
 
-@todo Make group_symbol_output include the output format in use, so that its results can be cached.
+@todo	Make group_symbol_output include the output format in use, so that its results can be cached.
 @arg	Clause	A list of the group internal formula, name and base name	([[C,1],[N,1]], cyanide, cyan)
 */
 

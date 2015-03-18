@@ -13,7 +13,7 @@
 
 % Build a system of linear equations
 
-/** system(+Matrix,-VarS,-System) is det.
+/** system(+Matrix:list,-VarS:list,-System:list) is det.
 
 Transforms a matrix into a system of linear equations. Rather inefficient, given that a matrix can be solved directly.
 
@@ -47,7 +47,7 @@ equation_expression([TermL,TermR|TermS],Expr) :-
         equation_expression([Sum|TermS],Expr).
 
 
-/** system_eval(+Equations,-VarS) is det.
+/** system_eval(+Equations:list,-VarS:list) is det.
 
 Adds an Equation to the constraint store.
 **/
@@ -59,7 +59,7 @@ system_eval([Equation|EquationS],VarS) :-
 	system_eval(EquationS,VarS).
 
 
-/** solve(+Matrix,-Solution) is semidet.
+/** solve(+Matrix:list,-Solution:list) is semidet.
 
 Converts a Matrix describing a chemical equation into a system of linear equations and produces the simplest, positive solution.
 
@@ -84,7 +84,7 @@ solve(Matrix,Solution) :-
 	!.
 
 
-/** require_positive(-VarS) is det.
+/** require_positive(-VarS:list) is det.
 
 Requires that every variable (representing a chemical equation coefficient) by positive in order for a solution to be valid.
 **/
