@@ -78,7 +78,7 @@ compile-swipl:
 	echo " \
 cl_parse_all. \
 qsave_program('$(DEST)/chem$(INTERFACE)'). \
-" | $(PROLOG_PATH) -l $(INTERFACE)/chem$(INTERFACE).in
+" | $(PROLOG_PATH) -O -l $(INTERFACE)/chem$(INTERFACE).in
 
 
 # Provide information to Prolog about the paths and other settings we have set up
