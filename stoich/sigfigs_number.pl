@@ -34,15 +34,13 @@ leading_zeros([0|DigitR0],DigitR) --> "0", leading_zeros(DigitR0,DigitR), !.
 leading_zeros(Digit,Digit) --> "".
 
 % A sequence of digits that does not start with (and consist entirely of) zeros.
-nonzero_sequence([Digit|DigitR0],DigitR) --> digit(Digit),!, sequence_tail(DigitR0,DigitR).
+nonzero_sequence([Digit|DigitR0],DigitR) --> digit(Digit), {Digit \= 0}, !, sequence_tail(DigitR0,DigitR).
 
 % Zeros may be contained in the sequence.
-sequence_tail([Digit|DigitR0],DigitR) --> any_digit(Digit), sequence_tail(DigitR0,DigitR), !.
+sequence_tail([Digit|DigitR0],DigitR) --> digit(Digit), sequence_tail(DigitR0,DigitR), !.
 sequence_tail(Digit,Digit) --> "",!.
 
-any_digit(Digit) --> digit(Digit).
-any_digit(0) --> "0".
-
+digit(0) --> "0".
 digit(1) --> "1".
 digit(2) --> "2".
 digit(3) --> "3".
