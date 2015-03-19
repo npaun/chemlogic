@@ -1,45 +1,44 @@
-simple_map([],[],[]).
-simple_map([Filter|FilterS],[List|ListS],Result) :-
-	(nonvar(Filter) -> Result = [List|ResultS]; Result = ResultS),
-	simple_map(FilterS,ListS,ResultS).
+filter_query([],[],[],[]).
 
-filter_query([],[],[],[],[],[]).
-
-filter_query([Qty|QtyS],[Coeff|CoeffS],[Formula|FormulaS],QtyRes,CoeffRes,FormulaRes) :-
+filter_query([Qty|QtyS],[Coeff|CoeffS],[Formula|FormulaS],[Struct|StructS]) :-
 	(
 		nonvar(Qty) ->
 				(
-					QtyRes = [Qty|QtyResS],
-					CoeffRes = [Coeff|CoeffResS],
-					FormulaRes = [Formula|FormulaResS]
+					Struct = [[Qty,Coeff,Formula]|StructS]
 				);
 				(
-					QtyRes = QtyResS,
-					CoeffRes = CoeffResS,
-					FormulaRes = FormulaResS
+					Struct = StructS
 				)
 	),
-	filter_query(QtyS,CoeffS,FormulaS,QtyResS,CoeffResS,FormulaResS).
+	filter_query(QtyS,CoeffS,FormulaS,StructS).
 
-limitant([QtyIn|QtyInS],[CoeffIn|CoeffInS],[FormulaIn|FormulaInS],QtyOut,CoeffOut,FormulaOut,[Solution|SolutionS]) :-
-	copy_term(QtyOut,Solution),
-	stoich(CoeffIn,FormulaIn,QtyIn,CoeffOut,FormulaOut,Solution),
-	limitant(QtyInS,CoeffInS,FormulaInS,QtyOut,CoeffOut,FormulaOut,SolutionS).
-
-limiting([],[],[],[],[]).
-limiting([QtyIn|QtyInS],[CoeffIn|CoeffInS],[FormulaIn|FormulaInS],[Mol|MolS],[MolRatio|MolRatioS]) :-
+mol_ratio([],[],[]).
+mol_ratio([[QtyIn,CoeffIn,FormulaIn]|StructS],[MolRatio|MolRatioS],[[[Mol,mol],CoeffIn,FormulaIn]|NewStructS]) :-
 	calc_format(input,FormulaIn,QtyIn,[Mol,mol],_),
 	MolRatio is Mol / CoeffIn,
-	limiting(QtyInS,CoeffInS,FormulaInS,MolS,MolRatioS).
+	mol_ratio(StructS,MolRatioS,NewStructS).
 
-
-real_limiting(QtyS,CoeffS,FormulaS,MolS,MolLim,CoeffLim,FormulaLim) :-
-	limiting(QtyS,CoeffS,FormulaS,MolS,MolRatioS),
+limitant(StructS,NewStructS,LimitantStruct) :-
+	mol_ratio(StructS,MolRatioS,NewStructS),
 	min_list(MolRatioS,MinMolRatio),
 	nth0(Index,MolRatioS,MinMolRatio),
-	nth0(Index,CoeffS,CoeffLim),
-	nth0(Index,FormulaS,FormulaLim),
-	nth0(Index,MolS,MolLim).
+	nth0(Index,NewStructS,LimitantStruct).
+
+stoich_ui_excess(InGrammar,Equation,OutGrammar,Balanced,QtyS,ResultS) :-
+	balance_equation(InGrammar,Equation,OutGrammar,Balanced,CoeffS,FormulaS),
+	filter_query(QtyS,CoeffS,FormulaS,InStructS),
+	filter_query(ResultS,CoeffS,FormulaS,OutStructS),
+	limitant(InStructS,MolStructS,Limitant),
+	stoich_excess_calculate(MolStructS,Limitant,OutStructS).
+
+stoich_excess_calculate(_,[],[]).
+stoich_excess_calculate(_,Struct,[[QtyOut,CoeffOut,FormulaOut]|OutStructS]) :-
+	Struct = [[MolLim,mol],CoeffLim,_],
+	MolOut is MolLim * CoeffOut/CoeffLim,
+	calc_format(output,FormulaOut,[MolOut,mol],QtyOut,3),
+	stoich_excess_calculate(_,Struct,OutStructS).
+	
+
 
 %compute_excess([Total,Unit],[Actual,Unit],[Excess,Unit]) :-
 
