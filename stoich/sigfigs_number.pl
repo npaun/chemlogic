@@ -9,7 +9,7 @@
 number(Digit,DigitR) --> leading_zeros(_,_), % Leading zeros in the whole part are not significant. 
 	(
 		(
-			nonzero_sequence(Digit,DigitR0) -> decimal_part(DigitR0,DigitR), !; % If the whole number component is not zero, then leading zeros in the decimal part of the number are significant. 
+			sequence_not_null(Digit,DigitR0) -> decimal_part(DigitR0,DigitR), !; % If the whole number component is not zero, then leading zeros in the decimal part of the number are significant. 
 			decimal_part_nozero(Digit,DigitR), ! % Otherwise, they are just placeholders
 		);
 		zero_result(Digit,DigitR) % If absolutely no significant digits have been identified, then the number must be 0.
@@ -35,6 +35,8 @@ leading_zeros(Digit,Digit) --> "".
 
 % A sequence of digits that does not start with (and consist entirely of) zeros.
 nonzero_sequence([Digit|DigitR0],DigitR) --> digit(Digit), {Digit \= 0}, !, sequence_tail(DigitR0,DigitR).
+
+sequence_not_null([Digit|DigitR0],DigitR) --> digit(Digit), sequence_tail(DigitR0,DigitR).
 
 % Zeros may be contained in the sequence.
 sequence_tail([Digit|DigitR0],DigitR) --> digit(Digit), sequence_tail(DigitR0,DigitR), !.
