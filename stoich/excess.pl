@@ -26,18 +26,21 @@ limitant([QtyIn|QtyInS],[CoeffIn|CoeffInS],[FormulaIn|FormulaInS],QtyOut,CoeffOu
 	stoich(CoeffIn,FormulaIn,QtyIn,CoeffOut,FormulaOut,Solution),
 	limitant(QtyInS,CoeffInS,FormulaInS,QtyOut,CoeffOut,FormulaOut,SolutionS).
 
-limiting([],[],[],[]).
-limiting([QtyIn|QtyInS],[CoeffIn|CoeffInS],[FormulaIn|FormulaInS],[MolRatio|MolRatioS]) :-
+limiting([],[],[],[],[]).
+limiting([QtyIn|QtyInS],[CoeffIn|CoeffInS],[FormulaIn|FormulaInS],[Mol|MolS],[MolRatio|MolRatioS]) :-
 	calc_format(input,FormulaIn,QtyIn,[Mol,mol],_),
 	MolRatio is Mol / CoeffIn,
-	limiting(QtyInS,CoeffInS,FormulaInS,MolRatioS).
+	limiting(QtyInS,CoeffInS,FormulaInS,MolS,MolRatioS).
 
 
-real_limiting(QtyS,CoeffS,FormulaS,QtyLim,CoeffLim,FormulaLim) :-
-	limiting(QtyS,CoeffS,FormulaS,MolRatioS),
+real_limiting(QtyS,CoeffS,FormulaS,MolS,MolLim,CoeffLim,FormulaLim) :-
+	limiting(QtyS,CoeffS,FormulaS,MolS,MolRatioS),
 	min_list(MolRatioS,MinMolRatio),
 	nth0(Index,MolRatioS,MinMolRatio),
 	nth0(Index,CoeffS,CoeffLim),
 	nth0(Index,FormulaS,FormulaLim),
-	nth0(Index,QtyS,QtyLim).
+	nth0(Index,MolS,MolLim).
 
+%compute_excess([Total,Unit],[Actual,Unit],[Excess,Unit]) :-
+
+% vi: ft=prolog
