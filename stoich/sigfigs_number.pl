@@ -10,8 +10,8 @@ number(Digit,DigitR) --> leading_zeros(_,_), % Leading zeros in the whole part a
 	(
 		(
 			sequence_not_null(Digit,DigitR0) -> decimal_part(DigitR0,DigitR), !; % If the whole number component is not zero, then leading zeros in the decimal part of the number are significant. 
-			decimal_part_nozero(Digit,DigitR), ! % Otherwise, they are just placeholders
-		);
+			decimal_part_nozero(Digit,DigitR)  % Otherwise, they are just placeholders
+		), !;
 		zero_result(Digit,DigitR) % If absolutely no significant digits have been identified, then the number must be 0.
 	).
 
@@ -30,15 +30,15 @@ decimal_part(Digit,Digit) --> decimal_point.
 decimal_part(Digit,Digit) --> "".
 
 % Identify any leading zeros in a sequence.
-leading_zeros([0|DigitR0],DigitR) --> "0", leading_zeros(DigitR0,DigitR), !.
+leading_zeros([0|DigitR0],DigitR) --> "0", leading_zeros(DigitR0,DigitR).
 leading_zeros(Digit,Digit) --> "".
 
 % A sequence of digits that contains at least one digit.
 sequence_not_null([Digit|DigitR0],DigitR) --> digit(Digit), sequence_tail(DigitR0,DigitR).
 
 % A sequence of digits that may be null.
-sequence_tail([Digit|DigitR0],DigitR) --> digit(Digit), sequence_tail(DigitR0,DigitR), !.
-sequence_tail(Digit,Digit) --> "",!.
+sequence_tail([Digit|DigitR0],DigitR) --> digit(Digit), sequence_tail(DigitR0,DigitR).
+sequence_tail(Digit,Digit) --> "".
 
 digit(0) --> "0".
 digit(1) --> "1".
