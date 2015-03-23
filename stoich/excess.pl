@@ -31,6 +31,8 @@ limitant(StructS,NewStructS,LimitantStruct,LimitantSF) :-
 	nth0(Index,NewStructS,LimitantStruct).
 
 excess_calculate(_,_,[]) :- !.
+excess_calculate(Limitant,LimitantSF,[nil|QueryS]) :-
+	excess_calculate(Limitant,LimitantSF,QueryS).
 excess_calculate(Limitant,LimitantSF,[[QtyOut,CoeffOut,FormulaOut]|QueryS]) :-
 	Limitant = [[MolIn,mol],CoeffIn,_],
 	MolOut is MolIn * CoeffOut / CoeffIn,
