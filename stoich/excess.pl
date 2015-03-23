@@ -30,13 +30,28 @@ limitant(StructS,NewStructS,LimitantStruct,LimitantSF) :-
 	nth0(Index,MolRatioS,MinMolRatio), !,
 	nth0(Index,NewStructS,LimitantStruct).
 
-excess_calculate(_,_,[]) :- !.
-excess_calculate(Limitant,LimitantSF,[nil|QueryS]) :-
-	excess_calculate(Limitant,LimitantSF,QueryS).
-excess_calculate(Limitant,LimitantSF,[[QtyOut,CoeffOut,FormulaOut]|QueryS]) :-
+limit_calculate(_,_,[]) :- !.
+limit_calculate(Limitant,LimitantSF,[nil|QueryS]) :-
+	limit_calculate(Limitant,LimitantSF,QueryS).
+limit_calculate(Limitant,LimitantSF,[[QtyOut,CoeffOut,FormulaOut]|QueryS]) :-
 	Limitant = [[MolIn,mol],CoeffIn,_],
 	MolOut is MolIn * CoeffOut / CoeffIn,
 	calc_format(output,FormulaOut,[MolOut,mol],QtyOut,LimitantSF), !,
-	excess_calculate(Limitant,LimitantSF,QueryS).
+	limit_calculate(Limitant,LimitantSF,QueryS).
+
+limit_calculate(_,_,[],[]).
+limit_calculate(Limitant,LimitantSF,[_|InputS],[nil|QueryS]) :-
+	limit_calculate(Limitant,LimitantSF,InputS,QueryS).
+limit_calculate(Limitant,LimitantSF,[Input|InputS],[[[QtyOut,CalcTypeOut],CoeffOut,FormulaOut]|QueryS]) :-
+	Limitant = [[MolLim,mol],CoeffLim,_],
+		(CalcTypeOut = excess ->
+			(Input = [[MolIn,mol],CoeffIn,FormulaIn], MolOut is MolIn - MolLim * CoeffOut / CoeffLim);
+	MolOut is MolLim * CoeffOut / CoeffLim),
+	calc_format(output,FormulaOut,[MolOut,mol],QtyOut,LimitantSF), !,
+	limit_calculate(Limitant,LimitantSF,InputS,QueryS).
+
+
+
+
 
 % vi: ft=prolog

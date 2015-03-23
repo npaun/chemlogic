@@ -16,6 +16,7 @@
 ***/
 
 round_precision(0,_,0). % The rounding logic will not work if the input is 0. The untruncator will produce the correct precision.
+round_precision(0.0,_,0).
 round_precision(Number,Precision,Result) :-
 	WholeLength is ceil(log10(abs(Number))), % Calculate the number of digits in the whole number part.
 	Power is Precision - WholeLength,
