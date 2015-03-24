@@ -36,11 +36,11 @@ Chemlogic currently implements most of the Chemistry relating to equations and c
 	* After the types of reactions are recognized, it will not be too difficult to implement knowledge about whether or not a reaction will take place. The user can be informed about this when an equation is balanced.
 
 * Mole calculations:
-	* A field will need to be added in the database for atomic mass of elements.
-	* `fact_dcg_translate` will need to be extended to handle polyatomic groups/oxyanions
-	* Tabulate or possibly `formula_normalize` will be extended to calculate molar masses
-	* Allow parsers to accept information about stoichiometric problems to solve
-	* Implement information about mole bridges into the solver (probably a new module)
+	* ---DONE--- A field will need to be added in the database for atomic mass of elements.
+	* ---PROBABLY UNNECESSARY--- `fact_dcg_translate` will need to be extended to handle polyatomic groups/oxyanions
+	* ---DONE, by creating new code similar to tabulate--- Tabulate or possibly `formula_normalize` will be extended to calculate molar masses
+	* ---I wonder if this is the best approach?--- Allow parsers to accept information about stoichiometric problems to solve
+	* ---DONE--- Implement information about mole bridges into the solver (probably a new module)
 
 * More organic naming:
 	* It will be useful to implement organic compound naming at least for Chemistry 11 to 12.
@@ -62,7 +62,7 @@ Chemlogic currently implements most of the Chemistry relating to equations and c
 * Add many, many more elements.
 * More polyatomic groups
 * Write-up a large batch of common names
-* Add atomic masses
+* ---DONE--- Add atomic masses
 
 
 
@@ -85,7 +85,7 @@ Chemlogic currently implements most of the Chemistry relating to equations and c
 * Expose the chemical information database.
 
 * Better error messages for equation balancing errors
-	* Test to ensure that all elements appear in both products and reactants
+	* ---DONE--- Test to ensure that all elements appear in both products and reactants
 	* Perhaps explain why some charge shifts are unsatisfiable
 	* Explain which element makes the system unbalancable, if possible.
 
@@ -119,5 +119,5 @@ Chemlogic currently implements most of the Chemistry relating to equations and c
 * The program will get very upset if a substance is repeated:
 	* e.g. `H2O + H2O --> H2O`
 	* There is not much of a valid reason to enter this, but the program should handle this correctly
-	* An error message explaining that this is junk is probably a good idea
+	* ---MIGHT BE FIXED BY OTHER CHANGES--- An error message explaining that this is junk is probably a good idea
 
