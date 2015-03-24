@@ -45,13 +45,19 @@ limit_calculate(Limitant,LimitantSF,[_|InputS],[nil|QueryS]) :-
 limit_calculate(Limitant,LimitantSF,[Input|InputS],[[[QtyOut,CalcTypeOut],CoeffOut,FormulaOut]|QueryS]) :-
 	Limitant = [[MolLim,mol],CoeffLim,_],
 		(CalcTypeOut = excess ->
-			(Input = [[MolIn,mol],CoeffIn,FormulaIn], MolOut is MolIn - MolLim * CoeffOut / CoeffLim);
+			(Input = [[MolIn,mol],_,_], MolOut is MolIn - MolLim * CoeffOut / CoeffLim);
 	MolOut is MolLim * CoeffOut / CoeffLim),
 	calc_format(output,FormulaOut,[MolOut,mol],QtyOut,LimitantSF), !,
 	limit_calculate(Limitant,LimitantSF,InputS,QueryS).
 
 
 
+stoich_excess(InGrammar,Equation,OutGrammar,Balanced,InQtyS,OutQtyS,QueryS) :-
+	balance_equation(InGrammar,Equation,OutGrammar,Balanced,CoeffS,FormulaS),
+	filter_query(InQtyS,CoeffS,FormulaS,InputS),
+	limitant(InputS,InputMolS,Limitant,LimitantSF),
+	filter_query(OutQtyS,CoeffS,FormulaS,QueryS),
+	limit_calculate(Limitant,LimitantSF,InputMolS,QueryS).
 
 
 % vi: ft=prolog
