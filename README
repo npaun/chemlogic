@@ -7,13 +7,14 @@
 
 ## Contents ##
 1. Usage and Installation
-2. Features
-3. Documentation
-4. Changelog
-5. To Do
-6. License
-7. Credits
-8. Contact
+2. Dependencies
+3. Features
+4. Documentation
+5. Changelog
+6. Further Research and Development
+7. License
+8. Acknowledgements
+9. Contact
 
 
 
@@ -58,7 +59,20 @@ The Web interface can also be compiled as a UNIX daemon, by running `make web-da
 
 
 
-## 2. Features ##
+## 2. Dependencies ##
+
+Chemlogic is written in Prolog and requires a Prolog interpreter. 
+The code is mostly conformant with ISO Prolog and requires DCG features and the CLP(q) library. The Web interface depends on SWI-Prolog and is built using the Web framework.
+
+Prolog distributions:
+* SWI-Prolog: Developed and tested on this platform. (See <http://www.swi-prolog.org/> for information.)
+* YAP, CIAO and XSB Prolog: Will probably work.
+* GNU Prolog: Might work, but CLP(q) must be ported.
+* Prolog Cafe, tuProlog and GNU Prolog for Java: Will not work (tested). Signficant parts of the ISO standard are missing or incorrectly implemented. 
+
+
+
+## 3. Features ##
 
 * Chemical formulas (incl. hydrates)
 * Chemical names
@@ -75,26 +89,26 @@ The Web interface can also be compiled as a UNIX daemon, by running `make web-da
 
 
 
-## 3. Documentation ##
+## 4. Documentation ##
 
 See the `docs/` directory. Documentation (the Chemlogic papers) is available in PDF.
 
 
 
-## 4. Changelog ##
+## 5. Changelog ##
 
 * Version 1.0
 	* First release
 
 
 
-## 5. To Do ##
+## 6. Further Research and Development ##
 
 See `TODO.md` in this directory.
 
 
 
-## 6. License ##
+## 7. License ##
 
 This program is licensed under the GNU Affero GPL v. 3, which requires modifications to programs offered publically as network services to be released.
 See `LICENSE`.
@@ -103,13 +117,13 @@ If this requirement is inconvenient, please contact me.
 
 
 
-## 7. Credits ##
+## 8. Acknowledgements ##
 I would like to thank the many people who gave advice and helped with the project.
 
 I am particularly grateful for the valuable assistance provided by Dr. Peter Tchir, my Physics, Chemistry and, now, Computer Science teacher. His help and advice, especially with algorithms and his support for my Computer Science projects helped make this program possible.
 
 
 
-## 8. Contact ##
+## 9. Contact ##
 
 Nicholas Paun <np@icebergsystems.ca>, <http://icebergsystems.ca>
