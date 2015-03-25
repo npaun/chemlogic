@@ -7,14 +7,6 @@
 
 :- consult('../balance/balancer').
 :- use_module(sigfigs).
-
-
-
-stoich(CoeffK,FormulaK,QtyK,CoeffR,FormulaR,QtyR) :-
-	calc_format(input,FormulaK,QtyK,[MolK,mol],SF), !,
-	MolR is MolK * CoeffR / CoeffK,
-	calc_format(output,FormulaR,[MolR,mol],QtyR,SF), !.
-
 		
 calc_format(input,Formula,[QtyIn,UnitIn],[QtyOut,UnitOut],SF) :-
 	sigfigs(QtyIn,SF),

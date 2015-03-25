@@ -5,10 +5,18 @@
 
 
 
-filter_query([],[],[],[]) :- !.
-filter_query([Qty|QtyS],[Coeff|CoeffS],[Formula|FormulaS],[Struct|StructS]) :-
+combine_structs([],[],[],[]) :- !.
+combine_structs([Qty|QtyS],[Coeff|CoeffS],[Formula|FormulaS],[Struct|StructS]) :-
 	(Qty = nil -> Struct = nil; Struct = [Qty,Coeff,Formula]),
-	filter_query(QtyS,CoeffS,FormulaS,StructS).
+	combine_structs(QtyS,CoeffS,FormulaS,StructS).
+
+limitation_exists(InputS) :-
+	subtract(InputS,[nil],Values),
+	length(Values,Count),
+	Count > 1.
+
+single_input(InputS,Struct) :-
+	subtract(InputS,[nil],[Struct]).
 
 mol_ratio([],[],[]).
 mol_ratio([nil|StructS],[[nil,0]|MolRatioS],[nil|NewStructS]) :-
@@ -25,19 +33,10 @@ limitant(StructS,NewStructS,LimitantStruct,LimitantSF) :-
 	nth0(Index,MolRatioS,MinMolRatio), !,
 	nth0(Index,NewStructS,LimitantStruct).
 
-limit_calculate(_,_,[]) :- !.
-limit_calculate(Limitant,LimitantSF,[nil|QueryS]) :-
-	limit_calculate(Limitant,LimitantSF,QueryS).
-limit_calculate(Limitant,LimitantSF,[[QtyOut,CoeffOut,FormulaOut]|QueryS]) :-
-	Limitant = [[MolIn,mol],CoeffIn,_],
-	MolOut is MolIn * CoeffOut / CoeffIn,
-	calc_format(output,FormulaOut,[MolOut,mol],QtyOut,LimitantSF), !,
-	limit_calculate(Limitant,LimitantSF,QueryS).
-
-limit_calculate(_,_,[],[]) :- !.
-limit_calculate(Limitant,LimitantSF,[_|InputS],[nil|QueryS]) :-
-	limit_calculate(Limitant,LimitantSF,InputS,QueryS), !.
-limit_calculate(Limitant,LimitantSF,[Input|InputS],[[[QtyOut,CalcTypeOut],CoeffOut,FormulaOut]|QueryS]) :-
+stoich_limited(_,_,[],[]) :- !.
+stoich_limited(Limitant,LimitantSF,[_|InputS],[nil|QueryS]) :-
+	stoich_limited(Limitant,LimitantSF,InputS,QueryS), !.
+stoich_limited(Limitant,LimitantSF,[Input|InputS],[[[QtyOut,CalcTypeOut],CoeffOut,FormulaOut]|QueryS]) :-
 	Limitant = [[MolLim,mol],CoeffLim,_],
 	(
 		CalcTypeOut = excess ->
@@ -48,11 +47,31 @@ limit_calculate(Limitant,LimitantSF,[Input|InputS],[[[QtyOut,CalcTypeOut],CoeffO
 			MolOut is MolLim * CoeffOut / CoeffLim
 	),
 	calc_format(output,FormulaOut,[MolOut,mol],QtyOut,LimitantSF), !,
-	limit_calculate(Limitant,LimitantSF,InputS,QueryS).
+	stoich_limited(Limitant,LimitantSF,InputS,QueryS).
 
-stoich_excess(InGrammar,Equation,OutGrammar,Balanced,InQtyS,OutQtyS,QueryS) :-
+stoich_simple([],[]).
+stoich_simple(Input,[nil|QueryS]) :-
+	stoich_simple(Input,QueryS).
+stoich_simple(Input,[[[QtyOut,_],CoeffOut,FormulaOut]|QueryS]) :-
+	Input = [QtyIn,CoeffIn,FormulaIn],
+	calc_format(input,FormulaIn,QtyIn,[MolIn,mol],SF), !,
+	MolOut is MolIn * CoeffOut / CoeffIn,
+	calc_format(output,FormulaOut,[MolOut,mol],QtyOut,SF), !,
+	stoich_simple(Input,QueryS).
+
+
+stoich(InGrammar,Equation,OutGrammar,Balanced,InQtyS,OutQtyS,QueryS) :-
 	balance_equation(InGrammar,Equation,OutGrammar,Balanced,CoeffS,FormulaS),
-	filter_query(InQtyS,CoeffS,FormulaS,InputS),
-	limitant(InputS,InputMolS,Limitant,LimitantSF),
-	filter_query(OutQtyS,CoeffS,FormulaS,QueryS),
-	limit_calculate(Limitant,LimitantSF,InputMolS,QueryS).
+	combine_structs(InQtyS,CoeffS,FormulaS,InputS),
+	combine_structs(OutQtyS,CoeffS,FormulaS,QueryS),
+	(
+		single_input(InputS,Input) -> 
+			(
+				stoich_simple(Input,QueryS)
+			);
+			(
+
+				limitant(InputS,InputMolS,Limitant,LimitantSF),
+				stoich_limited(Limitant,LimitantSF,InputMolS,QueryS)
+			)
+	).
