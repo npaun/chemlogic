@@ -1,23 +1,11 @@
 filter_query([],[],[],[]) :- !.
-
 filter_query([Qty|QtyS],[Coeff|CoeffS],[Formula|FormulaS],[Struct|StructS]) :-
-	(
-		Qty = nil ->
-				(
-
-					Struct = nil
-				);
-				(
-
-					Struct = [Qty,Coeff,Formula]
-				)
-	),
+	(Qty = nil -> Struct = nil; Struct = [Qty,Coeff,Formula]),
 	filter_query(QtyS,CoeffS,FormulaS,StructS).
 
 mol_ratio([],[],[]).
 mol_ratio([nil|StructS],[[nil,0]|MolRatioS],[nil|NewStructS]) :-
 	mol_ratio(StructS,MolRatioS,NewStructS).
-
 mol_ratio([[QtyIn,CoeffIn,FormulaIn]|StructS],[[MolRatio,SF]|MolRatioS],[[[Mol,mol],CoeffIn,FormulaIn]|NewStructS]) :-
 	calc_format(input,FormulaIn,QtyIn,[Mol,mol],SF),
 	MolRatio is Mol / CoeffIn,
@@ -44,13 +32,16 @@ limit_calculate(Limitant,LimitantSF,[_|InputS],[nil|QueryS]) :-
 	limit_calculate(Limitant,LimitantSF,InputS,QueryS), !.
 limit_calculate(Limitant,LimitantSF,[Input|InputS],[[[QtyOut,CalcTypeOut],CoeffOut,FormulaOut]|QueryS]) :-
 	Limitant = [[MolLim,mol],CoeffLim,_],
-		(CalcTypeOut = excess ->
-			(Input = [[MolIn,mol],_,_], MolOut is MolIn - MolLim * CoeffOut / CoeffLim);
-	MolOut is MolLim * CoeffOut / CoeffLim),
+	(
+		CalcTypeOut = excess ->
+			(
+				Input = [[MolIn,mol],_,_], 
+				MolOut is MolIn - MolLim * CoeffOut / CoeffLim
+			);
+			MolOut is MolLim * CoeffOut / CoeffLim
+	),
 	calc_format(output,FormulaOut,[MolOut,mol],QtyOut,LimitantSF), !,
 	limit_calculate(Limitant,LimitantSF,InputS,QueryS).
-
-
 
 stoich_excess(InGrammar,Equation,OutGrammar,Balanced,InQtyS,OutQtyS,QueryS) :-
 	balance_equation(InGrammar,Equation,OutGrammar,Balanced,CoeffS,FormulaS),
@@ -58,6 +49,3 @@ stoich_excess(InGrammar,Equation,OutGrammar,Balanced,InQtyS,OutQtyS,QueryS) :-
 	limitant(InputS,InputMolS,Limitant,LimitantSF),
 	filter_query(OutQtyS,CoeffS,FormulaS,QueryS),
 	limit_calculate(Limitant,LimitantSF,InputMolS,QueryS).
-
-
-% vi: ft=prolog
