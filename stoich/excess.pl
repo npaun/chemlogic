@@ -40,7 +40,10 @@ stoich_limited(Limitant,[Input|InputS],[[[QtyOut,CalcTypeOut],CoeffOut,FormulaOu
 	(
 		CalcTypeOut = excess ->
 			(
-				Input = [[MolIn,mol],SFIn,_,_], 
+				(
+					Input = [[MolIn,mol],SFIn,_,_];
+					throw(error(logic_error(user:excess_missing_input,(CalcTypeOut,FormulaOut)),_))
+				),
 				SF is min(SFLim,SFIn),
 				MolOut is MolIn - MolLim * CoeffOut / CoeffLim
 			);

@@ -2,4 +2,12 @@
 :- consult(units).
 :- consult(excess).
 
+% Super irritating style check
+:- style_check(-atom).
+
+% Meta error handling
+:- ensure_loaded('../io/meta_error').
+
+
+
 % vi: ft=prolog
