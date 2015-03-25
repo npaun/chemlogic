@@ -4,6 +4,9 @@
 % (C) Copyright 2012-2015 Nicholas Paun
 
 
+% Super irritating style check
+:- style_check(-atom).
+
 
 combine_structs([],[],[],[]) :- !.
 combine_structs([Qty|QtyS],[Coeff|CoeffS],[Formula|FormulaS],[Struct|StructS]) :-
@@ -42,7 +45,12 @@ stoich_limited(Limitant,[Input|InputS],[[[QtyOut,CalcTypeOut],CoeffOut,FormulaOu
 			(
 				(
 					Input = [[MolIn,mol],SFIn,_,_];
-					throw(error(logic_error(user:excess_missing_input,(CalcTypeOut,FormulaOut)),_))
+					throw(error(logic_error(user:excess_missing_input,
+						(
+							'Property to be determined: ', CalcTypeOut,
+							'No quantity provided for this substance: ', FormulaOut
+						)
+					),_))
 				),
 				SF is min(SFLim,SFIn),
 				MolOut is MolIn - MolLim * CoeffOut / CoeffLim
@@ -66,7 +74,7 @@ stoich_simple(Input,[[[QtyOut,_],CoeffOut,FormulaOut]|QueryS]) :-
 	stoich_simple(Input,QueryS).
 
 
-stoich(InGrammar,Equation,OutGrammar,Balanced,InQtyS,OutQtyS,QueryS) :-
+stoich_real(InGrammar,Equation,OutGrammar,Balanced,InQtyS,OutQtyS,QueryS) :-
 	balance_equation(InGrammar,Equation,OutGrammar,Balanced,CoeffS,FormulaS),
 	combine_structs(InQtyS,CoeffS,FormulaS,InputS),
 	combine_structs(OutQtyS,CoeffS,FormulaS,QueryS),
@@ -81,3 +89,24 @@ stoich(InGrammar,Equation,OutGrammar,Balanced,InQtyS,OutQtyS,QueryS) :-
 				stoich_limited(Limitant,InputMolS,QueryS)
 			)
 	).
+
+stoich(InGrammar,Equation,OutGrammar,Balanced,InQtyS,OutQtyS,QueryS) :-
+	catch(
+		stoich_real(InGrammar,Equation,OutGrammar,Balanced,InQtyS,OutQtyS,QueryS),
+		error(logic_error(Type,Data),_),
+		explain_general_rethrow(logic_error,Equation,Type,Data)
+	).
+
+%%%%% GUIDANCE FOR ERRORS %%%%%
+
+explain_general(excess_missing_input,
+	'The amount in excess of this substance cannot be calculated because the quantity present is unknown.
+	 Excess amounts are calculated by comparing the provided quantity of a substance with the amount of substance that actually reacted.
+
+	 For example, for the reaction FeCl2 + KNO3 + HCl --> FeCl3 + NO + H2O + KCL, the amount of FeCl2 in excess could only be calculated if the amount of FeCl2 initially present was provided (e.g. 56.8 g).
+
+	 Please ensure that you have entered all of the known quantities in this reaction.
+	 
+	 ').
+
+explain_general_data([],[]).
