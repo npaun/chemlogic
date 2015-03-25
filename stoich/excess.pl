@@ -19,35 +19,38 @@ single_input(InputS,Struct) :-
 	subtract(InputS,[nil],[Struct]).
 
 mol_ratio([],[],[]).
-mol_ratio([nil|StructS],[[nil,0]|MolRatioS],[nil|NewStructS]) :-
+mol_ratio([nil|StructS],[nil|MolRatioS],[nil|NewStructS]) :-
 	mol_ratio(StructS,MolRatioS,NewStructS).
-mol_ratio([[QtyIn,CoeffIn,FormulaIn]|StructS],[[MolRatio,SF]|MolRatioS],[[[Mol,mol],CoeffIn,FormulaIn]|NewStructS]) :-
+mol_ratio([[QtyIn,CoeffIn,FormulaIn]|StructS],[MolRatio|MolRatioS],[[[Mol,mol],SF,CoeffIn,FormulaIn]|NewStructS]) :-
 	calc_format(input,FormulaIn,QtyIn,[Mol,mol],SF),
 	MolRatio is Mol / CoeffIn,
 	mol_ratio(StructS,MolRatioS,NewStructS).
 
-limitant(StructS,NewStructS,LimitantStruct,LimitantSF) :-
+limitant(StructS,NewStructS,LimitantStruct) :-
 	mol_ratio(StructS,MolRatioS,NewStructS),
 	min_member(MinMolRatio,MolRatioS),
-	MinMolRatio = [_,LimitantSF],
 	nth0(Index,MolRatioS,MinMolRatio), !,
 	nth0(Index,NewStructS,LimitantStruct).
 
-stoich_limited(_,_,[],[]) :- !.
-stoich_limited(Limitant,LimitantSF,[_|InputS],[nil|QueryS]) :-
-	stoich_limited(Limitant,LimitantSF,InputS,QueryS), !.
-stoich_limited(Limitant,LimitantSF,[Input|InputS],[[[QtyOut,CalcTypeOut],CoeffOut,FormulaOut]|QueryS]) :-
-	Limitant = [[MolLim,mol],CoeffLim,_],
+stoich_limited(_,[],[]) :- !.
+stoich_limited(Limitant,[_|InputS],[nil|QueryS]) :-
+	stoich_limited(Limitant,InputS,QueryS), !.
+stoich_limited(Limitant,[Input|InputS],[[[QtyOut,CalcTypeOut],CoeffOut,FormulaOut]|QueryS]) :-
+	Limitant = [[MolLim,mol],SFLim,CoeffLim,_],
 	(
 		CalcTypeOut = excess ->
 			(
-				Input = [[MolIn,mol],_,_], 
+				Input = [[MolIn,mol],SFIn,_,_], 
+				SF is min(SFLim,SFIn),
 				MolOut is MolIn - MolLim * CoeffOut / CoeffLim
 			);
-			MolOut is MolLim * CoeffOut / CoeffLim
+			(
+				MolOut is MolLim * CoeffOut / CoeffLim,
+				SF = SFLim
+			)
 	),
-	calc_format(output,FormulaOut,[MolOut,mol],QtyOut,LimitantSF), !,
-	stoich_limited(Limitant,LimitantSF,InputS,QueryS).
+	calc_format(output,FormulaOut,[MolOut,mol],QtyOut,SF), !,
+	stoich_limited(Limitant,InputS,QueryS).
 
 stoich_simple([],[]).
 stoich_simple(Input,[nil|QueryS]) :-
@@ -71,7 +74,7 @@ stoich(InGrammar,Equation,OutGrammar,Balanced,InQtyS,OutQtyS,QueryS) :-
 			);
 			(
 
-				limitant(InputS,InputMolS,Limitant,LimitantSF),
-				stoich_limited(Limitant,LimitantSF,InputMolS,QueryS)
+				limitant(InputS,InputMolS,Limitant),
+				stoich_limited(Limitant,InputMolS,QueryS)
 			)
 	).
