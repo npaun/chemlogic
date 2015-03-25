@@ -4,8 +4,12 @@
 % (C) Copyright 2012-2015 Nicholas Paun
 
 
+:- module(units,[calc_format/5,unit/3]).
 
-:- consult('../balance/balancer').
+% Super irritating style check
+:- style_check(-atom).
+
+
 :- use_module(sigfigs).
 		
 calc_format(input,Formula,[QtyIn,UnitIn],[QtyOut,UnitOut],SF) :-
@@ -90,6 +94,14 @@ unit(_,[[Mol,mol],[Conc,'M']],[Vol,'L']) :-
 unit(_,[[Mol,mol],[Vol,'L']],[Conc,'M']) :-
 	Conc /* M */ is Mol /* mol */ / Vol /* L */, !.
 
+unit(_,QtyIn,QtyOut) :-
+	throw(error(logic_error(units:no_conversion,
+				(
+					'From', QtyIn,
+					'To', QtyOut
+				)),_)
+		).
+
 %%% Calculate the Molar Mass of a compound %%%
 add_sum(Element,Sub,MassIn,MassOut) :-
 	mass(Element,AtomicMass),!,
@@ -112,3 +124,20 @@ molar_mass([],X,X).
 molar_mass([[Sym,Sub]|PairS],Mass,MassF) :-
 	sum_part(Sym,Sub,Mass,Mass1),
 	molar_mass(PairS,Mass1,MassF).
+
+
+%%%% GUIDANCE FOR ERROR MESSAGES %%%%
+
+guidance_general(no_conversion,
+	'The provided quantities cannot be converted to each-other.
+	 
+	 This may either be because the unit does not exist or is not supported,
+	 e.g. 500 g to ? nols (notice the spelling error)
+
+	 Or because the two units are incompatible or require additional information to convert,
+	 e.g. 5.5 mols to ? M (what exactly is the volume of this solution?)
+
+	 Please verify that the quantities indicated have been correctly entered and that there are no missing steps in the calculation.
+
+	 ').
+

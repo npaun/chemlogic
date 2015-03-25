@@ -1,5 +1,8 @@
 #!/usr/bin/env swipl
+
+:- ensure_loaded('../balance/balancer').
 :- consult(units).
+:- use_module(units).
 :- consult(excess).
 
 % Super irritating style check
