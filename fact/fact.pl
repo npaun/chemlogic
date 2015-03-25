@@ -93,7 +93,7 @@ Symbol	string	The symbol of the element
 **/
 
 :- discontiguous [cl/1,cl_poly/1]. % The chemlogic DCG translating rules.
-:- discontiguous [charge/2,oxyanions/3,atomic/2,diatomic/1]. % Facts about an element or group
+:- discontiguous [charge/2,oxyanions/3,atomic/2,diatomic/1,mass/2]. % Facts about an element or group
 :- dynamic [charge/2].
 
 :- include('metal').

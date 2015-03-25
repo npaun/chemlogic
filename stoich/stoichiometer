@@ -1,0 +1,16 @@
+#!/usr/bin/env swipl
+
+:- ensure_loaded('../balance/balancer').
+:- consult(units).
+:- use_module(units).
+:- consult(excess).
+
+% Super irritating style check
+:- style_check(-atom).
+
+% Meta error handling
+:- ensure_loaded('../io/meta_error').
+
+
+
+% vi: ft=prolog
