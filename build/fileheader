@@ -1,7 +1,7 @@
 #!/bin/sh
 
-echo '0a
-% file.pl: 
+echo "0a
+% $1: 
 % This file is from Chemlogic, a logic programming computer chemistry system
 % <http://icebergsystems.ca/chemlogic>
 % (C) Copyright 2012-2015 Nicholas Paun
@@ -9,4 +9,4 @@ echo '0a
 
 
 .
-w' | ed $1
+w" | ed $1
