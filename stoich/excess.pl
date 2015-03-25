@@ -39,9 +39,9 @@ limit_calculate(Limitant,LimitantSF,[[QtyOut,CoeffOut,FormulaOut]|QueryS]) :-
 	calc_format(output,FormulaOut,[MolOut,mol],QtyOut,LimitantSF), !,
 	limit_calculate(Limitant,LimitantSF,QueryS).
 
-limit_calculate(_,_,[],[]).
+limit_calculate(_,_,[],[]) :- !.
 limit_calculate(Limitant,LimitantSF,[_|InputS],[nil|QueryS]) :-
-	limit_calculate(Limitant,LimitantSF,InputS,QueryS).
+	limit_calculate(Limitant,LimitantSF,InputS,QueryS), !.
 limit_calculate(Limitant,LimitantSF,[Input|InputS],[[[QtyOut,CalcTypeOut],CoeffOut,FormulaOut]|QueryS]) :-
 	Limitant = [[MolLim,mol],CoeffLim,_],
 		(CalcTypeOut = excess ->
