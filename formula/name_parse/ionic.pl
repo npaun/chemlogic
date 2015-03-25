@@ -27,8 +27,21 @@ fwd(MElems,FinalRest,[[MSym,MSub],[NMSym,NMSub]|Appended]) --> compound(MElems,F
 		NMSub is abs(MCharge / GCD)
 	}.
 
-rev([[MSym,MSub],[NMSym,NMSub]|Appended]) -->
-	{
+
+rev([Formula|Appended]) -->
+	{rev_algo(Formula,ChargeFormula)},
+
+	compound(_,_,ChargeFormula,Appended),
+	!,
+
+	/* Corrector: remove if unecessary */
+	(
+		{Formula = [_,MSub,_,NMSub]},
+		{GCD is gcd(MSub,NMSub)}, 
+		{GCD = 1} xx corrector_not_reduced
+	).
+
+rev_algo([[MSym,MSub],[NMSym,NMSub]],[MSym,MCharge,NMSym,NMCharge]) :-
 		%  TODO: If the metal is monovalent, don't bother conjuring it up! Just use it.
 		%  Also, no need to actually check these charges, is there?
 	
@@ -37,18 +50,7 @@ rev([[MSym,MSub],[NMSym,NMSub]|Appended]) -->
 		(charge(NMSym,NMCharge), !),
 
 		NMTotal is abs(NMSub * NMCharge),
-		MCharge is NMTotal / MSub
-	},
-
-	compound(_,_,[MSym,MCharge,NMSym,NMCharge],Appended),
-	!,
-
-	/* Corrector: remove if unecessary */
-	(
-		{GCD is gcd(MSub,NMSub)}, 
-		{GCD = 1} xx corrector_not_reduced
-	).
-
+		MCharge is NMTotal / MSub.
 
 %%% Ionic Compound Naming Rules %%% 
 
@@ -88,7 +90,6 @@ metal(Sym,Charge) --> element(Sym,_), {charge(Sym,Charges)}, metal_valence(Charg
 metal_valence(Charge,Charges) --> 
 	{is_list(Charges)},
 	multivalent_charge(Charge) xx charge,
-
 	{member(Charge,Charges)} xx charge_invalid.
 
 metal_valence(Charge,Charges) --> 
