@@ -1,3 +1,10 @@
+% excess.pl: Performs calculations involving the stoichiometry of excess quantities.
+% This file is from Chemlogic, a logic programming computer chemistry system
+% <http://icebergsystems.ca/chemlogic>
+% (C) Copyright 2012-2015 Nicholas Paun
+
+
+
 filter_query([],[],[],[]) :- !.
 filter_query([Qty|QtyS],[Coeff|CoeffS],[Formula|FormulaS],[Struct|StructS]) :-
 	(Qty = nil -> Struct = nil; Struct = [Qty,Coeff,Formula]),
