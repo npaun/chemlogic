@@ -27,6 +27,9 @@
 :- use_module(solve).
 
 
+% Reaction type analysis
+:- consult(reaction_types).
+
 
 balance_equation_real(InGrammar,Equation,OutGrammar,Solution) :-
 	parse(InGrammar,.(user,_,[],Elems,[],MoleculeSet,[],ElementSideSet,SideSet),Equation,[]),
