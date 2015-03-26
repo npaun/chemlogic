@@ -53,6 +53,9 @@ rev_algo([[MSym,MSub],[NMSym,NMSub]],[MSym,MCharge,NMSym,NMCharge]) :-
 		NMTotal is abs(NMSub * NMCharge),
 		MCharge is NMTotal / MSub.
 
+%		charge_check(metal,MSym,MCharge) xx corrector_bad_subscript.
+
+
 %%% Ionic Compound Naming Rules %%% 
 
 compound(Elems,Rest,Formula,[]) --> acid(Elems,Rest,Formula).

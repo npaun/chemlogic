@@ -35,8 +35,12 @@ formula_part_first(Fmt,Elems,ElemsR,Part,PartR) -->
 	part(Fmt,Type,Elems,ElemsR0,Part,PartR0), 
 	(formula_part(Fmt,Type,ElemsR0,ElemsR,PartR0,PartR), !).
 
-formula_part(_,none,[],[],[],[],[],[]).
-formula_part(_,multi,[],[],[],[],[],[]) :- !, fail.
+/*formula_part(_,none,E,E,[],[],[],[]) :- writeln('Nag Dug').*/
+
+%formula_part(_,none,E,E,P,P,[],[]) :- writeln('Howling for the deadd...').
+
+%formula_part(_,none,[],[],[],[]) --> [], {writeln('Bad BUGG')}.
+%formula_part(_,multi,[],[],[],[],[],[]) :- !, fail.
 formula_part(Fmt,multi,Elems,ElemsR,Part,PartR) --> part(Fmt,_,Elems,ElemsR0,Part,PartR0), (formula_part(Fmt,_,ElemsR0,ElemsR,PartR0,PartR), !).
 formula_part(_,none,Elems,Elems,Part,Part) --> [].
 
