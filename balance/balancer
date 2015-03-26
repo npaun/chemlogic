@@ -35,8 +35,11 @@ clear_rest([],[]).
 balance_equation_real(InGrammar,Equation,OutGrammar,Solution,Coeffs,MoleculeSet,SideSet) :-
 	parse(InGrammar,.(user,_,[],Elems,ElemsR,MoleculeSet,MoleculeR,ElementSideSet,SideSet),Equation,[]),
 	SideSet = [Reactants,Products],
-	(var(Products) -> 
-			reaction_complete(_,Elems,ElemsR,MoleculeSet,MoleculeR,ElementSideSet,SideSet); 
+	(var(Products) ->
+			(
+				reaction_complete(_,Elems,ElemsR,MoleculeSet,MoleculeR,ElementSideSet,SideSet);
+				throw(error(domain_error(user:no_completion,SideSet),_))
+			); 
 			clear_rest(ElemsR,MoleculeR)
 	),
 	(
@@ -170,6 +173,18 @@ guidance_general(missing_elements,
  	Please check to ensure you have entered the entire equation and all of its names/formulas correctly.
  	
  	').
+
+guidance_general(no_completion,
+	'The chemical equation you have entered is in the correct format, but the products cannot be determined.
+	 This may be either because the program cannot complete this type of reaction or you have misentered the reactants.
+
+	 1. The program only supports completing chemical reactions where the result can always (or almost always!) be predicted correctly.
+	 Only following reaction types are supported: double replacement, neutralization (special case of double replacement) and simple combustion of hydrocarbons.
+	 Sorry.
+
+	 2. Please check to ensure that you have entered the reactants correctly.
+
+	 ').
 
 explain_general_data([],[]).
 % vi: ft=prolog
