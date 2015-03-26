@@ -46,14 +46,16 @@ rev_algo([[MSym,MSub],[NMSym,NMSub]],[MSym,MCharge,NMSym,NMCharge]) :-
 		%  TODO: If the metal is monovalent, don't bother conjuring it up! Just use it.
 		%  Also, no need to actually check these charges, is there?
 	
-		(MSym = "H"; charge_check(metal,MSym)),
+		(MSym = "H"; charge_check(metal,MSym,MCharges)),
 
 		(charge(NMSym,NMCharge), !),
 
 		NMTotal is abs(NMSub * NMCharge),
-		MCharge is NMTotal / MSub.
+		MCharge is NMTotal / MSub,
 
-%		charge_check(metal,MSym,MCharge) xx corrector_bad_subscript.
+		/* Corrector: remove if unnecessary */
+	
+		xx({is_list(MCharges) -> member(MCharge,MCharges); MCharge = MCharges},corrector_invalid_subscript,[],[]).
 
 
 %%% Ionic Compound Naming Rules %%% 
@@ -216,6 +218,16 @@ guidance_errcode(corrector_not_reduced,_,
 
  	 e.g Pb2O4 must be reduced to PbO2.'
  ).
+
+guidance_errcode(corrector_invalid_subscript,_,
+	'BUSTED! The subscripts of the formula you have entered are invalid.
+	 Your input was recognized as an ionic compound, because it consists of a positive and a negative ion, 
+	 but the subscripts you have entered do not correspond with the correct charges of these ions.
+	
+	 e.g. NaSO4 is incorrect because the charge of the SO4 ion is 2- and the charge of the Na ion is 1+, so the correct formula is Na2SO4.
+
+	 Please verify that you have correctly balanced the charges of the positive and negative ions, by using appropriate subscripts.'
+).
 
 guidance_errcode(hydrate_h2o,alpha,
 	'Only hydrates (water; . nH2O; etc.) are supported by the program.').
