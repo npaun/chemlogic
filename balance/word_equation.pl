@@ -17,10 +17,10 @@ word(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[ElemsL,ElemR0],[SideLeft,Sid
 	output(Fmt,arrow) xx arrow,
 	products(CoeffR0,CoeffR,ElemR0,ElemR,FormulaR0,FormulaR,SideRight).
 
-products(_,Coeff,Coeff,Elems,Elems,Formula,Formula,_,[],[]).
-products(Fmt,Coeff,CoeffR,Elems,ElemsR,Formula,FormulaR,SideRight) --> 
+products(Coeff,Coeff,Elems,Elems,Formula,Formula,_,[],[]).
+products(Coeff,CoeffR,Elems,ElemsR,Formula,FormulaR,SideRight) --> 
 	" " xx arrow_space, 
-	expr(Fmt,Coeff,CoeffR,Elems,ElemsR,Formula,FormulaR,SideRight).
+	expr(Coeff,CoeffR,Elems,ElemsR,Formula,FormulaR,SideRight).
 
 expr(Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideH|SideT]) --> 
 	balanced_name(Coeff,CoeffR0,Elems,ElemR0,Formula,FormulaR0,SideH),
