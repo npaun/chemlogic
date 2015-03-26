@@ -70,7 +70,7 @@ guidance_errcode(arrow,nil,
 	 1. You have forgotten to insert an --> between the reactants and the products.
 	 Find the place where the products start and insert an --> there.
  	 
-	 e.g. CH4 + O2 <-->> CO2 + H2O'
+	 e.g. CH4 + O2 <-->> CO2 + H2O
 
  	 2. You have left out the arrow, when requesting reaction completion.
 	 Place an arrow at the end of the reactants to indicate that you wish to determine the products.
@@ -126,7 +126,7 @@ formula:guidance_errcode(part_first,nil,
  	
 	 2. If only the reactants are provided, the program will attempt to complete the equation.
 	 NOTE: In this case, an arrow must be placed at the end of the reactants.
-	 e.g. HCHCOOH + Zn(OH)2 -->
+	 e.g. HCH3COO + Zn(OH)2 -->
 
 	 2. Every plus adds another formula
 	 e.g H2 + <O2> --> H2O, not H2 + --> H2O
