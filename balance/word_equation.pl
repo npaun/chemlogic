@@ -71,7 +71,7 @@ guidance_errcode(arrow,nil,
 
 	 1. You have forgotten to insert an --> between the reactants and the products.
  	 Find the place where the products start and insert an --> there.
-	 e.g. methane + oxygen <-->> carbon dioxide + water'
+	 e.g. methane + oxygen <-->> carbon dioxide + water
 
          2. You have left out the arrow, when requesting reaction completion.
 	 Place an arrow at the end of the reactants to indicate that you wish to determine the products.
