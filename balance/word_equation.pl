@@ -15,8 +15,12 @@ word(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[ElemsL,ElemR0],[SideLeft,Sid
 	expr(Coeff,CoeffR0,Elems,ElemR0,Formula,FormulaR0,SideLeft),
 	{var(ElemR0) -> make_element_sideset(Elems-ElemR0,ElemsL-[]); true},
 	output(Fmt,arrow) xx arrow,
-	expr(CoeffR0,CoeffR,ElemR0,ElemR,FormulaR0,FormulaR,SideRight).
+	products(CoeffR0,CoeffR,ElemR0,ElemR,FormulaR0,FormulaR,SideRight).
 
+products(_,Coeff,Coeff,Elems,Elems,Formula,Formula,_,[],[]).
+products(Fmt,Coeff,CoeffR,Elems,ElemsR,Formula,FormulaR,SideRight) --> 
+	" " xx arrow_space, 
+	expr(Fmt,Coeff,CoeffR,Elems,ElemsR,Formula,FormulaR,SideRight).
 
 expr(Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideH|SideT]) --> 
 	balanced_name(Coeff,CoeffR0,Elems,ElemR0,Formula,FormulaR0,SideH),
@@ -61,16 +65,19 @@ guidance_errcode(arrow,alpha,Message) :- name:guidance_errcode(none,alpha,Messag
 guidance_errcode(arrow,digit,Message) :- name:guidance_errcode(none,digit,Message).
 
 guidance_errcode(arrow,nil,
-	'Chemical equations consist of reactants --> (the arrow) and products.
-	 
+	'Complete chemical equations consist of reactants --> (the arrow) and products.
+	 You may also leave out the products, if you would like the program to complete the reaction.
+
+
 	 1. You have forgotten to insert an --> between the reactants and the products.
  	 Find the place where the products start and insert an --> there.
+	 e.g. methane + oxygen <-->> carbon dioxide + water'
 
- 	 2. You are entirely missing the products.
- 	 Please insert the products for the equation.
- 	 The program cannot figure this out for you, yet. Sorry.
+         2. You have left out the arrow, when requesting reaction completion.
+	 Place an arrow at the end of the reactants to indicate that you wish to determine the products.
+	 (Do not place a trailing space after the arrow, in this case only.)
+	 e.g. hydrochloric acid + sodium hydroxide <-->>'
 
- 	e.g. methane + oxygen <-->> carbon dioxide + water'
 ).
 
 guidance_errcode(arrow,_,
@@ -109,10 +116,15 @@ guidance_errcode(fail,digit,Message) :- name:guidance_errcode(fail,digit,Message
 guidance_errcode(fail,nil,
 	'You are missing a chemical name where it is required.
 
-	 1. An equation has reactants and products:
-	 e.g. hydrogen + oxygen --> <water>, not hydrogen + oxygen --> or --> water.
- 	
-	 2. Every plus adds another chemical name:
+	 1. A complete chemical equation has both reactants and products:
+	 e.g. hydrogen + oxygen --> <water>, not --> water.
+ 
+
+	 2. If only the reactants are provided, the program will attempt to complete the equation.
+	 NOTE: In this case, an arrow must be placed at the end of the reactants.
+	 e.g. acetic acid + zinc hydroxide -->
+
+	 3. Every plus adds another chemical name:
 	 e.g hydrogen + <oxygen> --> water, not hydrogen + --> water
 	 
 	 Please add the missing chemical names.'
@@ -122,12 +134,17 @@ guidance_errcode(fail,punct,
 	'You are missing a chemical name where it is required. 
 	 Therefore, the highlighted symbol does not make sense here.
 
-	 1. An equation has reactants and products:
+	 1. A complete chemical equation has reactants and products:
 	 e.g. hydrogen + oxygen --> <water>, not hydrogen + oxygen --> or --> water.
- 	
-	 2. Every plus adds another chemical name:
+ 
+	 2. If only the reactants are provided, the program will attempt to complete the equation.
+	 NOTE: In this case, an arrow must be placed at the end of the reactants.
+	 e.g. acetic acid + zinc hydroxide -->
+
+	 3. Every plus adds another chemical name:
 	 e.g hydrogen + <oxygen> --> water, not hydrogen + --> water
-	 
+	
+
 	 Please add the missing chemical names.'
  ).
 

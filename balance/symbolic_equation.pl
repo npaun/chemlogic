@@ -128,7 +128,7 @@ formula:guidance_errcode(part_first,nil,
 	 NOTE: In this case, an arrow must be placed at the end of the reactants.
 	 e.g. HCH3COO + Zn(OH)2 -->
 
-	 2. Every plus adds another formula
+	 3. Every plus adds another formula
 	 e.g H2 + <O2> --> H2O, not H2 + --> H2O
 	 
 	 Please add the missing formulas.'
@@ -138,14 +138,14 @@ formula:guidance_errcode(part_first,punct,
 	'You are missing a formula where it is required. 
 	 Therefore, the highlighted symbol does not make sense here.
 
-	 1. A complete equation has both reactants and products:
+	 1. A complete chemical equation has both reactants and products:
 	 e.g. H2 + O2 --> <H2O>, not --> H2O.
  	
 	 2. If only the reactants are provided, the program will attempt to complete the equation.
 	 NOTE: In this case, an arrow must be placed at the end of the reactants.
 	 e.g. HCHCOOH + Zn(OH)2 -->
 
-	 2. Every plus adds another formula
+	 3. Every plus adds another formula:
 	 e.g H2 + <O2> --> H2O, not H2 + --> H2O
 
 	 
