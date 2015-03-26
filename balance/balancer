@@ -33,13 +33,12 @@
 clear_rest([],[]).
 
 balance_equation_real(InGrammar,Equation,OutGrammar,Solution,Coeffs,MoleculeSet,SideSet) :-
-	parse(InGrammar,.(user,_,[],Elems,ElemsR,MoleculeSet,MoleculeR,ElementSideSet,SideSet),Equation,[]),!,
-	SideSet = [Reactants,Products],!,
-	(var(Products) -> reaction_complete(_,Elems,ElemsR,MoleculeSet,MoleculeR,ElementSideSet,SideSet); clear_rest(ElemsR,MoleculeR)),
-	writeln(Elems),
-	writeln(MoleculeSet),
-	writeln(ElementSideSet),
-	writeln(SideSet),
+	parse(InGrammar,.(user,_,[],Elems,ElemsR,MoleculeSet,MoleculeR,ElementSideSet,SideSet),Equation,[]),
+	SideSet = [Reactants,Products],
+	(var(Products) -> 
+			reaction_complete(_,Elems,ElemsR,MoleculeSet,MoleculeR,ElementSideSet,SideSet); 
+			clear_rest(ElemsR,MoleculeR)
+	),
 	(
 		tabulate(SideSet); 
 		throw(error(type_error(user:equation_struct,SideSet),_))
