@@ -1,0 +1,2 @@
+
+% vi: ft=prolog
