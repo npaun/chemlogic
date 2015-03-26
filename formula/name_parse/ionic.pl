@@ -20,23 +20,24 @@ ionic(_,_,Formula) --> {nonvar(Formula)}, rev(Formula).
 
 %%% The Algorithms %%% 
 
-fwd(MElems,FinalRest,[[MSym,MSub],[NMSym,NMSub]|Appended]) --> compound(MElems,FinalRest,[MSym,MCharge,NMSym,NMCharge],Appended),
-	{
+fwd(MElems,FinalRest,[Anion,Cation|Appended]) --> 
+	compound(MElems,FinalRest,ChargeFormula,Appended),
+	{fwd_algo([Anion,Cation],ChargeFormula)}.
+
+fwd_algo([[MSym,MSub],[NMSym,NMSub]],[MSym,MCharge,NMSym,NMCharge]) :-
 		GCD is gcd(MCharge,NMCharge),
 		MSub is abs(NMCharge / GCD),
-		NMSub is abs(MCharge / GCD)
-	}.
+		NMSub is abs(MCharge / GCD).
 
 
-rev([Formula|Appended]) -->
-	{rev_algo(Formula,ChargeFormula)},
+rev([[MSym,MSub],[NMSym,NMSub]|Appended]) -->
+	{rev_algo([[MSym,MSub],[NMSym,NMSub]],ChargeFormula)},
 
 	compound(_,_,ChargeFormula,Appended),
 	!,
 
 	/* Corrector: remove if unecessary */
 	(
-		{Formula = [_,MSub,_,NMSub]},
 		{GCD is gcd(MSub,NMSub)}, 
 		{GCD = 1} xx corrector_not_reduced
 	).

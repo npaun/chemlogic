@@ -33,6 +33,8 @@
 
 balance_equation_real(InGrammar,Equation,OutGrammar,Solution,Coeffs,MoleculeSet,SideSet) :-
 	parse(InGrammar,.(user,_,[],Elems,[],MoleculeSet,[],ElementSideSet,SideSet),Equation,[]),
+	SideSet = [Reactants,Products],
+	(var(Products) -> reaction_complete(_,MoleculeSet,ElementSideSet,SideSet)),
 	(
 		tabulate(SideSet); 
 		throw(error(type_error(user:equation_struct,SideSet),_))
