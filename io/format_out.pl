@@ -8,11 +8,11 @@
 
 
 
-symbol(user,arrow) --> " --> ".
-symbol(html,arrow) --> " &rarr; ".
-symbol(html_android_textview,arrow) --> " &rarr; ".
-symbol(latex,arrow) --> " \\rightarrow ".
-symbol(ansi,arrow) --> " --> ".
+symbol(user,arrow) --> " -->".
+symbol(html,arrow) --> " &rarr;".
+symbol(html_android_textview,arrow) --> " &rarr;".
+symbol(latex,arrow) --> " \\rightarrow".
+symbol(ansi,arrow) --> " -->".
 
 symbol(user,sub_start) --> "".
 symbol(user,sub_end) --> "".

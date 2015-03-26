@@ -9,7 +9,7 @@ reaction_match(double_replacement,[
 					]
 				]).
 
-reaction_complete(double_replacement,[Reactant1,Reactant2,Product1,Product2],[ElementSideSet,ElementSideSet],[[Reactant1,Reactant2],[Product1,Product2]]) :-
+reaction_complete(double_replacement,_,ElementSideSet,_,[Product1,Product2],[ElementSideSet|_],[[Reactant1,Reactant2],[Product1,Product2]]) :-
 	ionic:rev_algo(Reactant1,[MSym1,MCharge1,NMSym1,NMCharge1]),
 	ionic:rev_algo(Reactant2,[MSym2,MCharge2,NMSym2,NMCharge2]),
 	ionic:fwd_algo(Product1,[MSym1,MCharge1,NMSym2,NMCharge2]),

@@ -14,13 +14,14 @@
 symbolic(Fmt,Coeff,CoeffR,Elems,ElemsR,Formula,FormulaR,[ElemsL,ElemsR0],[SideLeft,SideRight]) -->
 	expr(Fmt,Coeff,CoeffR0,Elems,ElemsR0,Formula,FormulaR0,SideLeft),
 	{var(ElemsR0) -> make_element_sideset(Elems-ElemsR0,ElemsL-[]); true},
-	rhs(Fmt,CoeffR0,CoeffR,ElemsR0,ElemsR,FormulaR0,FormulaR,SideRight) xx arrow.
+	output(Fmt,arrow) xx arrow,
+	products(Fmt,CoeffR0,CoeffR,ElemsR0,ElemsR,FormulaR0,FormulaR,SideRight).
 
-rhs(Fmt,Coeff,CoeffR,Elems,ElemsR,Formula,FormulaR,SideRight) -->
-	output(Fmt,arrow),
+
+products(_,Coeff,Coeff,Elems,Elems,Formula,Formula,_,[],[]).
+products(Fmt,Coeff,CoeffR,Elems,ElemsR,Formula,FormulaR,SideRight) --> 
+	" " xx arrow_space, 
 	expr(Fmt,Coeff,CoeffR,Elems,ElemsR,Formula,FormulaR,SideRight).
-	
-rhs(_,Coeff,Coeff,[bob|ElemsR],ElemsR,Formula,Formula,_) --> [].
 
 expr(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideH|SideT]) -->
 	balanced_formula(Fmt,Coeff,CoeffR0,Elems,ElemR0,Formula,FormulaR0,SideH),
@@ -82,6 +83,13 @@ guidance_errcode(arrow,_,
 
  	 Also, an arrow consists of: -->'
  ).
+
+guidance_errcode(arrow_space,_,
+	'You are missing a required space after the arrow.
+	 All operators must be properly spaced: 1 space before, 1 space after.
+
+	 Please insert a space before the highlighted component.'
+).
 
 /* Let the formula parser indicate what is wrong with elements and numbers */
 guidance_errcode(none,alpha,Message) :- formula:guidance_errcode(none,alpha,Message).

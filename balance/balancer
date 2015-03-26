@@ -32,9 +32,9 @@
 
 
 balance_equation_real(InGrammar,Equation,OutGrammar,Solution,Coeffs,MoleculeSet,SideSet) :-
-	parse(InGrammar,.(user,_,[],Elems,[],MoleculeSet,[],ElementSideSet,SideSet),Equation,[]),
+	parse(InGrammar,.(user,_,[],Elems,ElemsR,MoleculeSet,MoleculeR,ElementSideSet,SideSet),Equation,[]),
 	SideSet = [Reactants,Products],
-	(var(Products) -> reaction_complete(_,MoleculeSet,ElementSideSet,SideSet)),
+	(var(Products) -> reaction_complete(_,Elems,ElemsR,MoleculeSet,MoleculeR,ElementSideSet,SideSet); true),
 	writeln(Elems),
 	writeln(MoleculeSet),
 	writeln(ElementSideSet),
