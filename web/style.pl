@@ -70,7 +70,9 @@ cl_menu --> html(
 	[
 	li(h1(id(title),'Chemlogic')),
 	li(a(href(compounder),'Compounder')),
+	li(span([class(todo),href(molar),title('Not yet implemented.')],'Molar')),
 	li(a(href(balancer),'Balancer')),
 	li(span([class(todo),href(stoichiometer),title('Not yet implemented.')],'Stoichiometer')),
-	li(span([class(todo),href(equilibrator),title('Not yet implemented.')],'Equilibrator'))
+	li(span([class(todo),href(equilibrator),title('Not yet implemented.')],'Equilibrator')),
+	li(span([class(todo),href(quiz),title('Not yet implemented.')],'Quiz'))
 	])).
