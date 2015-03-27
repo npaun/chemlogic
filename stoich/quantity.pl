@@ -1,5 +1,11 @@
 :- consult(sigfigs_number).
 
+quantity(qty([[Val,Unit|Tail]]),Num-Input,InputR) :- number_chars(Num,Chars),
+							value(Val,Chars,[]),
+							Input = [" "|InputR0],
+							unit_sym(Unit,InputR0,InputR1),
+							unit_tail(Unit,Tail,InputR1,InputR).
+
 quantity(qty([[Val,Unit]|Tail])) --> value(Val), " ", unit_sym(Unit), !, unit_tail(Unit,Tail), !.
 
 value(value(Val,SF)) --> number(SFDigits,[],Digits,[]), {length(SFDigits,SF), number_chars(Val,Digits)}.
