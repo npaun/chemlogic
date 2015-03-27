@@ -93,6 +93,8 @@ unit(_,[[Mol,mol],[Conc,'M']],[Vol,'L']) :-
 unit(_,[[Mol,mol],[Vol,'L']],[Conc,'M']) :-
 	Conc /* M */ is Mol /* mol */ / Vol /* L */, !.
 
+
+%%% Unconvertible units %%%
 unit(_,QtyIn,QtyOut) :-
 	throw(error(logic_error(units:no_conversion,
 				(

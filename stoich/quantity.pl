@@ -1,10 +1,32 @@
 :- consult(sigfigs_number).
 
-quantity(qty(value(Val,SF),unit(Unit))) --> number(SFDigits,[]), {length(SFDigits,SF)}, " ", unit_sym(Unit).
+quantity(qty([[Val,Unit]|Tail])) --> value(Val), " ", unit_sym(Unit), !, unit_tail(Unit,Tail), !.
 
-unit_sym(g) --> "g".
-unit_sym(mol) --> "mol".
-unit_sym('L') --> "L".
-unit_sym('M') --> "M".
-unit_sym('M') --> "mol/L".
+value(value(Val,SF)) --> number(SFDigits,[],Digits,[]), {length(SFDigits,SF), number_chars(Val,Digits)}.
 
+query(query([Unit|Tail],Property)) --> unit_sym(Unit), !, property(Property), unit_tail(Unit,Tail), !.
+
+property(property(actual)) --> " reacted".
+property(property(actual)) --> " produced".
+
+property(property(excess)) --> " excess".
+
+property(property(actual)) --> "".
+
+unit_sym(unit(g)) --> "g".
+unit_sym(unit('M')) --> "mol/L".
+unit_sym(unit(mol)) --> "mol".
+unit_sym(unit('L')) --> "L".
+unit_sym(unit('M')) --> "M".
+
+unit_tail(unit('L'),[[Val,unit('M')]]) --> " of ",  value(Val), " " ,unit_sym(unit('M')).
+unit_tail(unit('L'),[[Val,unit('M')]]) --> " (",  value(Val), " " ,unit_sym(unit('M')), ")".
+unit_tail(unit('M'),[[Val,unit('L')]]) --> " (",  value(Val), " " ,unit_sym(unit('L')), ")".
+
+unit_tail(unit('M'),[[Val,unit(mol)]]) --> " (",  value(Val), " " ,unit_sym(unit(mol)), ")".
+unit_tail(unit(mol),[[Val,unit('M')]]) --> " (",  value(Val), " " ,unit_sym(unit('M')), ")".
+
+unit_tail(unit('L'),[[Val,unit(mol)]]) --> " (",  value(Val), " " ,unit_sym(unit(mol)), ")".
+unit_tail(unit(mol),[[Val,unit('L')]]) --> " (",  value(Val), " " ,unit_sym(unit('L')), ")".
+
+unit_tail(_,[]) --> [].
