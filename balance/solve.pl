@@ -101,14 +101,17 @@ require_positive([Var|VarS]) :-
 guidance_general(positive,
 	'Your chemical equation has no solution with all coefficients positive.
 	 
-	 Your equation has been converted to the following system of linear equations: ').
+	 Your equation has been converted to the following system of linear equations, which cannot be solved: ').
 
 guidance_general(eval,
- 	'Your chemical equation follows all the rules, but is not be valid.
+ 	'Your chemical equation is in the correct format, but is logically invalid.
 	 Therefore, the equation cannot be balanced.
 
-	 e.g: CH4 --> CO2 + H2O 
-	 It follows all the rules but cannot be balanced, because oxygen is missing from the left hand side.
+	 e.g: CuCl2 + KBr --> CuBr + KCl
+	 This equation is in the correct format, but cannot be balanced becuase the copper ion cannot change its charge in this reaction.
+
+	 e.g: C4N2H --> CH + N
+	 This equation follows all of the rules, but is clearly nonsensical and cannot be made to balance.
 
 	 The following system of linear equations has no solution: ').
 
