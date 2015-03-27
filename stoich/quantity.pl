@@ -1,12 +1,12 @@
-:- set_prolog_flag(double_quotes,chars).
-:- consult(sigfigs_number).
-:- use_module(library(dcg/basics)).
+% quantity.pl: Parses user-entered text quantity and query expressions.
+% This file is from Chemlogic, a logic programming computer chemistry system
+% <http://icebergsystems.ca/chemlogic>
+% (C) Copyright 2012-2015 Nicholas Paun
 
-quantity(qty([[Val,Unit|Tail]]),Num-Input,InputR) :- number_chars(Num,Chars),
-							value(Val,Chars,[]),
-							Input = [" "|InputR0],
-							unit_sym(Unit,InputR0,InputR1),
-							unit_tail(Unit,Tail,InputR1,InputR).
+
+
+:- module(quantity,[quantity//1,query//1]).
+:- use_module(sigfigs_number).
 
 quantity(qty([[Val,Unit]|Tail])) --> value(Val), " ", unit_sym(Unit), !, unit_tail(Unit,Tail), !.
 
