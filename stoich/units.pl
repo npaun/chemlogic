@@ -11,12 +11,10 @@
 
 
 
-convert_fmt(input,Formula,[QtyIn,UnitIn],[QtyOut,UnitOut],SF) :-
-	sigfigs(QtyIn,SF),
-	to_number(QtyIn,QtyInNum),
-	unit(Formula,[QtyInNum,UnitIn],[QtyOut,UnitOut]).
+convert(input,Formula,qty([value(ValIn,SF),unit(UnitIn)]),ValOut-query([unit(UnitOut)],_),SF) :-
+	unit(Formula,[ValIn,UnitIn],[ValOut,UnitOut]).
 
-convert_fmt(output,Formula,[QtyIn,UnitIn],[QtyOutRound,UnitOut],SF) :-
+convert(output,Formula,qty([value(ValIn,SF),unit(UnitIn)]),ValRound-query([unit(UnitOut)],_),SF) :-
 	unit(Formula,[QtyIn,UnitIn],[QtyOut,UnitOut]),
 	round_sigfigs(QtyOut,SF,QtyOutRound).
 

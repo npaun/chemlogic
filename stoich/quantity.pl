@@ -7,6 +7,7 @@
 
 :- module(quantity,[quantity//1,query//1]).
 :- use_module(sigfigs_number).
+:- set_prolog_flag(double_quotes,chars).
 
 quantity(qty([[Val,Unit]|Tail])) --> value(Val), " ", unit_sym(Unit), !, unit_tail(Unit,Tail), !.
 
@@ -20,7 +21,7 @@ value(value(Val,SF)) -->
 		)
 	).
 
-value_calc(value(Val,SF)) --> sigfigs:number(SFDigits,[],Digits,[]), {length(SFDigits,SF), number_chars(Val,Digits)}.
+value_calc(value(Val,SF)) --> number(SFDigits,[],Digits,[]), {length(SFDigits,SF), number_chars(Val,Digits)}.
 value_display(value(Val,SF),H,T) :- format(chars(H,T),'~w',Val). % When performing output, it is much faster to just use SWI-Prolog's built-in conversion.
 
 query(query([Unit|Tail],Property)) --> unit_sym(Unit), !, property(Property), unit_tail(Unit,Tail), !.
