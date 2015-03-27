@@ -3,6 +3,7 @@
 % <http://icebergsystems.ca/chemlogic>
 % (C) Copyright 2012-2015 Nicholas Paun
 
+:- module(sigfigs_number,[number//4]).
 :- set_prolog_flag(double_quotes,chars).
 
 
