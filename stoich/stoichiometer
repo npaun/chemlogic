@@ -1,15 +1,19 @@
 #!/usr/bin/env swipl
 
-:- ensure_loaded('../balance/balancer').
-:- consult(units).
-:- use_module(units).
-:- consult(excess).
 
 % Super irritating style check
 :- style_check(-atom).
 
+:- ensure_loaded('../balance/balancer').
+
+
 % Meta error handling
 :- ensure_loaded('../io/meta_error').
+
+:- use_module(units).
+:- use_module(calculate).
+
+
 
 
 

@@ -4,25 +4,24 @@
 % (C) Copyright 2012-2015 Nicholas Paun
 
 
-:- module(units,[calc_format/5,unit/3]).
-
-% Super irritating style check
-:- style_check(-atom).
+:- module(units,[convert_fmt/5,unit/3]).
 
 
 :- use_module(sigfigs).
-		
-calc_format(input,Formula,[QtyIn,UnitIn],[QtyOut,UnitOut],SF) :-
+
+
+
+convert_fmt(input,Formula,[QtyIn,UnitIn],[QtyOut,UnitOut],SF) :-
 	sigfigs(QtyIn,SF),
 	to_number(QtyIn,QtyInNum),
 	unit(Formula,[QtyInNum,UnitIn],[QtyOut,UnitOut]).
 
-calc_format(output,Formula,[QtyIn,UnitIn],[QtyOutRound,UnitOut],SF) :-
+convert_fmt(output,Formula,[QtyIn,UnitIn],[QtyOutRound,UnitOut],SF) :-
 	unit(Formula,[QtyIn,UnitIn],[QtyOut,UnitOut]),
 	round_sigfigs(QtyOut,SF,QtyOutRound).
 
 
-calc_format(input,Formula,[[QtyIn1,UnitIn1],[QtyIn2,UnitIn2]],[QtyOut,UnitOut],SF) :-
+convert_fmt(input,Formula,[[QtyIn1,UnitIn1],[QtyIn2,UnitIn2]],[QtyOut,UnitOut],SF) :-
 	sigfigs(QtyIn1,SF1),
 	to_number(QtyIn1,QtyInNum1),
 	sigfigs(QtyIn2,SF2),
@@ -34,11 +33,11 @@ calc_format(input,Formula,[[QtyIn1,UnitIn1],[QtyIn2,UnitIn2]],[QtyOut,UnitOut],S
 
 % In this case, some aspects of the result are known, while others are unknown. The variable could be in either term. 
 % This clause determines which quantities represent each argument and then calls the actual procedure.
-calc_format(output,Formula,[QtyCalc,UnitCalc],[[QtyR1,UnitR1],[QtyR2,UnitR2]],MaxSF) :-
-	(var(QtyR1) -> calc_format_complex_result(Formula,[QtyCalc,UnitCalc],[QtyR2,UnitR2],[QtyR1,UnitR1],MaxSF);
-	calc_format_complex_result(Formula,[QtyCalc,UnitCalc],[QtyR1,UnitR1],[QtyR2,UnitR2],MaxSF)).
+convert_fmt(output,Formula,[QtyCalc,UnitCalc],[[QtyR1,UnitR1],[QtyR2,UnitR2]],MaxSF) :-
+	(var(QtyR1) -> convert_fmt_complex_result(Formula,[QtyCalc,UnitCalc],[QtyR2,UnitR2],[QtyR1,UnitR1],MaxSF);
+	convert_fmt_complex_result(Formula,[QtyCalc,UnitCalc],[QtyR1,UnitR1],[QtyR2,UnitR2],MaxSF)).
 
-calc_format_complex_result(Formula,[QtyCalc,UnitCalc],[QtyIn,UnitIn],[QtyOutRound,UnitOut],MaxSF) :-
+convert_fmt_complex_result(Formula,[QtyCalc,UnitCalc],[QtyIn,UnitIn],[QtyOutRound,UnitOut],MaxSF) :-
 	sigfigs(QtyIn,SFIn),
 	to_number(QtyIn,QtyInNum),
 	unit(Formula,[[QtyCalc,UnitCalc],[QtyInNum,UnitIn]],[QtyOut,UnitOut]),

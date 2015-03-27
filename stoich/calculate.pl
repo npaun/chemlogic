@@ -1,11 +1,15 @@
-% excess.pl: Performs calculations involving the stoichiometry of excess quantities.
+% calculate.pl: Performs stoichiometric calculations, including the stoichiometry of excess quantities.
 % This file is from Chemlogic, a logic programming computer chemistry system
 % <http://icebergsystems.ca/chemlogic>
 % (C) Copyright 2012-2015 Nicholas Paun
 
 
+
+:- module(calculate,[stoich/6]).
+
 % Super irritating style check
 :- style_check(-atom).
+
 
 
 combine_structs([],[],[],[]) :- !.
@@ -25,7 +29,7 @@ mol_ratio([],[],[]).
 mol_ratio([nil|StructS],[nil|MolRatioS],[nil|NewStructS]) :-
 	mol_ratio(StructS,MolRatioS,NewStructS).
 mol_ratio([[QtyIn,CoeffIn,FormulaIn]|StructS],[MolRatio|MolRatioS],[[[Mol,mol],SF,CoeffIn,FormulaIn]|NewStructS]) :-
-	calc_format(input,FormulaIn,QtyIn,[Mol,mol],SF),
+	convert_fmt(input,FormulaIn,QtyIn,[Mol,mol],SF),
 	MolRatio is Mol / CoeffIn,
 	mol_ratio(StructS,MolRatioS,NewStructS).
 
@@ -45,7 +49,8 @@ stoich_limited(Limitant,[Input|InputS],[[[QtyOut,CalcTypeOut],CoeffOut,FormulaOu
 			(
 				(
 					Input = [[MolIn,mol],SFIn,_,_];
-					throw(error(logic_error(user:excess_missing_input,
+					throw(error(logic_error(calculate:excess_missing_input,
+
 						(
 							'Property to be determined: ', CalcTypeOut,
 							'No quantity provided for this substance: ', FormulaOut
@@ -60,7 +65,7 @@ stoich_limited(Limitant,[Input|InputS],[[[QtyOut,CalcTypeOut],CoeffOut,FormulaOu
 				SF = SFLim
 			)
 	),
-	calc_format(output,FormulaOut,[MolOut,mol],QtyOut,SF), !,
+	convert_fmt(output,FormulaOut,[MolOut,mol],QtyOut,SF), !,
 	stoich_limited(Limitant,InputS,QueryS).
 
 stoich_simple([],[]).
@@ -68,13 +73,13 @@ stoich_simple(Input,[nil|QueryS]) :-
 	stoich_simple(Input,QueryS).
 stoich_simple(Input,[[[QtyOut,_],CoeffOut,FormulaOut]|QueryS]) :-
 	Input = [QtyIn,CoeffIn,FormulaIn],
-	calc_format(input,FormulaIn,QtyIn,[MolIn,mol],SF), !,
+	convert_fmt(input,FormulaIn,QtyIn,[MolIn,mol],SF), !,
 	MolOut is MolIn * CoeffOut / CoeffIn,
-	calc_format(output,FormulaOut,[MolOut,mol],QtyOut,SF), !,
+	convert_fmt(output,FormulaOut,[MolOut,mol],QtyOut,SF), !,
 	stoich_simple(Input,QueryS).
 
 
-stoich_real(InGrammar,Equation,OutGrammar,Balanced,InQtyS,OutQtyS,QueryS) :-
+stoich_real(InGrammar,Equation,OutGrammar,Balanced,InQtyS,OutQtyS) :-
 	balance_equation(InGrammar,Equation,OutGrammar,Balanced,CoeffS,FormulaS),
 	combine_structs(InQtyS,CoeffS,FormulaS,InputS),
 	combine_structs(OutQtyS,CoeffS,FormulaS,QueryS),
@@ -90,16 +95,16 @@ stoich_real(InGrammar,Equation,OutGrammar,Balanced,InQtyS,OutQtyS,QueryS) :-
 			)
 	).
 
-stoich(InGrammar,Equation,OutGrammar,Balanced,InQtyS,OutQtyS,QueryS) :-
+stoich(InGrammar,Equation,OutGrammar,Balanced,InQtyS,OutQtyS) :-
 	catch(
-		stoich_real(InGrammar,Equation,OutGrammar,Balanced,InQtyS,OutQtyS,QueryS),
+		stoich_real(InGrammar,Equation,OutGrammar,Balanced,InQtyS,OutQtyS),
 		error(logic_error(Type,Data),_),
 		explain_general_rethrow(logic_error,Equation,Type,Data)
 	).
 
 %%%%% GUIDANCE FOR ERRORS %%%%%
 
-explain_general(excess_missing_input,
+guidance_general(excess_missing_input,
 	'The amount in excess of this substance cannot be calculated because the quantity present is unknown.
 	 Excess amounts are calculated by comparing the provided quantity of a substance with the amount of substance that actually reacted.
 
