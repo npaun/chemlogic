@@ -51,7 +51,7 @@ to_number(Atom,Number) :-
 	number_chars(Number,Atom).
 
 sigfigs(Value,SF) :-
-	number(SigDigits,[],Value,[]), % Identify all of the significant figures in the number.
+	number(SigDigits,[],_,[],Value,[]), % Identify all of the significant figures in the number.
 	length(SigDigits,SF). % Count them to identify the number of signifcant figures.
 
 

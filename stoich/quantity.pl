@@ -22,7 +22,7 @@ value(value(Val,SF)) -->
 	).
 
 value_calc(value(Val,SF)) --> number(SFDigits,[],Digits,[]), {length(SFDigits,SF), number_chars(Val,Digits)}.
-value_display(value(Val,SF),H,T) :- format(chars(H,T),'~w',Val). % When performing output, it is much faster to just use SWI-Prolog's built-in conversion.
+value_display(value(Val,_),H,T) :- format(chars(H,T),'~w',Val). % When performing output, it is much faster to just use SWI-Prolog's built-in conversion.
 
 query(query([Unit|Tail],Property)) --> unit_sym(Unit), !, property(Property), unit_tail(Unit,Tail), !.
 

@@ -12,7 +12,7 @@
 
 :- use_module(units).
 :- use_module(calculate).
-
+:- use_module(quantity).
 
 
 
