@@ -42,7 +42,7 @@ limitant(StructS,NewStructS,LimitantStruct) :-
 stoich_limited(_,[],[]) :- !.
 stoich_limited(Limitant,[_|InputS],[nil|QueryS]) :-
 	stoich_limited(Limitant,InputS,QueryS), !.
-stoich_limited(Limitant,[Input|InputS],[[[QtyOut,CalcTypeOut],CoeffOut,FormulaOut]|QueryS]) :-
+stoich_limited(Limitant,[Input|InputS],[AnsOut-query(Query,property(CalcTypeOut),CoeffOut,FormulaOut]|QueryS]) :-
 	Limitant = [[MolLim,mol],SFLim,CoeffLim,_],
 	(
 		CalcTypeOut = excess ->
@@ -65,7 +65,7 @@ stoich_limited(Limitant,[Input|InputS],[[[QtyOut,CalcTypeOut],CoeffOut,FormulaOu
 				SF = SFLim
 			)
 	),
-	convert_fmt(output,FormulaOut,[MolOut,mol],QtyOut,SF), !,
+	convert(output,FormulaOut,[MolOut,mol],AnsOut-query(Query,_),SF), !,
 	stoich_limited(Limitant,InputS,QueryS).
 
 stoich_simple(_,[]) :- !.
