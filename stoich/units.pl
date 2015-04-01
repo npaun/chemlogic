@@ -14,9 +14,9 @@
 convert(input,Formula,qty([[value(ValIn,SF),unit(UnitIn)]]),ValOut-query([unit(UnitOut)],_),SF) :-
 	unit(Formula,[ValIn,UnitIn],[ValOut,UnitOut]).
 
-convert(output,Formula,qty([value(ValIn,SF),unit(UnitIn)]),ValRound-query([unit(UnitOut)],_),SF) :-
-	unit(Formula,[QtyIn,UnitIn],[QtyOut,UnitOut]),
-	round_sigfigs(QtyOut,SF,QtyOutRound).
+convert(output,Formula,qty([[value(ValIn,SF),unit(UnitIn)]]),ValOutRound-query([unit(UnitOut)],_),SF) :-
+	unit(Formula,[ValIn,UnitIn],[ValOut,UnitOut]),
+	round_sigfigs(ValOut,SF,ValOutRound).
 
 
 convert(input,Formula,qty([[value(ValIn1,SF1),unit(UnitIn1)],[value(ValIn2,SF2),unit(UnitIn2)]]),ValOut-query([unit(UnitOut)],_),SF) :-

@@ -68,14 +68,14 @@ stoich_limited(Limitant,[Input|InputS],[[[QtyOut,CalcTypeOut],CoeffOut,FormulaOu
 	convert_fmt(output,FormulaOut,[MolOut,mol],QtyOut,SF), !,
 	stoich_limited(Limitant,InputS,QueryS).
 
-stoich_simple([],[]).
+stoich_simple(_,[]) :- !.
 stoich_simple(Input,[nil|QueryS]) :-
-	stoich_simple(Input,QueryS).
-stoich_simple(Input,[[[QtyOut,_],CoeffOut,FormulaOut]|QueryS]) :-
+	stoich_simple(Input,QueryS), !.
+stoich_simple(Input,[[AnsOut-QtyOut,CoeffOut,FormulaOut]|QueryS]) :-
 	Input = [QtyIn,CoeffIn,FormulaIn],
-	convert_fmt(input,FormulaIn,QtyIn,[MolIn,mol],SF), !,
+	convert(input,FormulaIn,QtyIn,MolIn-query([unit(mol)],_),SF), !,
 	MolOut is MolIn * CoeffOut / CoeffIn,
-	convert_fmt(output,FormulaOut,[MolOut,mol],QtyOut,SF), !,
+	convert(output,FormulaOut,qty([[value(MolOut,SF),unit(mol)]]),AnsOut-QtyOut,SF), !,
 	stoich_simple(Input,QueryS).
 
 
