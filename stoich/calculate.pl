@@ -42,7 +42,7 @@ limitant(StructS,NewStructS,LimitantStruct) :-
 stoich_limited(_,[],[]) :- !.
 stoich_limited(Limitant,[_|InputS],[nil|QueryS]) :-
 	stoich_limited(Limitant,InputS,QueryS), !.
-stoich_limited(Limitant,[Input|InputS],[AnsOut-query(Query,property(CalcTypeOut),CoeffOut,FormulaOut]|QueryS]) :-
+stoich_limited(Limitant,[Input|InputS],[[[QtyOut,CalcTypeOut],CoeffOut,FormulaOut]|QueryS]) :-
 	Limitant = [[MolLim,mol],SFLim,CoeffLim,_],
 	(
 		CalcTypeOut = excess ->
@@ -65,17 +65,17 @@ stoich_limited(Limitant,[Input|InputS],[AnsOut-query(Query,property(CalcTypeOut)
 				SF = SFLim
 			)
 	),
-	convert(output,FormulaOut,[MolOut,mol],AnsOut-query(Query,_),SF), !,
+	convert_fmt(output,FormulaOut,[MolOut,mol],QtyOut,SF), !,
 	stoich_limited(Limitant,InputS,QueryS).
 
-stoich_simple(_,[]) :- !.
+stoich_simple([],[]).
 stoich_simple(Input,[nil|QueryS]) :-
-	stoich_simple(Input,QueryS), !.
-stoich_simple(Input,[[AnsOut-QtyOut,CoeffOut,FormulaOut]|QueryS]) :-
+	stoich_simple(Input,QueryS).
+stoich_simple(Input,[[[QtyOut,_],CoeffOut,FormulaOut]|QueryS]) :-
 	Input = [QtyIn,CoeffIn,FormulaIn],
-	convert(input,FormulaIn,QtyIn,MolIn-query([unit(mol)],_),SF), !,
+	convert_fmt(input,FormulaIn,QtyIn,[MolIn,mol],SF), !,
 	MolOut is MolIn * CoeffOut / CoeffIn,
-	convert(output,FormulaOut,qty([[value(MolOut,SF),unit(mol)]]),AnsOut-QtyOut,SF), !,
+	convert_fmt(output,FormulaOut,[MolOut,mol],QtyOut,SF), !,
 	stoich_simple(Input,QueryS).
 
 
