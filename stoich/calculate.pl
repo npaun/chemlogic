@@ -5,7 +5,7 @@
 
 
 
-:- module(calculate,[stoich/6]).
+:- module(calculate,[stoich/5]).
 
 % Super irritating style check
 :- style_check(-atom).
@@ -79,8 +79,8 @@ stoich_simple(Input,[[[QtyOut,_],CoeffOut,FormulaOut]|QueryS]) :-
 	stoich_simple(Input,QueryS).
 
 
-stoich_real(InGrammar,Equation,OutGrammar,Balanced,InQtyS,OutQtyS) :-
-	balance_equation(InGrammar,Equation,OutGrammar,Balanced,CoeffS,FormulaS),
+stoich_real(InGrammar,Equation,OutGrammar,Balanced,OutQtyS) :-
+	balance_equation(InGrammar,Equation,OutGrammar,Balanced,CoeffS,FormulaS,stoich,InQtyS),
 	combine_structs(InQtyS,CoeffS,FormulaS,InputS),
 	combine_structs(OutQtyS,CoeffS,FormulaS,QueryS),
 	(
@@ -95,9 +95,9 @@ stoich_real(InGrammar,Equation,OutGrammar,Balanced,InQtyS,OutQtyS) :-
 			)
 	).
 
-stoich(InGrammar,Equation,OutGrammar,Balanced,InQtyS,OutQtyS) :-
+stoich(InGrammar,Equation,OutGrammar,Balanced,OutQtyS) :-
 	catch(
-		stoich_real(InGrammar,Equation,OutGrammar,Balanced,InQtyS,OutQtyS),
+		stoich_real(InGrammar,Equation,OutGrammar,Balanced,OutQtyS),
 		error(logic_error(Type,Data),_),
 		explain_general_rethrow(logic_error,Equation,Type,Data)
 	).
