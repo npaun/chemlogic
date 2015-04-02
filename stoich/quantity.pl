@@ -27,12 +27,14 @@ value_display([Val,_],H,T) :- format(chars(H,T),'~w',Val). % When performing out
 query(Struct,Var-Input,Rest) :- query(Struct,Var,Input,Rest).
 query([[[[Var,_],Unit]|Tail],Property],Var) --> unit_sym(Unit), !, property(Property), unit_tail(Unit,Tail), !.
 
-property(actual) --> " reacted".
-property(actual) --> " produced".
+property(actual,Input,Rest) :- (var(Input) -> Input = [""|Rest]; property_label(actual,Input,Rest)).
+propery(excess) --> " excess".
 
-property(excess) --> " excess".
+property_label(actual) --> " reacted".
+property_label(actual) --> " produced".
 
-property(actual) --> "".
+property_label(excess) --> " excess".
+
 
 unit_sym(g) --> "g".
 unit_sym('M') --> "mol/L".
