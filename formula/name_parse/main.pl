@@ -83,7 +83,6 @@ name(Sym,Rest,Formula) --> pure_process(Sym,Rest,Formula).
 name(Sym,Rest,Formula) --> common(Sym,Rest,Formula).
 
 
-
 %%%%% ERROR GUIDANCE - GENERAL %%%%%
 
 

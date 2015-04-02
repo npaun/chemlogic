@@ -15,6 +15,9 @@
 :- use_module(quantity).
 
 
+name_quantity(Qty,Sym,Rest,Formula) --> quantity(Qty), " ", name(Sym,Rest,Formula).
+formula_quantity(Qty,Fmt,Elems,ElemsR,Formula,FormulaR) --> quantity(Qty), " ", formula(Fmt,Elems,ElemsR,Formula,FormulaR).
+
 
 
 % vi: ft=prolog
