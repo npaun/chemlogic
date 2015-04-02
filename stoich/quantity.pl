@@ -24,7 +24,8 @@ value([Val,SF]) -->
 value_calc([Val,SF]) --> number(SFDigits,[],Digits,[]), {length(SFDigits,SF), number_chars(Val,Digits)}.
 value_display([Val,_],H,T) :- format(chars(H,T),'~w',Val). % When performing output, it is much faster to just use SWI-Prolog's built-in conversion.
 
-query([[Unit|Tail],Property]) --> unit_sym(Unit), !, property(Property), unit_tail(Unit,Tail), !.
+query(Struct,Var-Input,Rest) :- query(Struct,Var,Input,Rest).
+query([[[[Var,_],Unit]|Tail],Property],Var) --> unit_sym(Unit), !, property(Property), unit_tail(Unit,Tail), !.
 
 property(actual) --> " reacted".
 property(actual) --> " produced".
