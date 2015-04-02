@@ -32,8 +32,9 @@ propery(excess) --> " excess".
 
 property_label(actual) --> " reacted".
 property_label(actual) --> " produced".
+property_label(actual) --> "".
 
-property_label(excess) --> " excess".
+%property_label(excess) --> " excess".
 
 
 unit_sym(g) --> "g".
