@@ -5,9 +5,10 @@
 
 
 
-:- module(quantity,[quantity//1,quantity_prefix//1,query//1]).
+:- module(quantity,[quantity//1,quantity_prefix//1,query//1,queries_convert/2]).
 :- use_module(sigfigs_number).
 :- set_prolog_flag(double_quotes,chars).
+
 
 quantity_prefix(Qty) --> quantity(Qty), " ".
 quantity_prefix(nil) --> "".
@@ -27,6 +28,12 @@ value([Val,SF]) -->
 value_calc([Val,SF]) --> number(SFDigits,[],Digits,[]), {length(SFDigits,SF), number_chars(Val,Digits)}.
 value_display([Val,_],H,T) :- format(chars(H,T),'~w',Val). % When performing output, it is much faster to just use SWI-Prolog's built-in conversion.
 
+queries_convert([],[]).
+queries_convert([Input|InputS],[Output|OutputS]) :-
+	query(Output,Input,[]),
+	queries_convert(InputS,OutputS).
+
+query(nil,nil,[]).
 query(Struct,Var-Input,Rest) :- query(Struct,Var,Input,Rest).
 query([[[[Var,_],Unit]|Tail],Property],Var) --> unit_sym(Unit), !, property(Property), unit_tail(Unit,Tail), !.
 
