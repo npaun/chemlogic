@@ -32,8 +32,8 @@ convert(input,Formula,[[[QtyIn1,SF1],UnitIn1],[[QtyIn2,SF2],UnitIn2]],[[[QtyOut,
 %	(var(QtyR1) -> convert_fmt_complex_result(Formula,[QtyCalc,UnitCalc],[QtyR2,UnitR2],[QtyR1,UnitR1],MaxSF);
 %	convert_fmt_complex_result(Formula,[QtyCalc,UnitCalc],[QtyR1,UnitR1],[QtyR2,UnitR2],MaxSF)).
 
-convert(Formula,[[[QtyCalc,MaxSF],UnitCalc]],[[[QtyIn,SFIn],UnitR1],[[QtyOut,SF],UnitOut]]) :-
-	unit(Formula,[[QtyCalc,UnitCalc],[QtyInNum,UnitIn]],[QtyOut,UnitOut]),
+convert(Formula,[[[QtyCalc,MaxSF],UnitCalc]],[[[QtyIn,SFIn],UnitIn],[[QtyOutRound,SF],UnitOut]]) :-
+	unit(Formula,[[QtyCalc,UnitCalc],[QtyIn,UnitIn]],[QtyOut,UnitOut]),
 	SF is min(MaxSF,SFIn),
 	round_sigfigs(QtyOut,SF,QtyOutRound).
 
