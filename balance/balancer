@@ -26,6 +26,8 @@
 % The solver (converts the coefficient set to a system of linear equations and solves it).
 :- use_module(solve).
 
+% 
+:- use_module('../stoich/quantity').
 
 
 balance_equation_real(InGrammar,Equation,OutGrammar,Solution,Coeffs,MoleculeSet) :-

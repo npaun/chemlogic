@@ -15,8 +15,8 @@
 :- use_module(quantity).
 
 
-name_quantity(Qty,Sym,Rest,Formula) --> quantity(Qty), " ", name(Sym,Rest,Formula).
-formula_quantity(Qty,Fmt,Elems,ElemsR,Formula,FormulaR) --> quantity(Qty), " ", formula(Fmt,Elems,ElemsR,Formula,FormulaR).
+name_quantity(Sym,Rest,Formula,Qty) --> quantity(Qty), " ", name(Sym,Rest,Formula).
+formula_quantity(Qty,Fmt,Elems,ElemsR,Formula,FormulaR,Qty) --> quantity(Qty), " ", formula(Fmt,Elems,ElemsR,Formula,FormulaR).
 
 
 

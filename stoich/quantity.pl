@@ -5,9 +5,12 @@
 
 
 
-:- module(quantity,[quantity//1,query//1]).
+:- module(quantity,[quantity//1,quantity_prefix//1,query//1]).
 :- use_module(sigfigs_number).
 :- set_prolog_flag(double_quotes,chars).
+
+quantity_prefix(Qty) --> quantity(Qty), " ".
+quantity_prefix(nil) --> "".
 
 quantity([[Val,Unit]|Tail]) --> value(Val), " ", unit_sym(Unit), !, unit_tail(Unit,Tail), !.
 
