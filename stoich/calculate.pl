@@ -28,8 +28,8 @@ single_input(InputS,Struct) :-
 mol_ratio([],[],[]).
 mol_ratio([nil|StructS],[nil|MolRatioS],[nil|NewStructS]) :-
 	mol_ratio(StructS,MolRatioS,NewStructS).
-mol_ratio([[QtyIn,CoeffIn,FormulaIn]|StructS],[MolRatio|MolRatioS],[[[Mol,mol],SF,CoeffIn,FormulaIn]|NewStructS]) :-
-	convert_fmt(input,FormulaIn,QtyIn,[Mol,mol],SF),
+mol_ratio([[QtyIn,CoeffIn,FormulaIn]|StructS],[MolRatio|MolRatioS],[[[[[Mol,SF],mol]],CoeffIn,FormulaIn]|NewStructS]) :-
+	convert(input,FormulaIn,QtyIn,[[[Mol,SF],mol]]),
 	MolRatio is Mol / CoeffIn,
 	mol_ratio(StructS,MolRatioS,NewStructS).
 
@@ -43,12 +43,12 @@ stoich_limited(_,[],[]) :- !.
 stoich_limited(Limitant,[_|InputS],[nil|QueryS]) :-
 	stoich_limited(Limitant,InputS,QueryS), !.
 stoich_limited(Limitant,[Input|InputS],[[[QtyOut,CalcTypeOut],CoeffOut,FormulaOut]|QueryS]) :-
-	Limitant = [[MolLim,mol],SFLim,CoeffLim,_],
+	Limitant = [[[[MolLim,SFLim],mol]],CoeffLim,_],
 	(
 		CalcTypeOut = excess ->
 			(
 				(
-					Input = [[MolIn,mol],SFIn,_,_];
+					Input = [[[[MolIn,SFIn],mol]],_,_];
 					throw(error(logic_error(calculate:excess_missing_input,
 
 						(
@@ -65,7 +65,7 @@ stoich_limited(Limitant,[Input|InputS],[[[QtyOut,CalcTypeOut],CoeffOut,FormulaOu
 				SF = SFLim
 			)
 	),
-	convert_fmt(output,FormulaOut,[MolOut,mol],QtyOut,SF), !,
+	convert(output,FormulaOut,[[[MolOut,SF],mol]],QtyOut), !,
 	stoich_limited(Limitant,InputS,QueryS).
 
 stoich_simple(_,[]) :- !.
