@@ -4,7 +4,7 @@
 % (C) Copyright 2012-2015 Nicholas Paun
 
 
-:- module(units,[convert_fmt/5,unit/3]).
+:- module(units,[convert/4,unit/3]).
 
 
 :- use_module(sigfigs).
@@ -12,32 +12,27 @@
 
 
 convert(input,Formula,[[[QtyIn,SF],UnitIn]],[[[QtyOut,SF],UnitOut]]) :-
-	unit(Formula,[QtyInNum,UnitIn],[QtyOut,UnitOut]).
+	unit(Formula,[QtyIn,UnitIn],[QtyOut,UnitOut]).
 
 convert(output,Formula,[[[QtyIn,SF],UnitIn]],[[[QtyOutRound,SF],UnitOut]]) :-
 	unit(Formula,[QtyIn,UnitIn],[QtyOut,UnitOut]),
 	round_sigfigs(QtyOut,SF,QtyOutRound).
 
 
-convert_fmt(input,Formula,[[QtyIn1,UnitIn1],[QtyIn2,UnitIn2]],[QtyOut,UnitOut],SF) :-
-	sigfigs(QtyIn1,SF1),
-	to_number(QtyIn1,QtyInNum1),
-	sigfigs(QtyIn2,SF2),
-	to_number(QtyIn2,QtyInNum2),
+convert(input,Formula,[[[QtyIn1,SF1],UnitIn1],[[QtyIn2,SF2],UnitIn2]],[[[QtyOut,SF],UnitOut]]) :-
 	SF is min(SF1,SF2),
-	unit(Formula,[[QtyInNum1,UnitIn1],[QtyInNum2,UnitIn2]],[QtyOut,UnitOut]).
+	unit(Formula,[[QtyIn1,UnitIn1],[QtyIn2,UnitIn2]],[QtyOut,UnitOut]).
 
 % Perhaps output from the 2 unit form might be useful in some cases.
 
 % In this case, some aspects of the result are known, while others are unknown. The variable could be in either term. 
 % This clause determines which quantities represent each argument and then calls the actual procedure.
-convert_fmt(output,Formula,[QtyCalc,UnitCalc],[[QtyR1,UnitR1],[QtyR2,UnitR2]],MaxSF) :-
-	(var(QtyR1) -> convert_fmt_complex_result(Formula,[QtyCalc,UnitCalc],[QtyR2,UnitR2],[QtyR1,UnitR1],MaxSF);
-	convert_fmt_complex_result(Formula,[QtyCalc,UnitCalc],[QtyR1,UnitR1],[QtyR2,UnitR2],MaxSF)).
 
-convert_fmt_complex_result(Formula,[QtyCalc,UnitCalc],[QtyIn,UnitIn],[QtyOutRound,UnitOut],MaxSF) :-
-	sigfigs(QtyIn,SFIn),
-	to_number(QtyIn,QtyInNum),
+%convert_fmt(output,Formula,[QtyCalc,UnitCalc],[[QtyR1,UnitR1],[QtyR2,UnitR2]],MaxSF) :-
+%	(var(QtyR1) -> convert_fmt_complex_result(Formula,[QtyCalc,UnitCalc],[QtyR2,UnitR2],[QtyR1,UnitR1],MaxSF);
+%	convert_fmt_complex_result(Formula,[QtyCalc,UnitCalc],[QtyR1,UnitR1],[QtyR2,UnitR2],MaxSF)).
+
+convert(Formula,[[[QtyCalc,MaxSF],UnitCalc]],[[[QtyIn,SFIn],UnitR1],[[QtyOut,SF],UnitOut]]) :-
 	unit(Formula,[[QtyCalc,UnitCalc],[QtyInNum,UnitIn]],[QtyOut,UnitOut]),
 	SF is min(MaxSF,SFIn),
 	round_sigfigs(QtyOut,SF,QtyOutRound).
