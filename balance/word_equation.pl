@@ -5,31 +5,37 @@
 
 
 
-:- module(word,[word//9]).
+:- module(word,[word//12]).
 :- set_prolog_flag(double_quotes,chars).
 
 
 
 
-word(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[ElemsL,ElemR0],[SideLeft,SideRight]) -->
-	expr(Coeff,CoeffR0,Elems,ElemR0,Formula,FormulaR0,SideLeft),
+word(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[ElemsL,ElemR0],[SideLeft,SideRight],Stoich,Qty,QtyR) -->
+	expr(Coeff,CoeffR0,Elems,ElemR0,Formula,FormulaR0,SideLeft,Stoich,Qty,QtyR0),
 	{var(ElemR0) -> make_element_sideset(Elems-ElemR0,ElemsL-[]); true},
 	output(Fmt,arrow) xx arrow,
-	expr(CoeffR0,CoeffR,ElemR0,ElemR,FormulaR0,FormulaR,SideRight).
+	expr(CoeffR0,CoeffR,ElemR0,ElemR,FormulaR0,FormulaR,SideRight,Stoich,QtyR0,QtyR).
 
 
-expr(Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideH|SideT]) --> 
-	balanced_name(Coeff,CoeffR0,Elems,ElemR0,Formula,FormulaR0,SideH),
-	expr_tail(CoeffR0,CoeffR,ElemR0,ElemR,FormulaR0,FormulaR,SideT), !.
+expr(Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideH|SideT],Stoich,Qty,QtyR) --> 
+	balanced_name(Coeff,CoeffR0,Elems,ElemR0,Formula,FormulaR0,SideH,Stoich,Qty,QtyR0),
+	expr_tail(CoeffR0,CoeffR,ElemR0,ElemR,FormulaR0,FormulaR,SideT,Stoich,QtyR0,QtyR), !.
 
-expr_tail(Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,Side) --> 
+expr_tail(Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,Side,Stoich,Qty,QtyR) --> 
 	" + ",
-	expr(Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,Side).
+	expr(Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,Side,Stoich,Qty,QtyR).
 
-expr_tail(Coeff,Coeff,Elems,Elems,Formula,Formula,[]) --> [].
+expr_tail(Coeff,Coeff,Elems,Elems,Formula,Formula,[],_,Qty,Qty) --> [].
 
 
-balanced_name([Coeff|CoeffR],CoeffR,Elems,ElemR,[Formula|FormulaR],FormulaR,Formula) -->
+balanced_name([Coeff|CoeffR],CoeffR,Elems,ElemR,[Formula|FormulaR],FormulaR,Formula,stoich,[Qty|QtyR],QtyR) -->
+	quantity_prefix(Qty),
+	coefficient(Coeff),
+	name(Elems,ElemR,Formula) xx fail,
+	!.
+
+balanced_name([Coeff|CoeffR],CoeffR,Elems,ElemR,[Formula|FormulaR],FormulaR,Formula,_,Qty,Qty) -->
 	coefficient(Coeff),
 	name(Elems,ElemR,Formula) xx fail,
 	!.

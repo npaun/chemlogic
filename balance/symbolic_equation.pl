@@ -5,7 +5,7 @@
 
 
 
-:- module(symbolic,[symbolic//9]).
+:- module(symbolic,[symbolic//12]).
 :- set_prolog_flag(double_quotes,chars).
 
 
@@ -27,7 +27,7 @@ expr_tail(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,Side,Stoich,Qty,QtyR) --
 	" + ",
 	expr(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,Side,Stoich,Qty,QtyR).
 
-expr_tail(_,Coeff,Coeff,Elems,Elems,Formula,Formula,[],Stoich,Qty,Qty) --> [].
+expr_tail(_,Coeff,Coeff,Elems,Elems,Formula,Formula,[],_,Qty,Qty) --> [].
 
 
 balanced_formula(Fmt,[Coeff|CoeffR],CoeffR,Elems,ElemR,[Formula|FormulaR],FormulaR,Formula,stoich,[Qty|QtyR],QtyR) -->
