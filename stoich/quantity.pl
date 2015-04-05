@@ -29,8 +29,9 @@ value_calc([Val,SF]) --> number(SFDigits,[],Digits,[]), {length(SFDigits,SF), nu
 value_display([Val,_],H,T) :- format(chars(H,T),'~w',Val). % When performing output, it is much faster to just use SWI-Prolog's built-in conversion.
 
 queries_convert([],[]).
-queries_convert([Input|InputS],[Output|OutputS]) :-
-	query(Output,Input,[]),
+queries_convert([Var-Input|InputS],[Output|OutputS]) :-
+	atom_chars(Input,InputChars),
+	query(Output,Var-InputChars,[]),
 	queries_convert(InputS,OutputS).
 
 query(nil,nil,[]).

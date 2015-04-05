@@ -41,7 +41,8 @@ InputType - AtomInput :: ResultType - Result ? Queries :-
 		stoich(InputType,Input,ResultType,StringRes,Queries) handle _
 	),
 
-	atom_chars(Result,StringRes).
+	atom_chars(Result,StringRes),
+	!.
 
 InputType - Input :: print :-
         InputType - Input :: symbolic - Result,
