@@ -15,8 +15,21 @@
 :- use_module(quantity).
 
 
-name_quantity(Sym,Rest,Formula,Qty) --> quantity(Qty), " ", name(Sym,Rest,Formula).
-formula_quantity(Qty,Fmt,Elems,ElemsR,Formula,FormulaR,Qty) --> quantity(Qty), " ", formula(Fmt,Elems,ElemsR,Formula,FormulaR).
+name_quantity(Qty,Sym,Rest,Formula) --> quantity_prefix(Qty), name(Sym,Rest,Formula).
+formula_quantity(Qty,Fmt,Elems,ElemsR,Formula,FormulaR) --> quantity_prefix(Qty), formula(Fmt,Elems,ElemsR,Formula,FormulaR).
+
+
+convert_name_2_formula(Name,Formula,QueryS) :-
+	parse(name_quantity(Qty,_,_,Internal),Name,[]),
+	queries_convert(QueryS,[[Struct,_]]),
+	convert(output,Internal,Qty,Struct),
+	parse(formula_quantity(Qty,output,_,_,Internal,_),Formula,[]).
+
+convert_formula_2_name(Formula,Name) :-
+	parse(formula_quantity(Qty,user,_,_,Internal,_),Formula,[]),
+	parse(name_quantity(Qty,_,_,Internal),Name,[]).
+
+
 
 
 
