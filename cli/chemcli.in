@@ -21,6 +21,9 @@ InputType - Input :: -Result :-
 	InputType - Input :: symbolic - Result,
 	!.
 
+InputType - Input :: -Result ? Queries :-
+	InputType - Input :: symbolic - Result ? Queries,
+	!.
 
 InputType - AtomInput :: ResultType - Result :-
 	atom_chars(AtomInput,Input),
