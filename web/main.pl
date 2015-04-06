@@ -31,7 +31,7 @@ chemweb_to_html(String,HTML) :-
 :- ensure_loaded('../io/format_out').
 :- initialization(set_output_format(html),now).
 
-:- consult('../balance/balancer').
+:- consult('../stoich/stoichiometer').
 
 :- consult('compounder').
 :- consult('molar').

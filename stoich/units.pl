@@ -44,6 +44,7 @@ The value used was obtained from CODATA: the NIST Reference on Constants, Units 
 ***/
 v_molar(22.413968 /* L/mol */).
 
+unit(_,A,A) :- !.
 %%% No conversion %%%
 unit(_,[Mol,mol],[Mol,mol]) :- !.
 

@@ -18,6 +18,9 @@
 name_quantity(Qty,Sym,Rest,Formula) --> quantity_prefix(Qty), name(Sym,Rest,Formula).
 formula_quantity(Qty,Fmt,Elems,ElemsR,Formula,FormulaR) --> quantity_prefix(Qty), formula(Fmt,Elems,ElemsR,Formula,FormulaR).
 
+name_quantity:guidance_errcode(A,B,C) :- name:guidance_errcode(A,B,C).
+name_quantity:guidance_unparsed(A,B) :- name:guidance_unparsed(A,B).
+
 
 convert_name_2_formula(Name,Formula,QueryS) :-
 	parse(name_quantity(Qty,_,_,Internal),Name,[]),

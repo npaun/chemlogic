@@ -36,28 +36,32 @@ molar_html(Type,Input,Solution,Quantity) :-
 				input([name(molar_input),id(molar_input),type(text),size(60),value(Input)]),
 				select(name(unit),UnitSelectList)
 			]),
-			div(id(solution),Solution)
+			div(id(solution),Solution),
 			div(id(quantity),Quantity)
 		]
 		).
 
-molar_nop(Solution) :-
-	Solution = 'Please select Name or Formula, depending on what you are entering, and then enter it into the textbox.'.	
+molar_nop(Solution,Qty) :-
+	Solution = 'Please select Name or Formula, depending on what you are entering, and then enter it into the textbox.',
+	Qty = 'osama bin laden'.
 
 
 molar_process(Type,Input,Solution,Query) :-
 	atom_chars(Input,StringInput),
-	(molar_do_process(Type,StringInput,StringSolution,Query), chemweb_to_html(StringSolution,Solution)) handle Solution.
+	(molar_do_process(Type,StringInput,StringSolution,Query), chemweb_to_html(StringSolution,Solution)) handle Solution,
+	debug(chemlogic,'~w~n','Shake and jake').
 
 molar_do_process(name,Name,Formula,Query) :-
-	convert_name_2_formula(Name,Formula,Query).
+	debug(chemlogic,'~w~n',Query),
+	convert_name_2_formula(Name,Formula,[Query]).
 
 molar_do_process(formula,Formula,Name,Query) :-
-	convert_formula_2_name(Formula,Name,Query).
+	convert_formula_2_name(Formula,Name,[Query]).
 
 
 molar_page(Request) :-
 	molar_input(Request,Type,Input,Unit),
-	(nonvar(Input) -> molar_process(Type,Input,Solution,Qty-Unit); molar_nop(Solution)),
-
+	debug(chemlogic,'~w~n','Like Wazzup'),
+	(nonvar(Input) -> molar_process(Type,Input,Solution,Qty-Unit); molar_nop(Solution,Qty)),
+	debug(chemlogic,'~w~n','Yo dood'),
 	molar_html(Type,Input,Solution,Qty).
