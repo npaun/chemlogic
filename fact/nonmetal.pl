@@ -86,6 +86,7 @@ cl(element("Br","bromine","brom")).
 cl(element("I","iodine","iod")).
 	charge("I",-1).
 	oxyanions("I",-1,[4,3,2,1]).
+	diatomic("I").
 	atomic("I",53).
 	mass("I",126.905).
 
