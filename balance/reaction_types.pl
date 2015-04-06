@@ -42,6 +42,11 @@ reaction_match(decomposition,[
 			]).
 
 
+reaction_complete(neutralization,_,ElementSideSet,_,[Product1,Water],[ElementSideSet|_],[[Reactant1,Reactant2],[Product1,Water]]) :-
+	Water = [["H",2],["O",1]],
+	ionic:rev_algo(Reactant1,["H",_,NMSym1,NMCharge1]),
+	ionic:rev_algo(Reactant2,[MSym2,MCharge2,[["O",1],["H",1]],_]),
+	ionic:fwd_algo(Product1,[MSym2,MCharge2,NMSym1,NMCharge1]).
 
 reaction_complete(double_replacement,_,ElementSideSet,_,[Product1,Product2],[ElementSideSet|_],[[Reactant1,Reactant2],[Product1,Product2]]) :-
 	ionic:rev_algo(Reactant1,[MSym1,MCharge1,NMSym1,NMCharge1]),
