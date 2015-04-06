@@ -5,9 +5,21 @@ reaction_match(neutralization,[
 				]).
 
 reaction_match(neutralization,[
+					[[["H",_],[NMSym1,_]],[[MSym2,_],[[["O", 1], ["H", 1]], 1]]],
+					[[["H", 2], ["O", 1]],[[MSym2,_],[NMSym1,_]]]
+				]).
+
+reaction_match(neutralization,[
 					[[[MSym2,_],[[["O", 1], ["H", 1]], 1]],[["H",_],[NMSym1,_]]],
 					[[[MSym2,_],[NMSym1,_]],[["H", 2], ["O", 1]]]
 				]).
+
+reaction_match(neutralization,[
+					[[[MSym2,_],[[["O", 1], ["H", 1]], 1]],[["H",_],[NMSym1,_]]],
+					[[["H", 2], ["O", 1]],[[MSym2,_],[NMSym1,_]]]
+				]).
+
+
 
 reaction_match(double_replacement,[
 					[[[MSym1,_],[NMSym1,_]],[[MSym2,_],[NMSym2,_]]],
