@@ -29,9 +29,9 @@ stoichiometer_html(Type,Input,OutputType,Solution) :-
 	OutputSelectList = [option([value(symbolic),selected],'Symbolic'),option([value(word)],'Word')];
 	OutputSelectList = [option([value(symbolic)],'Symbolic'),option([value(word),selected],'Word')]
 	),
-	reply_html_page(chemlogic,title('Balancer'),
+	reply_html_page(chemlogic,title('Stoichiometer'),
 	[
-	h1(id(feature),'Balancer'),
+	h1(id(feature),'Stoichiometer'),
 	form([
 	select(name(type),SelectList),
 	input([name(stoichiometer_input),id(stoichiometer_input),type(text),size(80),value(Input)]),
@@ -42,7 +42,7 @@ stoichiometer_html(Type,Input,OutputType,Solution) :-
 	).
 
 stoichiometer_nop(Solution) :-
-	Solution = 'Please select Symbolic or Word equation, depending on what you are entering, then enter it into the textbox. You can also select how the equation will be output.'.
+	Solution = '(1) Please select Symbolic or Word equation, depending on what you are entering, then enter it into the textbox. You can also select how the equation will be output. (2) After pressing ENTER, select the quantities you wish to determine from the dropdown menus.'.
 
 
 stoichiometer_process(Type,Input,OutputType,Solution) :-
@@ -50,7 +50,7 @@ stoichiometer_process(Type,Input,OutputType,Solution) :-
 	stoichiometer_do_process(Type,StringInput,OutputType,Solution).
 
 stoichiometer_do_process(Type,StringInput,OutputType,Solution) :-
-	(balance_equation(Type,StringInput,OutputType,StringSolution,_,_,_,stoich,_), chemweb_to_html(StringSolution,Solution)) handle Solution.
+	(balance_equation(Type,StringInput,OutputType,StringSolution,_,_,stoich,_), chemweb_to_html(StringSolution,Solution)) handle Solution.
 
 
 stoichiometer_page(Request) :-
