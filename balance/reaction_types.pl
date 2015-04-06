@@ -69,6 +69,28 @@ reaction_complete(double_replacement,_,ElementSideSet,_,[Product1,Product2],[Ele
 	ionic:fwd_algo(Product1,[MSym1,MCharge1,NMSym2,NMCharge2]),
 	ionic:fwd_algo(Product2,[MSym2,MCharge2,NMSym1,NMCharge1]).
 
+reaction_complete(single_replacement,_,ElementSideSet,_,[Product1,Product2],[ElementSideSet|_],[[Reactant1,Reactant2],[Product1,Product2]]) :-
+	ionic:rev_algo(Reactant1,[MSym1,_,NMSym1,NMCharge1]),
+
+	(Reactant2 = [[MSym2,_]], charge_check(metal,MSym2,MChargeS),
+		(
+			is_list(MChargeS) -> MChargeS = [MCharge2|_]; % If the free metal is multivalent, we will just guess and pick the first charge listed (hopefully most common)
+			MChargeS = MCharge2
+		)
+	),
+	
+	ionic:fwd_algo(Product1,[MSym2,MCharge2,NMSym1,NMCharge1]),
+	name:pure_process([MSym1],[],Product2,_,[]).
+
+reaction_complete(single_replacement,_,ElementSideSet,_,[Product1,Product2],[ElementSideSet|_],[[Reactant1,Reactant2],[Product1,Product2]]) :-
+	ionic:rev_algo(Reactant1,[MSym1,MCharge1,NMSym1,_]),
+
+	(Reactant2 = [[NMSym2,_]], charge(NMSym2,NMCharge2)),
+	ionic:fwd_algo(Product1,[MSym1,MCharge1,NMSym2,NMCharge2]),
+	name:pure_process([NMSym1],[],Product2,_,[]).
+
+
+
 
 reaction_info(neutralization,'Neutralization').
 reaction_info(double_replacement,'Double Replacement').
