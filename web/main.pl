@@ -34,6 +34,7 @@ chemweb_to_html(String,HTML) :-
 :- consult('../balance/balancer').
 
 :- consult('compounder').
+:- consult('molar').
 :- consult('balancer').
 :- consult('stoichiometer').
 
