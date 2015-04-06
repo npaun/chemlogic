@@ -50,7 +50,7 @@ stoichiometer_process(Type,Input,OutputType,Solution) :-
 	stoichiometer_do_process(Type,StringInput,OutputType,Solution).
 
 stoichiometer_do_process(Type,StringInput,OutputType,Solution) :-
-	(balance_equation(Type,StringInput,OutputType,StringSolution), chemweb_to_html(StringSolution,Solution)) handle Solution.
+	(balance_equation(Type,StringInput,OutputType,StringSolution,_,_,_,stoich,_), chemweb_to_html(StringSolution,Solution)) handle Solution.
 
 
 stoichiometer_page(Request) :-
