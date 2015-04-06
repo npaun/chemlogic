@@ -18,7 +18,7 @@ balancer_input(Request,Type,Input,OutputType) :-
 	outputtype(OutputType, [ optional(true), oneof([symbolic,word]) ])
 	]).
 
-balancer_html(Type,Input,OutputType,Solution) :-
+balancer_html(Type,Input,OutputType,Solution,Info) :-
 ( var(Input) -> Input = []; true),
 (Type = symbolic ->
 	SelectList = [option([value(symbolic),selected],'Symbolic'),option([value(word)],'Word')];
@@ -39,7 +39,8 @@ balancer_html(Type,Input,OutputType,Solution) :-
 	input([name(balancer_input),id(balancer_input),type(text),size(80),value(Input)]),
 	select(name(outputtype),OutputSelectList)
 	]),
-	div(id(solution),Solution)
+	div(id(solution),Solution),
+	ul(id(info),Info)
 	]
 	).
 
@@ -47,18 +48,27 @@ balancer_nop(Solution) :-
 	Solution = 'Please select Symbolic or Word equation, depending on what you are entering, then enter it into the textbox. You can also select how the equation will be output.'.
 
 
-balancer_process(Type,Input,OutputType,Solution) :-
+balancer_process(Type,Input,OutputType,Solution,Info) :-
 	atom_chars(Input,StringInput),
-	balancer_do_process(Type,StringInput,OutputType,Solution),
-	debug(chemlogic_custom,'Did\'nt die yet',[]).
+	balancer_do_process(Type,StringInput,OutputType,Solution,Struct),
+	balancer_do_info(Struct,Info).
 
-balancer_do_process(Type,StringInput,OutputType,Solution) :-
-	(balance_equation(Type,StringInput,OutputType,StringSolution), chemweb_to_html(StringSolution,Solution)) handle Solution,
-		debug(chemlogic_custom,"~w~n",[Solution]).
 
+balancer_do_process(Type,StringInput,OutputType,Solution,Struct) :-
+	(balance_equation(Type,StringInput,OutputType,StringSolution,_,_,Struct), chemweb_to_html(StringSolution,Solution)) handle Solution.
+
+balancer_do_info(Struct,[TypeInfo]) :-
+	(
+		reaction_match(Type,Struct) ->
+			(
+				reaction_info(Type,TypeDesc),
+				TypeInfo = li([em('Reaction Type: '),TypeDesc])
+			);
+			true
+	).
 
 balancer_page(Request) :-
 	balancer_input(Request,Type,Input,OutputType),
-	(nonvar(Input) -> balancer_process(Type,Input,OutputType,Solution); balancer_nop(Solution)),
+	(nonvar(Input) -> balancer_process(Type,Input,OutputType,Solution,Info); balancer_nop(Solution)),
 
-	balancer_html(Type,Input,OutputType,Solution).
+	balancer_html(Type,Input,OutputType,Solution,Info).
