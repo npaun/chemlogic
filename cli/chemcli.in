@@ -39,8 +39,8 @@ InputType - AtomInput :: ResultType - Result :-
 InputType - AtomInput :: ResultType - Result ? Queries :-
 	atom_chars(AtomInput,Input),
 	(
-		InputType = name -> writeln('Shake and bake') handle _;
-		InputType = formula -> writeln('Wake a rake') handle _;
+		InputType = name -> convert_name_2_formula(Input,StringRes,Queries) handle _;
+		InputType = formula -> convert_formula_2_name(Input,StringRes,Queries) handle _;
 		stoich(InputType,Input,ResultType,StringRes,Queries) handle _
 	),
 
