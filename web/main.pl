@@ -35,5 +35,6 @@ chemweb_to_html(String,HTML) :-
 
 :- consult('compounder').
 :- consult('balancer').
+:- consult('stoichiometer').
 
 % vi: ft=prolog
