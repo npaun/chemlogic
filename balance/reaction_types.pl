@@ -1,4 +1,5 @@
 
+%%% Neutralization Reactions %%%
 reaction_match(neutralization,[
 					[[["H",_],[NMSym1,_]],[[MSym2,_],[[["O", 1], ["H", 1]], 1]]],
 					[[[MSym2,_],[NMSym1,_]],[["H", 2], ["O", 1]]]
@@ -20,7 +21,7 @@ reaction_match(neutralization,[
 				]).
 
 
-
+%%% Double Replacement Reactions %%%
 reaction_match(double_replacement,[
 					[[[MSym1,_],[NMSym1,_]],[[MSym2,_],[NMSym2,_]]],
 					[[[MSym1,_],[NMSym2,_]],[[MSym2,_],[NMSym1,_]]]
@@ -30,6 +31,20 @@ reaction_match(double_replacement,[
 					[[[MSym1,_],[NMSym1,_]],[[MSym2,_],[NMSym2,_]]],
 					[[[MSym2,_],[NMSym1,_]],[[MSym1,_],[NMSym2,_]]]
 				]).
+
+%%% Single Replacement Reactions %%%
+reaction_match(single_replacement,[
+					[[[MSym1,_],[NMSym1,_]],[[MSym2,_]]],
+					[[[MSym2,_],[NMSym1,_]],[[MSym1,_]]]
+				]).
+
+reaction_match(single_replacement,[
+					[[[MSym1,_],[NMSym1,_]],[[NMSym2,_]]],
+					[[[MSym1,_],[NMSym2,_]],[[NMSym1,_]]]
+				]).
+
+
+%%% Synthesis and Decomposition Reactions %%%
 
 reaction_match(synthesis,[
 				_,
