@@ -19,7 +19,7 @@ molar_input(Request,Type,Input,Unit) :-
 			unit(Unit, [ optional(true), oneof(g,'L',mol,'M') ])
 		]).
 
-molar_html(Type,Input,Solution,Quantity) :-
+molar_html(Type,Input,Solution) :-
 ( var(Input) -> Input = []; true),
 (Type = name -> 
 	SelectList = [option([value(name),selected],'Name'),option([value(formula)],'Formula')];
@@ -36,23 +36,19 @@ molar_html(Type,Input,Solution,Quantity) :-
 				input([name(molar_input),id(molar_input),type(text),size(60),value(Input)]),
 				select(name(unit),UnitSelectList)
 			]),
-			div(id(solution),Solution),
-			div(id(quantity),Quantity)
+			div(id(solution),Solution)
 		]
 		).
 
-molar_nop(Solution,Qty) :-
-	Solution = 'Please select Name or Formula, depending on what you are entering, and then enter it into the textbox.',
-	Qty = 'osama bin laden'.
+molar_nop(Solution) :-
+	Solution = 'Please select the Name or Formula, depending on the format of your input, then enter the quantity followed by the formula/name. Select the unit you wish to convert the quantity to.'.
 
 
 molar_process(Type,Input,Solution,Query) :-
 	atom_chars(Input,StringInput),
-	(molar_do_process(Type,StringInput,StringSolution,Query), chemweb_to_html(StringSolution,Solution)) handle Solution,
-	debug(chemlogic,'~w~n','Shake and jake').
+	(molar_do_process(Type,StringInput,StringSolution,Query), chemweb_to_html(StringSolution,Solution)) handle Solution.
 
 molar_do_process(name,Name,Formula,Query) :-
-	debug(chemlogic,'~w~n',Query),
 	convert_name_2_formula(Name,Formula,[Query]).
 
 molar_do_process(formula,Formula,Name,Query) :-
@@ -61,7 +57,5 @@ molar_do_process(formula,Formula,Name,Query) :-
 
 molar_page(Request) :-
 	molar_input(Request,Type,Input,Unit),
-	debug(chemlogic,'~w~n','Like Wazzup'),
-	(nonvar(Input) -> molar_process(Type,Input,Solution,Qty-Unit); molar_nop(Solution,Qty)),
-	debug(chemlogic,'~w~n','Yo dood'),
-	molar_html(Type,Input,Solution,Qty).
+	(nonvar(Input) -> molar_process(Type,Input,Solution,_-Unit); molar_nop(Solution)),
+	molar_html(Type,Input,Solution).

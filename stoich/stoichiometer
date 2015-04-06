@@ -26,14 +26,14 @@ convert_name_2_formula(Name,Formula,QueryS) :-
 	parse(name_quantity(Qty,_,_,Internal),Name,[]),
 	queries_convert(QueryS,[[Struct,_]]),
 	convert(output,Internal,Qty,Struct),
-	parse(formula_quantity(Qty,output,_,_,Internal,_),Formula,[]).
+	parse(formula_quantity(Struct,output,_,_,Internal,_),Formula,[]).
 
 
 convert_formula_2_name(Formula,Name,QueryS) :-
 	parse(formula_quantity(Qty,user,_,_,Internal,_),Formula,[]),
 	queries_convert(QueryS,[[Struct,_]]),
 	convert(output,Internal,Qty,Struct),
-	parse(name_quantity(Qty,_,_,Internal),Name,[]).
+	parse(name_quantity(Struct,_,_,Internal),Name,[]).
 
 
 
