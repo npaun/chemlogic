@@ -44,9 +44,8 @@ The value used was obtained from CODATA: the NIST Reference on Constants, Units 
 ***/
 v_molar(22.413968 /* L/mol */).
 
-unit(_,A,A) :- !.
 %%% No conversion %%%
-unit(_,[Mol,mol],[Mol,mol]) :- !.
+unit(_,Unit,Unit) :- !.
 
 %%% Mass units %%%
 unit(Formula,[Mass,g],[Mol,mol]) :-
@@ -87,6 +86,11 @@ unit(_,[[Mol,mol],[Conc,'M']],[Vol,'L']) :-
 unit(_,[[Mol,mol],[Vol,'L']],[Conc,'M']) :-
 	Conc /* M */ is Mol /* mol */ / Vol /* L */, !.
 
+%%% Two-step conversion via mols %%%
+
+unit(Formula,Input,Output) :-
+	unit(Formula,Input,[Mol,mol]),
+	unit(Formula,[Mol,mol],Output).
 
 %%% Unconvertible units %%%
 unit(_,QtyIn,QtyOut) :-
