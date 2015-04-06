@@ -79,7 +79,7 @@ stoich_simple(Input,[[[QtyOut,_],CoeffOut,FormulaOut]|QueryS]) :-
 	stoich_simple(Input,QueryS).
 
 
-stoich_queries_real(InGrammar,Equation,OutGrammar,Balanced,OutQtyS) :-
+stoich_queries_real(CoeffS,FormulaS,InQtyS,OutQtyS) :-
 	balance_equation(InGrammar,Equation,OutGrammar,Balanced,CoeffS,FormulaS,stoich,InQtyS),
 	combine_structs(InQtyS,CoeffS,FormulaS,InputS),
 	combine_structs(OutQtyS,CoeffS,FormulaS,QueryS),
@@ -95,16 +95,17 @@ stoich_queries_real(InGrammar,Equation,OutGrammar,Balanced,OutQtyS) :-
 			)
 	).
 
-stoich_queries(InGrammar,Equation,OutGrammar,Balanced,OutQtyS) :-
+stoich_queries(CoeffS,FormulaS,InQtyS,OutQtyS) :-
 	catch(
-		stoich_queries_real(InGrammar,Equation,OutGrammar,Balanced,OutQtyS),
+		stoich_queries_real(CoeffS,FormulaS,InQtyS,OutQtyS),
 		error(logic_error(Type,Data),_),
 		explain_general_rethrow(logic_error,Equation,Type,Data)
 	).
 
 stoich(InGrammar,Equation,OutGrammar,Balanced,OutQtyS) :-
+	balance_equation(InGrammar,Equation,OutGrammar,Balanced,CoeffS,FormulaS,stoich,InQtyS),
 	queries_convert(OutQtyS,OutQtyStructS),
-	stoich_queries(InGrammar,Equation,OutGrammar,Balanced,OutQtyStructS).
+	stoich_queries(CoeffS,FormulaS,InQtyS,OutQtyStructS).
 
 %%%%% GUIDANCE FOR ERRORS %%%%%
 
