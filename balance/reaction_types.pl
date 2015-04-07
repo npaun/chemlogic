@@ -120,6 +120,5 @@ activity_check_multiple(_,_,_,_,multiple).
 %%% Information about activity guesses %%%
 activity_info(yes,'Probably').
 activity_info(no,'Probably not').
-activity_info(multiple,'Maybe').
 
 % vi: ft=prolog

@@ -57,12 +57,17 @@ balancer_process(Type,Input,OutputType,Solution,Info) :-
 balancer_do_process(Type,StringInput,OutputType,Solution,Struct) :-
 	(balance_equation(Type,StringInput,OutputType,StringSolution,_,_,Struct), chemweb_to_html(StringSolution,Solution)) handle Solution.
 
-balancer_do_info(Struct,[TypeInfo]) :-
+balancer_do_info(Struct,[TypeInfo,ReactsInfo]) :-
 	(
-		reaction_match(Type,Struct) ->
+		reaction_match(Type,Struct,Reacts) ->
 			(
 				reaction_info(Type,TypeDesc),
-				TypeInfo = li([em('Reaction Type: '),TypeDesc])
+				TypeInfo = li([em('Reaction Type: '),TypeDesc]),
+				((
+					activity_info(Reacts,ReactsDesc),
+					ReactsInfo = li([em('Reaction Occurs: '),ReactsDesc])
+				); true)
+
 			);
 			true
 	).
