@@ -3,22 +3,22 @@
 reaction_match(neutralization,[
 					[[["H",_],[NMSym1,_]],[[MSym2,_],[[["O", 1], ["H", 1]], 1]]],
 					[[[MSym2,_],[NMSym1,_]],[["H", 2], ["O", 1]]]
-				],maybe).
+				],unknown).
 
 reaction_match(neutralization,[
 					[[["H",_],[NMSym1,_]],[[MSym2,_],[[["O", 1], ["H", 1]], 1]]],
 					[[["H", 2], ["O", 1]],[[MSym2,_],[NMSym1,_]]]
-				],maybe).
+				],unknown).
 
 reaction_match(neutralization,[
 					[[[MSym2,_],[[["O", 1], ["H", 1]], 1]],[["H",_],[NMSym1,_]]],
 					[[[MSym2,_],[NMSym1,_]],[["H", 2], ["O", 1]]]
-				],maybe).
+				],unknown).
 
 reaction_match(neutralization,[
 					[[[MSym2,_],[[["O", 1], ["H", 1]], 1]],[["H",_],[NMSym1,_]]],
 					[[["H", 2], ["O", 1]],[[MSym2,_],[NMSym1,_]]]
-				],maybe).
+				],unknown).
 
 
 %%% Double Replacement Reactions %%%
@@ -53,12 +53,12 @@ reaction_match(single_replacement,[
 reaction_match(synthesis,[
 				_,
 				[_]
-			],maybe).
+			],unknown).
 
 reaction_match(decomposition,[
 					[_],
 					_
-			],maybe).
+			],unknown).
 
 %%% Complete chemical reactions %%%
 reaction_complete(neutralization,_,ElementSideSet,_,[Product1,Water],[ElementSideSet|_],[[Reactant1,Reactant2],[Product1,Water]]) :-
@@ -109,12 +109,17 @@ activity_check(Elem1,Elem2,Reacts) :-
 		activity(Elem2,ElemAct2),
 		(ElemAct2 < ElemAct1 -> Reacts = yes; Reacts = no), !.
 
-activity_check(_,_,maybe).
+activity_check(_,_,unknown).
 
 activity_check_multiple(Elem1,Elem2,Elem3,Elem4,Reacts) :-
 	activity_check(Elem1,Elem2,Reacts),
 	activity_check(Elem3,Elem4,Reacts).
 
-activity_check_multiple(_,_,_,_,maybe).
+activity_check_multiple(_,_,_,_,multiple).
+
+%%% Information about activity guesses %%%
+activity_info(yes,'Probably').
+activity_info(no,'Probably not').
+activity_info(multiple,'Maybe').
 
 % vi: ft=prolog
