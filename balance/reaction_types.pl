@@ -97,7 +97,7 @@ reaction_complete(single_replacement,_,ElementSideSet,_,[Product1,Product2],[Ele
 %%% Information about reactions %%%
 reaction_info(neutralization,'Neutralization').
 reaction_info(double_replacement,'Double Replacement').
-reaction_info(single_replacement,'Single Replacmenet').
+reaction_info(single_replacement,'Single Replacement').
 reaction_info(combustion,'Combustion of Hydrocarbons').
 reaction_info(decomposition,'Decomposition').
 reaction_info(synthesis,'Synthesis').
