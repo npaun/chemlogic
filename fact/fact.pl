@@ -90,10 +90,25 @@ diatomic(+Symbol)
 
 Symbol	string	The symbol of the element
 
+***
+The atomic mass of an element is indicated by a mass/2 fact:
+mass(+Symbol,+Mass)
+
+Symbol	string	The symbol of the element
+Number	number	The atomic mass of the element
+
+***
+
+The position of an element in the activity series is indicated by an activity/2 fact.
+Note the Index value is simply used to sort the list in proper order and does not have any quantitative value.
+activity(+Symbol,+Index)
+
+Symbol	string	The symbol of the element
+Index	integer	The position of the element in the activity series (the lower the number, the more reactive).
 **/
 
 :- discontiguous [cl/1,cl_poly/1]. % The chemlogic DCG translating rules.
-:- discontiguous [charge/2,oxyanions/3,atomic/2,diatomic/1,mass/2]. % Facts about an element or group
+:- discontiguous [charge/2,oxyanions/3,atomic/2,diatomic/1,mass/2,activity/2]. % Facts about an element or group
 :- dynamic [charge/2].
 
 :- include('metal').
@@ -109,4 +124,4 @@ Symbol	string	The symbol of the element
 
 %%%% DATABASE VERSION %%%%
 
-db_version((2014,04,09,00)).
+db_version((2015,04,07,00)).

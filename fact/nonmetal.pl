@@ -12,6 +12,8 @@ cl(element("Cl","chlorine","chlor")).
         diatomic("Cl").
         atomic("Cl",17).
 	mass("Cl",35.435).
+	activity("Cl",200).
+
 
 %%%%% Hydrogen %%%%%
 
@@ -22,6 +24,7 @@ cl(element("H","hydrogen","hydr")).
         diatomic("H").
 	atomic("H",1).
 	mass("H",1.00794).
+	activity("H",1300).
 
 %%%%% Metalloids %%%%%
 
@@ -75,6 +78,7 @@ cl(element("F","fluorine","fluor")).
 	diatomic("F").
 	atomic("F",9).
 	mass("F",18.998403).
+	activity("F",100).
 
 cl(element("Br","bromine","brom")).
         charge("Br",-1).
@@ -82,6 +86,7 @@ cl(element("Br","bromine","brom")).
         diatomic("Br").
 	atomic("Br",35).
 	mass("Br",79.904).
+	activity("Br",300).
 
 cl(element("I","iodine","iod")).
 	charge("I",-1).
@@ -89,6 +94,7 @@ cl(element("I","iodine","iod")).
 	diatomic("I").
 	atomic("I",53).
 	mass("I",126.905).
+	activity("I",400).
 
 %%%%% Noble Gases %%%%%
 

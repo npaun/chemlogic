@@ -11,17 +11,20 @@ cl(element("Li","lithium","lith")).
 	charge("Li",1).
 	atomic("Li",3).
 	mass("Li",6.941).
+	activity("Li",100).
 
 %% NOTE: natr is given as the base name (from natrium), but it is not used within the program.
 cl(element("Na","sodium","natr")).
         charge("Na",1).
 	atomic("Na",11).
 	mass("Na",22.98977).
+	activity("Na",400).
 
 cl(element("K","potassium","kall")).
 	charge("K",1).
 	atomic("K",19).
 	mass("K",39.0983).
+	activity("K",200).
 
 
 
@@ -31,11 +34,13 @@ cl(element("Mg","magnesium","magna")).
 	charge("Mg",2).
 	atomic("Mg",12).
 	mass("Mg",24.305).
+	activity("Mg",500).
 
 cl(element("Ca","calcium","calc")).
 	charge("Ca",2).
 	atomic("Ca",20).
 	mass("Ca",40.08).
+	activity("Ca",300).
 
 cl(element("Sr","strontium","stront")).
 	charge("Sr",2).
@@ -83,6 +88,7 @@ cl(element("Cr","chromium","chrom")).
         oxyanions("Cr",-1,[0,0,2,0]).
 	atomic("Cr",24).
 	mass("Cr",51.996).
+	activity("Cr",800).
 
 cl(element("Mn","manganese","mangan")).
 	charge("Mn",[2,4]).
@@ -94,21 +100,30 @@ cl(element("Fe","iron","ferr")).
 	charge("Fe",[3,2]).
 	atomic("Fe",26).
 	mass("Fe",55.847).
+	activity("Fe",900).
 
 cl(element("Co","cobalt","cobalt")).
 	charge("Co",[2]).
 	atomic("Co",27).
 	mass("Co",58.9332).
 
+cl(element("Ni","nickel","nickel")).
+	charge("Ni",[2,3]).
+	atomic("Ni",28).
+	mass("Ni",58.6934).
+	activity("Ni",1000).
+
 cl(element("Cu","copper","cupr")).
         charge("Cu",[1,2]).
 	atomic("Cu",29).
 	mass("Cu",63.546).
+	activity("Cu",1400).
 
 cl(element("Zn","zinc","zinc")).
 	charge("Zn",2).
 	atomic("Zn",30).
 	mass("Zn",65.39).
+	activity("Zn",700).
 
 cl(element("Tc","technetium","technetium")).
 	charge("Tc",7).
@@ -119,6 +134,7 @@ cl(element("Ag","silver","argent")).
 	charge("Ag",1).
 	atomic("Ag",47).
 	mass("Ag",107.868).
+	activity("Ag",1500).
 
 cl(element("W","tungsten","wolfram")).
 	charge("W",[5,6]).
@@ -130,15 +146,23 @@ cl(element("Re","rhenium","rhen")).
 	atomic("Re",75).
 	mass("Re",186.207).
 
+cl(element("Pt","platinum","platin").
+	charge("Pt",[2,4,6]).
+	atomic("Pt",78).
+	mass("Pt",195.084).
+	activity("Pt",1700).
+
 cl(element("Au","gold","aurum")).
 	charge("Au",[3,1]).
 	atomic("Au",79).
 	mass("Au",196.967).
+	activity("Au",1800).
 
 cl(element("Hg","mercury","mercur")).
 	charge("Hg",[2]).
 	atomic("Hg",80).
 	mass("Hg",200.59).
+	activity("Hg",1600).
 
 %%%%% Other Metals %%%%%
 
@@ -148,13 +172,16 @@ cl(element("Al","aluminium","alum")).
         charge("Al",3).
 	atomic("Al",13).
 	mass("Al",26.98154).
+	activity("Al",600).
 
 cl(element("Sn","tin","stan")).
 	charge("Sn",[4,2]).
 	atomic("Sn",50).
 	mass("Sn",118.71).
+	activity("Sn",1100).
 
 cl(element("Pb","lead","plumb")).
         charge("Pb",[2,4]).
 	atomic("Pb",82).
 	mass("Pb",207.2).
+	activity("Pb",1200).
