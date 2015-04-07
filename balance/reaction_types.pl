@@ -3,45 +3,49 @@
 reaction_match(neutralization,[
 					[[["H",_],[NMSym1,_]],[[MSym2,_],[[["O", 1], ["H", 1]], 1]]],
 					[[[MSym2,_],[NMSym1,_]],[["H", 2], ["O", 1]]]
-				]).
+				],maybe).
 
 reaction_match(neutralization,[
 					[[["H",_],[NMSym1,_]],[[MSym2,_],[[["O", 1], ["H", 1]], 1]]],
 					[[["H", 2], ["O", 1]],[[MSym2,_],[NMSym1,_]]]
-				]).
+				],maybe).
 
 reaction_match(neutralization,[
 					[[[MSym2,_],[[["O", 1], ["H", 1]], 1]],[["H",_],[NMSym1,_]]],
 					[[[MSym2,_],[NMSym1,_]],[["H", 2], ["O", 1]]]
-				]).
+				],maybe).
 
 reaction_match(neutralization,[
 					[[[MSym2,_],[[["O", 1], ["H", 1]], 1]],[["H",_],[NMSym1,_]]],
 					[[["H", 2], ["O", 1]],[[MSym2,_],[NMSym1,_]]]
-				]).
+				],maybe).
 
 
 %%% Double Replacement Reactions %%%
 reaction_match(double_replacement,[
 					[[[MSym1,_],[NMSym1,_]],[[MSym2,_],[NMSym2,_]]],
 					[[[MSym1,_],[NMSym2,_]],[[MSym2,_],[NMSym1,_]]]
-				]).
+				],Reacts) :-
+				activity_check_multiple(MSym1,MSym2,NMSym1,NMSym2,Reacts).
 
 reaction_match(double_replacement,[
 					[[[MSym1,_],[NMSym1,_]],[[MSym2,_],[NMSym2,_]]],
 					[[[MSym2,_],[NMSym1,_]],[[MSym1,_],[NMSym2,_]]]
-				]).
+				],Reacts) :-
+				activity_check_multiple(MSym1,MSym2,NMSym1,NMSym2,Reacts).
 
 %%% Single Replacement Reactions %%%
 reaction_match(single_replacement,[
 					[[[MSym1,_],[NMSym1,_]],[[MSym2,_]]],
 					[[[MSym2,_],[NMSym1,_]],[[MSym1,_]]]
-				]).
+				],Reacts) :-
+				activity_check(MSym1,MSym2,Reacts).
 
 reaction_match(single_replacement,[
 					[[[MSym1,_],[NMSym1,_]],[[NMSym2,_]]],
 					[[[MSym1,_],[NMSym2,_]],[[NMSym1,_]]]
-				]).
+				], Reacts) :-
+				activity_check(NMSym1,NMSym2,Reacts).
 
 
 %%% Synthesis and Decomposition Reactions %%%
@@ -49,12 +53,12 @@ reaction_match(single_replacement,[
 reaction_match(synthesis,[
 				_,
 				[_]
-			]).
+			],maybe).
 
 reaction_match(decomposition,[
 					[_],
 					_
-			]).
+			],maybe).
 
 %%% Complete chemical reactions %%%
 reaction_complete(neutralization,_,ElementSideSet,_,[Product1,Water],[ElementSideSet|_],[[Reactant1,Reactant2],[Product1,Water]]) :-
@@ -101,14 +105,16 @@ reaction_info(synthesis,'Synthesis').
 %%% Check if the reaction will occur, using the activity series.
 
 activity_check(Elem1,Elem2,Reacts) :-
-	(
 		activity(Elem1,ElemAct1),
 		activity(Elem2,ElemAct2),
-		(
-			ElemAct2 < ElemAct1 -> Reacts = yes;
-			Reacts = no
-		)
-	); Reacts = maybe.
+		(ElemAct2 < ElemAct1 -> Reacts = yes; Reacts = no), !.
 
+activity_check(_,_,maybe).
+
+activity_check_multiple(Elem1,Elem2,Elem3,Elem4,Reacts) :-
+	activity_check(Elem1,Elem2,Reacts),
+	activity_check(Elem3,Elem4,Reacts).
+
+activity_check_multiple(_,_,_,_,maybe).
 
 % vi: ft=prolog
