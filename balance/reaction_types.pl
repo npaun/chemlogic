@@ -56,7 +56,7 @@ reaction_match(decomposition,[
 					_
 			]).
 
-
+%%% Complete chemical reactions %%%
 reaction_complete(neutralization,_,ElementSideSet,_,[Product1,Water],[ElementSideSet|_],[[Reactant1,Reactant2],[Product1,Water]]) :-
 	Water = [["H",2],["O",1]],
 	ionic:rev_algo(Reactant1,["H",_,NMSym1,NMCharge1]),
@@ -90,13 +90,25 @@ reaction_complete(single_replacement,_,ElementSideSet,_,[Product1,Product2],[Ele
 	name:pure_process([NMSym1],[],Product2,_,[]).
 
 
-
-
+%%% Information about reactions %%%
 reaction_info(neutralization,'Neutralization').
 reaction_info(double_replacement,'Double Replacement').
 reaction_info(single_replacement,'Single Replacmenet').
 reaction_info(combustion,'Combustion of Hydrocarbons').
 reaction_info(decomposition,'Decomposition').
 reaction_info(synthesis,'Synthesis').
+
+%%% Check if the reaction will occur, using the activity series.
+
+activity_check(Elem1,Elem2,Reacts) :-
+	(
+		activity(Elem1,ElemAct1),
+		activity(Elem2,ElemAct2),
+		(
+			ElemAct2 < ElemAct1 -> Reacts = yes;
+			Reacts = no
+		)
+	); Reacts = maybe.
+
 
 % vi: ft=prolog
