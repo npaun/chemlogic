@@ -146,7 +146,7 @@ cl(element("Re","rhenium","rhen")).
 	atomic("Re",75).
 	mass("Re",186.207).
 
-cl(element("Pt","platinum","platin").
+cl(element("Pt","platinum","platin")).
 	charge("Pt",[2,4,6]).
 	atomic("Pt",78).
 	mass("Pt",195.084).
