@@ -3,22 +3,22 @@
 reaction_match(neutralization,[
 					[[["H",_],[NMSym1,_]],[[MSym2,_],[[["O", 1], ["H", 1]], 1]]],
 					[[[MSym2,_],[NMSym1,_]],[["H", 2], ["O", 1]]]
-				],unknown).
+				],certain).
 
 reaction_match(neutralization,[
 					[[["H",_],[NMSym1,_]],[[MSym2,_],[[["O", 1], ["H", 1]], 1]]],
 					[[["H", 2], ["O", 1]],[[MSym2,_],[NMSym1,_]]]
-				],unknown).
+				],certain).
 
 reaction_match(neutralization,[
 					[[[MSym2,_],[[["O", 1], ["H", 1]], 1]],[["H",_],[NMSym1,_]]],
 					[[[MSym2,_],[NMSym1,_]],[["H", 2], ["O", 1]]]
-				],unknown).
+				],certain).
 
 reaction_match(neutralization,[
 					[[[MSym2,_],[[["O", 1], ["H", 1]], 1]],[["H",_],[NMSym1,_]]],
 					[[["H", 2], ["O", 1]],[[MSym2,_],[NMSym1,_]]]
-				],unknown).
+				],certain).
 
 
 %%% Double Replacement Reactions %%%
@@ -118,6 +118,7 @@ activity_check_multiple(Elem1,Elem2,Elem3,Elem4,Reacts) :-
 activity_check_multiple(_,_,_,_,multiple).
 
 %%% Information about activity guesses %%%
+activity_info(certain,'Yes').
 activity_info(yes,'Probably').
 activity_info(no,'Probably not').
 
