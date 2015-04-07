@@ -110,9 +110,21 @@ body
 	white-space: -pre-wrap;      /* Opera 4-6 */
 	white-space: -o-pre-wrap;    /* Opera 7 */
 	word-wrap: break-word;       /* Internet Explorer 5.5+ */
-     }
+ }
 
 .errcode
  {
 	 color: red;
+ }
+
+#info li 
+ {
+    list-style-type: none;
+    display: inline;
+    margin-right: 5%;
+ }
+
+#info em 
+ {
+   font-weight: bold;
  }
