@@ -44,8 +44,12 @@ rev(Formula) -->
 	).
 
 rev_algo(Formula,[MSym,MCharge,NMSym,NMCharge]) :-
-		Formula = [[MSym,MSub],[NMSym,NMSub]],
-		(MSym = "H"; charge_check(metal,MSym,MCharges)),
+		Formula = [[TestMSym,_]|_],
+		NFormula = [[MSym,MSub],[NMSym,NMSub]],
+		(TestMSym = "H" -> 
+			acid_correct_hydrogen(Formula,NFormula);
+			(Formula = NFormula, charge_check(metal,MSym,MCharges))	
+		),
 
 		(charge(NMSym,NMCharge), !),
 

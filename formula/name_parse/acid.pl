@@ -5,7 +5,7 @@
 
 
 
-:- module(acid,[acid//3,acid_base//1]).
+:- module(acid,[acid//3,acid_base//1,acid_correct_hydrogen/2]).
 :- use_module(oxyanion).
 :- set_prolog_flag(double_quotes,chars).
 
@@ -44,6 +44,21 @@ acid_base(Sym) --> element_base(Sym,_),
 ic_suffix --> "ic" xx ic_acid_suffix.
 
 
+%%% Correct acid formulas %%%
+
+/* NOTE:
+ **** The purpose of this correction  ****
+Hydrogen-containing ions (beginning with "bi" or "hydrogen") can react to form acids. 
+Because acids can be conceptualized as an ionic compound consisting of hydrogen and an anion, one might decide to create an acid consisting of hydrogen and bicarbonate -- "bicarbonic acid", for example. The formula of this acid would be HHCO3, which is not inccorect, but should rather be stated as "H2CO3".
+
+This mistake might be made by a student, or by Chemlogic itself, when it re-arranges ions to complete double-replacement reactions.
+Since the program may make this mistake and since it is not entirely incorrect, we will just silently fix it.
+Noticing the correction might help the user learn the correct way to write these formulas.
+*/
+
+
+acid_correct_hydrogen([["H",HSub],[[["H",HASub]|ASym],ASub]],[["H",HTotalSub],[ASym,ASub]]) :- HTotalSub is HSub + HASub, !.
+acid_correct_hydrogen(Formula,Formula).
 
 %%%%% ACID ERROR MESSAGE GUIDANCE %%%%%
 
