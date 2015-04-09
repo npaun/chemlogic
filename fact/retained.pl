@@ -9,7 +9,8 @@
 
 retained(["H","O"|Rest],Rest,[["H",2],["O",1]]) --> "water".
 retained(["N","H"|Rest],Rest,[["N",1],["H",3]]) --> "ammonia".
-
+retained(["H","C","H","C","O","O"|Rest],Rest,[["H",1],[[["C",1],["H",3],["C",1],["O",1],["O",1]],1]]) --> "acetic acid".
+retained(["H","C","H","C","O","O"|Rest],Rest,[["H",1],[[["C",1],["H",3],["C",1],["O",1],["O",1]],1]]) --> "ethanoic acid".
 
 %%%%% Common Names (recognized, but not produced) %%%%%
 

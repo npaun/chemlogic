@@ -31,7 +31,7 @@ cl_poly(group([["S",1],["C",1],["N",1]],"thiocyanate","thiocyan")).
         charge([["S",1],["C",1],["N",1]],-1).
 
 cl_poly(group([["C",1],["H",3],["C",1],["O",1],["O",1]],"acetate","acet")).
-cl_poly(group([["C",1],["H",3],["C",1],["O",1],["O",1]],"ethanoate","ethano")).
+cl_poly(group([["C",1],["H",3],["C",1],["O",1],["O",1]],"ethanoate","n/a")).
 	charge([["C",1],["H",3],["C",1],["O",1],["O",1]],-1).
 
 cl_poly(group([["C",2],["O",4]],"oxalate","oxal")).
