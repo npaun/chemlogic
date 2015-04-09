@@ -24,10 +24,13 @@ fwd(MElems,FinalRest,[Anion,Cation|Appended]) -->
 	compound(MElems,FinalRest,ChargeFormula,Appended),
 	{fwd_algo([Anion,Cation],ChargeFormula)}.
 
-fwd_algo([[MSym,MSub],[NMSym,NMSub]],[MSym,MCharge,NMSym,NMCharge]) :-
+fwd_algo(FFormula,[MSym,MCharge,NMSym,NMCharge]) :-
 		GCD is gcd(MCharge,NMCharge),
 		MSub is abs(NMCharge / GCD),
-		NMSub is abs(MCharge / GCD).
+		NMSub is abs(MCharge / GCD),
+		Formula = [[MSym,MSub],[NMSym,NMSub]],
+		acid_correct_hydrogen(Formula,FFormula).
+
 
 
 rev(Formula) -->
@@ -45,10 +48,10 @@ rev(Formula) -->
 
 rev_algo(Formula,[MSym,MCharge,NMSym,NMCharge]) :-
 		Formula = [[TestMSym,_]|_],
-		NFormula = [[MSym,MSub],[NMSym,NMSub]],
+		FFormula = [[MSym,MSub],[NMSym,NMSub]],
 		(TestMSym = "H" -> 
-			acid_correct_hydrogen(Formula,NFormula);
-			(Formula = NFormula, charge_check(metal,MSym,MCharges))	
+			acid_correct_hydrogen(Formula,FFormula);
+			(Formula = FFormula, charge_check(metal,MSym,MCharges))	
 		),
 
 		(charge(NMSym,NMCharge), !),
