@@ -49,9 +49,10 @@ molar_nop(Solution) :-
 	Solution = 'Please select the Name or Formula, depending on the format of your input, then enter the quantity followed by the formula/name. Select the unit you wish to convert the quantity to.'.
 
 
-molar_process(Type,Input,Solution,Query) :-
+molar_process(Type,Input,Solution,Unit,QtyTail,UnitTail) :-
+	atomic_list_concat([Unit,' (',QtyTail,' ',UnitTail,')'],Var-QueryPart),
 	atom_chars(Input,StringInput),
-	(molar_do_process(Type,StringInput,StringSolution,Query), chemweb_to_html(StringSolution,Solution)) handle Solution.
+	(molar_do_process(Type,StringInput,StringSolution,QueryPart), chemweb_to_html(StringSolution,Solution)) handle Solution.
 
 molar_do_process(name,Name,Formula,Query) :-
 	convert_name_2_formula(Name,Formula,[Query]).
@@ -62,5 +63,5 @@ molar_do_process(formula,Formula,Name,Query) :-
 
 molar_page(Request) :-
 	molar_input(Request,Type,Input,Unit,TailInput,TailUnit),
-	(nonvar(Input) -> molar_process(Type,Input,Solution,_-Unit); molar_nop(Solution)),
+	(nonvar(Input) -> molar_process(Type,Input,Solution,Unit,TailInput,TailUnit); molar_nop(Solution)),
 	molar_html(Type,Unit,Input,TailInput,TailUnit,Solution).
