@@ -116,3 +116,8 @@ body
  {
 	 color: red;
  }
+
+ .hidden
+ {
+ visibility: hidden;
+ }

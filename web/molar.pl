@@ -38,7 +38,8 @@ molar_html(Type,Unit,Input,TailInput,TailUnit,Solution) :-
 				\[' ('],
 				input([name(molar_tail_input),id(molar_tail_input),type(text),size(10),value(TailInput)]),
 				select(name(tail_unit),TailUnitSelectList),
-				\[')']
+				\[')'],
+				input([type(submit),class(hidden)])
 			]),
 			div(id(solution),Solution)
 		]
