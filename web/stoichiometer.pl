@@ -18,17 +18,11 @@ stoichiometer_input(Request,Type,Input,OutputType) :-
 	]).
 
 stoichiometer_html(Type,Input,OutputType,Solution) :-
-( var(Input) -> Input = []; true),
-(Type = symbolic ->
-	SelectList = [option([value(symbolic),selected],'Symbolic'),option([value(word)],'Word')];
-	SelectList = [option([value(symbolic)],'Symbolic'),option([value(word),selected],'Word')]
-	),
+	( var(Input) -> Input = []; true),
+	OptionS = [[symbolic,'Symbolic'],[word,'Word']],
+	chemweb_select_list(Type,OptionS,SelectList),
+	chemweb_select_list(OutputType,OptionS,OutputSelectList),
 
-
-(OutputType = symbolic ->
-	OutputSelectList = [option([value(symbolic),selected],'Symbolic'),option([value(word)],'Word')];
-	OutputSelectList = [option([value(symbolic)],'Symbolic'),option([value(word),selected],'Word')]
-	),
 	reply_html_page(chemlogic,title('Stoichiometer'),
 	[
 	h1(id(feature),'Stoichiometer'),

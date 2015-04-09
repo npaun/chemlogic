@@ -19,14 +19,11 @@ molar_input(Request,Type,Input,Unit) :-
 			unit(Unit, [ optional(true), oneof(g,'L',mol,'M') ])
 		]).
 
-molar_html(Type,Input,Solution) :-
-( var(Input) -> Input = []; true),
-(Type = name -> 
-	SelectList = [option([value(name),selected],'Name'),option([value(formula)],'Formula')];
-	SelectList = [option([value(name)],'Name'),option([value(formula),selected],'Formula')] 
-	),
+molar_html(Type,Unit,Input,Solution) :-
+	( var(Input) -> Input = []; true),
 
-	UnitSelectList = [option(value(g),g),option(value('L'),'L (gas)'),option(value(mol),mol)],
+	chemweb_select_list(Type,[[name,'Name'],[formula,'Formula']],SelectList),
+	chemweb_select_list(Unit,[[g,g],['L','L (gas)'],[mol,mol]],UnitSelectList),
 
 	reply_html_page(chemlogic,title('Molar'),
 		[
@@ -58,4 +55,4 @@ molar_do_process(formula,Formula,Name,Query) :-
 molar_page(Request) :-
 	molar_input(Request,Type,Input,Unit),
 	(nonvar(Input) -> molar_process(Type,Input,Solution,_-Unit); molar_nop(Solution)),
-	molar_html(Type,Input,Solution).
+	molar_html(Type,Unit,Input,Solution).

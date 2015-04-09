@@ -24,6 +24,14 @@ chemweb_to_html(String,HTML) :-
 	atom_chars(Atom,String),
 	HTML = \[Atom].
 
+chemweb_select_list(_,[],[]).
+chemweb_select_list(Curr,[[Key,Desc]|OptionS],[HTML|Rest]) :-
+	(Key = Curr -> 
+		HTML = option([value(Key),selected],Desc);
+		HTML = option([value(Key)],Desc)
+	),
+	chemweb_select_list(Curr,OptionS,Rest).
+
 :- ensure_loaded('../build/compile.cf').
 :- consult('style').
 :- use_module(web_error).

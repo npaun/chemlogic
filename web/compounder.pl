@@ -21,12 +21,8 @@ compounder_input(Request,Type,Input) :-
 		]).
 
 compounder_html(Type,Input,Solution) :-
-( var(Input) -> Input = []; true),
-(Type = name -> 
-	SelectList = [option([value(name),selected],'Name'),option([value(formula)],'Formula')];
-	SelectList = [option([value(name)],'Name'),option([value(formula),selected],'Formula')] 
-	),
-
+	( var(Input) -> Input = []; true),
+	chemweb_select_list(Type,[[name,'Name'],[formula,'Formula']],SelectList),
 
 	reply_html_page(chemlogic,title('Compounder'),
 		[
