@@ -140,17 +140,26 @@ parse(Call,Args,Input,Output) :-
 parse(Clause,Input,Output) :-
 	functor(Clause,Module,_),
 	catch(
+	catch(
 		phrase_fluff_check(Clause,Input,Output),
 		error(syntax_error(ErrCode,Flags),Context),
 		explain_syntax_rethrow(Module,Input,ErrCode,Flags,Context)
-	). 
+		),
+		error(logic_error(LogicErrCode,LogicInfo),_),
+		explain_general_rethrow(logic_error,Input,LogicErrCode,LogicInfo)
+	).
+
 
 process(Clause) :-
 	functor(Clause,Module,_),
 	catch(
+	catch(
 		call(Clause),
 		error(syntax_error(ErrCode,Flags),Context),
 		explain_syntax_rethrow(Module,[],ErrCode,Flags,Context)
+		),
+		error(logic_error(LogicErrCode,LogicInfo),_),
+		explain_general_rethrow(logic_error,[],LogicErrCode,LogicInfo)
 	).
 
 syntax_stop(Expected,Unprocessed,_) :- syntax_stop(Expected,[],Unprocessed,_).

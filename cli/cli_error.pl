@@ -28,6 +28,7 @@ error_handler(_,syntax_error([HighlightStruct,MessageStruct])) :-
 	message_syntax_show(MessageStruct),
 	fail.
 
+error_handler(_,logic_error(Struct)) :- error_handler(_,type_error(Struct)).
 error_handler(_,domain_error(Struct)) :- error_handler(_,type_error(Struct)).
 
 error_handler(_,type_error([HighlightStruct,MessageStruct])) :-

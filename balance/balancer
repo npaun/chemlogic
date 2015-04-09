@@ -85,12 +85,17 @@ The second function sets some default parameters.
 balance_equation(InGrammar,Equation,OutGrammar,Solution,Coeffs,MoleculeSet,SideSet) :-
 	catch(
 	catch(
-		call_cleanup(balance_equation_real(InGrammar,Equation,OutGrammar,Solution,Coeffs,MoleculeSet,SideSet),balance_equation_cleanup),
-		error(type_error(Type,Data),_),
-		explain_general_rethrow(type_error,Equation,Type,Data)
+	catch(
+			call_cleanup(balance_equation_real(InGrammar,Equation,OutGrammar,Solution,Coeffs,MoleculeSet,SideSet),balance_equation_cleanup),
+			error(type_error(Type,Data),_),
+			explain_general_rethrow(type_error,Equation,Type,Data)
+		),
+		error(domain_error(Type,Data),_),
+		explain_general_rethrow(domain_error,Equation,Type,Data)
 	),
-	error(domain_error(Type,Data),_),
-	explain_general_rethrow(domain_error,Equation,Type,Data)).
+		error(logic_error(Type,Data),_),
+		explain_general_rethrow(logic_error,Equation,Type,Data)
+	).
 
 
 balance_equation(InGrammar,Equation,OutGrammar,Solution) :- balance_equation(InGrammar,Equation,OutGrammar,Solution,_,_,_).

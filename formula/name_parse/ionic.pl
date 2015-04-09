@@ -30,8 +30,9 @@ fwd_algo([[MSym,MSub],[NMSym,NMSub]],[MSym,MCharge,NMSym,NMCharge]) :-
 		NMSub is abs(MCharge / GCD).
 
 
-rev([[MSym,MSub],[NMSym,NMSub]|Appended]) -->
-	{rev_algo([[MSym,MSub],[NMSym,NMSub]],ChargeFormula)},
+rev(Formula) -->
+	{Formula = [[_,MSub],[_,NMSub]|Appended]},
+	{rev_algo(Formula,ChargeFormula)},
 
 	compound(_,_,ChargeFormula,Appended),
 	!,
@@ -39,13 +40,11 @@ rev([[MSym,MSub],[NMSym,NMSub]|Appended]) -->
 	/* Corrector: remove if unecessary */
 	(
 		{GCD is gcd(MSub,NMSub)}, 
-		{GCD = 1; throw(error(type_error(ionic:corrector_not_reduced,[[MSym,MSub],[NMSym,NMSub]]),_))}
+		{GCD = 1; throw(error(logic_error(ionic:corrector_not_reduced,Formula),_))}
 	).
 
-rev_algo([[MSym,MSub],[NMSym,NMSub]],[MSym,MCharge,NMSym,NMCharge]) :-
-		%  TODO: If the metal is monovalent, don't bother conjuring it up! Just use it.
-		%  Also, no need to actually check these charges, is there?
-	
+rev_algo(Formula,[MSym,MCharge,NMSym,NMCharge]) :-
+		Formula = [[MSym,MSub],[NMSym,NMSub]],
 		(MSym = "H"; charge_check(metal,MSym,MCharges)),
 
 		(charge(NMSym,NMCharge), !),
@@ -57,7 +56,7 @@ rev_algo([[MSym,MSub],[NMSym,NMSub]],[MSym,MCharge,NMSym,NMCharge]) :-
 	
 		(
 			(is_list(MCharges) -> member(MCharge,MCharges); MCharge = MCharges); 
-			throw(error(type_error(ionic:corrector_invalid_subscript,[[MSym,MSub],[NMSym,NMSub]]),_))
+			throw(error(logic_error(ionic:corrector_invalid_subscript,Formula),_))
 		).
 
 
