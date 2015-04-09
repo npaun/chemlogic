@@ -39,7 +39,7 @@ rev([[MSym,MSub],[NMSym,NMSub]|Appended]) -->
 	/* Corrector: remove if unecessary */
 	(
 		{GCD is gcd(MSub,NMSub)}, 
-		{GCD = 1} xx corrector_not_reduced
+		{GCD = 1; throw(error(type_error(ionic:corrector_not_reduced,[[MSym,MSub],[NMSym,NMSub]]),_))}
 	).
 
 rev_algo([[MSym,MSub],[NMSym,NMSub]],[MSym,MCharge,NMSym,NMCharge]) :-
@@ -55,7 +55,10 @@ rev_algo([[MSym,MSub],[NMSym,NMSub]],[MSym,MCharge,NMSym,NMCharge]) :-
 
 		/* Corrector: remove if unnecessary */
 	
-		xx({is_list(MCharges) -> member(MCharge,MCharges); MCharge = MCharges},corrector_invalid_subscript,[],[]).
+		(
+			(is_list(MCharges) -> member(MCharge,MCharges); MCharge = MCharges); 
+			throw(error(type_error(ionic:corrector_invalid_subscript,[[MSym,MSub],[NMSym,NMSub]]),_))
+		).
 
 
 %%% Ionic Compound Naming Rules %%% 
@@ -210,25 +213,6 @@ guidance_errcode(cation,_,
  	e.g <ammonium> chloride is correct, but not <dihydrogen phosphate> chloride'
 ).
 
-guidance_errcode(corrector_not_reduced,_,
-	'BUSTED! The formula you have entered is not reduced to simplest terms.
-	 All ionic formulas are empirical formulas, the lowest possible ratio of the elements.
-
- 	 Always remember to simplify the formula.
-
- 	 e.g Pb2O4 must be reduced to PbO2.'
- ).
-
-guidance_errcode(corrector_invalid_subscript,_,
-	'BUSTED! The subscripts of the formula you have entered are invalid.
-	 Your input was recognized as an ionic compound, because it consists of a positive and a negative ion, 
-	 but the subscripts you have entered do not correspond with the correct charges of these ions.
-	
-	 e.g. NaSO4 is incorrect because the charge of the SO4 ion is 2- and the charge of the Na ion is 1+, so the correct formula is Na2SO4.
-
-	 Please verify that you have correctly balanced the charges of the positive and negative ions, by using appropriate subscripts.'
-).
-
 guidance_errcode(hydrate_h2o,alpha,
 	'Only hydrates (water; . nH2O; etc.) are supported by the program.').
 
@@ -254,10 +238,32 @@ guidance_errcode(anion_part,nil,
  	 e.g copper(II) <chloride>, but not just copper(II)'
  ).
 
+%%% Guidance for logic errors not relating to grammatical mistakes %%%
+
+guidance_general(corrector_not_reduced,
+	'BUSTED! The formula you have entered is not reduced to simplest terms.
+	 All ionic formulas are empirical formulas, the lowest possible ratio of the elements.
+
+ 	 Always remember to simplify the formula.
+
+ 	 e.g Pb2O4 must be reduced to PbO2.
+	 
+	 The following formula is incorrectly reduced: '
+ ).
+
+guidance_general(corrector_invalid_subscript,
+	'BUSTED! The subscripts of the formula you have entered are invalid.
+	 Your input was recognized as an ionic compound, because it consists of a positive and a negative ion, 
+	 but the subscripts you have entered do not correspond with the correct charges of these ions.
+	
+	 e.g. NaSO4 is incorrect because the charge of the SO4 ion is 2- and the charge of the Na ion is 1+, so the correct formula is Na2SO4.
+
+	 Please verify that you have correctly balanced the charges of the positive and negative ions, by using appropriate subscripts.
+	 
+	 The following formula containes invalid subscripts: '
+).
 
 
 %%%%% CATCH-ALL ERROR GUIDANCE %%%%%
-
-
 
 guidance_errcode(ErrCode,Type,Message) :- name:guidance_errcode(ErrCode,Type,Message). % Let the main file handle anything we can't figure out
