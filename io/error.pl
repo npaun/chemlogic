@@ -145,6 +145,14 @@ parse(Clause,Input,Output) :-
 		explain_syntax_rethrow(Module,Input,ErrCode,Flags,Context)
 	). 
 
+process(Clause) :-
+	functor(Clause,Module,_),
+	catch(
+		call(Clause),
+		error(syntax_error(ErrCode,Flags),Context),
+		explain_syntax_rethrow(Module,[],ErrCode,Flags,Context)
+	).
+
 syntax_stop(Expected,Unprocessed,_) :- syntax_stop(Expected,[],Unprocessed,_).
 
 syntax_stop(Expected,Flags,Unprocessed,_) :-

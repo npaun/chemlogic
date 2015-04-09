@@ -68,12 +68,12 @@ reaction_complete(neutralization,_,ElementSideSet,_,[Product1,Water],[ElementSid
 	ionic:fwd_algo(Product1,[MSym2,MCharge2,NMSym1,NMCharge1]).
 
 reaction_complete(double_replacement,_,ElementSideSet,_,[Product1,Product2],[ElementSideSet|_],[[Reactant1,Reactant2],[Product1,Product2]]) :-
-	ionic:rev_algo(Reactant1,[MSym1,MCharge1,NMSym1,NMCharge1]),
-	ionic:rev_algo(Reactant2,[MSym2,MCharge2,NMSym2,NMCharge2]),
+	process(ionic:rev_algo(Reactant1,[MSym1,MCharge1,NMSym1,NMCharge1])),
+	process(ionic:rev_algo(Reactant2,[MSym2,MCharge2,NMSym2,NMCharge2])),
 	MSym1 \= MSym2,
 	NMSym1 \= NMSym2,
-	ionic:fwd_algo(Product1,[MSym1,MCharge1,NMSym2,NMCharge2]),
-	ionic:fwd_algo(Product2,[MSym2,MCharge2,NMSym1,NMCharge1]).
+	process(ionic:fwd_algo(Product1,[MSym1,MCharge1,NMSym2,NMCharge2])),
+	process(ionic:fwd_algo(Product2,[MSym2,MCharge2,NMSym1,NMCharge1])).
 
 reaction_complete(single_replacement,_,ElementSideSet,_,[Product1,Product2],[ElementSideSet|_],[[Reactant1,Reactant2],[Product1,Product2]]) :-
 	ionic:rev_algo(Reactant1,[MSym1,_,NMSym1,NMCharge1]),
