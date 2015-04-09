@@ -40,7 +40,7 @@ rev(Formula) -->
 	/* Corrector: remove if unecessary */
 	(
 		{GCD is gcd(MSub,NMSub)}, 
-		{GCD = 1; throw(error(logic_error(ionic:corrector_not_reduced,Formula),_))}
+		{GCD = 1, !; throw(error(logic_error(ionic:corrector_not_reduced,Formula),_))}
 	).
 
 rev_algo(Formula,[MSym,MCharge,NMSym,NMCharge]) :-
@@ -55,7 +55,7 @@ rev_algo(Formula,[MSym,MCharge,NMSym,NMCharge]) :-
 		/* Corrector: remove if unnecessary */
 	
 		(
-			(is_list(MCharges) -> member(MCharge,MCharges); MCharge = MCharges); 
+			(is_list(MCharges) -> member(MCharge,MCharges); MCharge = MCharges), !; 
 			throw(error(logic_error(ionic:corrector_invalid_subscript,Formula),_))
 		).
 
