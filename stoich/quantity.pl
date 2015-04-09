@@ -6,6 +6,7 @@
 
 
 :- module(quantity,[quantity//1,quantity_prefix//1,query//1,queries_convert/2]).
+:- use_module(sigfigs).
 :- use_module(sigfigs_number).
 :- set_prolog_flag(double_quotes,chars).
 
@@ -26,7 +27,7 @@ value([Val,SF]) -->
 	).
 
 value_calc([Val,SF]) --> number(SFDigits,[],Digits,[]), {length(SFDigits,SF), number_chars(Val,Digits)}.
-value_display([Val,_],H,T) :- format(chars(H,T),'~w',Val). % When performing output, it is much faster to just use SWI-Prolog's built-in conversion.
+value_display([Val,SF],H,T) :- round_sigfigs(Val,SF,ValRound), format(chars(H,T),'~w',ValRound). % When performing output, it is much faster to just use SWI-Prolog's built-in conversion.
 
 queries_convert([],[]) :- !.
 
