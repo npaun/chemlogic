@@ -22,14 +22,23 @@ name_quantity:guidance_errcode(A,B,C) :- name:guidance_errcode(A,B,C).
 name_quantity:guidance_unparsed(A,B) :- name:guidance_unparsed(A,B).
 
 
-convert_name_2_formula(Name,Formula,QueryS) :-
+convert_name_2_formula(Name,Formula,[Query]) :- 
+	queries_convert([Query],[[Struct,_]]),
+	calc_name_2_formula(Name,Formula,Struct).
+
+calc_name_2_formula(Name,Formula,Struct) :-
 	parse(name_quantity(Qty,_,_,Internal),Name,[]),
 	queries_convert(QueryS,[[Struct,_]]),
 	convert(output,Internal,Qty,Struct),
 	parse(formula_quantity(Struct,output,_,_,Internal,_),Formula,[]).
 
 
-convert_formula_2_name(Formula,Name,QueryS) :-
+convert_formula_2_name(Formula,Name,[Query]) :- 
+	queries_convert([Query],[[Struct,_]]),
+	calc_name_2_formula(Formula,Name,Struct).
+
+
+calc_formula_2_name(Formula,Name,Struct) :-
 	parse(formula_quantity(Qty,user,_,_,Internal,_),Formula,[]),
 	queries_convert(QueryS,[[Struct,_]]),
 	convert(output,Internal,Qty,Struct),
