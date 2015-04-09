@@ -48,14 +48,17 @@ balancer_nop(Solution) :-
 	Solution = 'Please select Symbolic or Word equation, depending on what you are entering, then enter it into the textbox. You can also select how the equation will be output.'.
 
 
-balancer_process(Type,Input,OutputType,Solution,Info) :-
+balancer_process(Type,Input,OutputType,Solution,TypeInfo) :-
 	atom_chars(Input,StringInput),
-	balancer_do_process(Type,StringInput,OutputType,Solution,Struct),
-	balancer_do_info(Struct,Info).
+	balancer_do_process(Type,StringInput,OutputType,Solution,TypeInfo).
 
 
-balancer_do_process(Type,StringInput,OutputType,Solution,Struct) :-
-	(balance_equation(Type,StringInput,OutputType,StringSolution,_,_,Struct), chemweb_to_html(StringSolution,Solution)) handle Solution.
+balancer_do_process(Type,StringInput,OutputType,Solution,TypeInfo) :-
+	(
+		balance_equation(Type,StringInput,OutputType,StringSolution,_,_,Struct), 
+		balancer_do_info(Struct,TypeInfo), 
+		chemweb_to_html(StringSolution,Solution)
+	) handle Solution.
 
 balancer_do_info(Struct,[TypeInfo,ReactsInfo]) :-
 	(
