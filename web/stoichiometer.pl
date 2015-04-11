@@ -52,13 +52,15 @@ stoichiometer_queries_create([Unit|UnitS],[Query|QueryS]) :-
 stoichiometer_results([],[]).
 stoichiometer_results([Query|QueryS],[Result|ResultS]) :-
 	(Query = nil ->
-		Result = '';
+		Result = span('');
 		(
 			parse(query_result(Query),ResultString,[]),
-			atom_chars(Result,ResultString),
-			stoichiometer_results(QueryS,ResultS)
+			atom_chars(ResultAtom,ResultString),
+			Result = span(['= ',ResultAtom])
+
 		)
-	).
+	),
+	stoichiometer_results(QueryS,ResultS).
 
 
 stoichiometer_process(Type,Input,OutputType,Solution,UnitS,ResultS) :-
