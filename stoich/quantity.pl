@@ -72,3 +72,23 @@ unit_tail('L',[[Val,mol]]) --> " (",  value(Val), " " ,unit_sym(mol), ")".
 unit_tail(mol,[[Val,'L']]) --> " (",  value(Val), " " ,unit_sym('L'), ")".
 
 unit_tail(_,[]) --> [].
+
+%%%% GUIDANCE FOR ERRORS %%%%%
+
+guidance_unparsed(_,
+	'The program has processed the entire chemical quantity you have entered, but it is missing a required component.
+
+	 The first missing component is: '
+	 ).
+
+guidance_errcode(fail,_,
+	'The chemical quantity you have entered cannot be recognized.
+	 Please check to ensure that you have entered it correctly.
+
+	 Chemical quantities consist of a value followed by a unit.
+	 e.g. 5 g, 33004.30 mol
+
+	 A quantity can also be described using a value and a unit, followed by another value and a unit, in parentheses.
+	 e.g. 5 L (9 M)'
+	 ).
+

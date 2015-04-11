@@ -48,15 +48,20 @@ molar_nop(Solution) :-
 
 molar_process(Type,Input,Solution,Unit,QtyTail) :-
 	(nonvar(QtyTail) ->
-			(
-				atom_chars(QtyTail,TailChars),
-				quantity([TailStruct],TailChars,[]),
-				Query = [[[[Var, _], Unit],TailStruct], actual]
-			);
-				Query = [[[[Var, _], Unit]], actual]
+		(
+			atom_chars(QtyTail,TailChars),
+			parse(quantity([TailStruct]),TailChars,[]) handle Solution,
+			Query = [[[[_, _], Unit],TailStruct], actual]
+		);
+		Query = [[[[_, _], Unit]], actual]
 	),
-	atom_chars(Input,StringInput),
-	(molar_do_process(Type,StringInput,StringSolution,Query), chemweb_to_html(StringSolution,Solution)) handle Solution.
+	(var(Solution) -> 
+		(
+			atom_chars(Input,StringInput),
+			((molar_do_process(Type,StringInput,StringSolution,Query), chemweb_to_html(StringSolution,Solution)) handle Solution)
+		);
+		true
+	).
 
 molar_do_process(name,Name,Formula,Query) :-
 	calc_name_2_formula(Name,Formula,Query).
