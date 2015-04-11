@@ -9,16 +9,17 @@
 
 
 
-stoichiometer_input(Request,Type,Input,OutputType,QueryS) :-
+stoichiometer_input(Request,Type,Input,OutputType,UnitS,PropertyS) :-
 	http_parameters(Request,
 	[
 	type(Type, [ optional(true), oneof([symbolic,word]) ]),
 	stoichiometer_input(Input, [ optional(true) ]),
 	outputtype(OutputType, [ optional(true), oneof([symbolic,word]) ]),
-	queries_input(QueryS, [list(atom) ])
+	units_input(UnitS, [list(atom) ]),
+	properties_input(PropertyS, [list(atom)])
 	]).
 
-stoichiometer_html(Type,Input,OutputType,Solution,QueryS,ResultS) :-
+stoichiometer_html(Type,Input,OutputType,Solution,UnitS,PropertyS,ResultS) :-
 	( var(Input) -> Input = []; true),
 	OptionS = [[symbolic,'Symbolic'],[word,'Word']],
 	chemweb_select_list(Type,OptionS,SelectList),
@@ -41,13 +42,13 @@ stoichiometer_nop(Solution) :-
 	Solution = '(1) Please select Symbolic or Word equation, depending on what you are entering, then enter it into the textbox. You can also select how the equation will be output. (2) After pressing ENTER, select the quantities you wish to determine from the dropdown menus.'.
 
 
-stoichiometer_queries_create([],[]).
-stoichiometer_queries_create([Unit|UnitS],[Query|QueryS]) :-
+stoichiometer_queries_create([],[],[]).
+stoichiometer_queries_create([Unit|UnitS],[Property|PropertyS],[Query|QueryS]) :-
 	(Unit = nil ->
 		Query = nil;
-		Query = [[[[_, _], Unit]], actual]
+		Query = [[[[_, _], Unit]], Property]
 	),
-	stoichiometer_queries_create(UnitS,QueryS).
+	stoichiometer_queries_create(UnitS,PropertyS,QueryS).
 
 stoichiometer_results([],[]).
 stoichiometer_results([Query|QueryS],[Result|ResultS]) :-
@@ -63,9 +64,9 @@ stoichiometer_results([Query|QueryS],[Result|ResultS]) :-
 	stoichiometer_results(QueryS,ResultS).
 
 
-stoichiometer_process(Type,Input,OutputType,Solution,UnitS,ResultS) :-
+stoichiometer_process(Type,Input,OutputType,Solution,UnitS,PropertyS,ResultS) :-
 	atom_chars(Input,StringInput),
-	stoichiometer_queries_create(UnitS,QueryS),
+	stoichiometer_queries_create(UnitS,PropertyS,QueryS),
 	stoichiometer_do_process(Type,StringInput,OutputType,Solution,QueryS),
 	stoichiometer_results(QueryS,ResultS).
 
@@ -74,7 +75,7 @@ stoichiometer_do_process(Type,StringInput,OutputType,Solution,QueryS) :-
 
 
 stoichiometer_page(Request) :-
-	stoichiometer_input(Request,Type,Input,OutputType,QueryS),
-	(nonvar(Input) -> stoichiometer_process(Type,Input,OutputType,Solution,QueryS,ResultS); stoichiometer_nop(Solution)),
+	stoichiometer_input(Request,Type,Input,OutputType,UnitS,PropertyS),
+	(nonvar(Input) -> stoichiometer_process(Type,Input,OutputType,Solution,UnitS,PropertyS,ResultS); stoichiometer_nop(Solution)),
 
-	stoichiometer_html(Type,Input,OutputType,Solution,QueryS,ResultS).
+	stoichiometer_html(Type,Input,OutputType,Solution,UnitS,PropertyS,ResultS).

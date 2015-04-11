@@ -61,7 +61,7 @@ select, option, input
 	font-size: 300%;
  }
 
-#solution
+#solution, #results
  {
 	font-size: 200%;
  }
@@ -121,3 +121,8 @@ body
  {
  visibility: hidden;
  }
+
+#results span 
+{
+margin-left: 5%;
+}
