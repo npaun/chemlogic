@@ -34,7 +34,7 @@ calc_name_2_formula(Name,Formula,Struct) :-
 
 convert_formula_2_name(Formula,Name,[Query]) :- 
 	queries_convert([Query],[[Struct,_]]),
-	calc_name_2_formula(Formula,Name,Struct).
+	calc_formula_2_name(Formula,Name,Struct).
 
 
 calc_formula_2_name(Formula,Name,Struct) :-
