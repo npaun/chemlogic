@@ -18,7 +18,7 @@ stoichiometer_input(Request,Type,Input,OutputType,QueryS) :-
 	queries_input(QueryS, [list(atom) ])
 	]).
 
-stoichiometer_html(Type,Input,OutputType,Solution,QueryS) :-
+stoichiometer_html(Type,Input,OutputType,Solution,QueryS,ResultS) :-
 	( var(Input) -> Input = []; true),
 	OptionS = [[symbolic,'Symbolic'],[word,'Word']],
 	chemweb_select_list(Type,OptionS,SelectList),
@@ -32,7 +32,8 @@ stoichiometer_html(Type,Input,OutputType,Solution,QueryS) :-
 	input([name(stoichiometer_input),id(stoichiometer_input),type(text),size(80),value(Input)]),
 	select(name(outputtype),OutputSelectList)
 	]),
-	div(id(solution),Solution)
+	div(id(solution),Solution),
+	div(id(results),ResultS)
 	]
 	).
 
@@ -60,7 +61,7 @@ stoichiometer_results([Query|QueryS],[Result|ResultS]) :-
 	).
 
 
-stoichiometer_process(Type,Input,OutputType,Solution,UnitS) :-
+stoichiometer_process(Type,Input,OutputType,Solution,UnitS,ResultS) :-
 	atom_chars(Input,StringInput),
 	stoichiometer_queries_create(UnitS,QueryS),
 	stoichiometer_do_process(Type,StringInput,OutputType,Solution,QueryS),
@@ -72,6 +73,6 @@ stoichiometer_do_process(Type,StringInput,OutputType,Solution,QueryS) :-
 
 stoichiometer_page(Request) :-
 	stoichiometer_input(Request,Type,Input,OutputType,QueryS),
-	(nonvar(Input) -> stoichiometer_process(Type,Input,OutputType,Solution,QueryS); stoichiometer_nop(Solution)),
+	(nonvar(Input) -> stoichiometer_process(Type,Input,OutputType,Solution,QueryS,ResultS); stoichiometer_nop(Solution)),
 
-	stoichiometer_html(Type,Input,OutputType,Solution,QueryS).
+	stoichiometer_html(Type,Input,OutputType,Solution,QueryS,ResultS).
