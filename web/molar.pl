@@ -10,23 +10,21 @@
 
 
 
-molar_input(Request,Type,Input,Unit,TailInput,TailUnit) :-
+molar_input(Request,Type,Input,Unit,TailInput) :-
 	
 	http_parameters(Request,
 		[   
 			type(Type, [ optional(true), oneof([name,formula]) ]),
 			molar_input(Input, [ optional(true) ]),
 			unit(Unit, [ optional(true), oneof(g,'L',mol,'M') ]),
-			molar_tail_input(TailInput, [ optional(true) ]),
-			tail_unit(TailUnit, [ optional(true), oneof('L','M',mol) ])
+			molar_tail_input(TailInput, [ optional(true) ])
 		]).
 
-molar_html(Type,Unit,Input,TailInput,TailUnit,Solution) :-
+molar_html(Type,Unit,Input,TailInput,Solution) :-
 	( var(Input) -> Input = []; true),
 	( var(TailInput) -> TailInput = []; true),
 	chemweb_select_list(Type,[[name,'Name'],[formula,'Formula']],SelectList),
 	chemweb_select_list(Unit,[[g,g],['L','L (gas)'],['L','L (solution)'],[mol,mol]],UnitSelectList),
-	chemweb_select_list(TailUnit,[['L','L'],['M','M'],[mol,mol]],TailUnitSelectList),
 
 	reply_html_page(chemlogic,title('Molar'),
 		[
@@ -37,7 +35,6 @@ molar_html(Type,Unit,Input,TailInput,TailUnit,Solution) :-
 				select(name(unit),UnitSelectList),
 				\[' ('],
 				input([name(molar_tail_input),id(molar_tail_input),type(text),size(10),value(TailInput)]),
-				select(name(tail_unit),TailUnitSelectList),
 				\[')'],
 				input([type(submit),class(hidden)])
 			]),
@@ -49,7 +46,7 @@ molar_nop(Solution) :-
 	Solution = 'Please select the Name or Formula, depending on the format of your input, then enter the quantity followed by the formula/name. Select the unit you wish to convert the quantity to.'.
 
 
-molar_process(Type,Input,Solution,Unit,QtyTail,UnitTail) :-
+molar_process(Type,Input,Solution,Unit,QtyTail) :-
 	atomic_list_concat([Unit,' (',QtyTail,' ',UnitTail,')'],Var-QueryPart),
 	atom_chars(Input,StringInput),
 	(molar_do_process(Type,StringInput,StringSolution,QueryPart), chemweb_to_html(StringSolution,Solution)) handle Solution.
@@ -62,6 +59,6 @@ molar_do_process(formula,Formula,Name,Query) :-
 
 
 molar_page(Request) :-
-	molar_input(Request,Type,Input,Unit,TailInput,TailUnit),
-	(nonvar(Input) -> molar_process(Type,Input,Solution,Unit,TailInput,TailUnit); molar_nop(Solution)),
-	molar_html(Type,Unit,Input,TailInput,TailUnit,Solution).
+	molar_input(Request,Type,Input,Unit,TailInput),
+	(nonvar(Input) -> molar_process(Type,Input,Solution,Unit,TailInput); molar_nop(Solution)),
+	molar_html(Type,Unit,Input,TailInput,Solution).
