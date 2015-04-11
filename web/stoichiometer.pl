@@ -48,11 +48,14 @@ stoichiometer_queries_create([Unit|UnitS],[Query|QueryS]) :-
 	),
 	stoichiometer_queries_create(UnitS,QueryS).
 
+stoichiometer_results([Query|QueryS],[Result|ResultS]).
+
 
 stoichiometer_process(Type,Input,OutputType,Solution,UnitS) :-
 	atom_chars(Input,StringInput),
 	stoichiometer_queries_create(UnitS,QueryS),
-	stoichiometer_do_process(Type,StringInput,OutputType,Solution,QueryS).
+	stoichiometer_do_process(Type,StringInput,OutputType,Solution,QueryS),
+	stoichiometer_quantities_render(QueryS,ResultS).
 
 stoichiometer_do_process(Type,StringInput,OutputType,Solution,QueryS) :-
 	(stoich_queries(Type,StringInput,OutputType,StringSolution,QueryS), chemweb_to_html(StringSolution,Solution)) handle Solution.

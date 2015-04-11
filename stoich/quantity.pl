@@ -5,7 +5,7 @@
 
 
 
-:- module(quantity,[quantity//1,quantity_prefix//1,query//1,queries_convert/2]).
+:- module(quantity,[quantity//1,quantity_prefix//1,query//1,query_result//1,queries_convert/2]).
 :- use_module(sigfigs).
 :- use_module(sigfigs_number).
 :- set_prolog_flag(double_quotes,chars).
@@ -44,8 +44,10 @@ query(nil,nil,[]).
 query(Struct,Var-Input,Rest) :- query(Struct,Var,Input,Rest).
 query([[[[Var,_],Unit]|Tail],Property],Var) --> unit_sym(Unit), !, property(Property), unit_tail(Unit,Tail), !.
 
-propery(excess) --> " excess".
-property(Type,Input,Rest) :- (var(Input) -> Input = [""|Rest]; property_label(Type,Input,Rest)).
+query_result(Struct) --> {Struct = [[[[Val,SF],_]|_],_]}, value_display([Val,SF]), " ", query(Struct,Val).
+
+property(excess) --> " excess".
+property(Type,Input,Rest) :- (var(Input) -> Input = Rest; property_label(Type,Input,Rest)).
 
 property_label(actual) --> " reacted".
 property_label(actual) --> " produced".
