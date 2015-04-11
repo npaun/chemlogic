@@ -67,6 +67,12 @@ reaction_complete(neutralization,_,ElementSideSet,_,[Product1,Water],[ElementSid
 	process(ionic:rev_algo(Reactant2,[MSym2,MCharge2,[["O",1],["H",1]],_])),
 	process(ionic:fwd_algo(Product1,[MSym2,MCharge2,NMSym1,NMCharge1])).
 
+reaction_complete(neutralization,_,ElementSideSet,_,[Product1,Water],[ElementSideSet|_],[[Reactant1,Reactant2],[Product1,Water]]) :-
+	Water = [["H",2],["O",1]],
+	process(ionic:rev_algo(Reactant1,[MSym1,MCharge1,[["O",1],["H",1]],_])),
+	process(ionic:rev_algo(Reactant2,["H",_,NMSym2,NMCharge2])),
+	process(ionic:fwd_algo(Product1,[MSym1,MCharge1,NMSym2,NMCharge2])).
+
 reaction_complete(double_replacement,_,ElementSideSet,_,[Product1,Product2],[ElementSideSet|_],[[Reactant1,Reactant2],[Product1,Product2]]) :-
 	process(ionic:rev_algo(Reactant1,[MSym1,MCharge1,NMSym1,NMCharge1])),
 	process(ionic:rev_algo(Reactant2,[MSym2,MCharge2,NMSym2,NMCharge2])),
