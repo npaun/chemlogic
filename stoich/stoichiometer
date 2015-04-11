@@ -27,9 +27,14 @@ convert_name_2_formula(Name,Formula,[Query]) :-
 	calc_name_2_formula(Name,Formula,Struct).
 
 calc_name_2_formula(Name,Formula,[Struct,_]) :-
+	catch((
 	parse(name_quantity(Qty,_,_,Internal),Name,[]),
 	convert(output,Internal,Qty,Struct),
-	parse(formula_quantity(Struct,output,_,_,Internal,_),Formula,[]).
+	parse(formula_quantity(Struct,output,_,_,Internal,_),Formula,[])
+	),
+	error(logic_error(Type,Data),_),
+	explain_general_rethrow(logic_error,Name,Type,Data)
+	).
 
 
 convert_formula_2_name(Formula,Name,[Query]) :- 
@@ -38,9 +43,14 @@ convert_formula_2_name(Formula,Name,[Query]) :-
 
 
 calc_formula_2_name(Formula,Name,[Struct,_]) :-
+	catch((
 	parse(formula_quantity(Qty,user,_,_,Internal,_),Formula,[]),
 	convert(output,Internal,Qty,Struct),
-	parse(name_quantity(Struct,_,_,Internal),Name,[]).
+	parse(name_quantity(Struct,_,_,Internal),Name,[])
+	),
+	error(logic_error(Type,Data),_),
+	explain_general_rethrow(logic_error,Formula,Type,Data)
+	).
 
 
 
