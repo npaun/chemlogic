@@ -63,9 +63,15 @@ reaction_match(decomposition,[
 %%% Complete chemical reactions %%%
 reaction_complete(neutralization,_,ElementSideSet,_,[Product1,Water],[ElementSideSet|_],[[Reactant1,Reactant2],[Product1,Water]]) :-
 	Water = [["H",2],["O",1]],
-	ionic:rev_algo(Reactant1,["H",_,NMSym1,NMCharge1]),
-	ionic:rev_algo(Reactant2,[MSym2,MCharge2,[["O",1],["H",1]],_]),
-	ionic:fwd_algo(Product1,[MSym2,MCharge2,NMSym1,NMCharge1]).
+	process(ionic:rev_algo(Reactant1,["H",_,NMSym1,NMCharge1])),
+	process(ionic:rev_algo(Reactant2,[MSym2,MCharge2,[["O",1],["H",1]],_])),
+	process(ionic:fwd_algo(Product1,[MSym2,MCharge2,NMSym1,NMCharge1])).
+
+reaction_complete(neutralization,_,ElementSideSet,_,[Product1,Water],[ElementSideSet|_],[[Reactant1,Reactant2],[Product1,Water]]) :-
+	Water = [["H",2],["O",1]],
+	process(ionic:rev_algo(Reactant1,[MSym1,MCharge1,[["O",1],["H",1]],_])),
+	process(ionic:rev_algo(Reactant2,["H",_,NMSym2,NMCharge2])),
+	process(ionic:fwd_algo(Product1,[MSym1,MCharge1,NMSym2,NMCharge2])).
 
 reaction_complete(double_replacement,_,ElementSideSet,_,[Product1,Product2],[ElementSideSet|_],[[Reactant1,Reactant2],[Product1,Product2]]) :-
 	process(ionic:rev_algo(Reactant1,[MSym1,MCharge1,NMSym1,NMCharge1])),
@@ -74,7 +80,7 @@ reaction_complete(double_replacement,_,ElementSideSet,_,[Product1,Product2],[Ele
 	process(ionic:fwd_algo(Product2,[MSym2,MCharge2,NMSym1,NMCharge1])).
 
 reaction_complete(single_replacement,_,ElementSideSet,_,[Product1,Product2],[ElementSideSet|_],[[Reactant1,Reactant2],[Product1,Product2]]) :-
-	ionic:rev_algo(Reactant1,[MSym1,_,NMSym1,NMCharge1]),
+	process(ionic:rev_algo(Reactant1,[MSym1,_,NMSym1,NMCharge1])),
 
 	(Reactant2 = [[MSym2,_]], charge_check(metal,MSym2,MChargeS),
 		(
@@ -83,15 +89,15 @@ reaction_complete(single_replacement,_,ElementSideSet,_,[Product1,Product2],[Ele
 		)
 	),
 	
-	ionic:fwd_algo(Product1,[MSym2,MCharge2,NMSym1,NMCharge1]),
-	name:pure_process([MSym1],[],Product2,_,[]).
+	process(ionic:fwd_algo(Product1,[MSym2,MCharge2,NMSym1,NMCharge1])),
+	process(name:pure_process([MSym1],[],Product2,_,[])).
 
 reaction_complete(single_replacement,_,ElementSideSet,_,[Product1,Product2],[ElementSideSet|_],[[Reactant1,Reactant2],[Product1,Product2]]) :-
-	ionic:rev_algo(Reactant1,[MSym1,MCharge1,NMSym1,_]),
+	process(ionic:rev_algo(Reactant1,[MSym1,MCharge1,NMSym1,_])),
 
 	(Reactant2 = [[NMSym2,_]], charge(NMSym2,NMCharge2)),
-	ionic:fwd_algo(Product1,[MSym1,MCharge1,NMSym2,NMCharge2]),
-	name:pure_process([NMSym1],[],Product2,_,[]).
+	process(ionic:fwd_algo(Product1,[MSym1,MCharge1,NMSym2,NMCharge2])),
+	process(name:pure_process([NMSym1],[],Product2,_,[])).
 
 
 %%% Information about reactions %%%
@@ -111,9 +117,17 @@ activity_check(Elem1,Elem2,Reacts) :-
 
 activity_check(_,_,unknown).
 
-activity_check_multiple(Elem1,Elem2,Elem3,Elem4,Reacts) :-
+activity_check_multiple(Elem1,Elem2,Elem3,Elem4,RReacts) :-
 	activity_check(Elem1,Elem2,Reacts),
-	activity_check(Elem3,Elem4,Reacts).
+	activity_check(Elem3,Elem4,Reacts),
+		(Reacts = no ->
+			(
+				activity_check(Elem2,Elem1,RReacts),
+				activity_check(Elem4,Elem3,RReacts)
+			);
+			RReacts = Reacts
+		).
+
 
 activity_check_multiple(_,_,_,_,multiple).
 
