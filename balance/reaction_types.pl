@@ -117,13 +117,17 @@ activity_check(Elem1,Elem2,Reacts) :-
 
 activity_check(_,_,unknown).
 
-activity_check_multiple(Elem1,Elem2,Elem3,Elem4,Reacts) :-
+activity_check_multiple(Elem1,Elem2,Elem3,Elem4,RReacts) :-
 	activity_check(Elem1,Elem2,Reacts),
-	activity_check(Elem3,Elem4,Reacts).
+	activity_check(Elem3,Elem4,Reacts),
+		(Reacts = no ->
+			(
+				activity_check(Elem2,Elem1,RReacts),
+				activity_check(Elem4,Elem3,RReacts)
+			);
+			RReacts = Reacts
+		).
 
-activity_check_multiple(Elem1,Elem2,Elem3,Elem4,Reacts) :-
-	activity_check(Elem2,Elem1,Reacts),
-	activity_check(Elem4,Elem3,Reacts).
 
 activity_check_multiple(_,_,_,_,multiple).
 
