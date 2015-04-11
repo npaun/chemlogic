@@ -41,8 +41,8 @@ convert(_,Formula,[[[QtyIn1,SF1],UnitIn1],[[QtyIn2,SF2],UnitIn2]],[[[QtyOut,SF],
 
 
 
-convert(_,Formula,[[[QtyCalc,MaxSF],UnitCalc]],[[[QtyIn,SFIn],UnitIn],[[QtyOut,SF],UnitOut]]) :-
-	unit(Formula,[[QtyCalc,UnitCalc],[QtyIn,UnitIn]],[QtyOut,UnitOut]), !,
+convert(_,Formula,[[[QtyCalc,MaxSF],UnitCalc]],[[[QtyOut,SF],UnitOut],[[QtyIn,SFIn],UnitIn]]) :-
+	unit(Formula,[QtyCalc,UnitCalc],[[QtyOut,UnitOut],[QtyIn,UnitIn]]), !,
  	SF is min(MaxSF,SFIn).
 
 
@@ -96,10 +96,17 @@ unit(_,[[Vol1,'L'],[Conc1,'M']],[[Conc2,'M'],[Vol2,'L']]) :-
 unit(_,[[Mol,mol],[Conc,'M']],[Vol,'L']) :-
 	Vol /* L */ is Mol /* mol */ / Conc /* mol / L */, !.
 
+unit(_,[Mol,mol],[[Vol,'L'],[Conc,'M']]):-
+	Vol /* L */ is Mol /* mol */ / Conc /* mol / L */, !.
+
+unit(_,[Mol,mol],[[Conc,'M'],[Vol,'L']]) :-
+	Conc /* mol / L */ is Mol /* mol */ / Vol /* L */, !.
+
 %%% Two-step conversion via mols %%%
 
 unit(Formula,Input,Output) :-
 	\+ Input = [_,mol],
+	\+ Output = [_,mol],
 	unit(Formula,Input,[Mol,mol]),
 	unit(Formula,[Mol,mol],Output).
 
