@@ -10,15 +10,19 @@
 :- set_prolog_flag(verbose,silent).
 :- use_module(cli_error).
 :- consult('api').
-:- consult('../balance/balancer').
+:- consult('../stoich/stoichiometer').
 :- initialization cli_init.
 :- op(990,xfy,::).
 :- op(100,xf,print).
-
+:- op(980,xfy,?).
 
 
 InputType - Input :: -Result :-
 	InputType - Input :: symbolic - Result,
+	!.
+
+InputType - Input :: -Result ? Queries :-
+	InputType - Input :: symbolic - Result ? Queries,
 	!.
 
 InputType - AtomInput :: ResultType - Result :-
@@ -30,6 +34,18 @@ InputType - AtomInput :: ResultType - Result :-
 	),
 		
 	atom_chars(Result,StringRes).
+
+
+InputType - AtomInput :: ResultType - Result ? Queries :-
+	atom_chars(AtomInput,Input),
+	(
+		InputType = name -> convert_name_2_formula(Input,StringRes,Queries) handle _;
+		InputType = formula -> convert_formula_2_name(Input,StringRes,Queries) handle _;
+		stoich(InputType,Input,ResultType,StringRes,Queries) handle _
+	),
+
+	atom_chars(Result,StringRes),
+	!.
 
 InputType - Input :: print :-
         InputType - Input :: symbolic - Result,

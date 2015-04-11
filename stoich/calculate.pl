@@ -1,11 +1,15 @@
-% excess.pl: Performs calculations involving the stoichiometry of excess quantities.
+% calculate.pl: Performs stoichiometric calculations, including the stoichiometry of excess quantities.
 % This file is from Chemlogic, a logic programming computer chemistry system
 % <http://icebergsystems.ca/chemlogic>
 % (C) Copyright 2012-2015 Nicholas Paun
 
 
+
+:- module(calculate,[stoich/5,stoich_queries/5]).
+
 % Super irritating style check
 :- style_check(-atom).
+
 
 
 combine_structs([],[],[],[]) :- !.
@@ -24,8 +28,8 @@ single_input(InputS,Struct) :-
 mol_ratio([],[],[]).
 mol_ratio([nil|StructS],[nil|MolRatioS],[nil|NewStructS]) :-
 	mol_ratio(StructS,MolRatioS,NewStructS).
-mol_ratio([[QtyIn,CoeffIn,FormulaIn]|StructS],[MolRatio|MolRatioS],[[[Mol,mol],SF,CoeffIn,FormulaIn]|NewStructS]) :-
-	calc_format(input,FormulaIn,QtyIn,[Mol,mol],SF),
+mol_ratio([[QtyIn,CoeffIn,FormulaIn]|StructS],[MolRatio|MolRatioS],[[[[[Mol,SF],mol]],CoeffIn,FormulaIn]|NewStructS]) :-
+	convert(input,FormulaIn,QtyIn,[[[Mol,SF],mol]]),
 	MolRatio is Mol / CoeffIn,
 	mol_ratio(StructS,MolRatioS,NewStructS).
 
@@ -39,13 +43,14 @@ stoich_limited(_,[],[]) :- !.
 stoich_limited(Limitant,[_|InputS],[nil|QueryS]) :-
 	stoich_limited(Limitant,InputS,QueryS), !.
 stoich_limited(Limitant,[Input|InputS],[[[QtyOut,CalcTypeOut],CoeffOut,FormulaOut]|QueryS]) :-
-	Limitant = [[MolLim,mol],SFLim,CoeffLim,_],
+	Limitant = [[[[MolLim,SFLim],mol]],CoeffLim,_],
 	(
 		CalcTypeOut = excess ->
 			(
 				(
-					Input = [[MolIn,mol],SFIn,_,_];
-					throw(error(logic_error(user:excess_missing_input,
+					Input = [[[[MolIn,SFIn],mol]],_,_];
+					throw(error(logic_error(calculate:excess_missing_input,
+
 						(
 							'Property to be determined: ', CalcTypeOut,
 							'No quantity provided for this substance: ', FormulaOut
@@ -60,22 +65,22 @@ stoich_limited(Limitant,[Input|InputS],[[[QtyOut,CalcTypeOut],CoeffOut,FormulaOu
 				SF = SFLim
 			)
 	),
-	calc_format(output,FormulaOut,[MolOut,mol],QtyOut,SF), !,
+	convert(output,FormulaOut,[[[MolOut,SF],mol]],QtyOut), !,
 	stoich_limited(Limitant,InputS,QueryS).
 
-stoich_simple([],[]).
+stoich_simple(_,[]) :- !.
 stoich_simple(Input,[nil|QueryS]) :-
-	stoich_simple(Input,QueryS).
+	stoich_simple(Input,QueryS), !.
 stoich_simple(Input,[[[QtyOut,_],CoeffOut,FormulaOut]|QueryS]) :-
 	Input = [QtyIn,CoeffIn,FormulaIn],
-	calc_format(input,FormulaIn,QtyIn,[MolIn,mol],SF), !,
+	convert(input,FormulaIn,QtyIn,[[[MolIn,SF],mol]]), !,
 	MolOut is MolIn * CoeffOut / CoeffIn,
-	calc_format(output,FormulaOut,[MolOut,mol],QtyOut,SF), !,
+	convert(output,FormulaOut,[[[MolOut,SF],mol]],QtyOut), !,
 	stoich_simple(Input,QueryS).
 
 
-stoich_real(InGrammar,Equation,OutGrammar,Balanced,InQtyS,OutQtyS,QueryS) :-
-	balance_equation(InGrammar,Equation,OutGrammar,Balanced,CoeffS,FormulaS),
+stoich_queries_real(InGrammar,Equation,OutGrammar,Balanced,OutQtyS) :-
+	balance_equation(InGrammar,Equation,OutGrammar,Balanced,CoeffS,FormulaS,_,stoich,InQtyS),
 	combine_structs(InQtyS,CoeffS,FormulaS,InputS),
 	combine_structs(OutQtyS,CoeffS,FormulaS,QueryS),
 	(
@@ -90,16 +95,20 @@ stoich_real(InGrammar,Equation,OutGrammar,Balanced,InQtyS,OutQtyS,QueryS) :-
 			)
 	).
 
-stoich(InGrammar,Equation,OutGrammar,Balanced,InQtyS,OutQtyS,QueryS) :-
+stoich_queries(InGrammar,Equation,OutGrammar,Balanced,OutQtyS) :-
 	catch(
-		stoich_real(InGrammar,Equation,OutGrammar,Balanced,InQtyS,OutQtyS,QueryS),
+		stoich_queries_real(InGrammar,Equation,OutGrammar,Balanced,OutQtyS),
 		error(logic_error(Type,Data),_),
 		explain_general_rethrow(logic_error,Equation,Type,Data)
 	).
 
+stoich(InGrammar,Equation,OutGrammar,Balanced,OutQtyS) :-
+	queries_convert(OutQtyS,OutQtyStructS),
+	stoich_queries(InGrammar,Equation,OutGrammar,Balanced,OutQtyStructS).
+
 %%%%% GUIDANCE FOR ERRORS %%%%%
 
-explain_general(excess_missing_input,
+guidance_general(excess_missing_input,
 	'The amount in excess of this substance cannot be calculated because the quantity present is unknown.
 	 Excess amounts are calculated by comparing the provided quantity of a substance with the amount of substance that actually reacted.
 

@@ -19,18 +19,11 @@ balancer_input(Request,Type,Input,OutputType) :-
 	]).
 
 balancer_html(Type,Input,OutputType,Solution,Info) :-
-( var(Input) -> Input = []; true),
-(Type = symbolic ->
-	SelectList = [option([value(symbolic),selected],'Symbolic'),option([value(word)],'Word')];
-	SelectList = [option([value(symbolic)],'Symbolic'),option([value(word),selected],'Word')]
-	),
+	( var(Input) -> Input = []; true),
+	OptionS = [[symbolic,'Symbolic'],[word,'Word']],
+	chemweb_select_list(Type,OptionS,SelectList),
+	chemweb_select_list(OutputType,OptionS,OutputSelectList),
 
-
-(OutputType = symbolic ->
-	OutputSelectList = [option([value(symbolic),selected],'Symbolic'),option([value(word)],'Word')];
-	OutputSelectList = [option([value(symbolic)],'Symbolic'),option([value(word),selected],'Word')]
-	),
-	debug(chemlogic_custom,'Test ~w',Solution),
 	reply_html_page(chemlogic,title('Balancer'),
 	[
 	h1(id(feature),'Balancer'),
@@ -55,7 +48,7 @@ balancer_process(Type,Input,OutputType,Solution,TypeInfo) :-
 
 balancer_do_process(Type,StringInput,OutputType,Solution,TypeInfo) :-
 	(
-		balance_equation(Type,StringInput,OutputType,StringSolution,_,_,Struct), 
+		balance_equation(Type,StringInput,OutputType,StringSolution,_,_,Struct,disable,_), 
 		balancer_do_info(Struct,TypeInfo), 
 		chemweb_to_html(StringSolution,Solution)
 	) handle Solution.

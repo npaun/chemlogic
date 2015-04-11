@@ -5,38 +5,44 @@
 
 
 
-:- module(symbolic,[symbolic//9]).
+:- module(symbolic,[symbolic//12]).
 :- set_prolog_flag(double_quotes,chars).
 
 
 
 
-symbolic(Fmt,Coeff,CoeffR,Elems,ElemsR,Formula,FormulaR,[ElemsL,ElemsR0],[SideLeft,SideRight]) -->
-	expr(Fmt,Coeff,CoeffR0,Elems,ElemsR0,Formula,FormulaR0,SideLeft),
+symbolic(Fmt,Coeff,CoeffR,Elems,ElemsR,Formula,FormulaR,[ElemsL,ElemsR0],[SideLeft,SideRight],Stoich,Qty,QtyR) -->
+	expr(Fmt,Coeff,CoeffR0,Elems,ElemsR0,Formula,FormulaR0,SideLeft,Stoich,Qty,QtyR0),
 	{var(ElemsR0) -> make_element_sideset(Elems-ElemsR0,ElemsL-[]); true},
 	output(Fmt,arrow) xx arrow,
-	products(Fmt,CoeffR0,CoeffR,ElemsR0,ElemsR,FormulaR0,FormulaR,SideRight).
+	products(Fmt,CoeffR0,CoeffR,ElemsR0,ElemsR,FormulaR0,FormulaR,SideRight,Stoich,QtyR0,QtyR).
 
 
-products(_,Coeff,Coeff,Elems,Elems,Formula,Formula,_,[],[]).
-products(Fmt,Coeff,CoeffR,Elems,ElemsR,Formula,FormulaR,SideRight) --> 
+products(_,Coeff,Coeff,Elems,Elems,Formula,Formula,_,[],[],_,Qty,Qty).
+products(Fmt,Coeff,CoeffR,Elems,ElemsR,Formula,FormulaR,SideRight,Stoich,Qty,QtyR) --> 
 	" " xx arrow_space, 
-	expr(Fmt,Coeff,CoeffR,Elems,ElemsR,Formula,FormulaR,SideRight).
+	expr(Fmt,Coeff,CoeffR,Elems,ElemsR,Formula,FormulaR,SideRight,Stoich,Qty,QtyR).
 
-expr(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideH|SideT]) -->
-	balanced_formula(Fmt,Coeff,CoeffR0,Elems,ElemR0,Formula,FormulaR0,SideH),
-	expr_tail(Fmt,CoeffR0,CoeffR,ElemR0,ElemR,FormulaR0,FormulaR,SideT), !.
+expr(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideH|SideT],Stoich,Qty,QtyR) -->
+	balanced_formula(Fmt,Coeff,CoeffR0,Elems,ElemR0,Formula,FormulaR0,SideH,Stoich,Qty,QtyR0),
+	expr_tail(Fmt,CoeffR0,CoeffR,ElemR0,ElemR,FormulaR0,FormulaR,SideT,Stoich,QtyR0,QtyR), !.
 
-expr_tail(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,Side) -->
+expr_tail(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,Side,Stoich,Qty,QtyR) -->
 	" + ",
-	expr(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,Side).
+	expr(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,Side,Stoich,Qty,QtyR).
 
-expr_tail(_,Coeff,Coeff,Elems,Elems,Formula,Formula,[]) --> [].
+expr_tail(_,Coeff,Coeff,Elems,Elems,Formula,Formula,[],_,Qty,Qty) --> [].
 
 
-balanced_formula(Fmt,[Coeff|CoeffR],CoeffR,Elems,ElemR,[Formula|FormulaR],FormulaR,Formula) -->
+balanced_formula(Fmt,[Coeff|CoeffR],CoeffR,Elems,ElemR,[Formula|FormulaR],FormulaR,Formula,stoich,[Qty|QtyR],QtyR) -->
+	quantity_prefix(Qty),
 	coefficient(Coeff),
 	formula(Fmt,Elems,ElemR,Formula,[]), !.
+
+balanced_formula(Fmt,[Coeff|CoeffR],CoeffR,Elems,ElemR,[Formula|FormulaR],FormulaR,Formula,_,Qty,Qty) -->
+	coefficient(Coeff),
+	formula(Fmt,Elems,ElemR,Formula,[]), !.
+
 
 coefficient(X) --> {nonvar(X), X = 1}, "".
 coefficient(X) --> num_decimal(X).

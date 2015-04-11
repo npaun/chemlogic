@@ -26,14 +26,16 @@
 % The solver (converts the coefficient set to a system of linear equations and solves it).
 :- use_module(solve).
 
+% 
+:- use_module('../stoich/quantity').
 
 % Reaction type analysis
 :- consult(reaction_types).
 
 clear_rest([],[]).
 
-balance_equation_real(InGrammar,Equation,OutGrammar,Solution,Coeffs,MoleculeSet,SideSet) :-
-	parse(InGrammar,.(user,_,[],Elems,ElemsR,MoleculeSet,MoleculeR,ElementSideSet,SideSet),Equation,[]),
+balance_equation_real(InGrammar,Equation,OutGrammar,Solution,Coeffs,MoleculeSet,SideSet,Stoich,QtySet) :-
+	parse(InGrammar,.(user,_,[],Elems,ElemsR,MoleculeSet,MoleculeR,ElementSideSet,SideSet,Stoich,QtySet,[]),Equation,[]),
 	SideSet = [_,Products],
 	(var(Products) ->
 			(
@@ -59,7 +61,7 @@ balance_equation_real(InGrammar,Equation,OutGrammar,Solution,Coeffs,MoleculeSet,
 	solve(Matrix,Coeffs),
 	!,
 
-	parse(OutGrammar,.(output,Coeffs,[],_,[],MoleculeSet,[],_,SideSet),Solution,[]).
+	parse(OutGrammar,.(output,Coeffs,[],Elems,[],MoleculeSet,[],ElementSideSet,SideSet,Stoich,QtySet,[]),Solution,[]).
 
 
 balance_equation_cleanup :-
@@ -82,11 +84,11 @@ The second function sets some default parameters.
 */
 
 
-balance_equation(InGrammar,Equation,OutGrammar,Solution,Coeffs,MoleculeSet,SideSet) :-
+balance_equation(InGrammar,Equation,OutGrammar,Solution,Coeffs,MoleculeSet,SideSet,Stoich,QtySet) :-
 	catch(
 	catch(
 	catch(
-			call_cleanup(balance_equation_real(InGrammar,Equation,OutGrammar,Solution,Coeffs,MoleculeSet,SideSet),balance_equation_cleanup),
+			call_cleanup(balance_equation_real(InGrammar,Equation,OutGrammar,Solution,Coeffs,MoleculeSet,SideSet,Stoich,QtySet),balance_equation_cleanup),
 			error(type_error(Type,Data),_),
 			explain_general_rethrow(type_error,Equation,Type,Data)
 		),
@@ -98,8 +100,8 @@ balance_equation(InGrammar,Equation,OutGrammar,Solution,Coeffs,MoleculeSet,SideS
 	).
 
 
-balance_equation(InGrammar,Equation,OutGrammar,Solution) :- balance_equation(InGrammar,Equation,OutGrammar,Solution,_,_,_).
-balance_equation(Equation,Solution) :- balance_equation(symbolic,Equation,symbolic,Solution,_,_,_).
+balance_equation(InGrammar,Equation,OutGrammar,Solution) :- balance_equation(InGrammar,Equation,OutGrammar,Solution,_,_,_,disable,_).
+balance_equation(Equation,Solution) :- balance_equation(symbolic,Equation,symbolic,Solution,_,_,_,disable,_).
 
 /** matrix(+MolSet:list,+ElemSet:list,?Rows:list) is semidet.
 

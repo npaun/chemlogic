@@ -4,46 +4,46 @@
 % (C) Copyright 2012-2015 Nicholas Paun
 
 
-:- module(units,[calc_format/5,unit/3]).
-
-% Super irritating style check
-:- style_check(-atom).
+:- module(units,[convert/4,unit/3]).
 
 
 :- use_module(sigfigs).
-		
-calc_format(input,Formula,[QtyIn,UnitIn],[QtyOut,UnitOut],SF) :-
-	sigfigs(QtyIn,SF),
-	to_number(QtyIn,QtyInNum),
-	unit(Formula,[QtyInNum,UnitIn],[QtyOut,UnitOut]).
 
-calc_format(output,Formula,[QtyIn,UnitIn],[QtyOutRound,UnitOut],SF) :-
+
+
+convert(_,Formula,[[[QtyIn,SF],UnitIn]],[[[QtyOut,SF],UnitOut]]) :-
+	unit(Formula,[QtyIn,UnitIn],[QtyOut,UnitOut]), !.
+
+/*convert(output,Formula,[[[QtyIn,SF],UnitIn]],[[[QtyOutRound,SF],UnitOut]]) :-
 	unit(Formula,[QtyIn,UnitIn],[QtyOut,UnitOut]),
 	round_sigfigs(QtyOut,SF,QtyOutRound).
+*/
 
-
-calc_format(input,Formula,[[QtyIn1,UnitIn1],[QtyIn2,UnitIn2]],[QtyOut,UnitOut],SF) :-
-	sigfigs(QtyIn1,SF1),
-	to_number(QtyIn1,QtyInNum1),
-	sigfigs(QtyIn2,SF2),
-	to_number(QtyIn2,QtyInNum2),
+convert(_,Formula,[[[QtyIn1,SF1],UnitIn1],[[QtyIn2,SF2],UnitIn2]],[[[QtyOut,SF],UnitOut]]) :-
 	SF is min(SF1,SF2),
-	unit(Formula,[[QtyInNum1,UnitIn1],[QtyInNum2,UnitIn2]],[QtyOut,UnitOut]).
+	unit(Formula,[[QtyIn1,UnitIn1],[QtyIn2,UnitIn2]],[QtyOut,UnitOut]), !.
+
+
+convert(_,Formula,[[[QtyIn1,SF1],UnitIn1],[[QtyIn2,SF2],UnitIn2]],[[[QtyOut,SF],UnitOut],[[QtyIn3,SF3],Unit3]]) :-
+	SF is min(min(SF1,SF2),SF3),
+	unit(Formula,[[QtyIn1,UnitIn1],[QtyIn2,UnitIn2]],[[QtyOut,UnitOut],[QtyIn3,Unit3]]),
+	!.
 
 % Perhaps output from the 2 unit form might be useful in some cases.
 
 % In this case, some aspects of the result are known, while others are unknown. The variable could be in either term. 
 % This clause determines which quantities represent each argument and then calls the actual procedure.
-calc_format(output,Formula,[QtyCalc,UnitCalc],[[QtyR1,UnitR1],[QtyR2,UnitR2]],MaxSF) :-
-	(var(QtyR1) -> calc_format_complex_result(Formula,[QtyCalc,UnitCalc],[QtyR2,UnitR2],[QtyR1,UnitR1],MaxSF);
-	calc_format_complex_result(Formula,[QtyCalc,UnitCalc],[QtyR1,UnitR1],[QtyR2,UnitR2],MaxSF)).
 
-calc_format_complex_result(Formula,[QtyCalc,UnitCalc],[QtyIn,UnitIn],[QtyOutRound,UnitOut],MaxSF) :-
-	sigfigs(QtyIn,SFIn),
-	to_number(QtyIn,QtyInNum),
-	unit(Formula,[[QtyCalc,UnitCalc],[QtyInNum,UnitIn]],[QtyOut,UnitOut]),
-	SF is min(MaxSF,SFIn),
-	round_sigfigs(QtyOut,SF,QtyOutRound).
+%convert_fmt(output,Formula,[QtyCalc,UnitCalc],[[QtyR1,UnitR1],[QtyR2,UnitR2]],MaxSF) :-
+%	(var(QtyR1) -> convert_fmt_complex_result(Formula,[QtyCalc,UnitCalc],[QtyR2,UnitR2],[QtyR1,UnitR1],MaxSF);
+%	convert_fmt_complex_result(Formula,[QtyCalc,UnitCalc],[QtyR1,UnitR1],[QtyR2,UnitR2],MaxSF)).
+
+
+
+
+convert(_,Formula,[[[QtyCalc,MaxSF],UnitCalc]],[[[QtyOut,SF],UnitOut],[[QtyIn,SFIn],UnitIn]]) :-
+	unit(Formula,[QtyCalc,UnitCalc],[[QtyOut,UnitOut],[QtyIn,UnitIn]]), !,
+ 	SF is min(MaxSF,SFIn).
 
 
 /*** NOTE:
@@ -53,7 +53,7 @@ The value used was obtained from CODATA: the NIST Reference on Constants, Units 
 v_molar(22.413968 /* L/mol */).
 
 %%% No conversion %%%
-unit(_,[Mol,mol],[Mol,mol]) :- !.
+unit(_,Unit,Unit) :- !.
 
 %%% Mass units %%%
 unit(Formula,[Mass,g],[Mol,mol]) :-
@@ -87,13 +87,30 @@ unit(_,[Mol,mol],[Vol,'L']) :-
 unit(_,[[Vol,'L'],[Conc,'M']],[Mol,mol]) :-
 	Mol /* mol */ is Conc /* mol / L */ * Vol /* L */, !.
 
+unit(_,[[Vol1,'L'],[Conc1,'M']],[[Vol2,'L'],[Conc2,'M']]) :-
+	Vol2 /* L */ is (Conc1 /* mol / L */ * Vol1 /* L */) / Conc2 /* mol / L */, !.
+
+unit(_,[[Vol1,'L'],[Conc1,'M']],[[Conc2,'M'],[Vol2,'L']]) :-
+	Conc2 /* mol / L */ is (Conc1 /* mol / L */ * Vol1 /* L */) / Vol2 /* L */, !.
 
 unit(_,[[Mol,mol],[Conc,'M']],[Vol,'L']) :-
 	Vol /* L */ is Mol /* mol */ / Conc /* mol / L */, !.
 
-unit(_,[[Mol,mol],[Vol,'L']],[Conc,'M']) :-
-	Conc /* M */ is Mol /* mol */ / Vol /* L */, !.
+unit(_,[Mol,mol],[[Vol,'L'],[Conc,'M']]):-
+	Vol /* L */ is Mol /* mol */ / Conc /* mol / L */, !.
 
+unit(_,[Mol,mol],[[Conc,'M'],[Vol,'L']]) :-
+	Conc /* mol / L */ is Mol /* mol */ / Vol /* L */, !.
+
+%%% Two-step conversion via mols %%%
+
+unit(Formula,Input,Output) :-
+	\+ Input = [_,mol],
+	\+ Output = [_,mol],
+	unit(Formula,Input,[Mol,mol]),
+	unit(Formula,[Mol,mol],Output).
+
+%%% Unconvertible units %%%
 unit(_,QtyIn,QtyOut) :-
 	throw(error(logic_error(units:no_conversion,
 				(
