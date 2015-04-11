@@ -126,3 +126,21 @@ body
 {
 margin-left: 5%;
 }
+
+
+#select
+{
+	margin-left: 5%
+}
+
+#select span
+{
+	margin-right: 2%
+}
+
+#select select
+{
+	margin: -0.5%;
+	padding: 0;
+}
+
