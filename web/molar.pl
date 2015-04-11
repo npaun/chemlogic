@@ -24,7 +24,7 @@ molar_html(Type,Unit,Input,TailInput,Solution) :-
 	( var(Input) -> Input = []; true),
 	( var(TailInput) -> TailInput = []; true),
 	chemweb_select_list(Type,[[name,'Name'],[formula,'Formula']],SelectList),
-	chemweb_select_list(Unit,[[g,g],['L','L (gas)'],['L','L (solution)'],[mol,mol],['M','M']],UnitSelectList),
+	chemweb_select_list(Unit,[[g,g],['L','L'],[mol,mol],['M','M']],UnitSelectList),
 
 	reply_html_page(chemlogic,title('Molar'),
 		[

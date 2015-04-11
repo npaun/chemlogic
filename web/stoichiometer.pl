@@ -46,7 +46,7 @@ stoichiometer_nop(Solution) :-
 
 stoichiometer_query_list([],[],[]).
 stoichiometer_query_list([Unit|UnitS],[Property|PropertyS],[Select|SelectS]) :-
-		chemweb_select_list(Unit,[[nil,''],[g,g],['L','L (g)'],['L','L (aq)'],[mol,mol],['M','M']],UnitSelectList),
+		chemweb_select_list(Unit,[[nil,''],[g,g],['L','L'],[mol,mol]],UnitSelectList),
 		chemweb_select_list(Property,[[actual,''],[reacted,reacted],[produced,produced],[excess,excess]],PropertySelectList),
 		Select = span([select(name(units_input),UnitSelectList),select(name(properties_input),PropertySelectList)]),
 		stoichiometer_query_list(UnitS,PropertyS,SelectS).
@@ -62,7 +62,7 @@ stoichiometer_queries_create([Unit|UnitS],[Property|PropertyS],[Query|QueryS]) :
 stoichiometer_results([],[]).
 stoichiometer_results([Query|QueryS],[Result|ResultS]) :-
 	(Query = nil ->
-		Result = span('');
+		Result = span(\['&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;']);
 		(
 			parse(query_result(Query),ResultString,[]),
 			atom_chars(ResultAtom,ResultString),
