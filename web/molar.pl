@@ -47,15 +47,15 @@ molar_nop(Solution) :-
 
 
 molar_process(Type,Input,Solution,Unit,QtyTail) :-
-	atomic_list_concat([Unit,' (',QtyTail,' ',UnitTail,')'],Var-QueryPart),
+	Query = [[[[Var, _], Unit]], actual],
 	atom_chars(Input,StringInput),
-	(molar_do_process(Type,StringInput,StringSolution,QueryPart), chemweb_to_html(StringSolution,Solution)) handle Solution.
+	(molar_do_process(Type,StringInput,StringSolution,Query), chemweb_to_html(StringSolution,Solution)) handle Solution.
 
 molar_do_process(name,Name,Formula,Query) :-
-	convert_name_2_formula(Name,Formula,[Query]).
+	calc_name_2_formula(Name,Formula,Query).
 
 molar_do_process(formula,Formula,Name,Query) :-
-	convert_formula_2_name(Formula,Name,[Query]).
+	calc_formula_2_name(Formula,Name,Query).
 
 
 molar_page(Request) :-
