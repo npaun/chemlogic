@@ -47,7 +47,14 @@ molar_nop(Solution) :-
 
 
 molar_process(Type,Input,Solution,Unit,QtyTail) :-
-	Query = [[[[Var, _], Unit]], actual],
+	(nonvar(QtyTail) ->
+			(
+				atom_chars(QtyTail,TailChars),
+				quantity([TailStruct],TailChars,[]),
+				Query = [[[[Var, _], Unit],TailStruct], actual]
+			);
+				Query = [[[[Var, _], Unit]], actual]
+	),
 	atom_chars(Input,StringInput),
 	(molar_do_process(Type,StringInput,StringSolution,Query), chemweb_to_html(StringSolution,Solution)) handle Solution.
 

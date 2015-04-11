@@ -23,6 +23,12 @@ convert(_,Formula,[[[QtyIn1,SF1],UnitIn1],[[QtyIn2,SF2],UnitIn2]],[[[QtyOut,SF],
 	SF is min(SF1,SF2),
 	unit(Formula,[[QtyIn1,UnitIn1],[QtyIn2,UnitIn2]],[QtyOut,UnitOut]), !.
 
+
+convert(_,Formula,[[[QtyIn1,SF1],UnitIn1],[[QtyIn2,SF2],UnitIn2]],[[[QtyOut,SF],UnitOut],[[QtyIn3,SF3],Unit3]]) :-
+	SF is min(min(SF1,SF2),SF3),
+	unit(Formula,[[QtyIn1,UnitIn1],[QtyIn2,UnitIn2]],[[QtyOut,UnitOut],[QtyIn3,Unit3]]),
+	!.
+
 % Perhaps output from the 2 unit form might be useful in some cases.
 
 % In this case, some aspects of the result are known, while others are unknown. The variable could be in either term. 
@@ -31,6 +37,9 @@ convert(_,Formula,[[[QtyIn1,SF1],UnitIn1],[[QtyIn2,SF2],UnitIn2]],[[[QtyOut,SF],
 %convert_fmt(output,Formula,[QtyCalc,UnitCalc],[[QtyR1,UnitR1],[QtyR2,UnitR2]],MaxSF) :-
 %	(var(QtyR1) -> convert_fmt_complex_result(Formula,[QtyCalc,UnitCalc],[QtyR2,UnitR2],[QtyR1,UnitR1],MaxSF);
 %	convert_fmt_complex_result(Formula,[QtyCalc,UnitCalc],[QtyR1,UnitR1],[QtyR2,UnitR2],MaxSF)).
+
+
+
 
 convert(_,Formula,[[[QtyCalc,MaxSF],UnitCalc]],[[[QtyIn,SFIn],UnitIn],[[QtyOut,SF],UnitOut]]) :-
 	unit(Formula,[[QtyCalc,UnitCalc],[QtyIn,UnitIn]],[QtyOut,UnitOut]), !,
@@ -78,12 +87,14 @@ unit(_,[Mol,mol],[Vol,'L']) :-
 unit(_,[[Vol,'L'],[Conc,'M']],[Mol,mol]) :-
 	Mol /* mol */ is Conc /* mol / L */ * Vol /* L */, !.
 
+unit(_,[[Vol1,'L'],[Conc1,'M']],[[Vol2,'L'],[Conc2,'M']]) :-
+	Vol2 /* L */ is (Conc1 /* mol / L */ * Vol1 /* L */) / Conc2 /* mol / L */, !.
+
+unit(_,[[Vol1,'L'],[Conc1,'M']],[[Conc2,'M'],[Vol2,'L']]) :-
+	Conc2 /* mol / L */ is (Conc1 /* mol / L */ * Vol1 /* L */) / Vol2 /* L */, !.
 
 unit(_,[[Mol,mol],[Conc,'M']],[Vol,'L']) :-
 	Vol /* L */ is Mol /* mol */ / Conc /* mol / L */, !.
-
-unit(_,[[Mol,mol],[Vol,'L']],[Conc,'M']) :-
-	Conc /* M */ is Mol /* mol */ / Vol /* L */, !.
 
 %%% Two-step conversion via mols %%%
 
