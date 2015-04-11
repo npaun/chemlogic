@@ -99,6 +99,7 @@ unit(_,[[Mol,mol],[Conc,'M']],[Vol,'L']) :-
 %%% Two-step conversion via mols %%%
 
 unit(Formula,Input,Output) :-
+	\+ Input = [_,mol],
 	unit(Formula,Input,[Mol,mol]),
 	unit(Formula,[Mol,mol],Output).
 

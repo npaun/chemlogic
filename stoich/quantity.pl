@@ -56,10 +56,10 @@ property_label(excess) --> " excess".
 property_label(actual) --> "".
 
 unit_sym(g) --> "g".
+unit_sym('M') --> "M".
 unit_sym('M') --> "mol/L".
 unit_sym(mol) --> "mol".
 unit_sym('L') --> "L".
-unit_sym('M') --> "M".
 
 unit_tail('L',[[Val,'M']]) --> " of ",  value(Val), " " ,unit_sym('M').
 unit_tail('L',[[Val,'M']]) --> " (",  value(Val), " " ,unit_sym('M'), ")".
