@@ -20,7 +20,6 @@ stoichiometer_input(Request,Type,Input,OutputType,UnitS,PropertyS) :-
 	]).
 
 stoichiometer_html(Type,Input,OutputType,Solution,UnitS,PropertyS,ResultS) :-
-	debug(chemlogic,'~w~n','Hey there.'),
 	( var(Input) -> Input = []; true),
 	OptionS = [[symbolic,'Symbolic'],[word,'Word']],
 	chemweb_select_list(Type,OptionS,SelectList),
@@ -94,7 +93,7 @@ stoichiometer_do_nop_select(Type,StringInput,OutputType,Solution,QtyS) :-
 stoichiometer_page(Request) :-
 	stoichiometer_input(Request,Type,Input,OutputType,UnitS,PropertyS),
 	(\+ UnitS = [] -> 
-		(debug(chemlogic,'~w~n','Yo mama!'), stoichiometer_process(Type,Input,OutputType,Solution,UnitS,PropertyS,ResultS), RUnitS = UnitS, RPropertyS = PropertyS); 
+		(stoichiometer_process(Type,Input,OutputType,Solution,UnitS,PropertyS,ResultS), RUnitS = UnitS, RPropertyS = PropertyS); 
 		(nonvar(Input) ->
 			(stoichiometer_nop_select(Type,Input,OutputType,Solution,RUnitS,RPropertyS), debug(chemlogic,'~w~n',Solution));
 			stoichiometer_nop(Solution)
