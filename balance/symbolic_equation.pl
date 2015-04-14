@@ -17,8 +17,8 @@ symbolic(Fmt,Coeff,CoeffR,Elems,ElemsR,Formula,FormulaR,[ElemsL,ElemsR0],[SideLe
 	output(Fmt,arrow) xx arrow,
 	products(Fmt,CoeffR0,CoeffR,ElemsR0,ElemsR,FormulaR0,FormulaR,SideRight,Stoich,QtyR0,QtyR).
 
+products(_,Coeff,Coeff,Elems,Elems,Formula,Formula,_,_,Qty,Qty,[],[]).
 
-products(_,Coeff,Coeff,Elems,Elems,Formula,Formula,_,[],[],_,Qty,Qty).
 products(Fmt,Coeff,CoeffR,Elems,ElemsR,Formula,FormulaR,SideRight,Stoich,Qty,QtyR) --> 
 	" " xx arrow_space, 
 	expr(Fmt,Coeff,CoeffR,Elems,ElemsR,Formula,FormulaR,SideRight,Stoich,Qty,QtyR).

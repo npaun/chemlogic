@@ -17,7 +17,7 @@ word(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[ElemsL,ElemR0],[SideLeft,Sid
 	output(Fmt,arrow) xx arrow,
 	products(CoeffR0,CoeffR,ElemR0,ElemR,FormulaR0,FormulaR,SideRight,Stoich,QtyR0,QtyR).
 
-products(Coeff,Coeff,Elems,Elems,Formula,Formula,_,[],[],_,Qty,Qty).
+products(Coeff,Coeff,Elems,Elems,Formula,Formula,_,_,Qty,Qty,[],[]).
 products(Coeff,CoeffR,Elems,ElemsR,Formula,FormulaR,SideRight,Stoich,Qty,QtyR) --> 
 	" " xx arrow_space, 
 	expr(Coeff,CoeffR,Elems,ElemsR,Formula,FormulaR,SideRight,Stoich,Qty,QtyR).

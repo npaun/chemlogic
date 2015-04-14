@@ -61,7 +61,7 @@ balance_equation_real(InGrammar,Equation,OutGrammar,Solution,Coeffs,MoleculeSet,
 	solve(Matrix,Coeffs),
 	!,
 
-	parse(OutGrammar,.(output,Coeffs,[],Elems,[],MoleculeSet,[],ElementSideSet,SideSet,Stoich,QtySet,[]),Solution,[]).
+	parse(OutGrammar,.(output,Coeffs,[],_,[],MoleculeSet,[],_,SideSet,Stoich,QtySet,[]),Solution,[]).
 
 
 balance_equation_cleanup :-
