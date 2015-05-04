@@ -10,7 +10,7 @@
 :- initialization serve_style_file('style/cwsf.png').
 
 
-
+custom_footer --> [].
 custom_footer --> html(ul(id(footlist),
         [
          li(img(src('style/cwsf.png'))),
