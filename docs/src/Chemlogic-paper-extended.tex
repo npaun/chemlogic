@@ -1,4 +1,4 @@
-%% LyX 2.1.0 created this file.  For more info, see http://www.lyx.org/.
+%% LyX 2.1.2 created this file.  For more info, see http://www.lyx.org/.
 %% Do not edit unless you really know what you are doing.
 \documentclass[twoside,english]{article}
 \usepackage[T1]{fontenc}
@@ -28,15 +28,6 @@
 \providecommand{\algorithmname}{Algorithm}
 \floatname{algorithm}{\protect\algorithmname}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
-\newcommand{\lyxrightaddress}[1]{
-\par {\raggedleft \begin{tabular}{l}\ignorespaces
-#1
-\end{tabular}
-\vspace{1.4em}
-\par}
-}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
 \usepackage{units}
 
@@ -50,37 +41,27 @@
 
 \begin{document}
 
-\title{Chemlogic: A logic programming computer chemistry system}
+\title{Chemlogic: A Logic Programming Computer Chemistry System}
 
 
 \author{Nicholas Paun\\
 \url{<np@icebergsystems.ca>}\\
-Gr. 10, Mount Sentinel Secondary School}
+Gr. 12, Mount Sentinel Secondary School}
 
 
-\date{April 5, 2014}
+\date{April 10, 2015}
 
 \maketitle
-\input{/home/np/.lyx/templates/master.tex}
-
-
-\lyxrightaddress{Nicholas Paun\\
-RR1 S2 C16,\\
-Slocan Park, BC\\
-\texttt{V0G 2E0}\\
-CANADA}
-
 \newpage{}
 \begin{abstract}
-Chemlogic is a logic program written in Prolog which uses a database
-of information about chemical elements and polyatomic groups, a set
-of grammatical rules for chemical names and formulas and an equation
-solver to balance chemical equations in either symbolic or word form
-and to convert formulas to names and names to formulas. In order to
-assist users in entering queries, Chemlogic can detect and provide
-guidance for resolving syntax errors and other errors. Chemlogic also
-has a user-friendly Web interface, also written using SWI-Prolog's
-logic programming Web framework.
+Chemlogic is a logic program for performing stoichiometric calculations,
+converting chemical quantities between units, balancing and completing
+chemical equations and converting chemical formulas to and from chemical
+names. These features are implemented using a database of chemical
+information, a set of grammars, and a linear equation solver. Chemlogic
+can detect and provide guidance for resolving syntax and other errors.
+It is available as an Android App (designed as a study tool for chemistry
+students), a Web interface and a command-line domain-specific language. 
 \end{abstract}
 \tableofcontents{}
 
@@ -91,29 +72,43 @@ logic programming Web framework.
 \section{Curricular Connections}
 
 
-\subsection{Science 9 }
+\subsection{Science 9}
 \begin{itemize}
-\item Names and formulas of ionic compounds, including support for multivalent
-metals and polyatomic groups.
+\item Names and formulas of ionic compounds.\\
+(Including support for multivalent metals and polyatomic groups.)
 \end{itemize}
 
 \subsection{Science 10}
 \begin{itemize}
 \item Names and formulas of binary covalent compounds.
-\item Naming systems for most acids.
-\item Naming conventions for some organic compounds (alkanes and alcohols).
-\item Symbolic and word chemical equations and their balancing.
+\item Names and formulas of acids.
+\item Naming conventions for some simple organic compounds.\\
+(Including support for alkanes and alcohols.)
+\item Balancing of chemical equations in word or symbolic form.
+\item Identification of reaction types.\\
+(Including support for neutralization, double replacement, single
+replacement, synthesis, decomposition and combustion reactions.)
+\item Determining whether a reaction will take place using the reactivity
+series.
+\item Completion of common chemical reactions.\\
+(Including support for neutralization, double replacement and single
+replacement reactions).
+\end{itemize}
+
+\subsection{Chemistry 11}
+\begin{itemize}
+\item Names and formulas of alkenes and ionic compound hydrates.
+\item Unit conversion for chemical quantities.\\
+(Including support for mass, moles, volume of gas, volume of solution
+and concentration).
+\item Stoichiometric calculations.
+\item Limiting reactant analysis and calculations involving the stoichiometry
+of excess quantities.
 \end{itemize}
 Not yet implemented:
 \begin{itemize}
-\item Recognition and completion of common types of reactions.
-\end{itemize}
-
-\subsection{Chemistry 11 \emph{(Partial)}}
-\begin{itemize}
-\item Hydrates of ionic compounds.
-\item The concept of an empirical formula.
-\item Support for alkenes.
+\item Structural formulas and naming conventions for organic chemistry;
+structures of polyelectronic atoms
 \end{itemize}
 
 \section{Design and Algorithms}
@@ -598,7 +593,7 @@ To use Prolog's built-in equation solver, the matrix is converted
 back into an equation, a process made simple by Prolog's ability to
 treat code as data (metaprogramming, \vref{sub:Metaprogramming}).
 
-The solver used in Chemlogic is CLP(r) (Constraint Logic Programming
+The solver used in Chemlogic is CLP(q) (Constraint Logic Programming
 over Rational Numbers)\cite{holzbaur:clpq}, which is built-in to
 SWI-Prolog. This solver is used since the coefficients of a chemical
 equation are always rational numbers, but may sometimes not be integers
@@ -608,7 +603,7 @@ before the fractions are cleared.%
 regarding this situation.%
 }
 
-CLP(r) allows input of equations in a simple notation and provides
+CLP(q) allows input of equations in a simple notation and provides
 the solution to the unknowns by instantiating Prolog variables used
 in the equations. The results are always reduced to lowest terms using
 the provided predicate \texttt{bb\_inf}.
@@ -867,6 +862,92 @@ These could be combined with the use of runtime calls.
 
 
 \section{Interfaces and Miscellaneous Code}
+
+
+\subsection{Android Application --- A new user interface}
+
+
+\subsubsection{Summary}
+
+The Chemlogic App for Android was developed to allow users to use
+the program on a mobile device. Due to the popularity of mobile devices
+and the convience of mobile applications, this improvement greatly
+increases the number of users who would use the program and enables
+students to easily use Chemlogic as a study tool for chemistry classes. 
+
+The existing code of Chemlogic, written in Prolog, was cross-compiled
+for the processors used in Android devices and is used unmodified,
+simplifying the development of new features.
+
+The App consists of a user-interface, implemented in Java, using the
+Android APIs, and a system package consisting of the cross-compiled
+Chemlogic code, and its dependencies.
+
+
+\subsubsection{The Implementation of the User Interface and the System Package}
+
+The user interface renders the design of the app (textboxes, buttons,
+etc.), verifies the input to ensure that it does not contain invalid
+Prolog syntax and then communicates with Chemlogic through a UNIX
+pipe. Upon receiving the response, it renders the formatting of the
+result (e.g. subscripts, arrows and colored error messages) and displays
+it. The user interface also adds an extra row of keys to the keyboard
+which contains symbols commonly used in chemical equations and formulas.
+
+The system package, which is approximately 4 MB in size, contains
+a copy of Chemlogic, compiled as a stand-alone application (meaning
+that it includes the Prolog interpreter in its binary), some required
+Linux libraries and an initialization script. When loaded, the App
+interface executes the initialization script, which starts Chemlogic
+by running the dynamic linker to locate and link Chemlogic with the
+provided libraries and then executes it. The cross-compilation process
+required to build the system package is extremely complicated, so
+it has been automated to reduce developer work and eliminate errors.
+Because the Android platform does not install the assets provided
+with the App, a procedure was implemented that verifies whether latest
+version of the system package is present and will extract the files
+and install them, if necessary.
+
+Once Chemlogic is installed and started, the user interface writes
+a command to the pipe, when Chemlogic reads. Chemlogic writes its
+answer to the pipe, which the interface reads. This method could be
+replaced with bindings between Prolog and Java, which would simplify
+the development of the App, but would increase the complexity of the
+cross-compilation process.
+
+
+\subsubsection{Interprocess Communication in the App }
+
+The pipe model is, however, one of the most interesting parts of the
+UNIX model: everything is a file, everything is text, anything can
+read text and anything can write text. It allows many utilities to
+be connected to each other, each reading the previous one's output
+and writing to the next one. User input/output is, in fact, implemented
+using this model as well: the keyboard is piped to the input and the
+output is piped to the screen. This method of interprocess communication
+raises an interesting dilemma: How do the interface and Chemlogic
+know when the other end of the pipe finishes transmitting data (like
+a query or a response)? 
+
+Unlike a subroutine which automatically returns a variable to its
+caller, the two programs must be explicitly instructed to look for
+a specific pattern in order to know when to proceed. 
+
+When a user interacts with a command-line program, patterns are recognized
+by both the human user and the program itself: When the user enters
+a command, he presses ENTER. Now the system sees that the user has
+finished typing and it processes the input and displays its response.
+When the interactive prompt is displayed, the user sees that the system
+is ready to receive another query. The user interface and the Android
+App use these patterns, as well, allowing existing code to be used
+with minor modifications.
+
+It must be noted that although the pipe model would seem to imply
+transmission and communication between computers (and often can),
+in this case the communication is entirely virtual --- it is between
+multiple processes on the same computer. The mechanism is almost exactly
+the same from the point of view of the two programs that are communicating
+over the pipe.
 
 
 \subsection{Web Interface --- A user-friendly way of using the program}
@@ -1218,25 +1299,6 @@ in the \texttt{TODO} file distributed with the program and as an appendix
 to this paper (Appendix\vref{sec:TODO}). Some of them are summarized
 here:
 
-To complete the implementation of Science 10-level Chemistry, the
-program should be extended to recognize common reaction types and
-complete them. The current equation structure should be able support
-this use case. A new module would be written that reads the half-structure
-and re-arranges it to make another half-structure. The complete structure
-can then be used as is for display and balancing. The reaction type
-recognizer could be made more useful by integrating the reactivity
-series and informing the user if the reaction he/she is balancing
-is or is not likely to occur.
-
-This program can also be extended to handle stoichiometric calculations,
-by determining the molar mass of substances, performing calculations
-with them both at the single-compound level and at the level of equations.
-The parsers will have to be extended to support stoichiometric problems
-inputted in equations, for simple cases, but it may be necessary to
-build additional views and interfaces for entering calculations. The
-\texttt{chemcli} DSL (\vref{sub:Command-line-Interface}) could perhaps
-become a more useful tool if it can calculate using this information.
-
 In order to handle more complex types of organic compounds, the program
 must be greatly extended to support manipulating structural formulas
 (when given a name as input), displaying diagrams of them and to support
@@ -1362,21 +1424,17 @@ e.g. (II)%
 
 \section*{Acknowledgments}
 
-I am particularly grateful for the valuable assistance given by Mr.
-Peter Tchir, my Physics and Chemistry teacher, and now my teacher
-for the Computer Science IDS. His help and advice, especially with
-algorithms and his support for my Computer Science projects helped
-make this program possible.\\
-\\
-I would also like to thank Mr. Dave Steel for letting me dismantle
-his computers everyday and use his monitors.\\
-\\
-The interest, advice and testing of everybody who tried my program
-or asked me to explain it is greatly appreciated.
+I would like to thank the many people who gave advice and helped with
+the project.
+
+I am particularly grateful for the valuable assistance provided by
+Dr. Peter Tchir, my Physics, Chemistry and, now, Computer Science
+teacher. His help and advice, especially with algorithms and his support
+for my Computer Science projects helped make this program possible.
 
 \bibliographystyle{amsplain}
 \nocite{*}
-\bibliography{./chemlogic}
+\bibliography{chemlogic}
 
 
 \appendix
@@ -1385,7 +1443,7 @@ or asked me to explain it is greatly appreciated.
 
 Chemlogic is available from \url{http://icebergsystems.ca/chemlogic/}.
 Chemlogic currently depends on SWI-Prolog (\url{http://swi-prolog.org/})
-because it uses CLP(r), Qsave files and a few other features. See
+because it uses CLP(q), Qsave files and a few other features. See
 the \texttt{README} file distributed with the program for installation
 instructions. The installer can be used on any Unix-like system (Linux,
 BSD, Mac OS X) as is. The program itself will run on any operating
@@ -1403,7 +1461,7 @@ are also released as open-source software. If this requirement is
 inconvenient, please contact me.
 
 
-\section{User Quick Reference\label{sec:User-Quick}}
+\section{User Reference\label{sec:User-Quick}}
 
 
 \subsection{Formulas}
@@ -1435,23 +1493,6 @@ soda, chalk, hydrogen peroxide
 \section{\texttt{TODO} \label{sec:TODO}}
 
 
-\subsection{Science 10}
-
-Chemlogic currently implements most of the Chemistry relating to equations
-and compounds from the Science 10 curriculum. It is missing one major
-feature, however:
-\begin{itemize}
-\item Recognizing reaction types:
-
-\begin{itemize}
-\item  There are very many reaction types, but the program should recognize
-the most common ones (synthesis, decomposition, single replacement,
-double replacement, neutralization and combustion) 
-\item  Probably another module will be necessary that uses equation structures,
-fits them according to the type and then fills in the products
-\end{itemize}
-\end{itemize}
-
 \subsection{Chemistry features}
 \begin{itemize}
 \item  Support for structural formulas: 
@@ -1463,29 +1504,8 @@ structures of the compounds it supports
 representation for structural formulas
 \item  Each output format will have its own ways of rendering structural
 formulas. This will have to be extended.
-\item  A module will be needed to convert structural formulas to molecular
+\item A module will be needed to convert structural formulas to molecular
 formulas for balancing and other processes.
-\end{itemize}
-\item  Reactivity series: 
-
-\begin{itemize}
-\item  After the types of reactions are recognized, it will not be too difficult
-to implement knowledge about whether or not a reaction will take place.
-The user can be informed about this when an equation is balanced.
-\end{itemize}
-\item  Mole calculations: 
-
-\begin{itemize}
-\item  A field will need to be added in the database for atomic mass of
-elements. 
-\item  fact\_dcg\_translate will need to be extended to handle polyatomic
-groups/oxyanions 
-\item  Tabulate or possibly formula\_normalize will be extended to calculate
-molar masses 
-\item  Allow parsers to accept information about stoichiometric problems
-to solve
-\item  Implement information about mole bridges into the solver (probably
-a new module)
 \end{itemize}
 \item  More organic naming: 
 
@@ -1507,16 +1527,8 @@ Perhaps based on oxidation numbers or half-reactions
 \begin{itemize}
 \item  Show structural formulas of compounds 
 \item  Bohr models, Lewis diagrams 
-\item  Periodic tables?
+\item Periodic tables?
 \end{itemize}
-\end{itemize}
-
-\subsection{Database}
-\begin{itemize}
-\item  Add many, many more elements. 
-\item More polyatomic groups 
-\item  Write-up a large batch of common names
-\item  Add atomic masses
 \end{itemize}
 
 \subsection{Program features}
