@@ -87,6 +87,15 @@ Prolog distributions:
 * Symbolic equations
 * Word equations
 
+* Stoichiometric calculations
+	* Limiting reactant analysis
+	* Excess quantity calculations
+	* Support for concentration units
+
+* Reaction type analysis
+	* Completion of neutralization, double replacement and single replacement reactions.
+	* Predicts whether reactions of any of the above types will occur (using the reactivity series.)
+	* Identification of neutralization, double replacement, single replacement, decomposition and synthesis reactions.
 
 
 ## 4. Documentation ##
@@ -97,6 +106,10 @@ See the `docs/` directory. Documentation (the Chemlogic papers) is available in 
 
 ## 5. Changelog ##
 
+* Version 2.0
+	* Added support for reaction type analysis (identification, completion and prediction)
+	* Added support for stoichiometric calculations (incl. limiting reactant analysis, concentration calculations)
+	* Developed an Android user interface (packaged separately)
 * Version 1.0
 	* First release
 
