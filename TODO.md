@@ -5,23 +5,11 @@
 
 
 ## Contents ##
-1. Science 10
-2. Chemistry concepts
-3. Database
-4. Program features
-5. Organization and Structure
-6. Bugs
-
-
-
-## 1. Science 10 ##
-
-Chemlogic currently implements most of the Chemistry relating to equations and compounds from the Science 10 curriculum. It is missing one major feature, however:
-
-* Recognizing reaction types
-	* There are very many reaction types, but the program should recognize the most common ones (synthesis, decomposition, single replacement, double replacement, neutralization and combustion)
-	* Probably another module will be necessary that uses equation structures, fits them according to the type and then fills in the products
-
+1. Chemistry concepts
+2. Database
+3. Program features
+4. Organization and Structure
+5. Bugs
 
 
 ## 2. Chemistry features ##
@@ -31,16 +19,6 @@ Chemlogic currently implements most of the Chemistry relating to equations and c
 	* The formula parser will need to have some sort of input and output representation for structural formulas
 	* Each output format will have its own ways of rendering structural formulas. This will have to be extended.
 	* A module will be needed to convert structural formulas to molecular formulas for balancing and other processes.
-
-* Reactivity series:
-	* After the types of reactions are recognized, it will not be too difficult to implement knowledge about whether or not a reaction will take place. The user can be informed about this when an equation is balanced.
-
-* Mole calculations:
-	* ---DONE--- A field will need to be added in the database for atomic mass of elements.
-	* ---PROBABLY UNNECESSARY--- `fact_dcg_translate` will need to be extended to handle polyatomic groups/oxyanions
-	* ---DONE, by creating new code similar to tabulate--- Tabulate or possibly `formula_normalize` will be extended to calculate molar masses
-	* ---I wonder if this is the best approach?--- Allow parsers to accept information about stoichiometric problems to solve
-	* ---DONE--- Implement information about mole bridges into the solver (probably a new module)
 
 * More organic naming:
 	* It will be useful to implement organic compound naming at least for Chemistry 11 to 12.
@@ -56,14 +34,11 @@ Chemlogic currently implements most of the Chemistry relating to equations and c
 
 
 
-
 ## 3. Database ##
 
 * Add many, many more elements.
 * More polyatomic groups
 * Write-up a large batch of common names
-* ---DONE--- Add atomic masses
-
 
 
 
@@ -85,7 +60,6 @@ Chemlogic currently implements most of the Chemistry relating to equations and c
 * Expose the chemical information database.
 
 * Better error messages for equation balancing errors
-	* ---DONE--- Test to ensure that all elements appear in both products and reactants
 	* Perhaps explain why some charge shifts are unsatisfiable
 	* Explain which element makes the system unbalancable, if possible.
 
@@ -119,5 +93,3 @@ Chemlogic currently implements most of the Chemistry relating to equations and c
 * The program will get very upset if a substance is repeated:
 	* e.g. `H2O + H2O --> H2O`
 	* There is not much of a valid reason to enter this, but the program should handle this correctly
-	* ---MIGHT BE FIXED BY OTHER CHANGES--- An error message explaining that this is junk is probably a good idea
-
