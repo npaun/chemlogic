@@ -1,12 +1,10 @@
-#LyX 2.0 created this file. For more info see http://www.lyx.org/
-\lyxformat 413
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
 \begin_document
 \begin_header
 \textclass article
 \begin_preamble
 \usepackage{units}
-\usepackage{amssymb}
-\usepackage{cancel}
 \end_preamble
 \use_default_options true
 \maintain_unincluded_children false
@@ -17,13 +15,13 @@
 \font_roman default
 \font_sans default
 \font_typewriter default
+\font_math auto
 \font_default_family default
 \use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
-
 \graphics default
 \default_output_format default
 \output_sync 0
@@ -43,15 +41,24 @@
 \pdf_pdfusetitle true
 \papersize default
 \use_geometry false
-\use_amsmath 1
-\use_esint 1
-\use_mhchem 1
-\use_mathdots 1
+\use_package amsmath 1
+\use_package amssymb 2
+\use_package cancel 2
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
 \cite_engine basic
+\cite_engine_type default
+\biblio_style plain
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
 \suppress_date false
+\justification true
 \use_refstyle 1
 \index Index
 \shortcut idx
@@ -75,7 +82,7 @@
 \begin_body
 
 \begin_layout Title
-Chemlogic: A logic programming computer chemistry system
+Chemlogic: A Logic Programming Computer Chemistry System
 \end_layout
 
 \begin_layout Author
@@ -99,45 +106,11 @@ status collapsed
 \end_inset
 
 Gr.
- 10, Mount Sentinel Secondary School
+ 12, Mount Sentinel Secondary School
 \end_layout
 
 \begin_layout Date
-April 5, 2014
-\end_layout
-
-\begin_layout Standard
-\begin_inset CommandInset include
-LatexCommand input
-filename "~/.lyx/templates/master.lyx"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Right Address
-Nicholas Paun
-\begin_inset Newline newline
-\end_inset
-
-RR1 S2 C16,
-\begin_inset Newline newline
-\end_inset
-
-Slocan Park, BC
-\begin_inset Newline newline
-\end_inset
-
-
-\family typewriter
-V0G 2E0
-\family default
-
-\begin_inset Newline newline
-\end_inset
-
-CANADA
+April 10, 2015
 \end_layout
 
 \begin_layout Standard
@@ -148,15 +121,17 @@ CANADA
 \end_layout
 
 \begin_layout Abstract
-Chemlogic is a logic program written in Prolog which uses a database of
- information about chemical elements and polyatomic groups, a set of grammatical
- rules for chemical names and formulas and an equation solver to balance
- chemical equations in either symbolic or word form and to convert formulas
- to names and names to formulas.
- In order to assist users in entering queries, Chemlogic can detect and
- provide guidance for resolving syntax errors and other errors.
- Chemlogic also has a user-friendly Web interface, also written using SWI-Prolog
-'s logic programming Web framework.
+Chemlogic is a logic program for performing stoichiometric calculations,
+ converting chemical quantities between units, balancing and completing
+ chemical equations and converting chemical formulas to and from chemical
+ names.
+ These features are implemented using a database of chemical information,
+ a set of grammars, and a linear equation solver.
+ Chemlogic can detect and provide guidance for resolving syntax and other
+ errors.
+ It is available as an Android App (designed as a study tool for chemistry
+ students), a Web interface and a command-line domain-specific language.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -181,12 +156,15 @@ Curricular Connections
 \end_layout
 
 \begin_layout Subsection
-Science 9 
+Science 9
 \end_layout
 
 \begin_layout Itemize
-Names and formulas of ionic compounds, including support for multivalent
- metals and polyatomic groups.
+Names and formulas of ionic compounds.
+\begin_inset Newline newline
+\end_inset
+
+(Including support for multivalent metals and polyatomic groups.)
 \end_layout
 
 \begin_layout Subsection
@@ -198,15 +176,67 @@ Names and formulas of binary covalent compounds.
 \end_layout
 
 \begin_layout Itemize
-Naming systems for most acids.
+Names and formulas of acids.
 \end_layout
 
 \begin_layout Itemize
-Naming conventions for some organic compounds (alkanes and alcohols).
+Naming conventions for some simple organic compounds.
+\begin_inset Newline newline
+\end_inset
+
+(Including support for alkanes and alcohols.)
 \end_layout
 
 \begin_layout Itemize
-Symbolic and word chemical equations and their balancing.
+Balancing of chemical equations in word or symbolic form.
+\end_layout
+
+\begin_layout Itemize
+Identification of reaction types.
+\begin_inset Newline newline
+\end_inset
+
+(Including support for neutralization, double replacement, single replacement,
+ synthesis, decomposition and combustion reactions.)
+\end_layout
+
+\begin_layout Itemize
+Determining whether a reaction will take place using the reactivity series.
+\end_layout
+
+\begin_layout Itemize
+Completion of common chemical reactions.
+\begin_inset Newline newline
+\end_inset
+
+(Including support for neutralization, double replacement and single replacement
+ reactions).
+\end_layout
+
+\begin_layout Subsection
+Chemistry 11
+\end_layout
+
+\begin_layout Itemize
+Names and formulas of alkenes and ionic compound hydrates.
+\end_layout
+
+\begin_layout Itemize
+Unit conversion for chemical quantities.
+\begin_inset Newline newline
+\end_inset
+
+(Including support for mass, moles, volume of gas, volume of solution and
+ concentration).
+\end_layout
+
+\begin_layout Itemize
+Stoichiometric calculations.
+\end_layout
+
+\begin_layout Itemize
+Limiting reactant analysis and calculations involving the stoichiometry
+ of excess quantities.
 \end_layout
 
 \begin_layout Standard
@@ -214,25 +244,8 @@ Not yet implemented:
 \end_layout
 
 \begin_layout Itemize
-Recognition and completion of common types of reactions.
-\end_layout
-
-\begin_layout Subsection
-Chemistry 11 
-\emph on
-(Partial)
-\end_layout
-
-\begin_layout Itemize
-Hydrates of ionic compounds.
-\end_layout
-
-\begin_layout Itemize
-The concept of an empirical formula.
-\end_layout
-
-\begin_layout Itemize
-Support for alkenes.
+Structural formulas and naming conventions for organic chemistry; structures
+ of polyelectronic atoms
 \end_layout
 
 \begin_layout Section
@@ -305,7 +318,7 @@ sideways false
 status open
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 An example of balancing by inspection
@@ -456,7 +469,7 @@ sideways false
 status open
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 The representation of a chemical equation as a system of linear equations
@@ -532,7 +545,7 @@ sideways false
 status open
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 Systematic representation of chemical equation 
@@ -665,7 +678,7 @@ sideways false
 status open
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 A very simple grammar (binary ionic compounds)
@@ -794,7 +807,7 @@ sideways false
 status open
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 The internal form of the grammar from Figure 
@@ -905,7 +918,7 @@ sideways false
 status open
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 An simplified trace of the grammar in Figure 
@@ -1246,7 +1259,7 @@ sideways false
 status open
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 A new version of the parser from Figure 
@@ -1503,7 +1516,7 @@ status open
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 A trivial example and usage of semicontext notation
@@ -1662,7 +1675,7 @@ status open
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 A simple example and usage of a lookahead implemented with semicontext notation
@@ -1941,7 +1954,7 @@ reference "sub:Metaprogramming"
 \end_layout
 
 \begin_layout Standard
-The solver used in Chemlogic is CLP(r) (Constraint Logic Programming over
+The solver used in Chemlogic is CLP(q) (Constraint Logic Programming over
  Rational Numbers)
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -1968,7 +1981,7 @@ A more common solver, built-in to nearly all Prolog systems, CLPfd (Constraint
 \end_layout
 
 \begin_layout Standard
-CLP(r) allows input of equations in a simple notation and provides the solution
+CLP(q) allows input of equations in a simple notation and provides the solution
  to the unknowns by instantiating Prolog variables used in the equations.
  The results are always reduced to lowest terms using the provided predicate
  
@@ -2224,7 +2237,7 @@ sideways false
 status open
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 
@@ -2338,7 +2351,7 @@ sideways false
 status open
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 covalent.pl using call to implement multiple variants of the same code
@@ -2521,7 +2534,7 @@ sideways false
 status open
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 The 
@@ -2681,6 +2694,121 @@ There are many potential places where more metaprogramming could be added
 
 \begin_layout Section
 Interfaces and Miscellaneous Code
+\end_layout
+
+\begin_layout Subsection
+Android Application --- A new user interface
+\end_layout
+
+\begin_layout Subsubsection
+Summary
+\end_layout
+
+\begin_layout Standard
+The Chemlogic App for Android was developed to allow users to use the program
+ on a mobile device.
+ Due to the popularity of mobile devices and the convience of mobile application
+s, this improvement greatly increases the number of users who would use
+ the program and enables students to easily use Chemlogic as a study tool
+ for chemistry classes.
+ 
+\end_layout
+
+\begin_layout Standard
+The existing code of Chemlogic, written in Prolog, was cross-compiled for
+ the processors used in Android devices and is used unmodified, simplifying
+ the development of new features.
+\end_layout
+
+\begin_layout Standard
+The App consists of a user-interface, implemented in Java, using the Android
+ APIs, and a system package consisting of the cross-compiled Chemlogic code,
+ and its dependencies.
+\end_layout
+
+\begin_layout Subsubsection
+The Implementation of the User Interface and the System Package
+\end_layout
+
+\begin_layout Standard
+The user interface renders the design of the app (textboxes, buttons, etc.),
+ verifies the input to ensure that it does not contain invalid Prolog syntax
+ and then communicates with Chemlogic through a UNIX pipe.
+ Upon receiving the response, it renders the formatting of the result (e.g.
+ subscripts, arrows and colored error messages) and displays it.
+ The user interface also adds an extra row of keys to the keyboard which
+ contains symbols commonly used in chemical equations and formulas.
+\end_layout
+
+\begin_layout Standard
+The system package, which is approximately 4 MB in size, contains a copy
+ of Chemlogic, compiled as a stand-alone application (meaning that it includes
+ the Prolog interpreter in its binary), some required Linux libraries and
+ an initialization script.
+ When loaded, the App interface executes the initialization script, which
+ starts Chemlogic by running the dynamic linker to locate and link Chemlogic
+ with the provided libraries and then executes it.
+ The cross-compilation process required to build the system package is extremely
+ complicated, so it has been automated to reduce developer work and eliminate
+ errors.
+ Because the Android platform does not install the assets provided with
+ the App, a procedure was implemented that verifies whether latest version
+ of the system package is present and will extract the files and install
+ them, if necessary.
+\end_layout
+
+\begin_layout Standard
+Once Chemlogic is installed and started, the user interface writes a command
+ to the pipe, when Chemlogic reads.
+ Chemlogic writes its answer to the pipe, which the interface reads.
+ This method could be replaced with bindings between Prolog and Java, which
+ would simplify the development of the App, but would increase the complexity
+ of the cross-compilation process.
+\end_layout
+
+\begin_layout Subsubsection
+Interprocess Communication in the App 
+\end_layout
+
+\begin_layout Standard
+The pipe model is, however, one of the most interesting parts of the UNIX
+ model: everything is a file, everything is text, anything can read text
+ and anything can write text.
+ It allows many utilities to be connected to each other, each reading the
+ previous one's output and writing to the next one.
+ User input/output is, in fact, implemented using this model as well: the
+ keyboard is piped to the input and the output is piped to the screen.
+ This method of interprocess communication raises an interesting dilemma:
+ How do the interface and Chemlogic know when the other end of the pipe
+ finishes transmitting data (like a query or a response)? 
+\end_layout
+
+\begin_layout Standard
+Unlike a subroutine which automatically returns a variable to its caller,
+ the two programs must be explicitly instructed to look for a specific pattern
+ in order to know when to proceed.
+ 
+\end_layout
+
+\begin_layout Standard
+When a user interacts with a command-line program, patterns are recognized
+ by both the human user and the program itself: When the user enters a command,
+ he presses ENTER.
+ Now the system sees that the user has finished typing and it processes
+ the input and displays its response.
+ When the interactive prompt is displayed, the user sees that the system
+ is ready to receive another query.
+ The user interface and the Android App use these patterns, as well, allowing
+ existing code to be used with minor modifications.
+\end_layout
+
+\begin_layout Standard
+It must be noted that although the pipe model would seem to imply transmission
+ and communication between computers (and often can), in this case the communica
+tion is entirely virtual --- it is between multiple processes on the same
+ computer.
+ The mechanism is almost exactly the same from the point of view of the
+ two programs that are communicating over the pipe.
 \end_layout
 
 \begin_layout Subsection
@@ -2846,7 +2974,7 @@ sideways false
 status open
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 The entire code of the 
@@ -2959,7 +3087,7 @@ sideways false
 status open
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 Simple 
@@ -3370,7 +3498,7 @@ sideways false
 status open
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 Examples of vowel dropping in IUPAC prefixes
@@ -3391,10 +3519,10 @@ name "fig:vowel-dropping"
 \begin_layout Plain Layout
 \begin_inset Tabular
 <lyxtabular version="3" rows="5" columns="3">
-<features tabularvalignment="middle">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
 <row>
 <cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
@@ -3687,40 +3815,6 @@ reference "sec:TODO"
 \end_layout
 
 \begin_layout Standard
-To complete the implementation of Science 10-level Chemistry, the program
- should be extended to recognize common reaction types and complete them.
- The current equation structure should be able support this use case.
- A new module would be written that reads the half-structure and re-arranges
- it to make another half-structure.
- The complete structure can then be used as is for display and balancing.
- The reaction type recognizer could be made more useful by integrating the
- reactivity series and informing the user if the reaction he/she is balancing
- is or is not likely to occur.
-\end_layout
-
-\begin_layout Standard
-This program can also be extended to handle stoichiometric calculations,
- by determining the molar mass of substances, performing calculations with
- them both at the single-compound level and at the level of equations.
- The parsers will have to be extended to support stoichiometric problems
- inputted in equations, for simple cases, but it may be necessary to build
- additional views and interfaces for entering calculations.
- The 
-\family typewriter
-chemcli
-\family default
- DSL (
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "sub:Command-line-Interface"
-
-\end_inset
-
-) could perhaps become a more useful tool if it can calculate using this
- information.
-\end_layout
-
-\begin_layout Standard
 In order to handle more complex types of organic compounds, the program
  must be greatly extended to support manipulating structural formulas (when
  given a name as input), displaying diagrams of them and to support an input
@@ -3899,7 +3993,7 @@ sideways false
 status open
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 Error messages for a missing charge on a multivalent metal
@@ -3928,7 +4022,7 @@ sideways false
 status open
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 Current error message
@@ -3985,7 +4079,7 @@ sideways false
 status open
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 Improved error message exposing chemical information
@@ -4063,30 +4157,15 @@ Acknowledgments
 \end_layout
 
 \begin_layout Standard
-I am particularly grateful for the valuable assistance given by Mr.
- Peter Tchir, my Physics and Chemistry teacher, and now my teacher for the
- Computer Science IDS.
+I would like to thank the many people who gave advice and helped with the
+ project.
+\end_layout
+
+\begin_layout Standard
+I am particularly grateful for the valuable assistance provided by Dr.
+ Peter Tchir, my Physics, Chemistry and, now, Computer Science teacher.
  His help and advice, especially with algorithms and his support for my
  Computer Science projects helped make this program possible.
-\begin_inset Newline newline
-\end_inset
-
-
-\begin_inset Newline newline
-\end_inset
-
-I would also like to thank Mr.
- Dave Steel for letting me dismantle his computers everyday and use his
- monitors.
-\begin_inset Newline newline
-\end_inset
-
-
-\begin_inset Newline newline
-\end_inset
-
-The interest, advice and testing of everybody who tried my program or asked
- me to explain it is greatly appreciated.
 \end_layout
 
 \begin_layout Standard
@@ -4137,7 +4216,7 @@ http://swi-prolog.org/
 
 \end_inset
 
-) because it uses CLP(r), Qsave files and a few other features.
+) because it uses CLP(q), Qsave files and a few other features.
  See the 
 \family typewriter
 README
@@ -4182,7 +4261,7 @@ The AGPL requires that modified versions offered as a network service are
 \end_layout
 
 \begin_layout Section
-User Quick Reference
+User Reference
 \begin_inset CommandInset label
 LatexCommand label
 name "sec:User-Quick"
@@ -4305,33 +4384,6 @@ name "sec:TODO"
 \end_layout
 
 \begin_layout Subsection
-Science 10
-\end_layout
-
-\begin_layout Standard
-Chemlogic currently implements most of the Chemistry relating to equations
- and compounds from the Science 10 curriculum.
- It is missing one major feature, however:
-\end_layout
-
-\begin_layout Itemize
-Recognizing reaction types:
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
- There are very many reaction types, but the program should recognize the
- most common ones (synthesis, decomposition, single replacement, double
- replacement, neutralization and combustion) 
-\end_layout
-
-\begin_layout Itemize
- Probably another module will be necessary that uses equation structures,
- fits them according to the type and then fills in the products
-\end_layout
-
-\end_deeper
-\begin_layout Subsection
 Chemistry features
 \end_layout
 
@@ -4356,50 +4408,8 @@ on for structural formulas
 \end_layout
 
 \begin_layout Itemize
- A module will be needed to convert structural formulas to molecular formulas
+A module will be needed to convert structural formulas to molecular formulas
  for balancing and other processes.
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
- Reactivity series: 
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
- After the types of reactions are recognized, it will not be too difficult
- to implement knowledge about whether or not a reaction will take place.
- The user can be informed about this when an equation is balanced.
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
- Mole calculations: 
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
- A field will need to be added in the database for atomic mass of elements.
- 
-\end_layout
-
-\begin_layout Itemize
- fact_dcg_translate will need to be extended to handle polyatomic groups/oxyanio
-ns 
-\end_layout
-
-\begin_layout Itemize
- Tabulate or possibly formula_normalize will be extended to calculate molar
- masses 
-\end_layout
-
-\begin_layout Itemize
- Allow parsers to accept information about stoichiometric problems to solve
-\end_layout
-
-\begin_layout Itemize
- Implement information about mole bridges into the solver (probably a new
- module)
 \end_layout
 
 \end_deeper
@@ -4446,31 +4456,10 @@ ns
 \end_layout
 
 \begin_layout Itemize
- Periodic tables?
+Periodic tables?
 \end_layout
 
 \end_deeper
-\begin_layout Subsection
-Database
-\end_layout
-
-\begin_layout Itemize
- Add many, many more elements.
- 
-\end_layout
-
-\begin_layout Itemize
-More polyatomic groups 
-\end_layout
-
-\begin_layout Itemize
- Write-up a large batch of common names
-\end_layout
-
-\begin_layout Itemize
- Add atomic masses
-\end_layout
-
 \begin_layout Subsection
 Program features
 \end_layout
