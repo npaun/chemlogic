@@ -1,3 +1,10 @@
+% reaction_types.pl: Completion of chemical equation, identification of reaction types and prediction of reaction occurence.
+% This file is from Chemlogic, a logic programming computer chemistry system
+% <http://icebergsystems.ca/chemlogic>
+% (C) Copyright 2012-2015 Nicholas Paun
+
+
+:- module(reaction_types,[reaction_match/3,reaction_complete/7,reaction_info/2,activity_info/2]).
 
 %%% Neutralization Reactions %%%
 reaction_match(neutralization,[

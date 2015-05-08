@@ -26,11 +26,11 @@
 % The solver (converts the coefficient set to a system of linear equations and solves it).
 :- use_module(solve).
 
-% 
+% Quantity expressions for stoichiometry which can be used in chemical equations 
 :- use_module('../stoich/quantity').
 
 % Reaction type analysis
-:- consult(reaction_types).
+:- use_module(reaction_types).
 
 clear_rest([],[]).
 
