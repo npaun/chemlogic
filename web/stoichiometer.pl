@@ -19,7 +19,7 @@ stoichiometer_input(Request,Type,Input,OutputType,UnitS,PropertyS) :-
 	properties_input(PropertyS, [list(atom)])
 	]).
 
-stoichiometer_html(Type,Input,OutputType,Solution,UnitS,PropertyS,ResultS) :-
+stoichiometer_html(Type,Input,OutputType,Solution,UnitS,PropertyS,ResultS,Info) :-
 	( var(Input) -> Input = []; true),
 	OptionS = [[symbolic,'Symbolic'],[word,'Word']],
 	chemweb_select_list(Type,OptionS,SelectList),
@@ -35,7 +35,8 @@ stoichiometer_html(Type,Input,OutputType,Solution,UnitS,PropertyS,ResultS) :-
 	div(id(solution),Solution),
 	div(id(select),QuerySelect)
 	]),
-	div(id(results),ResultS)
+	div(id(results),ResultS),
+	ul(id(info),Info)
 	]
 	).
 
@@ -72,14 +73,14 @@ stoichiometer_results([Query|QueryS],[Result|ResultS]) :-
 	stoichiometer_results(QueryS,ResultS).
 
 
-stoichiometer_process(Type,Input,OutputType,Solution,UnitS,PropertyS,ResultS) :-
+stoichiometer_process(Type,Input,OutputType,Solution,UnitS,PropertyS,ResultS,Info) :-
 	atom_chars(Input,StringInput),
 	stoichiometer_queries_create(UnitS,PropertyS,QueryS),
-	stoichiometer_do_process(Type,StringInput,OutputType,Solution,QueryS),
+	stoichiometer_do_process(Type,StringInput,OutputType,Solution,QueryS,Info),
 	stoichiometer_results(QueryS,ResultS).
 
-stoichiometer_do_process(Type,StringInput,OutputType,Solution,QueryS) :-
-	(stoich_queries(Type,StringInput,OutputType,StringSolution,QueryS), chemweb_to_html(StringSolution,Solution)) handle Solution.
+stoichiometer_do_process(Type,StringInput,OutputType,Solution,QueryS,Info) :-
+	(stoich_queries(Type,StringInput,OutputType,StringSolution,Struct,QueryS), balancer_do_info(Struct,Info), chemweb_to_html(StringSolution,Solution)) handle Solution.
 
 stoichiometer_nop_select(Type,Input,OutputType,Solution,QtyS,QtyS) :-
 	atom_chars(Input,StringInput),
@@ -93,11 +94,11 @@ stoichiometer_do_nop_select(Type,StringInput,OutputType,Solution,QtyS) :-
 stoichiometer_page(Request) :-
 	stoichiometer_input(Request,Type,Input,OutputType,UnitS,PropertyS),
 	(\+ UnitS = [] -> 
-		(stoichiometer_process(Type,Input,OutputType,Solution,UnitS,PropertyS,ResultS), RUnitS = UnitS, RPropertyS = PropertyS); 
+		(stoichiometer_process(Type,Input,OutputType,Solution,UnitS,PropertyS,ResultS,Info), RUnitS = UnitS, RPropertyS = PropertyS); 
 		(nonvar(Input) ->
 			(stoichiometer_nop_select(Type,Input,OutputType,Solution,RUnitS,RPropertyS), debug(chemlogic,'~w~n',Solution));
 			stoichiometer_nop(Solution)
 		)
 	),
 
-	stoichiometer_html(Type,Input,OutputType,Solution,RUnitS,RPropertyS,ResultS).
+	stoichiometer_html(Type,Input,OutputType,Solution,RUnitS,RPropertyS,ResultS,Info).

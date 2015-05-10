@@ -5,7 +5,7 @@
 
 
 
-:- module(calculate,[stoich/5,stoich_queries/5]).
+:- module(calculate,[stoich/5,stoich_queries/5,stoich_queries/6]).
 
 % Super irritating style check
 :- style_check(-atom).
@@ -79,8 +79,8 @@ stoich_simple(Input,[[[QtyOut,_],CoeffOut,FormulaOut]|QueryS]) :-
 	stoich_simple(Input,QueryS).
 
 
-stoich_queries_real(InGrammar,Equation,OutGrammar,Balanced,OutQtyS) :-
-	balance_equation(InGrammar,Equation,OutGrammar,Balanced,CoeffS,FormulaS,_,stoich,InQtyS),
+stoich_queries_real(InGrammar,Equation,OutGrammar,Balanced,Struct,OutQtyS) :-
+	balance_equation(InGrammar,Equation,OutGrammar,Balanced,CoeffS,FormulaS,Struct,stoich,InQtyS),
 	combine_structs(InQtyS,CoeffS,FormulaS,InputS),
 	combine_structs(OutQtyS,CoeffS,FormulaS,QueryS),
 	(
@@ -95,16 +95,19 @@ stoich_queries_real(InGrammar,Equation,OutGrammar,Balanced,OutQtyS) :-
 			)
 	).
 
-stoich_queries(InGrammar,Equation,OutGrammar,Balanced,OutQtyS) :-
+stoich_queries(InGrammar,Equation,OutGrammar,Balanced,Struct,OutQtyS):-
 	catch(
-		stoich_queries_real(InGrammar,Equation,OutGrammar,Balanced,OutQtyS),
+		stoich_queries_real(InGrammar,Equation,OutGrammar,Balanced,Struct,OutQtyS),
 		error(logic_error(Type,Data),_),
 		explain_general_rethrow(logic_error,Equation,Type,Data)
 	).
 
+stoich_queries(InGrammar,Equation,OutGrammar,Balanced,OutQtyS) :-
+	stoich_queries(InGrammar,Equation,OutGrammar,Balanced,_,OutQtyS).
+
 stoich(InGrammar,Equation,OutGrammar,Balanced,OutQtyS) :-
 	queries_convert(OutQtyS,OutQtyStructS),
-	stoich_queries(InGrammar,Equation,OutGrammar,Balanced,OutQtyStructS).
+	stoich_queries(InGrammar,Equation,OutGrammar,Balanced,_,OutQtyStructS).
 
 %%%%% GUIDANCE FOR ERRORS %%%%%
 
