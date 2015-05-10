@@ -133,7 +133,7 @@ guidance_general(excess_missing_input,
 guidance_general(excess_no_comparison,
 	'You have instructed the program to calculate the amount in excess of a given quantity, but you have provided only one known quantity for this reaction.
 
-	Therefore, no comparison can be made between the theoretical amount that reacted and the actual amount that reacted.
+	Therefore, no comparison can be made between the actual (given limiting reactants) and theoretical amounts reacted.
 	
 	Please ensure that you have entered all of the known quantities in this reaction.
 
