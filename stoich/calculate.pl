@@ -71,7 +71,16 @@ stoich_limited(Limitant,[Input|InputS],[[[QtyOut,CalcTypeOut],CoeffOut,FormulaOu
 stoich_simple(_,[]) :- !.
 stoich_simple(Input,[nil|QueryS]) :-
 	stoich_simple(Input,QueryS), !.
-stoich_simple(Input,[[[QtyOut,_],CoeffOut,FormulaOut]|QueryS]) :-
+stoich_simple(Input,[[[QtyOut,CalcTypeOut],CoeffOut,FormulaOut]|QueryS]) :-
+	(CalcTypeOut = excess -> 
+		throw(error(logic_error(calculate:excess_no_comparison,
+				(
+					'Excess quantity to be determined: ', FormulaOut
+				)
+			),_));
+		true
+	),
+				
 	Input = [QtyIn,CoeffIn,FormulaIn],
 	convert(input,FormulaIn,QtyIn,[[[MolIn,SF],mol]]), !,
 	MolOut is MolIn * CoeffOut / CoeffIn,
@@ -120,5 +129,14 @@ guidance_general(excess_missing_input,
 	 Please ensure that you have entered all of the known quantities in this reaction.
 	 
 	 ').
+
+guidance_general(excess_no_comparison,
+	'You have instructed the program to calculate the amount in excess of a given quantity, but you have provided only one known quantity for this reaction.
+
+	Therefore, no comparison can be made between the theoretical amount that reacted and the actual amount that reacted.
+	
+	Please ensure that you have entered all of the known quantities in this reaction.
+
+	').
 
 explain_general_data([],[]).
