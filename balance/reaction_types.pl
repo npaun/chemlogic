@@ -4,7 +4,11 @@
 % (C) Copyright 2012-2015 Nicholas Paun
 
 
+
 :- module(reaction_types,[reaction_match/3,reaction_complete/7,reaction_info/2,activity_info/2]).
+:- set_prolog_flag(double_quotes,chars).
+
+
 
 %%% Neutralization Reactions %%%
 reaction_match(neutralization,[
@@ -26,7 +30,6 @@ reaction_match(neutralization,[
 					[[[MSym2,_],[[["O", 1], ["H", 1]], 1]],[["H",_],[NMSym1,_]]],
 					[[["H", 2], ["O", 1]],[[MSym2,_],[NMSym1,_]]]
 				],certain).
-
 
 %%% Double Replacement Reactions %%%
 reaction_match(double_replacement,[
@@ -66,6 +69,20 @@ reaction_match(decomposition,[
 					[_],
 					_
 			],unknown).
+
+%%% Combustion of hydrocarbons %%%
+reaction_match(combustion,[
+				[[["C", _], ["H", _]|Tail], [["O", 2]]], 
+				[[["C", 1], ["O", 2]], [["H", 2], ["O", 1]]]
+			],unknown) :- 
+				Tail = [["O",_]]; Tail = [].
+
+	
+reaction_match(combustion_incomplete,[
+				[[["C", _], ["H", _]|Tail], [["O", 2]]], 
+				[[["C", 1], ["O", 1]], [["H", 2], ["O", 1]]]
+			],unknown) :- 
+				Tail = [["O",_]]; Tail = [].
 
 %%% Complete chemical reactions %%%
 reaction_complete(neutralization,_,ElementSideSet,_,[Product1,Water],[ElementSideSet|_],[[Reactant1,Reactant2],[Product1,Water]]) :-
@@ -107,11 +124,15 @@ reaction_complete(single_replacement,_,ElementSideSet,_,[Product1,Product2],[Ele
 	process(name:pure_process([NMSym1],[],Product2,_,[])).
 
 
+reaction_complete(combustion,_,ElementSideSet,_,Products,[ElementSideSet|_],[Reactants,Products]) :-
+	reaction_match(combustion,[Reactants,Products],_).
+
 %%% Information about reactions %%%
 reaction_info(neutralization,'Neutralization').
 reaction_info(double_replacement,'Double Replacement').
 reaction_info(single_replacement,'Single Replacement').
-reaction_info(combustion,'Combustion of Hydrocarbons').
+reaction_info(combustion,'Combustion').
+reaction_info(combustion_incomplete,'Combustion (incomplete)').
 reaction_info(decomposition,'Decomposition').
 reaction_info(synthesis,'Synthesis').
 
