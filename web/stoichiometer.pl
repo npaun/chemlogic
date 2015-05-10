@@ -59,8 +59,8 @@ stoichiometer_queries_create([Unit|UnitS],[Property|PropertyS],[Query|QueryS]) :
 	),
 	stoichiometer_queries_create(UnitS,PropertyS,QueryS).
 
-stoichiometer_results([],[]).
-stoichiometer_results([Query|QueryS],[Result|ResultS]) :-
+stoichiometer_results(true,[],[]).
+stoichiometer_results(true,[Query|QueryS],[Result|ResultS]) :-
 	(Query = nil ->
 		Result = span(\['&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;']);
 		(
@@ -70,17 +70,25 @@ stoichiometer_results([Query|QueryS],[Result|ResultS]) :-
 
 		)
 	),
-	stoichiometer_results(QueryS,ResultS).
+	stoichiometer_results(true,QueryS,ResultS).
+
+stoichiometer_results(_,_,_).
 
 
 stoichiometer_process(Type,Input,OutputType,Solution,UnitS,PropertyS,ResultS,Info) :-
 	atom_chars(Input,StringInput),
 	stoichiometer_queries_create(UnitS,PropertyS,QueryS),
-	stoichiometer_do_process(Type,StringInput,OutputType,Solution,QueryS,Info),
-	stoichiometer_results(QueryS,ResultS).
+	stoichiometer_do_process(Type,StringInput,OutputType,Solution,QueryS,Info,OK),
+	debug(chemlogic,'~w~n',QueryS-OK),
+	stoichiometer_results(OK,QueryS,ResultS).
 
-stoichiometer_do_process(Type,StringInput,OutputType,Solution,QueryS,Info) :-
-	(stoich_queries(Type,StringInput,OutputType,StringSolution,Struct,QueryS), balancer_do_info(Struct,Info), chemweb_to_html(StringSolution,Solution)) handle Solution.
+stoichiometer_do_process(Type,StringInput,OutputType,Solution,QueryS,Info,OK) :-
+	(
+		stoich_queries(Type,StringInput,OutputType,StringSolution,Struct,QueryS), 
+		balancer_do_info(Struct,Info), 
+		chemweb_to_html(StringSolution,Solution)
+	) handle Solution,
+	(var(StringSolution) ->  OK = fail; OK = true).
 
 stoichiometer_nop_select(Type,Input,OutputType,Solution,QtyS,QtyS) :-
 	atom_chars(Input,StringInput),
