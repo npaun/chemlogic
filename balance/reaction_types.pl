@@ -84,6 +84,15 @@ reaction_match(combustion_incomplete,[
 			],unknown) :- 
 				Tail = [["O",_]]; Tail = [].
 
+
+reaction_match(combustion_incomplete,[
+				[[["C", _], ["H", _]|Tail], [["O", 2]]], 
+				[[["C", 1], ["O", 2]], [["C", 1], ["O", 1]], [["H", 2], ["O", 1]], [["H",2]]]
+			],unknown) :- 
+				Tail = [["O",_]]; Tail = [].
+
+
+
 %%% Complete chemical reactions %%%
 reaction_complete(neutralization,_,ElementSideSet,_,[Product1,Water],[ElementSideSet|_],[[Reactant1,Reactant2],[Product1,Water]]) :-
 	Water = [["H",2],["O",1]],
