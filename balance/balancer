@@ -35,11 +35,11 @@
 clear_rest([],[]).
 
 balance_equation_real(InGrammar,Equation,OutGrammar,Solution,Coeffs,MoleculeSet,SideSet,Stoich,QtySet) :-
-	parse(InGrammar,.(user,_,[],Elems,ElemsR,MoleculeSet,MoleculeR,ElementSideSet,SideSet,Stoich,QtySet,[]),Equation,[]),
+	parse(InGrammar,.(user,_,[],Elems,ElemsR,MoleculeSet,MoleculeR,ElementSideSet,SideSet,Stoich,QtySet,QtySetR),Equation,[]),
 	SideSet = [_,Products],
 	(var(Products) ->
 			(
-				reaction_complete(_,Elems,ElemsR,MoleculeSet,MoleculeR,ElementSideSet,SideSet);
+				reaction_complete(Stoich,_,Elems,ElemsR,MoleculeSet,MoleculeR,ElementSideSet,SideSet,QtySet,QtySetR);
 				throw(error(domain_error(user:no_completion,SideSet),_))
 			); 
 			clear_rest(ElemsR,MoleculeR)

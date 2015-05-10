@@ -5,7 +5,7 @@
 
 
 
-:- module(reaction_types,[reaction_match/3,reaction_complete/7,reaction_info/2,activity_info/2]).
+:- module(reaction_types,[reaction_match/3,reaction_complete/10,reaction_info/2,activity_info/2]).
 :- set_prolog_flag(double_quotes,chars).
 
 
@@ -93,26 +93,34 @@ reaction_match(combustion_incomplete,[
 
 
 
+reaction_complete(stoich,Type,Elems,ElemsR,MoleculeSet,MoleculeR,ElementSideSet,SideSet,QtySet,QtySetR) :- 
+	reaction_complete(Type,Elems,ElemsR,MoleculeSet,MoleculeR,ElementSideSet,SideSet,QtySet,QtySetR).
+
+reaction_complete(disable,Type,Elems,ElemsR,MoleculeSet,MoleculeR,ElementSideSet,SideSet,_,_) :- 
+	reaction_complete(Type,Elems,ElemsR,MoleculeSet,MoleculeR,ElementSideSet,SideSet,_,_).
+
+
+
 %%% Complete chemical reactions %%%
-reaction_complete(neutralization,_,ElementSideSet,_,[Product1,Water],[ElementSideSet|_],[[Reactant1,Reactant2],[Product1,Water]]) :-
+reaction_complete(neutralization,_,ElementSideSet,_,[Product1,Water],[ElementSideSet|_],[[Reactant1,Reactant2],[Product1,Water]],_,[nil,nil]) :-
 	Water = [["H",2],["O",1]],
 	process(ionic:rev_algo(Reactant1,["H",_,NMSym1,NMCharge1])),
 	process(ionic:rev_algo(Reactant2,[MSym2,MCharge2,[["O",1],["H",1]],_])),
 	process(ionic:fwd_algo(Product1,[MSym2,MCharge2,NMSym1,NMCharge1])).
 
-reaction_complete(neutralization,_,ElementSideSet,_,[Product1,Water],[ElementSideSet|_],[[Reactant1,Reactant2],[Product1,Water]]) :-
+reaction_complete(neutralization,_,ElementSideSet,_,[Product1,Water],[ElementSideSet|_],[[Reactant1,Reactant2],[Product1,Water]],_,[nil,nil]) :-
 	Water = [["H",2],["O",1]],
 	process(ionic:rev_algo(Reactant1,[MSym1,MCharge1,[["O",1],["H",1]],_])),
 	process(ionic:rev_algo(Reactant2,["H",_,NMSym2,NMCharge2])),
 	process(ionic:fwd_algo(Product1,[MSym1,MCharge1,NMSym2,NMCharge2])).
 
-reaction_complete(double_replacement,_,ElementSideSet,_,[Product1,Product2],[ElementSideSet|_],[[Reactant1,Reactant2],[Product1,Product2]]) :-
+reaction_complete(double_replacement,_,ElementSideSet,_,[Product1,Product2],[ElementSideSet|_],[[Reactant1,Reactant2],[Product1,Product2]],_,[nil,nil]) :-
 	process(ionic:rev_algo(Reactant1,[MSym1,MCharge1,NMSym1,NMCharge1])),
 	process(ionic:rev_algo(Reactant2,[MSym2,MCharge2,NMSym2,NMCharge2])),
 	process(ionic:fwd_algo(Product1,[MSym1,MCharge1,NMSym2,NMCharge2])),
 	process(ionic:fwd_algo(Product2,[MSym2,MCharge2,NMSym1,NMCharge1])).
 
-reaction_complete(single_replacement,_,ElementSideSet,_,[Product1,Product2],[ElementSideSet|_],[[Reactant1,Reactant2],[Product1,Product2]]) :-
+reaction_complete(single_replacement,_,ElementSideSet,_,[Product1,Product2],[ElementSideSet|_],[[Reactant1,Reactant2],[Product1,Product2]],_,[nil,nil]) :-
 	process(ionic:rev_algo(Reactant1,[MSym1,_,NMSym1,NMCharge1])),
 
 	(Reactant2 = [[MSym2,_]], charge_check(metal,MSym2,MChargeS),
@@ -125,7 +133,7 @@ reaction_complete(single_replacement,_,ElementSideSet,_,[Product1,Product2],[Ele
 	process(ionic:fwd_algo(Product1,[MSym2,MCharge2,NMSym1,NMCharge1])),
 	process(name:pure_process([MSym1],[],Product2,_,[])).
 
-reaction_complete(single_replacement,_,ElementSideSet,_,[Product1,Product2],[ElementSideSet|_],[[Reactant1,Reactant2],[Product1,Product2]]) :-
+reaction_complete(single_replacement,_,ElementSideSet,_,[Product1,Product2],[ElementSideSet|_],[[Reactant1,Reactant2],[Product1,Product2]],_,[nil,nil]) :-
 	process(ionic:rev_algo(Reactant1,[MSym1,MCharge1,NMSym1,_])),
 
 	(Reactant2 = [[NMSym2,_]], charge(NMSym2,NMCharge2)),
@@ -133,7 +141,7 @@ reaction_complete(single_replacement,_,ElementSideSet,_,[Product1,Product2],[Ele
 	process(name:pure_process([NMSym1],[],Product2,_,[])).
 
 
-reaction_complete(combustion,_,ElementSideSet,_,Products,[ElementSideSet|_],[Reactants,Products]) :-
+reaction_complete(combustion,_,ElementSideSet,_,Products,[ElementSideSet|_],[Reactants,Products],_,[nil,nil]) :-
 	reaction_match(combustion,[Reactants,Products],_).
 
 %%% Information about reactions %%%
