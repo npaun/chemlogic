@@ -14,7 +14,7 @@
 quantity_prefix(Qty) --> quantity(Qty), " ".
 quantity_prefix(nil) --> "".
 
-quantity([[Val,Unit]|Tail]) --> value(Val), " ", unit_sym(Unit), !, unit_tail(Unit,Tail), !.
+quantity([[Val,Unit]|Tail]) --> value(Val), " ", unit_sym(Unit) xx invalid_unit, !, unit_tail(Unit,Tail), !.
 
 value([Val,SF]) --> 
 	({var(Val)} -> 
@@ -92,5 +92,12 @@ guidance_errcode(fail,_,
 
 	 A quantity can also be described using a value and a unit, followed by another value and a unit, in parentheses.
 	 e.g. 5 L (9 M)'
+	 ).
+
+guidance_errcode(invalid_unit,_,
+	'The unit you have entered is invalid.
+	 This may be due to either because you have mistyped the name of a unit, a valid unit is not supported by the program, or the unit you have entered is inappropriate for this type of quantity.
+
+	 Please check to ensure that you have used the correct unit for the given quantity.'
 	 ).
 
