@@ -22,6 +22,9 @@ limitation_exists(InputS) :-
 	length(Values,Count),
 	Count > 1.
 
+no_input(NilS) :-
+	subtract(NilS,[nil],[]).
+
 single_input(InputS,Struct) :-
 	subtract(InputS,[nil],[Struct]).
 
@@ -92,6 +95,14 @@ stoich_queries_real(InGrammar,Equation,OutGrammar,Balanced,Struct,OutQtyS) :-
 	balance_equation(InGrammar,Equation,OutGrammar,Balanced,CoeffS,FormulaS,Struct,stoich,InQtyS),
 	combine_structs(InQtyS,CoeffS,FormulaS,InputS),
 	combine_structs(OutQtyS,CoeffS,FormulaS,QueryS),
+	(	no_input(InputS) ->
+			throw(error(logic_error(calculate:no_input,
+				(
+					'Attempted to calculate the following quantities: ', QueryS
+				)
+			),_));
+			true
+	),
 	(
 		single_input(InputS,Input) -> 
 			(
@@ -139,4 +150,11 @@ guidance_general(excess_no_comparison,
 
 	').
 
+guidance_general(no_input,
+	'You have attempted to perform a stoichiometric calculation without providing any known quantities.
+	 Therefore, it is impossible to produce any results.
+
+	 Please enter any known quantities for this reaction.
+
+	 ').
 explain_general_data([],[]).
