@@ -11,7 +11,7 @@ cl(element("Cl","chlorine","chlor")).
         oxyanions("Cl",-1,[4,3,2,1]).
         diatomic("Cl").
         atomic("Cl",17).
-	mass("Cl",35.435).
+	mass("Cl",35.453).
 	activity("Cl",200).
 
 
@@ -47,7 +47,7 @@ cl(element("N","nitrogen","nitr")).
         charge("N",-3).
         oxyanions("N",-1,[0,3,2,0]).
 	atomic("N",7).
-	mass("N",14.0067).
+	mass("N",14.00674).
 	
 cl(element("O","oxygen","ox")).
         charge("O",-2).

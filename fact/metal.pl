@@ -39,7 +39,7 @@ cl(element("Mg","magnesium","magna")).
 cl(element("Ca","calcium","calc")).
 	charge("Ca",2).
 	atomic("Ca",20).
-	mass("Ca",40.08).
+	mass("Ca",40.078).
 	activity("Ca",300).
 
 cl(element("Sr","strontium","stront")).
@@ -87,7 +87,7 @@ cl(element("Cr","chromium","chrom")).
         oxyanions("Cr",-2,[0,4,0,0]).
         oxyanions("Cr",-1,[0,0,2,0]).
 	atomic("Cr",24).
-	mass("Cr",51.996).
+	mass("Cr",51.9961).
 	activity("Cr",800).
 
 cl(element("Mn","manganese","mangan")).
@@ -99,7 +99,7 @@ cl(element("Mn","manganese","mangan")).
 cl(element("Fe","iron","ferr")).
 	charge("Fe",[3,2]).
 	atomic("Fe",26).
-	mass("Fe",55.847).
+	mass("Fe",55.845).
 	activity("Fe",900).
 
 cl(element("Co","cobalt","cobalt")).
@@ -171,13 +171,13 @@ cl(element("Al","aluminum","alum")).
 cl(element("Al","aluminium","alum")).
         charge("Al",3).
 	atomic("Al",13).
-	mass("Al",26.98154).
+	mass("Al",26.98153).
 	activity("Al",600).
 
 cl(element("Sn","tin","stan")).
 	charge("Sn",[4,2]).
 	atomic("Sn",50).
-	mass("Sn",118.71).
+	mass("Sn",118.710).
 	activity("Sn",1100).
 
 cl(element("Pb","lead","plumb")).
