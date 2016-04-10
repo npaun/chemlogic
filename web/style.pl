@@ -41,7 +41,7 @@ serve_style_file(File) :-
 % Serves stylesheet and font.
 :- initialization serve_style_file('style/modern.css').
 :- initialization serve_style_file('style/computer-modern.otf').
-
+:- initialization serve_style_file('style/help.js').
 
 % Injects stylesheet into every page.
 user:head(chemlogic,Head) -->
@@ -59,7 +59,8 @@ user:body(chemlogic,Body) -->
 	body([
 	div(id(top),\cl_menu),
 	div(id(content),Body),
- 	div(id(footer),\custom_footer)
+ 	div(id(footer),\custom_footer),
+	script([src('style/help.js')],[])
 	])
 	).
 
