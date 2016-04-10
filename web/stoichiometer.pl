@@ -29,8 +29,8 @@ stoichiometer_html(Type,Input,OutputType,Solution,UnitS,PropertyS,ResultS,Info) 
 	[
 	h1(id(feature),'Stoichiometer'),
 	form([
-	select(name(type),SelectList),
-	input([name(stoichiometer_input),id(stoichiometer_input),type(text),size(80),value(Input)]),
+	select([name(type),id(stoichiometer_type)],SelectList),
+	input([name(stoichiometer_input),id(stoichiometer_input),type(text),size(80),value(Input),required]),
 	select(name(outputtype),OutputSelectList),
 	div(id(solution),Solution),
 	div(id(select),QuerySelect)

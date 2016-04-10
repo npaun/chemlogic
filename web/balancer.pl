@@ -28,8 +28,8 @@ balancer_html(Type,Input,OutputType,Solution,Info) :-
 	[
 	h1(id(feature),'Balancer'),
 	form([
-	select(name(type),SelectList),
-	input([name(balancer_input),id(balancer_input),type(text),size(80),value(Input)]),
+	select([name(type),id(balancer_type)],SelectList),
+	input([name(balancer_input),id(balancer_input),type(text),size(80),value(Input),required]),
 	select(name(outputtype),OutputSelectList)
 	]),
 	div(id(solution),Solution),

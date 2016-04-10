@@ -30,9 +30,9 @@ molar_html(Type,Unit,Input,TailInput,Solution) :-
 		[
 			h1(id(feature),'Molar'),
 			form([
-				select(name(type),SelectList),
-				input([name(molar_input),id(molar_input),type(text),size(60),value(Input)]),
-				select(name(unit),UnitSelectList),
+				select([name(type),id(molar_type)],SelectList),
+				input([name(molar_input),id(molar_input),type(text),size(60),value(Input),required]),
+				select([name(unit),id(molar_unit)],UnitSelectList),
 				\[' ('],
 				input([name(molar_tail_input),id(molar_tail_input),type(text),size(10),value(TailInput)]),
 				\[')'],

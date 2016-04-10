@@ -28,8 +28,8 @@ compounder_html(Type,Input,Solution) :-
 		[
 			h1(id(feature),'Compounder'),
 			form([
-				select(name(type),SelectList),
-				input([name(compounder_input),id(compounder_input),type(text),size(60),value(Input)])
+				select([name(type),id(compounder_type)],SelectList),
+				input([name(compounder_input),id(compounder_input),type(text),size(60),value(Input),required])
 			]),
 			div(id(solution),Solution)
 		]
