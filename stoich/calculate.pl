@@ -75,7 +75,7 @@ stoich_simple(_,[]) :- !.
 stoich_simple(Input,[nil|QueryS]) :-
 	stoich_simple(Input,QueryS), !.
 stoich_simple(Input,[[[QtyOut,CalcTypeOut],CoeffOut,FormulaOut]|QueryS]) :-
-	(CalcTypeOut = excess -> 
+	(CalcTypeOut = excess ->
 		throw(error(logic_error(calculate:excess_no_comparison,
 				(
 					'Excess quantity to be determined: ', FormulaOut
@@ -83,7 +83,7 @@ stoich_simple(Input,[[[QtyOut,CalcTypeOut],CoeffOut,FormulaOut]|QueryS]) :-
 			),_));
 		true
 	),
-				
+
 	Input = [QtyIn,CoeffIn,FormulaIn],
 	convert(input,FormulaIn,QtyIn,[[[MolIn,SF],mol]]), !,
 	MolOut is MolIn * CoeffOut / CoeffIn,
@@ -104,7 +104,7 @@ stoich_queries_real(InGrammar,Equation,OutGrammar,Balanced,Struct,OutQtyS) :-
 			true
 	),
 	(
-		single_input(InputS,Input) -> 
+		single_input(InputS,Input) ->
 			(
 				stoich_simple(Input,QueryS)
 			);
@@ -138,14 +138,14 @@ guidance_general(excess_missing_input,
 	 For example, for the reaction FeCl2 + KNO3 + HCl --> FeCl3 + NO + H2O + KCL, the amount of FeCl2 in excess could only be calculated if the amount of FeCl2 initially present was provided (e.g. 56.8 g).
 
 	 Please ensure that you have entered all of the known quantities in this reaction.
-	 
+
 	 ').
 
 guidance_general(excess_no_comparison,
 	'You have instructed the program to calculate the amount in excess of a given quantity, but you have provided only one known quantity for this reaction.
 
 	Therefore, no comparison can be made between the actual (given limiting reactants) and theoretical amounts reacted.
-	
+
 	Please ensure that you have entered all of the known quantities in this reaction.
 
 	').

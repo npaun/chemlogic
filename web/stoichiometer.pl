@@ -84,8 +84,8 @@ stoichiometer_process(Type,Input,OutputType,Solution,UnitS,PropertyS,ResultS,Inf
 
 stoichiometer_do_process(Type,StringInput,OutputType,Solution,QueryS,Info,OK) :-
 	(
-		stoich_queries(Type,StringInput,OutputType,StringSolution,Struct,QueryS), 
-		balancer_do_info(Struct,Info), 
+		stoich_queries(Type,StringInput,OutputType,StringSolution,Struct,QueryS),
+		balancer_do_info(Struct,Info),
 		chemweb_to_html(StringSolution,Solution)
 	) handle Solution,
 	(var(StringSolution) ->  OK = fail; OK = true).
@@ -96,13 +96,13 @@ stoichiometer_nop_select(Type,Input,OutputType,Solution,QtyS,QtyS) :-
 
 stoichiometer_do_nop_select(Type,StringInput,OutputType,Solution,QtyS) :-
 		(balance_equation(Type,StringInput,OutputType,StringSolution,_,_,_,stoich,QtyS), chemweb_to_html(StringSolution,Solution)) handle Solution.
-	
+
 
 
 stoichiometer_page(Request) :-
 	stoichiometer_input(Request,Type,Input,OutputType,UnitS,PropertyS),
-	(\+ UnitS = [] -> 
-		(stoichiometer_process(Type,Input,OutputType,Solution,UnitS,PropertyS,ResultS,Info), RUnitS = UnitS, RPropertyS = PropertyS); 
+	(\+ UnitS = [] ->
+		(stoichiometer_process(Type,Input,OutputType,Solution,UnitS,PropertyS,ResultS,Info), RUnitS = UnitS, RPropertyS = PropertyS);
 		(nonvar(Input) ->
 			(stoichiometer_nop_select(Type,Input,OutputType,Solution,RUnitS,RPropertyS), debug(chemlogic,'~w~n',Solution));
 			stoichiometer_nop(Solution)

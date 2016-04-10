@@ -22,7 +22,7 @@ name_quantity:guidance_errcode(A,B,C) :- name:guidance_errcode(A,B,C).
 name_quantity:guidance_unparsed(A,B) :- name:guidance_unparsed(A,B).
 
 
-convert_name_2_formula(Name,Formula,[Query]) :- 
+convert_name_2_formula(Name,Formula,[Query]) :-
 	queries_convert([Query],[Struct]),
 	calc_name_2_formula(Name,Formula,Struct).
 
@@ -37,7 +37,7 @@ calc_name_2_formula(Name,Formula,[Struct,_]) :-
 	).
 
 
-convert_formula_2_name(Formula,Name,[Query]) :- 
+convert_formula_2_name(Formula,Name,[Query]) :-
 	queries_convert([Query],[Struct]),
 	calc_formula_2_name(Formula,Name,Struct).
 

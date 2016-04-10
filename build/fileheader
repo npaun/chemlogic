@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo "0a
-% $1: 
+% $1:
 % This file is from Chemlogic, a logic programming computer chemistry system
 % <http://icebergsystems.ca/chemlogic>
 % (C) Copyright 2012-`date +%Y` Nicholas Paun

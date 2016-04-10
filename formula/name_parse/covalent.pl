@@ -24,26 +24,26 @@ covalent(Formula) --> systematic_covalent(Formula).
 
 %%% Systematic Naming for Covalent %%%
 
-systematic_covalent([[Sym1,Num1],[Sym2,Num2]]) --> 
+systematic_covalent([[Sym1,Num1],[Sym2,Num2]]) -->
 	covalent_part(nonmetal,Sym1,sub_first,Num1), !,
-	" ", 
+	" ",
 	covalent_part(nonmetal_ide,Sym2,sub_general,Num2) xx covalent_part_2.
 
-covalent_part(SymGoal,Sym,NumGoal,Num) --> 
-	{fwd_flag(Num,Hack)}, 
-	call(NumGoal,Num,Letter), 
-	call(SymGoal,Sym,Matched,_), 
+covalent_part(SymGoal,Sym,NumGoal,Num) -->
+	{fwd_flag(Num,Hack)},
+	call(NumGoal,Num,Letter),
+	call(SymGoal,Sym,Matched,_),
 	(
-		{double_vowel_test(Letter,Matched)}; 
+		{double_vowel_test(Letter,Matched)};
 		fwd_stop(Hack,vowel_required)
 	).
 
-covalent_part(SymGoal,Sym,NumGoal,Num) --> 
-	{fwd_flag(Num,Hack)}, 
+covalent_part(SymGoal,Sym,NumGoal,Num) -->
+	{fwd_flag(Num,Hack)},
 	call(NumGoal,Num,Letter) xx num_prefix, Letter,
        	call(SymGoal,Sym,Matched,_),
 	(
-		\+ {double_vowel_test(Letter,Matched)}; 
+		\+ {double_vowel_test(Letter,Matched)};
 		fwd_stop(Hack,vowel_omit)
 	).
 
@@ -154,7 +154,7 @@ guidance_unparsed([],
 guidance_errcode(num_prefix,alpha,
 	'The number prefix you have entered is not valid. Therefore, the highlighted component cannot be processed.
 	 Using mono for 1 *is* required for the second part of a covalent compound name.
- 	 
+
  	e.g <tetra>chloride, <mon>oxide but not just oxide or <5>oxide'
 ).
 
@@ -165,7 +165,7 @@ guidance_errcode(covalent_part_2,alpha,
 
 guidance_errcode(vowel_required,_,
 	'You must use the full number prefix, including the last vowel because the name of the element does not start with an a or o.
-	 
+
 	e.g. <tetra>chloride, <tri>iodide, not tet*rc*hloride or t*ri*odide.'
 ).
 

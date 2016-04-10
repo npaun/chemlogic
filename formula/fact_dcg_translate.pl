@@ -82,7 +82,7 @@ cl_oxy_to_dcg(Elem,Charge,OxygenS) :- oxy_to_dcg(Elem,Charge,OxygenS,["per","","
 oxy_to_dcg(_,_,[],[],[],[]).
 
 oxy_to_dcg(Elem,Charge,[Oxygen|OxygenS],[Prefix|PrefixS],[Suffix|SuffixS]) :-
-	(Oxygen > 0 -> 
+	(Oxygen > 0 ->
 		(
 			oxy_formula(Elem,Charge,Oxygen,Formula),
 			oxy_name(Prefix,Elem,Suffix,Name),

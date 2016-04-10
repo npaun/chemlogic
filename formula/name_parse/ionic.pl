@@ -12,15 +12,15 @@
 
 
 
-%%% Different algorithm is used depending on convertion from name to formula or from formula to name %%% 
+%%% Different algorithm is used depending on convertion from name to formula or from formula to name %%%
 
 ionic(Elems,ElemsR,Formula) --> {var(Formula)}, fwd(Elems,ElemsR,Formula), !.
 ionic(_,_,Formula) --> {nonvar(Formula)}, rev(Formula).
 
 
-%%% The Algorithms %%% 
+%%% The Algorithms %%%
 
-fwd(MElems,FinalRest,[Anion,Cation|Appended]) --> 
+fwd(MElems,FinalRest,[Anion,Cation|Appended]) -->
 	compound(MElems,FinalRest,ChargeFormula,Appended),
 	{fwd_algo([Anion,Cation],ChargeFormula)}.
 
@@ -41,16 +41,16 @@ rev(Formula) -->
 
 	/* Corrector: remove if unecessary */
 	(
-		{GCD is gcd(MSub,NMSub)}, 
+		{GCD is gcd(MSub,NMSub)},
 		{GCD = 1, !; throw(error(logic_error(ionic:corrector_not_reduced,Formula),_))}
 	).
 
 rev_algo(Formula,[MSym,MCharge,NMSym,NMCharge]) :-
 		Formula = [[TestMSym,_]|_Rest],
 		FFormula = [[MSym,MSub],[NMSym,NMSub]|_Hydrate],
-		(TestMSym = "H" -> 
+		(TestMSym = "H" ->
 			acid_correct_hydrogen(Formula,FFormula);
-			(Formula = FFormula, charge_check(metal,MSym,MCharges))	
+			(Formula = FFormula, charge_check(metal,MSym,MCharges))
 		),
 
 		(charge(NMSym,NMCharge), !),
@@ -59,19 +59,19 @@ rev_algo(Formula,[MSym,MCharge,NMSym,NMCharge]) :-
 		MCharge is NMTotal / MSub,
 
 		/* Corrector: remove if unnecessary */
-	
+
 		(
-			(is_list(MCharges) -> member(MCharge,MCharges); MCharge = MCharges), !; 
+			(is_list(MCharges) -> member(MCharge,MCharges); MCharge = MCharges), !;
 			throw(error(logic_error(ionic:corrector_invalid_subscript,Formula),_))
 		).
 
 
-%%% Ionic Compound Naming Rules %%% 
+%%% Ionic Compound Naming Rules %%%
 
 compound(Elems,Rest,Formula,[]) --> acid(Elems,Rest,Formula).
 compound(MElems,FinalRest,[MSym,MCharge,NMSym,NMCharge],Hydrate) -->
-	cation(MElems,MRest,MSym,MCharge), 
-	" " xx anion_part, 
+	cation(MElems,MRest,MSym,MCharge),
+	" " xx anion_part,
 	anion(MRest,NMRest,NMSym,NMCharge),
 	hydrate_part(NMRest,FinalRest,Hydrate).
 
@@ -80,50 +80,50 @@ cation(Elems,Rest,Formula,Charge) --> group(Elems,Rest,Formula,_),
 
 cation([Sym|Rest],Rest,Sym,Charge) --> metal(Sym,Charge).
 
-anion(Elems,Rest,Formula,Charge) --> group(Elems,Rest,Formula,_), 
+anion(Elems,Rest,Formula,Charge) --> group(Elems,Rest,Formula,_),
 		{charge_check(nonmetal,Formula,Charge)} xx (anion, mark).
 
-anion([Sym|Rest],Rest,Sym,Charge) --> nonmetal_ide(Sym,_,Charge) xx nonmetal, 
+anion([Sym|Rest],Rest,Sym,Charge) --> nonmetal_ide(Sym,_,Charge) xx nonmetal,
 	{Charge < 0} xx noble_gas_q.
 
 
 %%% Hydrates %%%
 
-hydrate_part(["H","O"|ElemR],ElemR,[[[["H",2],["O",1]],Num]]) --> 
-	" ", 
-	(sub_general(Num,Suffix), Suffix), 
+hydrate_part(["H","O"|ElemR],ElemR,[[[["H",2],["O",1]],Num]]) -->
+	" ",
+	(sub_general(Num,Suffix), Suffix),
 	"hydrate" xx hydrate_h2o.
 
 hydrate_part(Pass,Pass,[]) --> [].
 
 hydrate_part([],[],Formula,[],[]) :- throw(error(logic_error(ionic:corrector_input_too_long,Formula),_)).
 
-%%% Metals %%% 
+%%% Metals %%%
 
 metal(Sym,Charge) --> element(Sym,_), {charge(Sym,Charges)}, metal_valence(Charge,Charges), !.
 
-metal_valence(Charge,Charges) --> 
+metal_valence(Charge,Charges) -->
 	{is_list(Charges)},
 	multivalent_charge(Charge) xx charge,
 	{member(Charge,Charges)} xx charge_invalid.
 
-metal_valence(Charge,Charges) --> 
+metal_valence(Charge,Charges) -->
 	{Charges > 0},
-       	multivalent_corrector(Charge), /* CORRECTOR: remove if unecessary */	
+       	multivalent_corrector(Charge), /* CORRECTOR: remove if unecessary */
 	{Charge = Charges}.
 
 /* CORRECTOR: remove if unnecessary */
-multivalent_corrector(Charge) --> {var(Charge)} -> 
-	( 
+multivalent_corrector(Charge) --> {var(Charge)} ->
+	(
 		(
-			multivalent_charge(_), 
+			multivalent_charge(_),
 			syntax_stop(ionic:corrector_not_multivalent)
-		); 
+		);
 		{true}
 	); {true}.
 
 
-%%% Multivalent Charges %%% 
+%%% Multivalent Charges %%%
 
 multivalent_charge(Charge) --> "(", num_roman(Charge), ")".
 
@@ -141,7 +141,7 @@ num_roman(1) --> "I".
 
 
 
-%%%%% ERROR MESSAGE GUIDANCE %%%%% 
+%%%%% ERROR MESSAGE GUIDANCE %%%%%
 
 
 
@@ -162,7 +162,7 @@ guidance_errcode(charge,outside_paren,
 
 guidance_errcode(charge,digit,
 	'Ionic charges must be entered with parenthesized roman numerals.
-	
+
 	 e.g. copper<(II)> instead of copper<2>'
  ).
 
@@ -192,14 +192,14 @@ guidance_errcode(charge_invalid,nil,
 
 guidance_errcode(corrector_not_multivalent,white,
 	'BUSTED! You have entered an ionic charge (left of highlighting) for an element that is not multivalent.
-	 
+
 	 e.g. sodium chloride, not sodium(I) chloride'
  ).
 
 guidance_errcode(corrector_not_multivalent,_,
 	'BUSTED! You have entered an ionic charge (left of highlighting) for an element that is not multivalent.
 	 Not only that, you have also inserted some incorrect characters (the highlighted part).
-	 
+
 	 e.g. sodium chloride, not sodium(I) chloride'
  ).
 
@@ -253,19 +253,19 @@ guidance_general(corrector_not_reduced,
  	 Always remember to simplify the formula.
 
  	 e.g Pb2O4 must be reduced to PbO2.
-	 
+
 	 The following formula is incorrectly reduced: '
  ).
 
 guidance_general(corrector_invalid_subscript,
 	'BUSTED! The subscripts of the formula you have entered are invalid.
-	 Your input was recognized as an ionic compound, because it consists of a positive and a negative ion, 
+	 Your input was recognized as an ionic compound, because it consists of a positive and a negative ion,
 	 but the subscripts you have entered do not correspond with the correct charges of these ions.
-	
+
 	 e.g. NaSO4 is incorrect because the charge of the SO4 ion is 2- and the charge of the Na ion is 1+, so the correct formula is Na2SO4.
 
 	 Please verify that you have correctly balanced the charges of the positive and negative ions, by using appropriate subscripts.
-	 
+
 	 The following formula containes invalid subscripts: '
 ).
 

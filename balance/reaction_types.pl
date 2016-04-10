@@ -72,31 +72,31 @@ reaction_match(decomposition,[
 
 %%% Combustion of hydrocarbons %%%
 reaction_match(combustion,[
-				[[["C", _], ["H", _]|Tail], [["O", 2]]], 
+				[[["C", _], ["H", _]|Tail], [["O", 2]]],
 				[[["C", 1], ["O", 2]], [["H", 2], ["O", 1]]]
-			],unknown) :- 
+			],unknown) :-
 				Tail = [["O",_]]; Tail = [].
 
-	
+
 reaction_match(combustion_incomplete,[
-				[[["C", _], ["H", _]|Tail], [["O", 2]]], 
+				[[["C", _], ["H", _]|Tail], [["O", 2]]],
 				[[["C", 1], ["O", 1]], [["H", 2], ["O", 1]]]
-			],unknown) :- 
+			],unknown) :-
 				Tail = [["O",_]]; Tail = [].
 
 
 reaction_match(combustion_incomplete,[
-				[[["C", _], ["H", _]|Tail], [["O", 2]]], 
+				[[["C", _], ["H", _]|Tail], [["O", 2]]],
 				[[["C", 1], ["O", 2]], [["C", 1], ["O", 1]], [["H", 2], ["O", 1]], [["H",2]]]
-			],unknown) :- 
+			],unknown) :-
 				Tail = [["O",_]]; Tail = [].
 
 
 
-reaction_complete(stoich,Type,Elems,ElemsR,MoleculeSet,MoleculeR,ElementSideSet,SideSet,QtySet,QtySetR) :- 
+reaction_complete(stoich,Type,Elems,ElemsR,MoleculeSet,MoleculeR,ElementSideSet,SideSet,QtySet,QtySetR) :-
 	reaction_complete(Type,Elems,ElemsR,MoleculeSet,MoleculeR,ElementSideSet,SideSet,QtySet,QtySetR).
 
-reaction_complete(disable,Type,Elems,ElemsR,MoleculeSet,MoleculeR,ElementSideSet,SideSet,_,_) :- 
+reaction_complete(disable,Type,Elems,ElemsR,MoleculeSet,MoleculeR,ElementSideSet,SideSet,_,_) :-
 	reaction_complete(Type,Elems,ElemsR,MoleculeSet,MoleculeR,ElementSideSet,SideSet,_,_).
 
 
@@ -129,7 +129,7 @@ reaction_complete(single_replacement,_,ElementSideSet,_,[Product1,Product2],[Ele
 			MChargeS = MCharge2
 		)
 	),
-	
+
 	process(ionic:fwd_algo(Product1,[MSym2,MCharge2,NMSym1,NMCharge1])),
 	process(name:pure_process([MSym1],[],Product2,_,[])).
 

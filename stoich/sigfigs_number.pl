@@ -7,10 +7,10 @@
 :- set_prolog_flag(double_quotes,chars).
 
 
-number(Sig,SigR,Digit,DigitR) --> leading_zeros(_,_,Digit,DigitR0), % Leading zeros in the whole part are not significant. 
+number(Sig,SigR,Digit,DigitR) --> leading_zeros(_,_,Digit,DigitR0), % Leading zeros in the whole part are not significant.
 	(
 		(
-			sequence_not_null(Sig,SigR0,DigitR0,DigitR1) -> (decimal_part(SigR0,SigR,DigitR1,DigitR), !); % If the whole number component is not zero, then leading zeros in the decimal part of the number are significant. 
+			sequence_not_null(Sig,SigR0,DigitR0,DigitR1) -> (decimal_part(SigR0,SigR,DigitR1,DigitR), !); % If the whole number component is not zero, then leading zeros in the decimal part of the number are significant.
 			decimal_part_nozero(Sig,SigR,DigitR0,DigitR)  % Otherwise, they are just placeholders
 		), !;
 		zero_result(Sig,SigR,Digit,DigitR) % If absolutely no significant digits have been identified, then the number must be 0.
@@ -19,7 +19,7 @@ number(Sig,SigR,Digit,DigitR) --> leading_zeros(_,_,Digit,DigitR0), % Leading ze
 zero_result(['0'],[],['0'],[]) --> "".
 
 
-decimal_part_nozero(Sig,SigR,Digit,DigitR) --> decimal_point(Digit,DigitR0), leading_zeros(Zeros,ZerosR,DigitR0,DigitR1), sequence_tail(Sequence,SequenceR,DigitR1,DigitR), 
+decimal_part_nozero(Sig,SigR,Digit,DigitR) --> decimal_point(Digit,DigitR0), leading_zeros(Zeros,ZerosR,DigitR0,DigitR1), sequence_tail(Sequence,SequenceR,DigitR1,DigitR),
 	(
 		{Sequence = []} -> {Sig = Zeros, ZerosR = [0|SigR]};  % If the decimal part consists entirely of zeros, then they are significant. A zero must also have been present in the whole part.
 		{Sig = Sequence, SigR = SequenceR} % Otherwise, throw away leading zeros, because they are only placeholders.
@@ -53,4 +53,3 @@ digit('8') --> "8".
 digit('9') --> "9".
 
 decimal_point(['.'|R],R) --> ".".
-

@@ -29,20 +29,20 @@ round_untruncate(Rounded,Precision,Fixed) :-
 	TotalLen is Precision + 1,
 	atom_length(Rounded,Length),
 	(
-		TotalLen > Length -> 
+		TotalLen > Length ->
 			( % There are truncated zeros
 				(
-					sub_atom(Rounded,_,1,_,'.') ->  
+					sub_atom(Rounded,_,1,_,'.') ->
 						FmtString = '~w~`0t~'; % If there already is a decimal point, we only need to re-add zeros that were truncated by Prolog.
 						FmtString = '~w.~`0t~' % Otherwise, the decimal point must be added as well.
 				),
 
 				atomic_list_concat([FmtString,TotalLen,'+'],'',Format),
 				format(atom(Fixed),Format,Rounded)
-			); 
+			);
 			Rounded = Fixed % There is nothing to do.
 	).
-				
+
 round_sigfigs(Value,SF,Result) :-
 	round_precision(Value,SF,Rounded),
 	round_untruncate(Rounded,SF,Result).
@@ -53,5 +53,3 @@ to_number(Atom,Number) :-
 sigfigs(Value,SF) :-
 	number(SigDigits,[],_,[],Value,[]), % Identify all of the significant figures in the number.
 	length(SigDigits,SF). % Count them to identify the number of signifcant figures.
-
-

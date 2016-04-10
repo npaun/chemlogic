@@ -70,17 +70,17 @@ solve(Matrix,Solution) :-
 	VarS = [FirstVar|_], % We use the first variable when putting the solution in simplest form
 	system(Matrix,VarS,System),
 	(
-		require_positive(VarS); % Requires all variables to be positive 
+		require_positive(VarS); % Requires all variables to be positive
 		throw(error(domain_error(solve:positive,System),_))
-	), 
+	),
 	(
-		system_eval(System,VarS); 
+		system_eval(System,VarS);
 		throw(error(domain_error(solve:eval,System),_))
 	),
 	(
-		bb_inf(VarS,FirstVar,_,Solution); % Takes the lowest solution that satisfies all of the constraints. 
+		bb_inf(VarS,FirstVar,_,Solution); % Takes the lowest solution that satisfies all of the constraints.
 		throw(error(domain_error(solve:bb_inf,System)))
-	), 
+	),
 	!.
 
 
@@ -100,7 +100,7 @@ require_positive([Var|VarS]) :-
 
 guidance_general(positive,
 	'Your chemical equation has no solution with all coefficients positive.
-	 
+
 	 Your equation has been converted to the following system of linear equations, which cannot be solved: ').
 
 guidance_general(eval,

@@ -104,7 +104,7 @@ body
 	 font-size: 85%;
  }
 
-.error-message pre 
+.error-message pre
  {
 	white-space: pre-wrap;       /* css-3 */
 	white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
@@ -118,14 +118,14 @@ body
 	 color: red;
  }
 
-#info li 
+#info li
  {
     list-style-type: none;
     display: inline;
     margin-right: 5%;
  }
 
-#info em 
+#info em
  {
    font-weight: bold;
    font-style: normal;
@@ -135,7 +135,7 @@ body
  visibility: hidden;
  }
 
-#results span 
+#results span
 {
 margin-left: 5%;
 }
@@ -156,4 +156,3 @@ margin-left: 5%;
 	margin: -0.5%;
 	padding: 0;
 }
-

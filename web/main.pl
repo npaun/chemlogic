@@ -26,7 +26,7 @@ chemweb_to_html(String,HTML) :-
 
 chemweb_select_list(_,[],[]).
 chemweb_select_list(Curr,[[Key,Desc]|OptionS],[HTML|Rest]) :-
-	(Key = Curr -> 
+	(Key = Curr ->
 		HTML = option([value(Key),selected],Desc);
 		HTML = option([value(Key)],Desc)
 	),

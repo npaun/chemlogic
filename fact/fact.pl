@@ -60,7 +60,7 @@ Elements and polyatomic groups have their charges listed by a charge/2 fact:
 charge(+Symbol,+Charges).
 
 Symbol/Formula	list/string	The symbol of the element/polyatomic group
-Charges		number/list	The charge (or charges) of the element/ion.	
+Charges		number/list	The charge (or charges) of the element/ion.
 
 Multivalent metals are detected by checking for a list for Charges, so do not use it for cases where there are multiple charges on something other than a multivalent metal.
 

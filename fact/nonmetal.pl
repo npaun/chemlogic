@@ -49,7 +49,7 @@ cl(element("N","nitrogen","nitr")).
 	atomic("N",7).
 	diatomic("N").
 	mass("N",14.00674).
-	
+
 cl(element("O","oxygen","ox")).
         charge("O",-2).
         diatomic("O").
@@ -104,4 +104,3 @@ cl(element("Xe","xenon","xen")).
 	charge("Xe",0).
 	atomic("Xe",54).
 	mass("Xe",131.29).
-

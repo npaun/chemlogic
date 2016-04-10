@@ -1,4 +1,4 @@
-% compounder.pl: Web frontend for the Compounder features (naming compounds and writing formulas) 
+% compounder.pl: Web frontend for the Compounder features (naming compounds and writing formulas)
 % This file is from Chemlogic, a logic programming computer chemistry system
 % <http://icebergsystems.ca/chemlogic>
 % (C) Copyright 2012-2015 Nicholas Paun
@@ -13,9 +13,9 @@
 
 
 compounder_input(Request,Type,Input) :-
-	
+
 	http_parameters(Request,
-		[   
+		[
 			type(Type, [ optional(true), oneof([name,formula]) ]),
 			compounder_input(Input, [ optional(true) ])
 		]).
@@ -36,7 +36,7 @@ compounder_html(Type,Input,Solution) :-
 		).
 
 compounder_nop(Solution) :-
-	Solution = 'Please select Name or Formula, depending on the form of your input, and then enter it into the textbox.'.	
+	Solution = 'Please select Name or Formula, depending on the form of your input, and then enter it into the textbox.'.
 
 
 compounder_process(Type,Input,Solution) :-

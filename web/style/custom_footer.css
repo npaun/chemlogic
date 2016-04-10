@@ -5,18 +5,18 @@
 
 
 
-#footlist li, #footlist img 
+#footlist li, #footlist img
 {
     width: 10em;
 }
 
-#footlist 
+#footlist
 {
     margin-left: 0 !important;
     padding: 0;
 }
 
-#footer 
+#footer
 {
     position: fixed;
     left: 0;
@@ -29,4 +29,3 @@
 	 text-decoration: none;
 	 color: darkblue;
  }
-

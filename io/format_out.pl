@@ -44,7 +44,7 @@ LaTeX formatting is not intended to be used in an user-interactive program, so e
 	It may be added in the future.
 */
 
-/* 
+/*
 ANDROID: TextView supports only some HTML tags via the HTML class. The font tag can change the text's color (set to white), but not the background color (set to red).
 A span with the inline background-color style is recognized by a customized tag handler that I have written for the app.
 */

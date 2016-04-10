@@ -14,7 +14,7 @@ error_line(Start,Token,Rest) --> Start, output(output,err_token_start), Token, o
 highlight_error(highlight(Start,Token,Rest)) :-
 	error_line(Start,Token,Rest,String,[]),
 	atom_chars(Highlight,String),
-	writeln(Highlight).	
+	writeln(Highlight).
 
 message_syntax_show(message(MessageErrcode,MessageUnparsed,ErrCode)) :-
 	writeln(MessageErrcode),nl,

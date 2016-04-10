@@ -11,9 +11,9 @@
 
 
 molar_input(Request,Type,Input,Unit,TailInput) :-
-	
+
 	http_parameters(Request,
-		[   
+		[
 			type(Type, [ optional(true), oneof([name,formula]) ]),
 			molar_input(Input, [ optional(true) ]),
 			unit(Unit, [ optional(true), oneof(g,'L(g)','L(sol)',mol,'M') ]),
@@ -60,7 +60,7 @@ molar_process(Type,Input,Solution,Unit,QtyTail) :-
 		);
 		Query = [[[[_, _], UnitReal]], actual]
 	),
-	(var(Solution) -> 
+	(var(Solution) ->
 		(
 			atom_chars(Input,StringInput),
 			((molar_do_process(Type,StringInput,StringSolution,Query), chemweb_to_html(StringSolution,Solution)) handle Solution)

@@ -9,7 +9,7 @@ scan_rule(alpha,[C|T]) --> [C], scan_rule_r(alpha,T).
 
 scan_rule(white,C) --> scan_rule(punct,C).
 
-scan_rule(punct,[C|T]) --> 
+scan_rule(punct,[C|T]) -->
 	        [C],
 		{\+ char_type(C,alnum)}, !,
 		scan_rule(punct,T).
@@ -80,8 +80,8 @@ find_token_special(Type,Unparsed,Token,Type,Rest) :-
 	scan_rule(Type,Token,Unparsed,Rest).
 
 explain_syntax_error(ParseModule,Input,Error,Flags,Unparsed,InfoStruct) :-
-	(Flags = [] -> 
-		find_token(Unparsed,Token,TokenType,Rest); 
+	(Flags = [] ->
+		find_token(Unparsed,Token,TokenType,Rest);
 		find_token_special(Flags,Unparsed,Token,TokenType,Rest)
 	),
 
@@ -105,7 +105,7 @@ explain_general_error(Input,Error,DebugData,InfoStruct) :-
 	(Error = Module:Type),
 
 	(Module:explain_general_data(DebugData,DebugInfo); DebugInfo = DebugData),
-	!,	
+	!,
 	(Module:guidance_general(Type,MessageType); MessageType = ''),
 	MessageStruct = message(MessageType,DebugInfo),
 
@@ -132,7 +132,7 @@ phrase_fluff_check(Clause,Input,Output) :-
 
 parse(Call,Input) :- parse(Call,Input,[]).
 
-parse(Call,Args,Input,Output) :- 
+parse(Call,Args,Input,Output) :-
 	Args =.. [_|T],
 	Clause =.. [Call|T],
 	parse(Clause,Input,Output).

@@ -1,4 +1,4 @@
-// help.js: 
+// help.js:
 // This file is from Chemlogic, a logic programming computer chemistry system
 // <http://icebergsystems.ca/chemlogic>
 // (C) Copyright 2012-2016 Nicholas Paun
@@ -74,7 +74,7 @@ function set_handler()
 
 	if (!module)
 		module = 'balancer';
-	
+
  	document.getElementById(module + '_type').addEventListener('change',set_placeholder(module));
 	set_placeholder(module);
 

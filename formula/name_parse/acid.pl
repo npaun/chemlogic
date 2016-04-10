@@ -11,7 +11,7 @@
 
 
 
-%%% Acids %%% 
+%%% Acids %%%
 
 acid(["H"|Elems],Rest,["H",1,ASym,ACharge]) --> acid_anion(Elems,Rest,ASym,ACharge), " acid" xx acid.
 
@@ -21,24 +21,24 @@ acid_anion(Elems,Rest,ASym,ACharge) --> polyatomic_oxy_acid(Elems,Rest,ASym,ACha
 acid_anion(Elems,Rest,ASym,ACharge) --> polyatomic_hydro_acid(Elems,Rest,ASym,ACharge).
 
 hydro_acid([ASym|Rest],Rest,ASym,ACharge) --> "hydro", acid_base(ASym), ic_suffix,
-		{charge_check(nonmetal,ASym,ACharge)} xx nonmetal_acid. 
+		{charge_check(nonmetal,ASym,ACharge)} xx nonmetal_acid.
 
 polyatomic_oxy_acid(Elems,Rest,ASym,ACharge) --> group_base(Elems,Rest,ASym,_), ic_suffix,
 	(
-	
-		{member(["O",_],ASym), !} ; 
+
+		{member(["O",_],ASym), !} ;
 		({var(ACharge)} -> syntax_stop(ionic:oxy_acid_rule))
-		
-	), 
+
+	),
 		{charge_check(nonmetal,ASym,ACharge)} xx nonmetal_acid.
 
 
-polyatomic_hydro_acid(Elems,Rest,ASym,ACharge) --> "hydro", group_base(Elems,Rest,ASym,_), ic_suffix, 
-	 
+polyatomic_hydro_acid(Elems,Rest,ASym,ACharge) --> "hydro", group_base(Elems,Rest,ASym,_), ic_suffix,
+
 		{ \+ member(["O",_],ASym), ! } xx hydro_acid_rule,
 		{charge_check(nonmetal,ASym,ACharge)} xx nonnmetal_acid.
 
-acid_base(Sym) --> element_base(Sym,_), 
+acid_base(Sym) --> element_base(Sym,_),
 	acid_ion_suffix(Sym) xx acid_suffix.
 
 ic_suffix --> "ic" xx ic_acid_suffix.
@@ -48,7 +48,7 @@ ic_suffix --> "ic" xx ic_acid_suffix.
 
 /* NOTE:
  **** The purpose of this correction  ****
-Hydrogen-containing ions (beginning with "bi" or "hydrogen") can react to form acids. 
+Hydrogen-containing ions (beginning with "bi" or "hydrogen") can react to form acids.
 Because acids can be conceptualized as an ionic compound consisting of hydrogen and an anion, one might decide to create an acid consisting of hydrogen and bicarbonate -- "bicarbonic acid", for example. The formula of this acid would be HHCO3, which is not inccorect, but should rather be stated as "H2CO3".
 
 This mistake might be made by a student, or by Chemlogic itself, when it re-arranges ions to complete double-replacement reactions.
@@ -93,12 +93,12 @@ guidance_errcode(ic_acid_suffix,_,
 
 guidance_errcode(nonmetal_acid,alpha,
 	'A non-metal (or a negative polyatomic ion) is expected here.
-	 All acids are covalent compounds consisting of hydrogen and an anion. 
+	 All acids are covalent compounds consisting of hydrogen and an anion.
  	 Their formulas all follow ionic rules (empirical formula based on charges).
 	 Acids are named according to special rules.
 
  	 e.g. You cannot create hydrocupric acid (H2Cu), but you can create hydrosulfuric acid (H2S) and nitric acid (HNO3).'
- ). 
+ ).
 
 guidance_errcode(nonmetal_acid,nil,
 	'A non-metal (or a negative polyatomic ion) is expected here.
@@ -111,14 +111,14 @@ guidance_errcode(nonmetal_acid,nil,
 guidance_errcode(nonmetal_acid,white,
 	'A non-metal (or a negative polyatomic ion) is expected here.
 	 All acids are covalent compounds consisting of hydrogen and an anion.
-	 (This is just the most likely situation --- you may be entering something other than an acid, making a different mistake.) 
+	 (This is just the most likely situation --- you may be entering something other than an acid, making a different mistake.)
 
  	 e.g. You cannot create hydrocupric acid (H2Cu), but you can create hydrosulfuric acid (H2S) and nitric acid (HNO3).'
  ).
 
 guidance_errcode(oxy_acid_rule,_,
 	'Acids not containing oxygen (like the one you are entering) must be prefixed with hydro-.
-	
+
 	 e.g. HCN is <hydro>cyanic acid, not cyanic acid.'
  ).
 

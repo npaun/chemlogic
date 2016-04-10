@@ -16,4 +16,3 @@ custom_footer --> html(ul(id(footlist),
          li(img(src('style/cwsf.png'))),
         li(p(a(href('http://icebergsystems.ca/projects/chemlogic'),\['Nicholas Paun'])))
         ])).
-

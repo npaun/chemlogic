@@ -31,7 +31,7 @@ convert(_,Formula,[[[QtyIn1,SF1],UnitIn1],[[QtyIn2,SF2],UnitIn2]],[[[QtyOut,SF],
 
 % Perhaps output from the 2 unit form might be useful in some cases.
 
-% In this case, some aspects of the result are known, while others are unknown. The variable could be in either term. 
+% In this case, some aspects of the result are known, while others are unknown. The variable could be in either term.
 % This clause determines which quantities represent each argument and then calls the actual procedure.
 
 %convert_fmt(output,Formula,[QtyCalc,UnitCalc],[[QtyR1,UnitR1],[QtyR2,UnitR2]],MaxSF) :-
@@ -147,7 +147,7 @@ molar_mass([[Sym,Sub]|PairS],Mass,MassF) :-
 
 guidance_general(no_conversion,
 	'The provided quantities cannot be converted to each-other.
-	 
+
 	 This may either be because the unit does not exist or is not supported,
 	 e.g. 500 g to ? nols (notice the spelling error)
 
@@ -157,4 +157,3 @@ guidance_general(no_conversion,
 	 Please verify that the quantities indicated have been correctly entered and that there are no missing steps in the calculation.
 
 	 ').
-

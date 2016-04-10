@@ -19,8 +19,8 @@ formula(Fmt,Elems,ElemsR,Formula,FormulaR) -->
 
 %%% Hydrates %%%
 
-hydrate_part(Fmt,["H","O"|ElemsR],ElemsR,[[Formula,Coeff]|SymR],SymR) --> 
-	output(Fmt,dot), 
+hydrate_part(Fmt,["H","O"|ElemsR],ElemsR,[[Formula,Coeff]|SymR],SymR) -->
+	output(Fmt,dot),
 	(num_decimal(Coeff); {Coeff = 1}),
        	water_output(Fmt,Formula) xx (hydrate_h2o,group).
 
@@ -31,8 +31,8 @@ water_output(Fmt,[["H",2],["O",1]]) --> "H", output(Fmt,sub_start), "2", output(
 
 %%% Formula parts %%%
 
-formula_part_first(Fmt,Elems,ElemsR,Part,PartR) --> 
-	part(Fmt,Type,Elems,ElemsR0,Part,PartR0), 
+formula_part_first(Fmt,Elems,ElemsR,Part,PartR) -->
+	part(Fmt,Type,Elems,ElemsR0,Part,PartR0),
 	(formula_part(Fmt,Type,ElemsR0,ElemsR,PartR0,PartR), !).
 
 /*formula_part(_,none,E,E,[],[],[],[]) :- writeln('Nag Dug').*/
@@ -47,19 +47,19 @@ formula_part(_,none,Elems,Elems,Part,Part) --> [].
 
 %%% Polyatomic groups %%%
 
-part(Fmt,multi,Elems,ElemsR,[[Sym,Num]|PartR],PartR) --> 
+part(Fmt,multi,Elems,ElemsR,[[Sym,Num]|PartR],PartR) -->
 	"(",
 
 	(
-		group_symbol(Fmt,Elems,ElemsR,Sym) -> {true}; 
+		group_symbol(Fmt,Elems,ElemsR,Sym) -> {true};
 		(
 			{var(Sym)} -> syntax_stop(formula:group,inside_paren)
 		)
-	), 
+	),
 
 	")",
 	(
-		(output(Fmt,sub_start), num_decimal(Num), output(Fmt,sub_end)); 
+		(output(Fmt,sub_start), num_decimal(Num), output(Fmt,sub_end));
 		{var(Sym)} -> syntax_stop(formula:number)
 	).
 
@@ -131,7 +131,7 @@ guidance_errcode(number,punct,
 	 ).
 
 guidance_errcode(group,inside_paren,
-	'The highlighted string is not a valid polyatomic group. 
+	'The highlighted string is not a valid polyatomic group.
 	 Please check that you have entered it correctly. (The program may also simply not have it in its database).
  	 Also, parentheses are not necessary for single elements.
 
@@ -150,7 +150,7 @@ guidance_errcode(none,punct,
 
 guidance_errcode(none,white,
 	'Remove any extraneous spaces from your formula.'
-	 
+
 ).
 
 guidance_errcode(none,digit,

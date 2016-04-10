@@ -25,4 +25,3 @@ Clause handle HandlerArgs :-
 		error(InfoStruct,_),
 		call(error_handler,HandlerArgs,InfoStruct)
 	).
-

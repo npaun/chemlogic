@@ -16,8 +16,8 @@ quantity_prefix(nil) --> "".
 
 quantity([[Val,Unit]|Tail]) --> value(Val) xx not_a_number, " ", unit_sym(Unit) xx invalid_unit, !, unit_tail(Unit,Tail), !.
 
-value([Val,SF]) --> 
-	({var(Val)} -> 
+value([Val,SF]) -->
+	({var(Val)} ->
 		(
 			value_calc([Val,SF])
 		);
@@ -105,4 +105,3 @@ guidance_errcode(not_a_number,_,
 	'You have entered an invalid character where a number was expected.
 	Please verify that you have entered the chemical equation and all quantities correctly.'
 	).
-

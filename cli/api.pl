@@ -30,5 +30,3 @@ cli_api_message(Format) :-
 	current_prolog_flag(arch,SystemArch),
 	write('System		architecture	'),writeln(SystemArch),
 	nl.
-	
-

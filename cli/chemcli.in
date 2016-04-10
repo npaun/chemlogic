@@ -32,7 +32,7 @@ InputType - AtomInput :: ResultType - Result :-
 		InputType = formula -> formula_2_name(Input,StringRes) handle _ ;
 		balance_equation(InputType,Input,ResultType,StringRes) handle _
 	),
-		
+
 	atom_chars(Result,StringRes).
 
 
@@ -60,7 +60,7 @@ InputType - Input :: ResultType print :-
 
 cli_init :-
 	current_prolog_flag(argv,Argv),
-(Argv = ['--api'|Format]; Argv = [_,'--api'|Format]) -> 
+(Argv = ['--api'|Format]; Argv = [_,'--api'|Format]) ->
 (
 cli_api_init(Format),
 cli_api_message(Format)
@@ -69,7 +69,7 @@ cli_api_message(Format)
 set_output_format(ansi),
 cli_interactive_message
 ).
-	
+
 cli_interactive_message :-
 	writeln('\e[00;32mWelcome to the Chemlogic CLI interface!\e[00m'),
 	writeln('(Work in progress)'), nl,

@@ -18,15 +18,15 @@ word(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[ElemsL,ElemR0],[SideLeft,Sid
 	products(CoeffR0,CoeffR,ElemR0,ElemR,FormulaR0,FormulaR,SideRight,Stoich,QtyR0,QtyR).
 
 products(Coeff,Coeff,Elems,Elems,Formula,Formula,_,_,Qty,Qty,[],[]).
-products(Coeff,CoeffR,Elems,ElemsR,Formula,FormulaR,SideRight,Stoich,Qty,QtyR) --> 
-	" " xx arrow_space, 
+products(Coeff,CoeffR,Elems,ElemsR,Formula,FormulaR,SideRight,Stoich,Qty,QtyR) -->
+	" " xx arrow_space,
 	expr(Coeff,CoeffR,Elems,ElemsR,Formula,FormulaR,SideRight,Stoich,Qty,QtyR).
 
-expr(Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideH|SideT],Stoich,Qty,QtyR) --> 
+expr(Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideH|SideT],Stoich,Qty,QtyR) -->
 	balanced_name(Coeff,CoeffR0,Elems,ElemR0,Formula,FormulaR0,SideH,Stoich,Qty,QtyR0),
 	expr_tail(CoeffR0,CoeffR,ElemR0,ElemR,FormulaR0,FormulaR,SideT,Stoich,QtyR0,QtyR), !.
 
-expr_tail(Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,Side,Stoich,Qty,QtyR) --> 
+expr_tail(Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,Side,Stoich,Qty,QtyR) -->
 	" + ",
 	expr(Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,Side,Stoich,Qty,QtyR).
 
@@ -88,7 +88,7 @@ guidance_errcode(arrow,nil,
 
 guidance_errcode(arrow,_,
 	'All operators must be properly spaced: 1 space before, 1 space after.
-	 
+
 	 Possible mistakes:
 	 1. You have forgotten to correctly space the highlighted --> or +
 	 2. You are missing a required operator at the highlighted position
@@ -107,7 +107,7 @@ guidance_errcode(none,white,
 
  	 Either you have entered unnecessary characters; in which case, you should remove them,
 	 or you are missing/misentered a +, in which case you should correct it.
- 	
+
  	 NOTE: 1 space before, 1 space after an --> or +'
  ).
 
@@ -124,7 +124,7 @@ guidance_errcode(fail,nil,
 
 	 1. A complete chemical equation has both reactants and products:
 	 e.g. hydrogen + oxygen --> <water>, not --> water.
- 
+
 
 	 2. If only the reactants are provided, the program will attempt to complete the equation.
 	 NOTE: In this case, an arrow must be placed at the end of the reactants.
@@ -132,24 +132,24 @@ guidance_errcode(fail,nil,
 
 	 3. Every plus adds another chemical name:
 	 e.g hydrogen + <oxygen> --> water, not hydrogen + --> water
-	 
+
 	 Please add the missing chemical names.'
- ). 
+ ).
 
 guidance_errcode(fail,punct,
-	'You are missing a chemical name where it is required. 
+	'You are missing a chemical name where it is required.
 	 Therefore, the highlighted symbol does not make sense here.
 
 	 1. A complete chemical equation has reactants and products:
 	 e.g. hydrogen + oxygen --> <water>, not hydrogen + oxygen --> or --> water.
- 
+
 	 2. If only the reactants are provided, the program will attempt to complete the equation.
 	 NOTE: In this case, an arrow must be placed at the end of the reactants.
 	 e.g. acetic acid + zinc hydroxide -->
 
 	 3. Every plus adds another chemical name:
 	 e.g hydrogen + <oxygen> --> water, not hydrogen + --> water
-	
+
 
 	 Please add the missing chemical names.'
  ).

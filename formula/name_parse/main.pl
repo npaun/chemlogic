@@ -6,7 +6,7 @@
 
 
 :- module(name,[name//3,nonmetal//3,nonmetal_ide//3,charge_check/2,charge_check/3]).
-:- set_prolog_flag(double_quotes,chars). 
+:- set_prolog_flag(double_quotes,chars).
 :- use_module(ionic).
 :- use_module(covalent).
 :- multifile guidance_errcode/3.
@@ -17,12 +17,12 @@
 
 nonmetal(Sym,Name,Charge) --> element(Sym,Name), {charge_check(nonmetal,Sym,Charge)}.
 
-nonmetal_ide(Sym,Base,Charge) --> 
-	element_base(Sym,Base), 
+nonmetal_ide(Sym,Base,Charge) -->
+	element_base(Sym,Base),
 	{charge_check(nonmetal,Sym,Charge)} xx nonmetal_charge,
 	"ide" xx ide.
 
-	
+
 /** charge_check(+Type:atom,+Sym:string,?Charge:int) is semidet.
  ** charge_check(+Type:atom,+Sym:string,?Charge:list) is semidet.
  ** charge_check(+Type:atom,+Sym:string) is semidet.
@@ -86,7 +86,7 @@ name(Sym,Rest,Formula) --> common(Sym,Rest,Formula).
 % If the formula is not of a form supported by Chemlogic, return it in symbolic form, as a fallback.
 % This allows any formula to be used in molar, balancer and stoichiometer even if Chemlogic doesn't recognize its name.
 
-name(Sym,Rest,Formula) --> formula(output,Sym,_,Formula,Rest). 
+name(Sym,Rest,Formula) --> formula(output,Sym,_,Formula,Rest).
 
 
 %%%%% ERROR GUIDANCE - GENERAL %%%%%
@@ -128,7 +128,7 @@ guidance_errcode(nonmetal,_,
 ).
 
 guidance_errcode(nonmetal_charge,alpha,
-	'You have entered a metal, but it does not make sense here. 
+	'You have entered a metal, but it does not make sense here.
 	 Ionic compounds are formed from a metal and a non-metal (or a cation and anion).
  	 Covalent compounds are formed from two non-metals.'
  ).
@@ -179,7 +179,7 @@ guidance_errcode(fail,alpha,
 
 	 NOTE: The program does not support any other naming conventions, yet. Sorry.
 
- 	 If you can get your input to follow one of these conventions, as briefly described, 
+ 	 If you can get your input to follow one of these conventions, as briefly described,
 	 the program will be able to give you more detailed help.
  ').
 
@@ -214,9 +214,9 @@ guidance_errcode(none,white,
  ).
 
  guidance_errcode(none,alpha,
- 	'Your input would be a valid chemical compound name if it was not for the highlighted characters on the end. 
+ 	'Your input would be a valid chemical compound name if it was not for the highlighted characters on the end.
 	 If they are unnecessary, please remove them.
- 	 
+
  	 Otherwise, you may have to correct your compound name, or the program may not support the naming convention you are using.'
  ).
 
@@ -228,7 +228,7 @@ guidance_errcode(none,white,
 
 guidance_errcode(_,nil,''). %Let the unparsed guidance deal with this
 guidance_errcode(_,white,
-	'You have inserted a space where it does not make sense. 
+	'You have inserted a space where it does not make sense.
 
 	1. You forgot to type whatever component goes after the space.
 	Please insert it.

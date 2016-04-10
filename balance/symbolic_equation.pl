@@ -19,8 +19,8 @@ symbolic(Fmt,Coeff,CoeffR,Elems,ElemsR,Formula,FormulaR,[ElemsL,ElemsR0],[SideLe
 
 products(_,Coeff,Coeff,Elems,Elems,Formula,Formula,_,_,Qty,Qty,[],[]).
 
-products(Fmt,Coeff,CoeffR,Elems,ElemsR,Formula,FormulaR,SideRight,Stoich,Qty,QtyR) --> 
-	" " xx arrow_space, 
+products(Fmt,Coeff,CoeffR,Elems,ElemsR,Formula,FormulaR,SideRight,Stoich,Qty,QtyR) -->
+	" " xx arrow_space,
 	expr(Fmt,Coeff,CoeffR,Elems,ElemsR,Formula,FormulaR,SideRight,Stoich,Qty,QtyR).
 
 expr(Fmt,Coeff,CoeffR,Elems,ElemR,Formula,FormulaR,[SideH|SideT],Stoich,Qty,QtyR) -->
@@ -72,10 +72,10 @@ guidance_errcode(arrow,digit,Message) :- formula:guidance_errcode(none,digit,Mes
 guidance_errcode(arrow,nil,
 	'Complete chemical equations consist of reactants --> (the arrow) and products.
 	 You may also leave out the products, if you would like the program to complete the reaction.
-	 
+
 	 1. You have forgotten to insert an --> between the reactants and the products.
 	 Find the place where the products start and insert an --> there.
- 	 
+
 	 e.g. CH4 + O2 <-->> CO2 + H2O
 
  	 2. You have left out the arrow, when requesting reaction completion.
@@ -129,24 +129,24 @@ formula:guidance_errcode(part_first,nil,
 
 	 1. A complete equation has both reactants and products:
 	 e.g. H2 + O2 --> <H2O>, not --> H2O.
- 	
+
 	 2. If only the reactants are provided, the program will attempt to complete the equation.
 	 NOTE: In this case, an arrow must be placed at the end of the reactants.
 	 e.g. HCH3COO + Zn(OH)2 -->
 
 	 3. Every plus adds another formula
 	 e.g H2 + <O2> --> H2O, not H2 + --> H2O
-	 
+
 	 Please add the missing formulas.'
- ). 
+ ).
 
 formula:guidance_errcode(part_first,punct,
-	'You are missing a formula where it is required. 
+	'You are missing a formula where it is required.
 	 Therefore, the highlighted symbol does not make sense here.
 
 	 1. A complete chemical equation has both reactants and products:
 	 e.g. H2 + O2 --> <H2O>, not --> H2O.
- 	
+
 	 2. If only the reactants are provided, the program will attempt to complete the equation.
 	 NOTE: In this case, an arrow must be placed at the end of the reactants.
 	 e.g. HCHCOOH + Zn(OH)2 -->
@@ -154,7 +154,7 @@ formula:guidance_errcode(part_first,punct,
 	 3. Every plus adds another formula:
 	 e.g H2 + <O2> --> H2O, not H2 + --> H2O
 
-	 
+
 	 Please add the missing formulas.'
  ).
 
