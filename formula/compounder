@@ -30,8 +30,8 @@
 %%% A simple testing interface %%%
 
 name_2_formula(Name,Formula) :-
-	parse(name(_,_,Internal),Name,[]),
-	parse(formula(output,_,_,Internal,_),Formula,[]).
+	parse(name(_,_,AST),Name,[]),
+	parse(formula(output,_,_,AST,[]),Formula,[]).
 
 formula_2_name(Formula,Name) :-
 	parse(formula(user,_,_,AST,[]),Formula,[]),
