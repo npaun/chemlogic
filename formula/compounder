@@ -34,8 +34,8 @@ name_2_formula(Name,Formula) :-
 	parse(formula(output,_,_,Internal,_),Formula,[]).
 
 formula_2_name(Formula,Name) :-
-	parse(formula(user,_,_,Internal,_),Formula,[]),
-	parse(name(_,_,Internal),Name,[]).
+	parse(formula(user,_,_,AST,[]),Formula,[]),
+	parse(name(_,_,AST),Name,[]).
 
 
 
