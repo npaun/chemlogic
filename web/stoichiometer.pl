@@ -46,7 +46,7 @@ stoichiometer_nop(Solution) :-
 
 stoichiometer_query_list([],[],[]).
 stoichiometer_query_list([Unit|UnitS],[Property|PropertyS],[Select|SelectS]) :-
-		chemweb_select_list(Unit,[[nil,''],[g,g],['L','L'],[mol,mol]],UnitSelectList),
+		chemweb_select_list(Unit,[[nil,''],[g,g],['L','L (g)'],[mol,mol]],UnitSelectList),
 		chemweb_select_list(Property,[[actual,''],[reacted,reacted],[produced,produced],[excess,excess]],PropertySelectList),
 		Select = span([select(name(units_input),UnitSelectList),select(name(properties_input),PropertySelectList)]),
 		stoichiometer_query_list(UnitS,PropertyS,SelectS).

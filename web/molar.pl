@@ -16,7 +16,7 @@ molar_input(Request,Type,Input,Unit,TailInput) :-
 		[   
 			type(Type, [ optional(true), oneof([name,formula]) ]),
 			molar_input(Input, [ optional(true) ]),
-			unit(Unit, [ optional(true), oneof(g,'L',mol,'M') ]),
+			unit(Unit, [ optional(true), oneof(g,'L(g)','L(sol)',mol,'M') ]),
 			molar_tail_input(TailInput, [ optional(true) ])
 		]).
 
@@ -24,7 +24,7 @@ molar_html(Type,Unit,Input,TailInput,Solution) :-
 	( var(Input) -> Input = []; true),
 	( var(TailInput) -> TailInput = []; true),
 	chemweb_select_list(Type,[[name,'Name'],[formula,'Formula']],SelectList),
-	chemweb_select_list(Unit,[[g,g],['L','L'],[mol,mol],['M','M']],UnitSelectList),
+	chemweb_select_list(Unit,[[g,g],['L(g)','L (gas)'],['L(sol)','L (sol.)'],[mol,mol],['M','M']],UnitSelectList),
 
 	reply_html_page(chemlogic,title('Molar'),
 		[
@@ -45,15 +45,20 @@ molar_html(Type,Unit,Input,TailInput,Solution) :-
 molar_nop(Solution) :-
 	Solution = \['Please select the Name or Formula, depending on the format of your input. In the textbox, enter the quantity followed by the name/formula. Then, select the unit you wish to convert to.<br>When converting to a volume or concentration of a solution, you must specify the other property in the textbox in parentheses.'].
 
+molar_truncate_L('Lgas','L').
+molar_truncate_L('Laq','L').
+molar_truncate_L(X,X).
+
 
 molar_process(Type,Input,Solution,Unit,QtyTail) :-
+	molar_truncate_L(Unit,UnitReal),
 	(nonvar(QtyTail) ->
 		(
 			atom_chars(QtyTail,TailChars),
 			parse(quantity([TailStruct]),TailChars,[]) handle Solution,
-			Query = [[[[_, _], Unit],TailStruct], actual]
+			Query = [[[[_, _], UnitReal],TailStruct], actual]
 		);
-		Query = [[[[_, _], Unit]], actual]
+		Query = [[[[_, _], UnitReal]], actual]
 	),
 	(var(Solution) -> 
 		(
