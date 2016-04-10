@@ -34,10 +34,9 @@ fwd_algo(FFormula,[MSym,MCharge,NMSym,NMCharge]) :-
 
 
 rev(Formula) -->
-	{Formula = [[_,MSub],[_,NMSub]|Appended]},
+	{Formula = [[_,MSub],[_,NMSub]|Hydrate]},
 	{rev_algo(Formula,ChargeFormula)},
-
-	compound(_,_,ChargeFormula,Appended),
+	compound(_,_,ChargeFormula,Hydrate),
 	!,
 
 	/* Corrector: remove if unecessary */
@@ -47,8 +46,8 @@ rev(Formula) -->
 	).
 
 rev_algo(Formula,[MSym,MCharge,NMSym,NMCharge]) :-
-		Formula = [[TestMSym,_]|_],
-		FFormula = [[MSym,MSub],[NMSym,NMSub]],
+		Formula = [[TestMSym,_]|_Rest],
+		FFormula = [[MSym,MSub],[NMSym,NMSub]|_Hydrate],
 		(TestMSym = "H" -> 
 			acid_correct_hydrogen(Formula,FFormula);
 			(Formula = FFormula, charge_check(metal,MSym,MCharges))	
@@ -70,10 +69,10 @@ rev_algo(Formula,[MSym,MCharge,NMSym,NMCharge]) :-
 %%% Ionic Compound Naming Rules %%% 
 
 compound(Elems,Rest,Formula,[]) --> acid(Elems,Rest,Formula).
-compound(MElems,FinalRest,[MSym,MCharge,NMSym,NMCharge],Hydrate) --> 
+compound(MElems,FinalRest,[MSym,MCharge,NMSym,NMCharge],Hydrate) -->
 	cation(MElems,MRest,MSym,MCharge), 
 	" " xx anion_part, 
-	anion(MRest,NMRest,NMSym,NMCharge), 
+	anion(MRest,NMRest,NMSym,NMCharge),
 	hydrate_part(NMRest,FinalRest,Hydrate).
 
 cation(Elems,Rest,Formula,Charge) --> group(Elems,Rest,Formula,_),
@@ -97,6 +96,7 @@ hydrate_part(["H","O"|ElemR],ElemR,[[[["H",2],["O",1]],Num]]) -->
 
 hydrate_part(Pass,Pass,[]) --> [].
 
+hydrate_part([],[],Formula,[],[]) :- throw(error(logic_error(ionic:corrector_input_too_long,Formula),_)).
 
 %%% Metals %%% 
 
@@ -269,6 +269,10 @@ guidance_general(corrector_invalid_subscript,
 	 The following formula containes invalid subscripts: '
 ).
 
+
+guidance_general(corrector_input_too_long,
+	'BUSTED! The formula you have entered is too long. Ionic compounds consist of a cation, an anion, and optionally a hydrate.
+	 Both the cation and the anion were processed correctly, but the rest of your input is invalid.').
 
 %%%%% CATCH-ALL ERROR GUIDANCE %%%%%
 
