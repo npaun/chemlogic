@@ -164,7 +164,7 @@ guidance_errcode(fail,alpha,
 	 4. Allotropes of nonmetals: prefixnon-metal
 	 e.g. trioxygen
 
-	 5. Some hydrocarbons: prefix ane/ene/anol
+	 5. Some organic compounds: cyclo (if applicable) prefix ane/ene/yne/anol
 	 e.g. methane
 
 	 6. Retained names (preferred) and some common names:
@@ -200,7 +200,7 @@ guidance_errcode(none,white,
 	 4. Allotropes of nonmetals: prefixnon-metal
 	 e.g. trioxygen
 
-	 5. Some hydrocarbons: prefix ane/ene/anol
+	 5. Some organic compounds: cyclo (if applicable) prefix ane/ene/yne/anol
 	 e.g. methane
 
 	 6. Retained names (preferred) and some common names:
