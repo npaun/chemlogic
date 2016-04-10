@@ -49,7 +49,8 @@ user:head(chemlogic,Head) -->
 	head([
 	Head,
 	link([rel(stylesheet),href('style/modern.css')]),
-	link([rel(stylesheet),href('style/custom_footer.css')])
+	link([rel(stylesheet),href('style/custom_footer.css')]),
+	meta([name(viewport),content('width=device-width; initial-scale=1')])
 	])
 	).
 
