@@ -47,6 +47,7 @@ cl(element("N","nitrogen","nitr")).
         charge("N",-3).
         oxyanions("N",-1,[0,3,2,0]).
 	atomic("N",7).
+	diatomic("N").
 	mass("N",14.00674).
 	
 cl(element("O","oxygen","ox")).
