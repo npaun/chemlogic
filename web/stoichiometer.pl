@@ -41,7 +41,7 @@ stoichiometer_html(Type,Input,OutputType,Solution,UnitS,PropertyS,ResultS,Info) 
 	).
 
 stoichiometer_nop(Solution) :-
-	Solution = '(1) Please select Symbolic or Word equation, depending on what you are entering, then enter it into the textbox. You can also select how the equation will be output. (2) After pressing ENTER, select the quantities you wish to determine from the dropdown menus.'.
+	Solution = \['Step 1: Select the form of your equation &mdash; word or symbolic &mdash; then enter it into the textbox. Enter known quantities directly into the equation. You may also choose the output format. Press ENTER to process. <br>Step 2: Menus will be displayed allowing you to choose the quantities and units you wish to determine.'].
 
 
 stoichiometer_query_list([],[],[]).

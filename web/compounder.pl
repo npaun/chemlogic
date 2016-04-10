@@ -36,7 +36,7 @@ compounder_html(Type,Input,Solution) :-
 		).
 
 compounder_nop(Solution) :-
-	Solution = 'Please select Name or Formula, depending on what you are entering, and then enter it into the textbox.'.	
+	Solution = 'Please select Name or Formula, depending on the form of your input, and then enter it into the textbox.'.	
 
 
 compounder_process(Type,Input,Solution) :-

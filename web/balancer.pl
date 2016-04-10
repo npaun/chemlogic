@@ -38,7 +38,7 @@ balancer_html(Type,Input,OutputType,Solution,Info) :-
 	).
 
 balancer_nop(Solution) :-
-	Solution = 'Please select Symbolic or Word equation, depending on what you are entering, then enter it into the textbox. You can also select how the equation will be output.'.
+	Solution = \['Select the form of your equation &mdash; Word or Symbolic &mdash; then enter it into the textbox. You may also select the format of the balanced equation.'].
 
 
 balancer_process(Type,Input,OutputType,Solution,TypeInfo) :-
