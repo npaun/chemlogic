@@ -1,30 +1,34 @@
+// help.js: 
+// This file is from Chemlogic, a logic programming computer chemistry system
+// <http://icebergsystems.ca/chemlogic>
+// (C) Copyright 2012-2016 Nicholas Paun
+
 
 function set_paren_placeholder()
  {
-   var e = document.getElementById('molar_unit');
-   var selected = e.options[e.selectedIndex].value;
-   var input = document.getElementById('molar_tail_input');
+	var e = document.getElementById('molar_unit');
+	var selected = e.options[e.selectedIndex].value;
+	var input = document.getElementById('molar_tail_input');
 
-   if (selected == 'M')
-     {
-    	input.setAttribute('placeholder','e.g. 1.43 L');
-   	input.setAttribute('style','visibility: visible;');
-	input.required = true;
-     }
-   else if (selected == 'L(sol)')
-   {
-   	input.setAttribute('placeholder','e.g. 0.333 M');
-   	input.setAttribute('style','visibility: visible;');
-	input.required = true;
-   }
-   else
-   {
-   	input.setAttribute('style','visibility: hidden');
-	input.required = false;
-	input.value = "";
-   }
-}
-
+	if (selected == 'M')
+	 {
+    		input.setAttribute('placeholder','e.g. 1.43 L');
+   		input.setAttribute('style','visibility: visible;');
+		input.required = true;
+     	 }
+   	else if (selected == 'L(sol)')
+   	 {
+   		input.setAttribute('placeholder','e.g. 0.333 M');
+   		input.setAttribute('style','visibility: visible;');
+		input.required = true;
+   	 }
+   	else
+   	 {
+   		input.setAttribute('style','visibility: hidden');
+		input.required = false;
+		input.value = "";
+   	 }
+ }
 
 function set_placeholder(module)
  {
@@ -35,7 +39,6 @@ function set_placeholder(module)
 
 	if (module == 'compounder')
 	 {
-	 	
 		if (selected == "name")
 	 		input.setAttribute('placeholder','e.g. copper(II) sulfate pentahydrate');
 		else
@@ -63,7 +66,6 @@ function set_placeholder(module)
 		else
 			input.setAttribute('placeholder','e.g oxalic acid + 0.125 L of 1.000 M sodium hydroxide --> sodium oxalate + 300 g water');
 	}
-
  }
 
 function set_handler()
@@ -78,8 +80,8 @@ function set_handler()
 
 	if (module == 'molar')
 	 {
-	   document.getElementById('molar_unit').addEventListener('change',set_paren_placeholder);
-	   set_paren_placeholder();
+		document.getElementById('molar_unit').addEventListener('change',set_paren_placeholder);
+		 set_paren_placeholder();
 	 }
  }
 

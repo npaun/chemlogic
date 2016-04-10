@@ -1,7 +1,7 @@
 % balancer.pl: Web frontend for the chemical equation balancer
 % This file is from Chemlogic, a logic programming computer chemistry system
 % <http://icebergsystems.ca/chemlogic>
-% (C) Copyright 2012-2015 Nicholas Paun
+% (C) Copyright 2012-2016 Nicholas Paun
 
 
 

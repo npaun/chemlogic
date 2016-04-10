@@ -1,7 +1,7 @@
 % fact.pl: The main file that loads the chemical information database
 % This file is from Chemlogic, a logic programming computer chemistry system
 % <http://icebergsystems.ca/chemlogic>
-% (C) Copyright 2012-2015 Nicholas Paun
+% (C) Copyright 2012-2016 Nicholas Paun
 
 
 
@@ -124,4 +124,4 @@ Index	integer	The position of the element in the activity series (the lower the 
 
 %%%% DATABASE VERSION %%%%
 
-db_version((2015,04,07,00)).
+db_version((2016,04,10,00)).
