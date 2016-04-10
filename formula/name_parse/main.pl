@@ -83,6 +83,12 @@ name(Sym,Rest,Formula) --> pure_process(Sym,Rest,Formula).
 name(Sym,Rest,Formula) --> common(Sym,Rest,Formula).
 
 
+% If the formula is not of a form supported by Chemlogic, return it in symbolic form, as a fallback.
+% This allows any formula to be used in molar, balancer and stoichiometer even if Chemlogic doesn't recognize its name.
+
+name(Sym,Rest,Formula) --> formula(output,Sym,_,Formula,Rest). 
+
+
 %%%%% ERROR GUIDANCE - GENERAL %%%%%
 
 
