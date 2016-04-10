@@ -81,26 +81,46 @@ num_sub(10,"a") --> "dec".
 
 %%% Alkanes, Alkenes and Alcohols %%%
 
-alk([["C",Num],["H",HydroNum]]) --> num_alk(Num), (alk_type(Num,HydroNum) ;
+alk([["C",Num],["H",HydroNum]]) --> num_alk(Num), (alk_type(Num,HydroNum,0) ;
 	(
 		{var(HydroNum)} -> syntax_stop(covalent:unknown_organic)
 	)).
 
-alk_type(Num,HydroNum) -->  "ane",
+alk([["C",Num],["H",HydroNum]]) --> "cyclo", num_alk(Num), (alk_type(Num,HydroNum,1) ;
+	(
+		{var(HydroNum)} -> syntax_stop(covalent:unknown_organic)
+	)).
+
+
+alk_type(Num,HydroNum,Rings) -->  "ane",
 	{
-	HydroNum is 2 * Num + 2
+	HydroNum is 2 * (Num + 1 - Rings)
 	}.
 
 
-alk_type(Num,HydroNum) --> "ene",
+alk_type(Num,HydroNum,Rings) --> "ene",
 	{
-	HydroNum is 2 * Num
+	HydroNum is 2 * (Num - Rings)
 	}.
+
+alk_type(Num,HydroNum,Rings) --> "yne",
+	{
+		HydroNum is 2 * (Num - 1 - Rings)
+	}.
+
 
 alcohol([["C",Num],["H",HydroNum],["O",1]]) --> num_alk(Num), "anol",
 	{
 	HydroNum is 2 * Num + 2
 	}.
+
+
+alcohol([["C",Num],["H",HydroNum],[[["O",1],["H",1]],1]]) --> num_alk(Num), "anol",
+	{
+	HydroNum is 2 * Num + 1
+	}.
+
+
 
 
 %%% Their numbering system %%%
