@@ -53,7 +53,7 @@ balancer_do_process(Type,StringInput,OutputType,Solution,TypeInfo) :-
 		chemweb_to_html(StringSolution,Solution)
 	) handle Solution.
 
-balancer_do_info(Struct,[TypeInfo,ReactsInfo]) :-
+balancer_do_info(Struct,Info) :-
 	(
 		reaction_match(Type,Struct,Reacts) ->
 			(
@@ -63,9 +63,10 @@ balancer_do_info(Struct,[TypeInfo,ReactsInfo]) :-
 					activity_info(Reacts,ReactsDesc),
 					ReactsInfo = li([em('Reaction Occurs: '),ReactsDesc])
 				); ReactsInfo = \[''])
+				Info = [TypeInfo,ReactsInfo],
 
 			);
-			true
+			(Info = \[''])
 	).
 
 balancer_page(Request) :-
