@@ -62,9 +62,8 @@ balancer_do_info(Struct,Info) :-
 				((
 					activity_info(Reacts,ReactsDesc),
 					ReactsInfo = li([em('Reaction Occurs: '),ReactsDesc])
-				); ReactsInfo = \[''])
-				Info = [TypeInfo,ReactsInfo],
-
+				); ReactsInfo = \['']),
+				Info = [TypeInfo,ReactsInfo]
 			);
 			(Info = \[''])
 	).
