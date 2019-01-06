@@ -47,6 +47,6 @@ chemweb_select_list(Curr,[[Key,Desc]|OptionS],[HTML|Rest]) :-
 :- consult('stoichiometer').
 
 % Redirect to the app from /
-:- http_handler('/',http_redirect(see_other,'/chemlogic'),[]).
+:- http_handler('/',http_redirect(see_other,'/chemlogic/'),[]).
 
 % vi: ft=prolog
