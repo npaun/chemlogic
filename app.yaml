@@ -1,0 +1,6 @@
+runtime: custom
+env: flex
+liveness_check:
+  path: "/chemlogic/balancer"
+readiness_check:
+  path: "/chemlogic/molar?type=name&molar_input=0.500+L+of+3.000+M+perchloric+acid&unit=g&molar_tail_input="
