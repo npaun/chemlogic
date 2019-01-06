@@ -8,14 +8,25 @@
 
 :- [main].
 :- use_module(library(http/thread_httpd)).
-:- initialization server(8000,[]).
-:- initialization web_message(8000).
+:- initialization server([]).
 
 
 
 
-server(Port, Options) :-
+server(Options) :-
+	select_port(Port), !,
         http_server(http_dispatch,
                     [ port(Port)
                     | Options
-                    ]).
+                    ]),
+	web_message(Port).
+
+select_port(Port) :-
+	getenv('PORT',PortStr),
+	atom_number(PortStr,Port).
+select_port(8000).	
+
+keep_running :-
+	thread_get_message(_),
+	writeln('Got message. Halting'),
+	halt.
