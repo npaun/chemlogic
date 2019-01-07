@@ -75,13 +75,15 @@ function set_handler()
 	if (!module)
 		module = 'balancer';
 
- 	document.getElementById(module + '_type').addEventListener('change',set_placeholder(module));
+ 	document.getElementById(module + '_type').addEventListener('change', function() {
+		set_placeholder(module)
+	});
 	set_placeholder(module);
 
 	if (module == 'molar')
 	 {
 		document.getElementById('molar_unit').addEventListener('change',set_paren_placeholder);
-		 set_paren_placeholder();
+		set_paren_placeholder();
 	 }
  }
 
