@@ -45,8 +45,8 @@ molar_html(Type,Unit,Input,TailInput,Solution) :-
 molar_nop(Solution) :-
 	Solution = \['Please select the Name or Formula, depending on the format of your input. In the textbox, enter the quantity followed by the name/formula. Then, select the unit you wish to convert to.<br>When converting to a volume or concentration of a solution, you must specify the other property in the textbox in parentheses.'].
 
-molar_truncate_L('Lgas','L').
-molar_truncate_L('Laq','L').
+molar_truncate_L('L(g)','L').
+molar_truncate_L('L(sol)','L').
 molar_truncate_L(X,X).
 
 
