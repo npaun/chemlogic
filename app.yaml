@@ -2,5 +2,8 @@ runtime: custom
 env: flex
 liveness_check:
   path: "/chemlogic/balancer"
+  initial_delay_sec: 60
+  check_interval_sec: 20
 readiness_check:
   path: "/chemlogic/molar?type=name&molar_input=0.500+L+of+3.000+M+perchloric+acid&unit=g&molar_tail_input="
+  app_start_timeout_sec: 60
