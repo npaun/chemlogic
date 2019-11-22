@@ -1,4 +1,4 @@
-FROM swipl as builder
+FROM swipl:7.7.25 as builder
 WORKDIR /app
 COPY . /app
 RUN apt update && apt install -y \
@@ -6,7 +6,7 @@ RUN apt update && apt install -y \
   && rm -rf /var/lib/apt/lists/* \ 
   && make web
 
-FROM swipl
+FROM swipl:7.7.25
 WORKDIR /app
 COPY --from=builder /app/bin .
 EXPOSE 8000
