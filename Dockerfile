@@ -10,6 +10,5 @@ FROM swipl
 WORKDIR /app
 COPY --from=builder /app/bin .
 EXPOSE 8080
-ENV PORT 8080
 USER 10001
 CMD ["swipl","-t","keep_running","-x","chemweb"]
