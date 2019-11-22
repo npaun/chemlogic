@@ -9,6 +9,6 @@ RUN apt update && apt install -y \
 FROM swipl
 WORKDIR /app
 COPY --from=builder /app/bin .
-EXPOSE 8080
+EXPOSE 8000
 USER 10001
 CMD ["swipl","-t","keep_running","-x","chemweb"]
